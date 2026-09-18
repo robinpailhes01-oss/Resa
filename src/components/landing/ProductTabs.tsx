@@ -104,8 +104,8 @@ export function ProductTabs({ panels }: ProductTabsProps) {
               className="product-panel rounded-card"
             >
               {panels[tab.id]}
-              <figcaption className="mt-5 text-center text-ink-muted">
-                <span className="block font-semibold text-brand [html:not(.js)_&]:mb-1">{tab.label}</span>
+              <figcaption className="mt-4 text-center text-[15px] text-ink-muted md:mt-5 md:text-[18px]">
+                <span className="hidden font-semibold text-brand md:block [html:not(.js)_&]:mb-1">{tab.label}</span>
                 {tab.caption}
               </figcaption>
             </figure>

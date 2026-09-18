@@ -53,10 +53,13 @@ export const hero = {
   /** Deux segments : le retour à la ligne est un choix de mise en page, pas un <br> forcé. */
   title: ["Vos rendez-vous.", "Un prix tout simple."],
   intro: `Réservations en ligne, confirmations, rappels et demandes d’avis par email. ${brand} réunit l’essentiel pour organiser vos rendez-vous, dans une seule offre.`,
+  /** Version courte affichée sur téléphone. */
+  introShort: "Réservations en ligne, confirmations, rappels et demandes d’avis par email. Une seule offre.",
   pricePrefix: { prelaunch: "Tarif prévu", live: null } satisfies ByMode<string | null>,
   price: priceAmount,
   priceUnit: `HT${NBSP}/${NBSP}mois`,
   priceNote: `Un établissement. ${capitalize(practitioners)}.`,
+  priceNoteShort: `${capitalize(practitioners)}, un établissement.`,
   prelaunchNotice: `${brand} est en préparation. Le tarif et les fonctionnalités seront confirmés à l’ouverture.`,
   microcopy: {
     prelaunch: "Sans paiement. Nous vous préviendrons à l’ouverture.",
@@ -78,16 +81,19 @@ export const features = {
       icon: "calendar",
       title: "Réservation en ligne",
       text: "Partagez votre lien. Vos clients choisissent leur prestation et leur créneau, même lorsque vous êtes occupé.",
+      textShort: "Vos clients réservent seuls, depuis votre lien.",
     },
     {
       icon: "mail",
       title: "Emails automatiques",
       text: "Confirmez les rendez-vous, envoyez un rappel et invitez vos clients à laisser un avis après leur visite.",
+      textShort: "Confirmation, rappel et demande d’avis, envoyés pour vous.",
     },
     {
       icon: "users",
       title: "Agenda partagé",
       text: "Retrouvez les rendez-vous de votre équipe dans une vue claire, accessible sur ordinateur, tablette et mobile.",
+      textShort: "Toute l’équipe sur un seul planning, partout.",
     },
   ] as const,
 };

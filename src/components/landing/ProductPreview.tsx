@@ -18,7 +18,7 @@ export function ProductPreview() {
             emails: <EmailsPreview alt={emails.alt} />,
           }}
         />
-        <p className="mt-8 text-center text-small text-ink-muted">{byMode(preview.prelaunchNote)}</p>
+        <p className="mt-6 text-center text-[13px] text-ink-muted md:mt-8 md:text-small">{byMode(preview.prelaunchNote)}</p>
       </div>
     </Section>
   );

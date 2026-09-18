@@ -380,3 +380,22 @@ html.js .product-panel[data-active="false"] {
   mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
 }
+
+/* Téléphone : apparitions plus courtes, séquence d'arrivée plus rapide. */
+@media (max-width: 767px) {
+  html.js .reveal {
+    transform: translateY(10px);
+    transition-duration: 400ms;
+  }
+  html.js .enter {
+    animation-duration: 500ms;
+    animation-delay: calc(var(--d, 0ms) * 0.6);
+  }
+  html.js .line-mask > span {
+    animation-duration: 600ms;
+    animation-delay: calc(var(--d, 0ms) * 0.6);
+  }
+  html.js .agenda-fill .slot {
+    animation-delay: calc(450ms + var(--i, 0) * 80ms);
+  }
+}

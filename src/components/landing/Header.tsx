@@ -45,12 +45,17 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-40 pt-3 md:pt-4">
+    <header
+      className={cn(
+        "sticky top-0 z-40 border-b bg-page/92 backdrop-blur-md transition-[border-color] duration-200 md:border-0 md:bg-transparent md:pt-4 md:backdrop-blur-none",
+        scrolled ? "border-line" : "border-transparent",
+      )}
+    >
       <div className="container-page">
         <div
           className={cn(
-            "flex h-14 items-center justify-between gap-4 rounded-full bg-card/90 pl-5 pr-2 ring-1 backdrop-blur-md transition-shadow duration-200 md:h-16 md:pl-6",
-            scrolled ? "shadow-preview ring-line" : "shadow-card ring-line/70",
+            "flex h-14 items-center justify-between gap-4 md:h-16 md:rounded-full md:bg-card/90 md:pl-6 md:pr-2 md:ring-1 md:backdrop-blur-md md:transition-shadow md:duration-200",
+            scrolled ? "md:shadow-preview md:ring-line" : "md:shadow-card md:ring-line/70",
           )}
         >
           <Link href="/" className="inline-flex items-center rounded-md" aria-label={`${offer.brandName} – accueil`}>

@@ -33,9 +33,9 @@ export function Waitlist({ initialState }: WaitlistProps) {
           <h2 id="inscription-title" className="text-h2-sm md:text-h2">
             {waitlist.title}
           </h2>
-          <p className="mt-4 text-white/80">{waitlist.intro}</p>
+          <p className="mt-4 hidden text-white/80 md:block">{waitlist.intro}</p>
         </div>
-        <div className="reveal relative rounded-card bg-card p-6 text-ink md:p-8 lg:col-span-7">
+        <div className="reveal relative rounded-card bg-card p-5 text-ink md:p-8 lg:col-span-7">
           <WaitlistForm initialState={initialState} />
         </div>
       </div>

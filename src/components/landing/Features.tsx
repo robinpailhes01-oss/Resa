@@ -24,15 +24,16 @@ export function Features() {
               className="reveal flex flex-col overflow-hidden rounded-card bg-card ring-1 ring-line md:last:col-span-2 lg:last:col-span-1"
               style={{ "--d": `${index * 90}ms` } as React.CSSProperties}
             >
-              <div className={`flex h-56 items-center justify-center px-6 ${panels[card.icon]}`}>
+              <div className={`flex h-48 items-center justify-center px-6 md:h-56 ${panels[card.icon]}`}>
                 <Mini />
               </div>
-              <div className="flex flex-col p-6 md:p-7">
+              <div className="flex flex-col p-5 md:p-7">
                 <div className="flex items-center gap-3">
                   <IconTile icon={featureIcons[card.icon]} tone={tones[card.icon]} size="sm" />
                   <h3 className="text-[20px] leading-7 md:text-[22px]">{card.title}</h3>
                 </div>
-                <p className="mt-3 text-ink-muted">{card.text}</p>
+                <p className="mt-2 text-ink-muted md:hidden">{card.textShort}</p>
+                <p className="mt-3 hidden text-ink-muted md:block">{card.text}</p>
               </div>
             </li>
           );
