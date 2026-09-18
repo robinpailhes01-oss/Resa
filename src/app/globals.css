@@ -303,7 +303,9 @@
 
   /* Halo chaud derrière le premier écran : le seul dégradé de la page. */
   .hero-glow {
-    background: radial-gradient(55% 60% at 72% 38%, rgba(234, 185, 154, 0.32), rgba(234, 185, 154, 0) 70%);
+    background:
+      radial-gradient(40% 45% at 30% 20%, rgba(221, 213, 229, 0.55), rgba(221, 213, 229, 0) 70%),
+      radial-gradient(45% 50% at 72% 30%, rgba(234, 185, 154, 0.35), rgba(234, 185, 154, 0) 70%);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -371,4 +373,10 @@ html.js .product-panel[data-active="false"] {
   text-decoration: underline;
   text-underline-offset: 4px;
   font-weight: 500;
+}
+
+/* Aperçu du premier écran : fondu vers le bas dans la page. */
+.hero-fade {
+  mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent 100%);
 }
