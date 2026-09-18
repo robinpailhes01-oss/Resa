@@ -59,9 +59,15 @@
   --text-price-sm--line-height: 3.25rem; /* 52px */
 
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @layer base {
+  :root {
+    --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
@@ -160,23 +166,160 @@
     max-width: 65ch;
   }
 
-  /* Apparition unique de section, distance ≤ 12 px (§11 Mouvement).
-     Activée uniquement quand JavaScript est disponible (classe html.js). */
+  /* ------------------------------------------------------------------
+     Système de mouvement (docs/DESIGN.md). CSS uniquement, activé par la
+     classe html.js ; sans JavaScript ou avec prefers-reduced-motion, tout
+     est visible et statique dès le premier rendu.
+     ------------------------------------------------------------------ */
+
+  /* Apparition au scroll : une par bloc, 16 px, cadencée par --d. */
   html.js .reveal {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(16px);
     transition:
-      opacity 220ms var(--ease-standard),
-      transform 220ms var(--ease-standard);
+      opacity 500ms var(--ease-out-expo) var(--d, 0ms),
+      transform 500ms var(--ease-out-expo) var(--d, 0ms);
   }
   html.js .reveal.is-visible {
     opacity: 1;
     transform: none;
   }
-  @media (prefers-reduced-motion: reduce) {
-    html.js .reveal {
+
+  /* Arrivée du premier écran. */
+  html.js .enter {
+    animation: enter 700ms var(--ease-out-expo) both;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes enter {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
       opacity: 1;
       transform: none;
+    }
+  }
+
+  /* Titre ligne par ligne : chaque ligne monte derrière un masque. */
+  .line-mask {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.12em;
+    margin-bottom: -0.12em;
+  }
+  .line-mask > span {
+    display: block;
+  }
+  html.js .line-mask > span {
+    animation: line-up 800ms var(--ease-out-expo) both;
+    animation-delay: var(--d, 0ms);
+  }
+  @keyframes line-up {
+    from {
+      transform: translateY(110%);
+    }
+    to {
+      transform: none;
+    }
+  }
+
+  /* Signature : l'agenda se remplit de lui-même. */
+  html.js .agenda-fill .slot {
+    animation: slot-in 520ms var(--ease-out-expo) both;
+    animation-delay: calc(650ms + var(--i, 0) * 110ms);
+  }
+  html.js .agenda-fill .badge-in {
+    animation: enter 600ms var(--ease-out-expo) both;
+    animation-delay: 1500ms;
+  }
+  @keyframes slot-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* Boutons : la flèche glisse, la pression se sent. */
+  .btn {
+    transition:
+      background-color 200ms var(--ease-standard),
+      color 200ms var(--ease-standard),
+      transform 150ms var(--ease-standard);
+  }
+  .btn:active {
+    transform: scale(0.98);
+  }
+  .btn > svg:last-child {
+    transition: transform 200ms var(--ease-out-expo);
+  }
+  @media (hover: hover) {
+    .btn:hover > svg:last-child {
+      transform: translateX(3px);
+    }
+  }
+
+  /* FAQ : la réponse se déplie. */
+  html.js .faq-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition:
+      grid-template-rows 320ms var(--ease-out-expo),
+      visibility 0s linear 320ms;
+  }
+  html.js .faq-panel[data-open="true"] {
+    grid-template-rows: 1fr;
+    visibility: visible;
+    transition:
+      grid-template-rows 320ms var(--ease-out-expo),
+      visibility 0s;
+  }
+  .faq-panel > div {
+    min-height: 0;
+    overflow: hidden;
+  }
+  html.js .faq-panel > div > p {
+    opacity: 0;
+    transform: translateY(4px);
+    transition:
+      opacity 260ms var(--ease-out-expo),
+      transform 260ms var(--ease-out-expo);
+  }
+  html.js .faq-panel[data-open="true"] > div > p {
+    opacity: 1;
+    transform: none;
+    transition-delay: 80ms;
+  }
+
+  /* Onglets : le panneau actif arrive en fondu. */
+  html.js .product-panel[data-active="true"] {
+    animation: enter 450ms var(--ease-out-expo) both;
+  }
+
+  /* Halo chaud derrière le premier écran : le seul dégradé de la page. */
+  .hero-glow {
+    background: radial-gradient(55% 60% at 72% 38%, rgba(234, 185, 154, 0.32), rgba(234, 185, 154, 0) 70%);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html.js .reveal,
+    html.js .enter,
+    html.js .line-mask > span,
+    html.js .agenda-fill .slot,
+    html.js .agenda-fill .badge-in,
+    html.js .product-panel[data-active="true"],
+    html.js .faq-panel > div > p {
+      animation: none;
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+    html.js .faq-panel {
       transition: none;
     }
   }
@@ -191,10 +334,6 @@ html.js .product-panel[data-active="false"] {
   display: none;
 }
 
-/* FAQ : sans JavaScript, toutes les réponses restent visibles. */
-html.js .faq-panel[data-open="false"] {
-  display: none;
-}
 
 /* Pages annexes : rythme vertical des textes légaux et écrans d'état. */
 .prose-page h2 {

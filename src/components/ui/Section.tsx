@@ -6,14 +6,15 @@ type SectionProps = {
   labelledBy: string;
   className?: string;
   children: ReactNode;
-  tone?: "page" | "card" | "soft";
+  tone?: "page" | "card" | "soft" | "dark";
 };
 
-/* Une seule couleur de fond sur toute la page ; les sections se distinguent par l'espace. */
+/* Une seule couleur de fond sur toute la page ; seule la fin (inscription + footer) passe en prune. */
 const tones = {
   page: "",
   card: "",
   soft: "",
+  dark: "bg-brand text-white [&_h2]:text-white",
 };
 
 export function Section({ id, labelledBy, className, children, tone = "page" }: SectionProps) {

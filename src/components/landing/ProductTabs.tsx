@@ -53,8 +53,16 @@ export function ProductTabs({ panels }: ProductTabsProps) {
       <div
         role="tablist"
         aria-label="Aperçus du produit"
-        className="mx-auto mb-10 flex w-full max-w-md justify-center gap-2 border-b border-line"
+        className="relative mx-auto mb-10 flex w-full max-w-md justify-center border-b border-line"
       >
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute -bottom-px left-0 h-0.5 bg-brand transition-transform duration-300 ease-out-expo"
+          style={{
+            width: `${100 / preview.tabs.length}%`,
+            transform: `translateX(${preview.tabs.findIndex((t) => t.id === active) * 100}%)`,
+          }}
+        />
         {preview.tabs.map((tab) => {
           const selected = tab.id === active;
           return (
@@ -72,8 +80,8 @@ export function ProductTabs({ panels }: ProductTabsProps) {
               onClick={() => select(tab.id)}
               onKeyDown={onKeyDown}
               className={cn(
-                "-mb-px min-h-12 flex-1 border-b-2 px-3 text-[15px] font-semibold transition-colors duration-150",
-                selected ? "border-brand text-brand" : "border-transparent text-ink-muted hover:text-brand",
+                "min-h-12 flex-1 px-3 text-[15px] font-semibold transition-colors duration-200",
+                selected ? "text-brand" : "text-ink-muted hover:text-brand",
               )}
             >
               {tab.label}

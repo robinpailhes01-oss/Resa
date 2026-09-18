@@ -31,8 +31,10 @@ export function FaqItem({ question, answer }: FaqItemProps) {
           </span>
         </button>
       </h3>
-      <div id={panelId} role="region" aria-labelledby={buttonId} data-open={open} className="faq-panel pb-5">
-        <p className="prose-measure text-ink-muted">{answer}</p>
+      <div id={panelId} role="region" aria-labelledby={buttonId} data-open={open} className="faq-panel">
+        <div>
+          <p className="prose-measure pb-5 text-ink-muted">{answer}</p>
+        </div>
       </div>
     </li>
   );

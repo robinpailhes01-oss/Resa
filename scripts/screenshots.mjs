@@ -22,6 +22,8 @@ for (const vp of viewports) {
   const page = await browser.newPage({ viewport: { width: vp.width, height: vp.height }, deviceScaleFactor: 1 });
   await page.goto(`${base}/`, { waitUntil: "networkidle" });
   await page.evaluate(() => document.fonts.ready);
+  // Laisse la séquence d'arrivée du premier écran se terminer.
+  await page.waitForTimeout(2600);
   // Rend visibles les éléments à apparition différée pour la capture pleine page.
   await page.evaluate(() => document.querySelectorAll(".reveal").forEach((el) => el.classList.add("is-visible")));
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);

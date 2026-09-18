@@ -1,30 +1,22 @@
-import { CalendarDays, Mail, Users } from "lucide-react";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { byMode, features } from "@/content/fr/landing";
-
-const icons = { calendar: CalendarDays, mail: Mail, users: Users } as const;
 
 export function Features() {
   return (
     <Section id="fonctionnalites" labelledBy="fonctionnalites-title">
       <SectionHeading id="fonctionnalites-title" eyebrow={byMode(features.eyebrow)} title={features.title} />
-      <ul className="grid gap-4 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
-        {features.cards.map((card, index) => {
-          const Icon = icons[card.icon];
-          return (
-            <li
-              key={card.title}
-              className="reveal flex flex-col rounded-card bg-card p-6 md:p-8 md:last:col-span-2 lg:last:col-span-1"
-              style={{ transitionDelay: `${index * 40}ms` }}
-            >
-              <span className="mb-5 inline-flex size-11 items-center justify-center rounded-full bg-soft-tint text-brand">
-                <Icon aria-hidden="true" className="size-6" strokeWidth={1.8} />
-              </span>
-              <h3 className="text-[20px] leading-7 md:text-[22px] md:leading-8">{card.title}</h3>
-              <p className="mt-2 text-ink-muted">{card.text}</p>
-            </li>
-          );
-        })}
+      <ul className="grid gap-10 border-t border-line pt-10 md:grid-cols-3 md:gap-8 md:pt-12">
+        {features.cards.map((card, index) => (
+          <li
+            key={card.title}
+            className="reveal flex flex-col md:pr-6"
+            style={{ "--d": `${index * 90}ms` } as React.CSSProperties}
+          >
+            <span aria-hidden="true" className="mb-5 block h-0.5 w-8 rounded-full bg-accent" />
+            <h3 className="text-[22px] leading-7 md:text-[24px] md:leading-8">{card.title}</h3>
+            <p className="mt-3 text-ink-muted">{card.text}</p>
+          </li>
+        ))}
       </ul>
     </Section>
   );

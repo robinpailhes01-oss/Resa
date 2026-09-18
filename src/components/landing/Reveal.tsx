@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 
 /**
- * Active l'apparition unique des éléments `.reveal` (distance ≤ 12 px)
+ * Active l'apparition unique des éléments `.reveal` (16 px, cadence via --d)
  * via IntersectionObserver. Sans JavaScript, tout est visible d'emblée.
  */
 export function RevealObserver() {
@@ -24,7 +24,7 @@ export function RevealObserver() {
           }
         }
       },
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.05 },
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.1 },
     );
     elements.forEach((el) => observer.observe(el));
     return () => observer.disconnect();

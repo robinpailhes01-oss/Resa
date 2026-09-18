@@ -20,7 +20,7 @@ export function Pricing() {
           <p className="text-[16px] font-semibold text-ink">{pricing.planName}</p>
           {pricePrefix ? <p className="mt-4 text-small font-medium text-ink-muted">{pricePrefix}</p> : null}
           <p className="flex flex-wrap items-baseline gap-x-2 text-brand">
-            <span className="text-price-sm font-bold tracking-tight md:text-[56px] md:leading-[60px]">{pricing.price}</span>
+            <span className="text-price-sm font-bold tracking-[-0.03em] md:text-[56px] md:leading-[60px]">{pricing.price}</span>
             <span className="text-[16px] font-medium text-ink-muted">{pricing.priceUnit}</span>
           </p>
           <p className="mt-2 text-ink-muted">{pricing.scope}</p>

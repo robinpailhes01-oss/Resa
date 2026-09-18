@@ -6,7 +6,7 @@ type Variant = "primary" | "secondary" | "ghost" | "inverse";
 type Size = "md" | "compact";
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-button font-semibold text-[16px] leading-tight text-center transition-colors duration-200 ease-standard disabled:cursor-not-allowed disabled:opacity-60 [&_svg]:size-5 [&_svg]:shrink-0";
+  "btn inline-flex items-center justify-center gap-2 rounded-button font-semibold text-[16px] leading-tight text-center disabled:cursor-not-allowed disabled:opacity-60 [&_svg]:size-5 [&_svg]:shrink-0";
 
 const variants: Record<Variant, string> = {
   primary: "bg-brand text-white hover:bg-brand-hover active:bg-brand-hover",

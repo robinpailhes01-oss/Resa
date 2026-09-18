@@ -44,17 +44,17 @@ function formatHour(h: number): string {
   return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
 }
 
-function SlotCard({ slot, rowHeight }: { slot: Slot; rowHeight: number }) {
+function SlotCard({ slot, rowHeight, order }: { slot: Slot; rowHeight: number; order: number }) {
   const top = (slot.start - DAY_START) * rowHeight;
   const height = (slot.end - slot.start) * rowHeight - 3;
   return (
     <div
       className={cn(
-        "absolute inset-x-1 rounded-md px-2 py-1.5 text-[10px] leading-[1.3]",
+        "slot absolute inset-x-1 rounded-md px-2 py-1.5 text-[10px] leading-[1.3]",
         slot.tone === "soft" ? "bg-soft-tint" : "bg-accent-tint",
         slot.selected && "ring-2 ring-brand",
       )}
-      style={{ top, height }}
+      style={{ top, height, "--i": order } as React.CSSProperties}
     >
       <div className="text-ink-muted">
         {formatHour(slot.start)} – {formatHour(slot.end)}
@@ -205,7 +205,7 @@ function DesktopGrid() {
               <div key={hour} className="absolute inset-x-0 border-t border-line/70" style={{ top: i * rowHeight }} />
             ))}
             {column.slots.map((slot) => (
-              <SlotCard key={slot.title + slot.start} slot={slot} rowHeight={rowHeight} />
+              <SlotCard key={slot.title + slot.start} slot={slot} rowHeight={rowHeight} order={fillOrder(slot)} />
             ))}
           </div>
         ))}
@@ -234,8 +234,12 @@ function MobileList() {
         ))}
       </div>
       <ul className="divide-y divide-line px-3">
-        {camille.slots.map((slot) => (
-          <li key={slot.title} className={cn("flex gap-3 py-2.5", slot.selected && "bg-soft-tint/60 -mx-3 px-3")}>
+        {camille.slots.map((slot, i) => (
+          <li
+            key={slot.title}
+            className={cn("slot flex gap-3 py-2.5", slot.selected && "bg-soft-tint/60 -mx-3 px-3")}
+            style={{ "--i": i } as React.CSSProperties}
+          >
             <div className="w-12 shrink-0 text-[10px] leading-tight text-ink-muted">
               <div className="font-semibold text-ink">{formatHour(slot.start)}</div>
               <div>{formatHour(slot.end)}</div>
@@ -263,11 +267,19 @@ type AgendaPreviewProps = {
   badge?: string;
   /** Sans barre latérale ni panneau de détail : pour le premier écran. */
   compact?: boolean;
+  /** Les rendez-vous se posent un à un à l'arrivée (signature du premier écran). */
+  animate?: boolean;
 };
 
-export function AgendaPreview({ alt, className, badge, compact = false }: AgendaPreviewProps) {
+/** Ordre d'apparition des rendez-vous : chronologique, toutes colonnes confondues. */
+function fillOrder(slot: Slot): number {
+  const all = columns.flatMap((c) => c.slots).sort((a, b) => a.start - b.start || a.title.localeCompare(b.title));
+  return all.findIndex((s) => s === slot);
+}
+
+export function AgendaPreview({ alt, className, badge, compact = false, animate = false }: AgendaPreviewProps) {
   return (
-    <div className={cn("relative", className)}>
+    <div className={cn("relative", animate && "agenda-fill", className)}>
       <AppFrame alt={alt}>
         <div className="flex">
           {!compact ? <Sidebar /> : null}
@@ -282,7 +294,7 @@ export function AgendaPreview({ alt, className, badge, compact = false }: Agenda
       {badge ? (
         <div
           aria-hidden="true"
-          className="absolute -bottom-3 left-4 inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-card px-3 py-1.5 text-small font-semibold text-brand shadow-card ring-1 ring-line sm:left-6"
+          className="badge-in absolute -bottom-3 left-4 inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-card px-3 py-1.5 text-small font-semibold text-brand shadow-card ring-1 ring-line sm:left-6"
         >
           <span className="inline-flex size-6 items-center justify-center rounded-full bg-accent-tint">
             <Mail className="size-3.5" strokeWidth={2} />
