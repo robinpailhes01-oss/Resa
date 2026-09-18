@@ -35,7 +35,7 @@ export function Waitlist({ initialState }: WaitlistProps) {
           </h2>
           <p className="mt-4 text-ink-muted">{waitlist.intro}</p>
         </div>
-        <div className="relative rounded-card bg-card p-6 shadow-card ring-1 ring-line/60 md:p-8 lg:col-span-7">
+        <div className="relative rounded-card bg-card p-6 ring-1 ring-line md:p-8 lg:col-span-7">
           <WaitlistForm initialState={initialState} />
         </div>
       </div>

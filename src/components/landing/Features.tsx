@@ -14,10 +14,10 @@ export function Features() {
           return (
             <li
               key={card.title}
-              className="reveal flex flex-col rounded-card bg-card p-6 shadow-card ring-1 ring-line/60 md:p-8 md:last:col-span-2 lg:last:col-span-1"
+              className="reveal flex flex-col rounded-card bg-card p-6 md:p-8 md:last:col-span-2 lg:last:col-span-1"
               style={{ transitionDelay: `${index * 40}ms` }}
             >
-              <span className="mb-5 inline-flex size-12 items-center justify-center rounded-full bg-soft-tint text-brand">
+              <span className="mb-5 inline-flex size-11 items-center justify-center rounded-full bg-soft-tint text-brand">
                 <Icon aria-hidden="true" className="size-6" strokeWidth={1.8} />
               </span>
               <h3 className="text-[20px] leading-7 md:text-[22px] md:leading-8">{card.title}</h3>

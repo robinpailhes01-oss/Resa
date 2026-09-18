@@ -34,7 +34,7 @@
   --radius-field: 8px;
   --radius-card: 16px;
 
-  --shadow-preview: 0 16px 48px rgba(73, 51, 68, 0.1);
+  --shadow-preview: 0 16px 48px rgba(73, 51, 68, 0.08);
   --shadow-card: 0 1px 2px rgba(73, 51, 68, 0.06);
 
   --breakpoint-xs: 23.4375rem; /* 375px */
@@ -90,7 +90,7 @@
   h4 {
     color: var(--color-brand);
     font-weight: 700;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
     text-wrap: balance;
   }
 

@@ -10,11 +10,11 @@ export function Hero() {
   const pricePrefix = byMode(hero.pricePrefix);
 
   return (
-    <section id="hero" aria-labelledby="hero-title" className="pb-16 pt-8 md:pb-24 md:pt-14">
+    <section id="hero" aria-labelledby="hero-title" className="pb-16 pt-10 md:pb-28 md:pt-20">
       <div className="container-page">
         <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-8">
           <div className="flex min-w-0 flex-col lg:col-span-6 xl:col-span-6">
-            <p className="mb-4 text-small font-semibold uppercase tracking-[0.12em] text-ink-muted">{hero.eyebrow}</p>
+            <p className="mb-4 text-small font-medium text-ink-muted">{hero.eyebrow}</p>
             <h1 className="text-display-sm lg:text-[48px] lg:leading-[54px] xl:text-display">
               <span className="block">{hero.title[0]}</span>
               <span className="block">{hero.title[1]}</span>
@@ -22,9 +22,7 @@ export function Hero() {
             <p className="prose-measure mt-5 text-ink-muted md:mt-6">{hero.intro}</p>
 
             <div className="mt-8 md:mt-10">
-              {pricePrefix ? (
-                <p className="text-small font-semibold uppercase tracking-[0.12em] text-ink-muted">{pricePrefix}</p>
-              ) : null}
+              {pricePrefix ? <p className="text-small font-medium text-ink-muted">{pricePrefix}</p> : null}
               <p className="flex flex-wrap items-baseline gap-x-3 text-brand">
                 <span className="text-price-sm font-bold tracking-tight md:text-price">{hero.price}</span>
                 <span className="text-[18px] font-medium text-ink-muted md:text-[20px]">{hero.priceUnit}</span>
@@ -44,8 +42,9 @@ export function Hero() {
                 {primary.label}
                 <ArrowRight aria-hidden="true" />
               </CtaLink>
-              <Button href={cta.secondary.href} variant="secondary" fullWidth className="sm:w-auto">
+              <Button href={cta.secondary.href} variant="ghost" fullWidth className="sm:w-auto">
                 {cta.secondary.label}
+                <ArrowRight aria-hidden="true" />
               </Button>
             </div>
             <p className="mt-3 text-small text-ink-muted">{byMode(hero.microcopy)}</p>

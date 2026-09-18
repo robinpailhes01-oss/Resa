@@ -53,7 +53,7 @@ export function ProductTabs({ panels }: ProductTabsProps) {
       <div
         role="tablist"
         aria-label="Aperçus du produit"
-        className="mx-auto mb-8 flex w-full max-w-md gap-1 rounded-button bg-soft-tint p-1"
+        className="mx-auto mb-10 flex w-full max-w-md justify-center gap-2 border-b border-line"
       >
         {preview.tabs.map((tab) => {
           const selected = tab.id === active;
@@ -72,8 +72,8 @@ export function ProductTabs({ panels }: ProductTabsProps) {
               onClick={() => select(tab.id)}
               onKeyDown={onKeyDown}
               className={cn(
-                "min-h-11 flex-1 rounded-[8px] px-3 text-[15px] font-semibold transition-colors duration-150",
-                selected ? "bg-card text-brand shadow-card" : "text-ink-muted hover:text-brand",
+                "-mb-px min-h-12 flex-1 border-b-2 px-3 text-[15px] font-semibold transition-colors duration-150",
+                selected ? "border-brand text-brand" : "border-transparent text-ink-muted hover:text-brand",
               )}
             >
               {tab.label}

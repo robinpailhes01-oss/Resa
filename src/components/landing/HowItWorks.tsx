@@ -10,7 +10,7 @@ export function HowItWorks() {
           <li key={step.title} className="reveal flex gap-4 md:flex-col md:gap-5" style={{ transitionDelay: `${index * 40}ms` }}>
             <span
               aria-hidden="true"
-              className="inline-flex size-12 shrink-0 items-center justify-center rounded-full bg-accent-tint text-[18px] font-bold text-brand"
+              className="inline-flex size-11 shrink-0 items-center justify-center rounded-full bg-accent-tint text-[16px] font-bold text-brand"
             >
               {index + 1}
             </span>

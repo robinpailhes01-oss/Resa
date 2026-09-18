@@ -19,11 +19,11 @@ export function AppFrame({ alt, children, className, padded = true }: AppFramePr
     <div
       role="img"
       aria-label={alt}
-      className={cn("@container rounded-card bg-soft/60", padded && "p-3 sm:p-4 md:p-5", className)}
+      className={cn("@container", padded && "", className)}
     >
       <div
         aria-hidden="true"
-        className="overflow-hidden rounded-[12px] bg-card text-ink shadow-preview ring-1 ring-brand/5 select-none"
+        className="overflow-hidden rounded-card bg-card text-ink shadow-preview ring-1 ring-line select-none"
       >
         {children}
       </div>
