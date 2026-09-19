@@ -4,7 +4,7 @@ import { featureIcons, featureMinis } from "./FeatureCards";
 
 export function Features() {
   return (
-    <Section id="fonctionnalites" labelledBy="fonctionnalites-title" tone="page" className="!pt-6 !pb-8 md:!pt-8 md:!pb-12">
+    <Section id="fonctionnalites" labelledBy="fonctionnalites-title" tone="page" className="reso-features md:!pt-8 md:!pb-12">
       <SectionHeading
         id="fonctionnalites-title"
         title={features.title}
@@ -18,13 +18,13 @@ export function Features() {
           return (
             <li
               key={card.title}
-              className="reveal flex items-center gap-4 rounded-2xl bg-card p-4 ring-1 ring-line md:flex-col md:items-stretch md:gap-5 md:p-5 xl:min-h-[260px] xl:flex-row xl:gap-4 xl:p-6"
+              className="feature-row reveal flex items-center gap-4 rounded-2xl bg-card p-4 ring-1 ring-line md:flex-col md:items-stretch md:gap-5 md:p-5 xl:min-h-[260px] xl:flex-row xl:gap-4 xl:p-6"
               style={{ "--d": `${index * 90}ms` } as React.CSSProperties}
             >
               <div className="flex min-w-0 flex-1 items-center gap-4 md:flex-col md:items-start md:justify-center md:gap-0">
                 <span
                   aria-hidden="true"
-                  className="inline-flex size-12 shrink-0 items-center justify-center rounded-xl bg-soft-tint text-brand md:size-14"
+                  className="feature-icon inline-flex size-12 shrink-0 items-center justify-center rounded-xl bg-soft-tint text-brand md:size-14"
                 >
                   <Icon className="size-6 md:size-7" strokeWidth={1.8} />
                 </span>

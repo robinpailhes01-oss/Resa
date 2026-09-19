@@ -25,9 +25,9 @@ type ByMode<T> = Record<LaunchMode, T>;
 
 export const nav = {
   links: [
-    { href: "#fonctionnalites", label: "Fonctionnalités" },
-    { href: "#apercu", label: "Aperçu" },
-    { href: "#tarif", label: "Tarif" },
+    { href: "/#fonctionnalites", label: "Fonctionnalités" },
+    { href: "/#apercu", label: "Aperçu" },
+    { href: "/#tarif", label: "Tarif" },
   ],
   skipToContent: "Aller au contenu",
   openMenu: "Ouvrir le menu",
@@ -39,13 +39,13 @@ export const nav = {
 
 export const cta = {
   primary: {
-    prelaunch: { label: "Me prévenir du lancement", href: "#inscription" },
+    prelaunch: { label: "Me prévenir du lancement", href: "/preinscription" },
     live: {
       label: offer.trialDays ? "Essayer gratuitement" : "Créer mon compte",
-      href: offer.signupUrl ?? "#inscription",
+      href: offer.signupUrl ?? "/preinscription",
     },
   } satisfies ByMode<{ label: string; href: string }>,
-  secondary: { label: `Découvrir ${brand}`, href: "#apercu" },
+  secondary: { label: `Découvrir ${brand}`, href: "/#apercu" },
 };
 
 export const hero = {
@@ -54,7 +54,7 @@ export const hero = {
   title: ["Vos rendez-vous.", "Un prix", "tout simple."],
   intro: "Réservations en ligne, confirmations, rappels et demandes d’avis par email.",
   /** Version courte affichée sur téléphone. */
-  introShort: "Réservations en ligne, confirmations, rappels et demandes d’avis par email.",
+  introShort: "Réservations en ligne, confirmations,\nrappels et demandes d’avis par email.",
   pricePrefix: { prelaunch: "Tarif prévu", live: null } satisfies ByMode<string | null>,
   price: priceAmount,
   priceUnit: `HT${NBSP}/${NBSP}mois`,
@@ -78,12 +78,12 @@ export const hero = {
     { id: "confirmed", title: "Réservation confirmée", text: "Le rendez-vous de Julie Martin pour une coupe a bien été confirmé par email.", short: "Réservation confirmée" },
     { id: "review", title: "Demande d’avis envoyée", text: "Un email a été envoyé pour demander un avis après le rendez-vous de ce jour.", short: "Demande d’avis envoyée" },
   ],
-  previewAlt: `Aperçu de l’agenda ${brand} avec trois praticiens`,
+  previewAlt: `Aperçu illustratif de l’agenda ${brand}. Maison Alba et ses rendez-vous sont fictifs.`,
 };
 
 export const features = {
   eyebrow: { prelaunch: "Les fonctionnalités prévues", live: null } satisfies ByMode<string | null>,
-  title: "L’essentiel, tout simplement.",
+  title: "L’essentiel,\ntout simplement.",
   intro: "Des outils pensés pour votre quotidien, sans complexité.",
   cards: [
     {
@@ -169,6 +169,7 @@ export const pricing = {
     "Demandes d’avis par email",
     capitalize(practitioners),
   ],
+  highlightsCompact: ["Agenda et réservation en ligne", "Emails automatiques", capitalize(practitioners)],
   planName: brand,
   pricePrefix: { prelaunch: "Tarif prévu", live: null } satisfies ByMode<string | null>,
   price: priceAmount,
@@ -328,13 +329,13 @@ export const footer = {
   brand,
   tagline: "Les rendez-vous qui font rayonner votre métier.",
   links: [
-    { href: "#fonctionnalites", label: "Fonctionnalités" },
-    { href: "#apercu", label: "Aperçu" },
-    { href: "#tarif", label: "Tarif" },
+    { href: "/#fonctionnalites", label: "Fonctionnalités" },
+    { href: "/#apercu", label: "Aperçu" },
+    { href: "/#tarif", label: "Tarif" },
   ],
   contactLabel: "Contact",
   legalLinks: [
-    { href: "#faq", label: "FAQ" },
+    { href: "/preinscription#faq", label: "FAQ" },
     { href: "/mentions-legales", label: "Mentions légales" },
     { href: "/confidentialite", label: "Confidentialité" },
   ],

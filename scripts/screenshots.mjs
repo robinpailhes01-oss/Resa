@@ -11,6 +11,7 @@ mkdirSync(out, { recursive: true });
 const viewports = [
   { name: "320x568", width: 320, height: 568 },
   { name: "390x844", width: 390, height: 844 },
+  { name: "514x1536", width: 514, height: 1536 },
   { name: "768x1024", width: 768, height: 1024 },
   { name: "1024x768", width: 1024, height: 768 },
   { name: "1440x900", width: 1440, height: 900 },

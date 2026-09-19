@@ -9,6 +9,7 @@ import { offer } from "@/config/offer";
 import { byMode, cta, nav } from "@/content/fr/landing";
 import { track } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
+import { useAttributionHref } from "@/lib/useAttributionHref";
 
 /** Barre flottante blanche, navigation compacte et menu tactile sur téléphone. */
 export function Header() {
@@ -17,6 +18,7 @@ export function Header() {
   const toggleRef = useRef<HTMLButtonElement>(null);
   const menuId = useId();
   const primary = byMode(cta.primary);
+  const primaryHref = useAttributionHref(primary.href);
   const compactLabel = byMode(nav.compactCta);
 
   useEffect(() => {
@@ -46,11 +48,11 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-40 pt-3 md:pt-4">
+    <header className="reso-header sticky top-0 z-40 pt-3 md:pt-4">
       <div className="container-page !max-w-[960px]">
         <div
           className={cn(
-            "flex h-14 items-center justify-between gap-4 rounded-2xl bg-card/95 pl-4 pr-1.5 ring-1 backdrop-blur-md transition-shadow duration-200 md:h-16 md:pl-5",
+            "header-bar flex h-14 items-center justify-between gap-4 rounded-2xl bg-card/95 pl-4 pr-1.5 ring-1 backdrop-blur-md transition-shadow duration-200 md:h-16 md:pl-5",
             scrolled ? "shadow-[0_12px_40px_-12px_rgba(105,80,232,0.18)] ring-line" : "shadow-card ring-line",
           )}
         >
@@ -79,7 +81,7 @@ export function Header() {
 
           <div className="flex items-center gap-1">
             <span className="hidden md:block">
-              <Button href={primary.href} onClick={onCta} size="compact" className="rounded-xl px-4">
+              <Button href={primaryHref} onClick={onCta} size="compact" className="rounded-xl px-4">
                 {primary.label}
               </Button>
             </span>
@@ -120,7 +122,7 @@ export function Header() {
               </li>
             ) : null}
             <li className="pb-2 pt-3">
-              <Button href={primary.href} onClick={() => { onCta(); close(false); }} fullWidth>
+              <Button href={primaryHref} onClick={() => { onCta(); close(false); }} fullWidth>
                 {compactLabel}
               </Button>
             </li>

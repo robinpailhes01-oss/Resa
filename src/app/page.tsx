@@ -1,21 +1,21 @@
-import { Faq } from "@/components/landing/Faq";
+import { redirect } from "next/navigation";
 import { Features } from "@/components/landing/Features";
 import { Footer } from "@/components/landing/Footer";
 import { Header } from "@/components/landing/Header";
 import { Hero } from "@/components/landing/Hero";
 import { Pricing } from "@/components/landing/Pricing";
 import { RevealObserver } from "@/components/landing/Reveal";
-import { Waitlist } from "@/components/landing/Waitlist";
 import { offer } from "@/config/offer";
 import { formatMonthlyPriceExVatCompact } from "@/lib/format";
 
 const WAITLIST_STATES = ["ok", "email", "limite", "erreur"] as const;
-type WaitlistState = (typeof WAITLIST_STATES)[number];
 
 export default async function HomePage({ searchParams }: PageProps<"/">) {
   const params = await searchParams;
   const raw = typeof params.inscription === "string" ? params.inscription : null;
-  const initialState = (WAITLIST_STATES as readonly string[]).includes(raw ?? "") ? (raw as WaitlistState) : null;
+  if (raw && (WAITLIST_STATES as readonly string[]).includes(raw)) {
+    redirect(`/preinscription?inscription=${raw}#inscription`);
+  }
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -43,10 +43,8 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
         <Hero />
         <Features />
         <Pricing />
-        <Faq />
-        <Waitlist initialState={initialState} />
       </main>
-      <Footer />
+      <Footer compact />
       <RevealObserver />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
     </>

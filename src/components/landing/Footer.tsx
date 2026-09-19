@@ -3,7 +3,17 @@ import { Logo } from "@/components/ui/Logo";
 import { offer } from "@/config/offer";
 import { footer } from "@/content/fr/landing";
 
-export function Footer() {
+export function Footer({ compact = false }: { compact?: boolean }) {
+  if (compact) return (
+    <footer className="compact-footer bg-page">
+      <Link href="/" aria-label={`${offer.brandName} – accueil`}><Logo height={22} /></Link>
+      <nav aria-label="Liens de pied de page">
+        {footer.legalLinks.filter((link) => !link.href.includes("#faq")).map((link) => (
+          <Link key={link.href} href={link.href} className="text-ink-muted hover:text-brand">{link.label}</Link>
+        ))}
+      </nav>
+    </footer>
+  );
   const year = new Date().getFullYear();
   return (
     <footer className="border-t border-line bg-page">
