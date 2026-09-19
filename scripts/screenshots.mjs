@@ -28,8 +28,12 @@ for (const vp of viewports) {
   await page.evaluate(() => document.querySelectorAll(".reveal").forEach((el) => el.classList.add("is-visible")));
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
   await page.screenshot({ path: path.join(out, `home-${vp.name}-fold.png`) });
+  // Le plein écran doit rester stable quand Playwright change la surface de capture.
+  // Le mode réduit finalise aussi les transitions des sections hors écran.
+  await page.emulateMedia({ reducedMotion: "reduce" });
   await page.screenshot({ path: path.join(out, `home-${vp.name}-full.png`), fullPage: true });
   console.log(`${vp.name} — scroll horizontal : ${overflow ? "OUI (anomalie)" : "non"}`);
+  if (overflow) process.exitCode = 1;
   await page.close();
 }
 await browser.close();

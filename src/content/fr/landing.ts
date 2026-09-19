@@ -50,9 +50,9 @@ export const cta = {
 
 export const hero = {
   eyebrow: "L’agenda des pros de la beauté",
-  /** Deux segments : le retour à la ligne est un choix de mise en page, pas un <br> forcé. */
-  title: ["Vos rendez-vous.", "Un prix tout simple."],
-  intro: `Réservations en ligne, confirmations, rappels et demandes d’avis par email. ${brand} réunit l’essentiel pour organiser vos rendez-vous, dans une seule offre.`,
+  /** Deux lignes sur ordinateur, trois sur téléphone. */
+  title: ["Vos rendez-vous.", "Un prix", "tout simple."],
+  intro: "Réservations en ligne, confirmations, rappels et demandes d’avis par email.",
   /** Version courte affichée sur téléphone. */
   introShort: "Réservations en ligne, confirmations, rappels et demandes d’avis par email.",
   pricePrefix: { prelaunch: "Tarif prévu", live: null } satisfies ByMode<string | null>,
@@ -89,8 +89,8 @@ export const features = {
     {
       icon: "calendar",
       title: "Réservations 24h/24",
-      text: "Vos clientes réservent en ligne, à tout moment, depuis votre site ou un lien dédié.",
-      textShort: "Vos clientes réservent à tout moment.",
+      text: "Vos clients réservent en ligne, à tout moment, depuis votre site ou un lien dédié.",
+      textShort: "Vos clients réservent à tout moment.",
     },
     {
       icon: "agenda",

@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /*
- * Tokens visuels Reso (cahier des charges §3).
+ * Tokens visuels Reso — maquettes ordinateur et téléphone de septembre 2026.
  * Une seule source pour les couleurs, la typographie, les rayons et l'ombre.
  */
 @theme {
@@ -11,22 +11,22 @@
   --color-white: #ffffff;
   --color-black: #000000;
 
-  --color-brand: #493344; /* brand.primary */
-  --color-brand-hover: #352432; /* brand.hover */
-  --color-page: #faf7f2; /* surface.page */
+  --color-brand: #6950e8; /* violet, contraste AA sur blanc */
+  --color-brand-hover: #5139c5;
+  --color-page: #ffffff;
   --color-card: #ffffff; /* surface.card */
-  --color-soft: #ddd5e5; /* surface.soft */
-  --color-soft-tint: #efeaf4; /* lilas très clair pour les fonds d'aperçu */
-  --color-accent: #eab99a; /* accent.soft */
-  --color-accent-tint: #f8e6d9; /* abricot très clair */
-  --color-ink: #27242a; /* text.primary */
-  --color-ink-muted: #655b66; /* text.secondary */
-  --color-line: #d9d1d8; /* border.default */
-  --color-control: #8c7a89; /* border.control */
+  --color-soft: #ded7ff;
+  --color-soft-tint: #f1edff;
+  --color-accent: #f49c91;
+  --color-accent-tint: #fff0ec;
+  --color-ink: #111116;
+  --color-ink-muted: #696a80;
+  --color-line: #e9eaf2;
+  --color-control: #9091a7;
   --color-error: #a62d35; /* status.error */
   --color-error-tint: #fbeeef;
   --color-success: #236047; /* status.success */
-  --color-success-tint: #e9f3ee;
+  --color-success-tint: #e5f5ee;
 
   --font-sans: var(--font-manrope), system-ui, sans-serif;
 
@@ -34,8 +34,8 @@
   --radius-field: 8px;
   --radius-card: 16px;
 
-  --shadow-preview: 0 30px 80px -20px rgba(73, 51, 68, 0.22);
-  --shadow-card: 0 1px 2px rgba(73, 51, 68, 0.06);
+  --shadow-preview: 0 24px 80px -24px rgba(114, 102, 221, 0.24);
+  --shadow-card: 0 2px 12px rgba(80, 80, 145, 0.04);
 
   --breakpoint-xs: 23.4375rem; /* 375px */
 
@@ -98,9 +98,9 @@
   h2,
   h3,
   h4 {
-    color: var(--color-brand);
-    font-weight: 700;
-    letter-spacing: -0.03em;
+    color: var(--color-ink);
+    font-weight: 800;
+    letter-spacing: -0.045em;
     text-wrap: balance;
   }
 
@@ -170,18 +170,22 @@
     max-width: 65ch;
   }
 
-  /* Halos lilas et abricot derrière le premier écran. */
+  /* Lumière bleu pâle et lavande, le centre reste blanc pour la lecture. */
   .hero-glow {
     background:
-      radial-gradient(55% 30% at 12% 26%, rgba(205, 192, 226, 0.75), rgba(205, 192, 226, 0) 70%),
-      radial-gradient(45% 26% at 90% 18%, rgba(234, 185, 154, 0.5), rgba(234, 185, 154, 0) 70%),
-      radial-gradient(50% 24% at 78% 46%, rgba(240, 214, 200, 0.55), rgba(240, 214, 200, 0) 70%);
+      radial-gradient(ellipse 42% 40% at 0% 34%, #ebe8ff 0%, transparent 85%),
+      radial-gradient(ellipse 42% 38% at 100% 36%, #eaf0ff 0%, transparent 85%),
+      radial-gradient(ellipse 58% 25% at 50% 55%, #e6ebff 0%, transparent 90%);
   }
-  @media (min-width: 768px) {
-    .hero-glow {
-      background:
-        radial-gradient(38% 40% at 14% 24%, rgba(205, 192, 226, 0.6), rgba(205, 192, 226, 0) 70%),
-        radial-gradient(34% 36% at 86% 26%, rgba(234, 185, 154, 0.45), rgba(234, 185, 154, 0) 70%);
+
+  .hero-title {
+    font-size: clamp(28px, 7.7vw, 34px);
+    line-height: 1.08;
+    letter-spacing: -0.045em;
+  }
+  @media (min-width: 640px) {
+    .hero-title {
+      font-size: clamp(42px, 5.3vw, 68px);
     }
   }
 
@@ -191,17 +195,23 @@
     inset: -12% -8% -18% -8%;
     z-index: -1;
     border-radius: 999px;
-    background: radial-gradient(60% 60% at 50% 50%, rgba(196, 180, 222, 0.75), rgba(196, 180, 222, 0.25) 55%, rgba(196, 180, 222, 0) 80%);
+    background:
+      radial-gradient(ellipse at 30% 50%, #e0dcff 0%, transparent 65%),
+      radial-gradient(ellipse at 76% 55%, #deeaff 0%, transparent 65%);
     filter: blur(28px);
     pointer-events: none;
   }
 
   /* Socle translucide de l'aperçu, avec un large halo doux. */
   .preview-glass {
-    background: linear-gradient(180deg, rgba(228, 221, 238, 0.85), rgba(221, 213, 229, 0.55));
+    background: rgba(255, 255, 255, 0.68);
     box-shadow:
-      0 30px 80px -24px rgba(120, 96, 150, 0.45),
+      0 24px 80px -28px rgba(114, 102, 221, 0.25),
       inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  }
+
+  .pricing-panel {
+    background: linear-gradient(115deg, #f5f1ff, #efedff 70%, #f3f2ff);
   }
 
   /* ------------------------------------------------------------------
@@ -397,7 +407,7 @@
 
 /* Téléphone : apparitions plus courtes, séquence d'arrivée plus rapide. */
 @media (max-width: 767px) {
-  html.js .reveal {
+  html.js .reveal:not(.is-visible) {
     transform: translateY(10px);
     transition-duration: 400ms;
   }

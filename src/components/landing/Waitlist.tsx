@@ -27,7 +27,7 @@ export function Waitlist({ initialState }: WaitlistProps) {
 
   return (
     <Section id="inscription" labelledBy="inscription-title" tone="page" className="!pt-4 md:!pt-10">
-      <div className="reveal mx-auto max-w-2xl rounded-[28px] bg-card p-5 ring-1 ring-line md:p-10">
+      <div className="reveal mx-auto max-w-2xl rounded-[24px] bg-card p-5 shadow-preview ring-1 ring-line md:p-10">
         <div className="mb-7 text-center md:mb-9">
           <h2 id="inscription-title" className="text-[30px] leading-9 md:text-[34px] md:leading-10">
             {waitlist.title}

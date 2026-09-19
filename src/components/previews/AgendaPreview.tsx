@@ -43,7 +43,7 @@ const columns: Array<{ name: string; role: string; initials: string; slots: Slot
 ];
 
 const toneClasses: Record<Tone, { bg: string; bar: string }> = {
-  soft: { bg: "bg-soft-tint", bar: "bg-[#B9A6CB]" },
+  soft: { bg: "bg-soft-tint", bar: "bg-[#a699ff]" },
   accent: { bg: "bg-accent-tint", bar: "bg-accent" },
   success: { bg: "bg-success-tint", bar: "bg-[#8FC7A9]" },
 };
@@ -90,8 +90,8 @@ function Sidebar() {
     { icon: Settings, label: "Paramètres" },
   ];
   return (
-    <aside className="hidden w-44 shrink-0 flex-col border-r border-line bg-page/70 p-3 @2xl:flex">
-      <Logo height={18} className="mb-4 ml-1" />
+    <aside className="hidden w-44 shrink-0 flex-col border-r border-line bg-[#fafaff] p-3 @2xl:flex">
+      <Logo height={24} className="mb-5 ml-1" />
       <div className="mb-3 flex items-center gap-2 rounded-lg bg-card p-2 ring-1 ring-line">
         <span className="size-8 shrink-0 rounded-md bg-[linear-gradient(135deg,#EAB99A,#DDD5E5)]" />
         <div className="min-w-0 flex-1 leading-tight">
@@ -158,7 +158,7 @@ function Toolbar() {
 
 /** Vue large : trois colonnes praticiens (dès 448 px de largeur de cadre). */
 function DesktopGrid() {
-  const rowHeight = 30;
+  const rowHeight = 44;
   return (
     <div className="hidden @md:block">
       <div className="grid grid-cols-[44px_repeat(3,1fr)] border-b border-line">
@@ -206,13 +206,13 @@ const mobileSlots: Slot[] = [
 /** Vue téléphone dédiée : un praticien, une chronologie lisible. */
 function MobileTimeline() {
   const camille = columns[0];
-  const rowHeight = 54;
+  const rowHeight = 56;
   const start = 8;
   const end = 16;
   const hours = Array.from({ length: end - start + 1 }, (_, i) => start + i);
   return (
     <div className="@md:hidden">
-      <div className="mx-3 mt-3 flex items-center gap-3 rounded-xl px-2 py-2 shadow-[0_6px_18px_-8px_rgba(73,51,68,0.2)] ring-1 ring-line/70">
+      <div className="mx-3 mt-8 flex items-center gap-3 rounded-xl px-2 py-2 shadow-card ring-1 ring-line/70">
         <span className="size-11 shrink-0 rounded-lg bg-[linear-gradient(135deg,#EAB99A_0%,#F3E3D4_55%,#DDD5E5_100%)]" />
         <div className="min-w-0 flex-1 leading-tight">
           <div className="text-[15px] font-semibold text-ink">{demo.salon}</div>
@@ -223,14 +223,14 @@ function MobileTimeline() {
       <div className="px-4 pt-4">
         <div className="text-[20px] font-bold text-ink">Mon agenda</div>
         <div className="mt-2.5 flex items-center gap-2 text-[13px]">
-          <span className="rounded-lg border border-line px-3 py-2 text-ink-muted">
+          <span className="rounded-lg border border-line px-1.5 py-2 text-ink-muted">
             <ChevronLeft className="size-3.5" />
           </span>
-          <span className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg border border-line py-2 font-medium text-ink">
+          <span className="inline-flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-lg border border-line py-2 text-[11px] font-medium text-ink">
             <CalendarDays className="size-4 text-ink-muted" />
             {demo.date.short}
           </span>
-          <span className="rounded-lg border border-line px-3 py-2 text-ink-muted">
+          <span className="rounded-lg border border-line px-1.5 py-2 text-ink-muted">
             <ChevronRight className="size-3.5" />
           </span>
         </div>
