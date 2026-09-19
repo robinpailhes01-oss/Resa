@@ -45,8 +45,8 @@
   --text-display-md--line-height: 3.875rem; /* 62px */
   --text-display-sm: 2.375rem; /* 38px */
   --text-display-sm--line-height: 2.625rem; /* 42px */
-  --text-display-xs: 2.125rem; /* 34px */
-  --text-display-xs--line-height: 2.375rem; /* 38px */
+  --text-display-xs: 2rem; /* 32px */
+  --text-display-xs--line-height: 2.25rem; /* 36px */
   --text-h2: 3.25rem; /* 52px */
   --text-h2--line-height: 3.5rem; /* 56px */
   --text-h2-sm: 2.125rem; /* 34px */
@@ -173,18 +173,35 @@
   /* Halos lilas et abricot derrière le premier écran. */
   .hero-glow {
     background:
-      radial-gradient(42% 38% at 18% 22%, rgba(221, 213, 229, 0.7), rgba(221, 213, 229, 0) 70%),
-      radial-gradient(40% 36% at 84% 30%, rgba(234, 185, 154, 0.45), rgba(234, 185, 154, 0) 70%),
-      radial-gradient(60% 40% at 50% 92%, rgba(221, 213, 229, 0.55), rgba(221, 213, 229, 0) 70%);
+      radial-gradient(55% 30% at 12% 26%, rgba(205, 192, 226, 0.75), rgba(205, 192, 226, 0) 70%),
+      radial-gradient(45% 26% at 90% 18%, rgba(234, 185, 154, 0.5), rgba(234, 185, 154, 0) 70%),
+      radial-gradient(50% 24% at 78% 46%, rgba(240, 214, 200, 0.55), rgba(240, 214, 200, 0) 70%);
+  }
+  @media (min-width: 768px) {
+    .hero-glow {
+      background:
+        radial-gradient(38% 40% at 14% 24%, rgba(205, 192, 226, 0.6), rgba(205, 192, 226, 0) 70%),
+        radial-gradient(34% 36% at 86% 26%, rgba(234, 185, 154, 0.45), rgba(234, 185, 154, 0) 70%);
+    }
+  }
+
+  /* Halo lilas diffus derrière le socle de l'aperçu. */
+  .preview-halo {
+    position: absolute;
+    inset: -12% -8% -18% -8%;
+    z-index: -1;
+    border-radius: 999px;
+    background: radial-gradient(60% 60% at 50% 50%, rgba(196, 180, 222, 0.75), rgba(196, 180, 222, 0.25) 55%, rgba(196, 180, 222, 0) 80%);
+    filter: blur(28px);
+    pointer-events: none;
   }
 
   /* Socle translucide de l'aperçu, avec un large halo doux. */
   .preview-glass {
-    background: linear-gradient(180deg, rgba(221, 213, 229, 0.55), rgba(221, 213, 229, 0.25));
+    background: linear-gradient(180deg, rgba(228, 221, 238, 0.85), rgba(221, 213, 229, 0.55));
     box-shadow:
-      0 40px 120px -30px rgba(73, 51, 68, 0.28),
-      inset 0 1px 0 rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(6px);
+      0 30px 80px -24px rgba(120, 96, 150, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.7);
   }
 
   /* ------------------------------------------------------------------

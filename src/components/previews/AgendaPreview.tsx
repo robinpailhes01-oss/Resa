@@ -196,46 +196,55 @@ function DesktopGrid() {
   );
 }
 
+/** Créneaux de la journée de Camille tels que présentés sur téléphone (maquette). */
+const mobileSlots: Slot[] = [
+  { start: 9, end: 10, title: "Coupe & brushing", client: "Julie Martin", tone: "soft" },
+  { start: 11, end: 12.5, title: "Coloration", client: "Élodie Bernard", tone: "accent" },
+  { start: 14, end: 15, title: "Soin capillaire", client: "Sophie Leroy", tone: "success" },
+];
+
 /** Vue téléphone dédiée : un praticien, une chronologie lisible. */
 function MobileTimeline() {
   const camille = columns[0];
-  const rowHeight = 44;
+  const rowHeight = 54;
   const start = 8;
-  const end = 17;
+  const end = 16;
   const hours = Array.from({ length: end - start + 1 }, (_, i) => start + i);
   return (
     <div className="@md:hidden">
-      <div className="flex items-center gap-3 border-b border-line px-4 py-3">
-        <span className="size-10 shrink-0 rounded-lg bg-[linear-gradient(135deg,#EAB99A,#DDD5E5)]" />
+      <div className="mx-3 mt-3 flex items-center gap-3 rounded-xl px-2 py-2 shadow-[0_6px_18px_-8px_rgba(73,51,68,0.2)] ring-1 ring-line/70">
+        <span className="size-11 shrink-0 rounded-lg bg-[linear-gradient(135deg,#EAB99A_0%,#F3E3D4_55%,#DDD5E5_100%)]" />
         <div className="min-w-0 flex-1 leading-tight">
-          <div className="text-[14px] font-semibold text-ink">{demo.salon}</div>
+          <div className="text-[15px] font-semibold text-ink">{demo.salon}</div>
           <div className="text-[12px] text-ink-muted">{demo.salonType}</div>
         </div>
         <ChevronDown className="size-4 text-ink-muted" />
       </div>
       <div className="px-4 pt-4">
-        <div className="text-[18px] font-bold text-ink">Mon agenda</div>
-        <div className="mt-2 flex items-center gap-2 text-[12px]">
-          <span className="rounded-md border border-line p-1.5 text-ink-muted">
+        <div className="text-[20px] font-bold text-ink">Mon agenda</div>
+        <div className="mt-2.5 flex items-center gap-2 text-[13px]">
+          <span className="rounded-lg border border-line px-3 py-2 text-ink-muted">
             <ChevronLeft className="size-3.5" />
           </span>
-          <span className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-md border border-line py-1.5 font-medium text-ink">
-            <CalendarDays className="size-3.5 text-ink-muted" />
+          <span className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg border border-line py-2 font-medium text-ink">
+            <CalendarDays className="size-4 text-ink-muted" />
             {demo.date.short}
           </span>
-          <span className="rounded-md border border-line p-1.5 text-ink-muted">
+          <span className="rounded-lg border border-line px-3 py-2 text-ink-muted">
             <ChevronRight className="size-3.5" />
           </span>
         </div>
-        <div className="mt-4 flex items-center gap-2.5">
-          <Avatar initials={camille.initials} tone="accent" />
+        <div className="mt-4 flex items-center gap-3">
+          <span className="inline-flex size-10 items-center justify-center rounded-full bg-[linear-gradient(135deg,#EAB99A,#DDD5E5)] text-[12px] font-bold text-brand">
+            {camille.initials}
+          </span>
           <div className="leading-tight">
-            <div className="text-[13px] font-semibold text-ink">{camille.name}</div>
-            <div className="text-[11px] text-ink-muted">{camille.role}</div>
+            <div className="text-[14px] font-semibold text-ink">{camille.name}</div>
+            <div className="text-[12px] text-ink-muted">{camille.role}</div>
           </div>
         </div>
       </div>
-      <div className="relative mx-4 mt-3 mb-4 grid grid-cols-[44px_1fr]" style={{ height: (end - start) * rowHeight + 12 }}>
+      <div className="relative mx-4 mb-4 mt-3 grid grid-cols-[44px_1fr]" style={{ height: (end - start) * rowHeight + 12 }}>
         <div className="relative">
           {hours.map((hour, i) => (
             <div key={hour} className="absolute right-2 text-[11px] text-ink-muted" style={{ top: i * rowHeight - 6 }}>
@@ -247,7 +256,7 @@ function MobileTimeline() {
           {hours.slice(0, -1).map((hour, i) => (
             <div key={hour} className="absolute inset-x-0 border-t border-line/70" style={{ top: i * rowHeight }} />
           ))}
-          {camille.slots.slice(0, 3).map((slot, i) => {
+          {mobileSlots.map((slot, i) => {
             const tone = toneClasses[slot.tone];
             const slotTop = (slot.start - start) * rowHeight + 3;
             const height = (slot.end - slot.start) * rowHeight - 6;
@@ -258,9 +267,9 @@ function MobileTimeline() {
                 style={{ top: slotTop, height, "--i": i } as React.CSSProperties}
               >
                 <span className={cn("w-1 shrink-0", tone.bar)} />
-                <div className="min-w-0 px-3 py-2 text-[12px] leading-tight">
-                  <div className="truncate font-semibold text-ink">{slot.title}</div>
-                  <div className="mt-0.5 text-ink-muted">
+                <div className="min-w-0 px-3 py-1 text-[11px] leading-[14px]">
+                  <div className="truncate text-[13px] leading-[17px] font-semibold text-ink">{slot.title}</div>
+                  <div className="text-ink-muted">
                     {formatHour(slot.start)} – {formatHour(slot.end)}
                   </div>
                   <div className="truncate text-ink-muted">{slot.client}</div>

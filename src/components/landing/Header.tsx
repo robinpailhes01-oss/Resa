@@ -79,7 +79,7 @@ export function Header() {
 
           <div className="flex items-center gap-1">
             <span className="hidden md:block">
-              <Button href={primary.href} onClick={onCta} size="compact">
+              <Button href={primary.href} onClick={onCta} size="compact" className="rounded-full px-5">
                 {primary.label}
               </Button>
             </span>
