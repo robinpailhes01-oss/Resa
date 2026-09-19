@@ -23,7 +23,7 @@ export function FaqItem({ question, answer }: FaqItemProps) {
           aria-expanded={open}
           aria-controls={panelId}
           onClick={() => setOpen((value) => !value)}
-          className="flex min-h-14 w-full items-center justify-between gap-4 py-5 text-left font-semibold text-brand transition-colors hover:text-brand-hover"
+          className="flex min-h-14 w-full items-center justify-between gap-4 py-5 text-left font-semibold text-ink transition-colors hover:text-brand"
         >
           <span>{question}</span>
           <span aria-hidden="true" className="inline-flex size-8 shrink-0 items-center justify-center rounded-full text-ink-muted">

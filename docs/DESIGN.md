@@ -1,44 +1,44 @@
-# Reso — direction de design (étape 1, landing)
+# Reso — direction de design de la landing page
 
-Brief auto-rédigé à partir du cahier des charges v1.0, des maquettes Ritméa fournies et de la demande « épuré comme Planity, ultra qualitatif, scroll léger ». À valider par la porteuse du projet.
+## Référence retenue — 19 septembre 2026
 
-## Brief
+La demande actuelle est de rapprocher le site des dernières maquettes Reso sur ordinateur et téléphone : fond blanc, dégradés bleu pâle et lavande, titres noirs centrés, boutons noirs, symbole violet et aperçu d’agenda entouré de cartes flottantes. Cette direction remplace la palette prune / ivoire du premier cahier des charges.
 
-- **Personne** : l'esthéticienne indépendante ou la gérante d'un institut de 1 à 3 praticiennes. Ses demandes arrivent par Instagram, SMS et téléphone, souvent pendant un soin.
-- **Douleur** : les allers-retours pour caler un créneau, les rappels faits à la main, et les abonnements qui s'empilent (agenda, SMS, caisse) avec des prix illisibles.
-- **Promesse** : les rendez-vous se prennent seuls, les emails partent seuls, pour un seul prix connu d'avance.
-- **Preuve autorisée** : le prix (39 € HT / mois), l'absence de commission, la limite claire (3 praticiens). Aucun chiffre inventé, aucun témoignage (cahier des charges §12).
-- **Travail de la page** : une seule action, « Être informé du lancement ».
-- **Niveau d'assets** : C. Aucune photo ; les aperçus produit sont reconstruits en HTML. Page portée par la typographie, l'espace et les aperçus.
-- **Se positionner contre** : le catalogue Planity Pro (caisse, TPE, SMS, marketing, dix menus) et ses chiffres de marketplace. Reso vend une chose, à un prix.
+La cible reste le professionnel de la beauté ou du bien-être, seul ou en petite équipe. L’action principale reste « Me prévenir du lancement ». Le prix prévu est centralisé dans `src/config/offer.ts` : 39 € HT / mois, un établissement, jusqu’à trois praticiens. Aucun témoignage, partenariat ou chiffre d’adoption fictif.
 
-## Direction retenue (19 septembre 2026)
+## Composition
 
-Refonte complète sur la base des maquettes fournies par la porteuse du projet : hero centré sur arcs concentriques avec pastilles d'icônes du métier, aperçu agenda sur socle lilas translucide et cartes flottantes inclinées, trois cartes de fonctionnalités avec mini-interfaces, bande tarif lilas en trois colonnes, formulaire en carte, FAQ compacte, pied de page léger. Palette prune, ivoire, lilas et abricot conservée à la place du violet des maquettes. La section « trois étapes » est retirée ; la FAQ et le formulaire (absents des maquettes) sont conservés car imposés par le cahier des charges.
+- Barre blanche arrondie, limitée à 880 px utiles sur grand écran ; logo et menu tactile sur téléphone.
+- Accroche en deux lignes sur ordinateur et trois sur téléphone, description courte, prix et CTA visibles au premier écran.
+- Arcs fins et icônes métier décoratives. Halos diffus derrière l’aperçu.
+- Agenda HTML : trois praticiens sur grand écran, une journée de Camille sur téléphone. Les données sont fictives ; ce n’est pas encore l’application de réservation.
+- Trois notifications sur ordinateur ; une notification sur téléphone, hors des créneaux.
+- Fonctionnalités : trois cartes avec mini-interfaces sur ordinateur, trois lignes empilées sur téléphone.
+- Offre unique : panneau lavande en trois colonnes à partir de 1024 px, empilé en dessous. Les mentions commerciales restent lisibles sous le panneau.
+- FAQ et formulaire de préinscription conservés dans la continuité du design. Les boutons renvoient au vrai formulaire existant.
 
-## Archétypes et direction (historique)
+## Tokens
 
-- **Soignant + Souverain** : douceur des matières et ordre absolu. Type sans-serif humaniste, palette chaude et mate, mouvement lent et sûr.
-- **Direction nommée** : *la retenue d'un institut haut de gamme (ivoire mat, prune, lumière abricot) + la discipline typographique de Planity Pro / Linear*.
-- **Signature** : l'agenda qui se remplit de lui-même à l'arrivée sur la page, et qui déborde du cadre à droite sur grand écran. C'est la promesse rendue visible, pas une décoration.
+| Usage | Valeur |
+| --- | --- |
+| Fond et cartes | `#FFFFFF` |
+| Titres et CTA | `#111116` |
+| Accent violet, liens, focus | `#6950E8` |
+| Violet au survol | `#5139C5` |
+| Lavande | `#DED7FF` / `#F1EDFF` |
+| Bleu pâle des halos | `#EAF0FF` |
+| Texte secondaire | `#696A80` |
+| Bordures décoratives | `#E9EAF2` |
+| Bordures des champs | `#9091A7` |
+| Rendez-vous pêche | `#FFF0EC` / `#F49C91` |
+| Rendez-vous menthe | `#E5F5EE` |
 
-## Tokens (inchangés, cahier des charges §3)
+Manrope variable locale, avec titres 800 et texte courant 400–600. Les CTA ont une hauteur minimale de 48 px, le bouton de menu et les actions compactes de 44 px. Le symbole du logo est un SVG local, repris dans la favicon ; le visuel de partage est régénéré par `scripts/og-image.mjs`.
 
-- Couleurs : prune `#493344` (dominante, texte fort, CTA), ivoire `#FAF7F2` (surface), blanc (cartes), lilas `#DDD5E5` et abricot `#EAB99A` (touches), encre `#27242A`, gris `#655B66`.
-- Type : Manrope seule, graisses 400 à 800 (variable). Chasse resserrée sur les titres (-0,02 em), corps 18/28.
-- Espacement : base 4 px, sections 96 à 128 px.
-- Rayons : 10 boutons, 8 champs, 16 cartes. Ombres : une seule, sous les aperçus.
-- Mouvement : 500 à 700 ms pour l'arrivée du premier écran, 400 à 500 ms pour les apparitions au scroll, 150 à 200 ms pour les micro-interactions. Courbe `cubic-bezier(0.16, 1, 0.3, 1)`.
+## Mouvement et accessibilité
 
-## Système de mouvement (CSS uniquement, sans bibliothèque)
+Les apparitions CSS existantes et les interactions clavier sont conservées. Le mode `prefers-reduced-motion` affiche les éléments sans animation. Sans JavaScript, le contenu reste lisible et le formulaire utilise son POST natif. Les illustrations d’interface sont décoratives et accompagnées d’une description accessible.
 
-1. **Arrivée** : libellé → titre ligne par ligne (masque) → texte → prix → boutons, décalés de 70 ms. Le cadre agenda arrive en parallèle, puis ses rendez-vous se posent un à un, la pastille « Rappel par email programmé » en dernier.
-2. **Scroll** : une apparition par bloc (16 px, 500 ms), cadencée pour les colonnes et étapes. Les sections FAQ et pied de page n'en ont pas.
-3. **Micro-interactions** : flèche des boutons qui glisse de 3 px au survol, pression à 0,98, soulignement des onglets qui se déplace, réponses de FAQ qui se déplient.
-4. **Réduction de mouvement** : tout est statique et complet dès le premier rendu. Sans JavaScript, idem.
+## Validation
 
-Écarts assumés par rapport au cahier des charges §11 : distance d'apparition 16 px (au lieu de 12) et durées d'arrivée jusqu'à 700 ms (au lieu de 220). Pas de parallaxe, pas de défilement capturé, pas d'animation du prix.
-
-## Ce qui est bloqué volontairement
-
-Grille de trois cartes à icônes sous le hero ; carrousel ; compteurs ; dégradé bleu-violet ; ombres portées partout ; curseur personnalisé ; libellés en capitales au-dessus de chaque section.
+Voir `docs/recette-maquettes.md` pour les vérifications de cette passe et les captures du site implémenté.

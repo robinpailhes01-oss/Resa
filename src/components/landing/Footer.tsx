@@ -8,7 +8,7 @@ export function Footer() {
   return (
     <footer className="border-t border-line bg-page">
       <div className="container-page flex flex-col gap-5 py-8 md:flex-row md:items-center md:justify-between">
-        <Logo height={22} />
+        <Logo height={26} />
         <nav aria-label="Liens de pied de page">
           <ul className="flex flex-wrap gap-x-5 gap-y-2 text-[13px]">
             {footer.legalLinks.map((link) => (
