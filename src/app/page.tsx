@@ -5,7 +5,6 @@ import { Header } from "@/components/landing/Header";
 import { Hero } from "@/components/landing/Hero";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import { Pricing } from "@/components/landing/Pricing";
-import { ProductPreview } from "@/components/landing/ProductPreview";
 import { RevealObserver } from "@/components/landing/Reveal";
 import { Waitlist } from "@/components/landing/Waitlist";
 import { offer } from "@/config/offer";
@@ -44,7 +43,6 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
       <main id="contenu" className="flex-1">
         <Hero />
         <Features />
-        <ProductPreview />
         <HowItWorks />
         <Pricing />
         <Faq />

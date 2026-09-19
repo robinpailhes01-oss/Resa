@@ -7,13 +7,13 @@ export function Footer() {
   const year = new Date().getFullYear();
   return (
     <footer className="border-t border-white/10 bg-brand text-white">
-      <div className="container-page flex flex-col gap-8 py-12 md:flex-row md:items-start md:justify-between">
+      <div className="container-page flex flex-col gap-8 py-10 md:flex-row md:items-center md:justify-between">
         <div>
-          <Logo height={24} tone="white" />
-          <p className="mt-3 text-white/70">{footer.tagline}</p>
+          <Logo height={22} tone="white" />
+          <p className="mt-2 text-small text-white/60">{footer.tagline}</p>
         </div>
         <nav aria-label="Liens de pied de page">
-          <ul className="flex flex-wrap gap-x-6 gap-y-3 text-[15px]">
+          <ul className="flex flex-wrap gap-x-6 gap-y-3 text-[14px]">
             {footer.links.map((link) => (
               <li key={link.href}>
                 <a href={link.href} className="font-medium text-white/90 underline-offset-4 hover:text-white hover:underline">

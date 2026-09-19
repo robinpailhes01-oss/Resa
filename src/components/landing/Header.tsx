@@ -10,6 +10,7 @@ import { byMode, cta, nav } from "@/content/fr/landing";
 import { track } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 
+/** Header minimal : une barre fine, ivoire translucide, un seul petit bouton. */
 export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -47,71 +48,61 @@ export function Header() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 border-b bg-page/92 backdrop-blur-md transition-[border-color] duration-200 md:border-0 md:bg-transparent md:pt-4 md:backdrop-blur-none",
-        scrolled ? "border-line" : "border-transparent",
+        "sticky top-0 z-40 border-b bg-page/85 backdrop-blur-md transition-[border-color] duration-200",
+        scrolled ? "border-line/70" : "border-transparent",
       )}
     >
-      <div className="container-page">
-        <div
-          className={cn(
-            "flex h-14 items-center justify-between gap-4 md:h-16 md:rounded-full md:bg-card/90 md:pl-6 md:pr-2 md:ring-1 md:backdrop-blur-md md:transition-shadow md:duration-200",
-            scrolled ? "md:shadow-preview md:ring-line" : "md:shadow-card md:ring-line/70",
-          )}
-        >
-          <Link href="/" className="inline-flex items-center rounded-md" aria-label={`${offer.brandName} – accueil`}>
-            <Logo height={24} />
-          </Link>
+      <div className="container-page flex h-14 items-center justify-between gap-4">
+        <Link href="/" className="inline-flex items-center rounded-md" aria-label={`${offer.brandName} – accueil`}>
+          <Logo height={22} />
+        </Link>
 
-          <nav aria-label="Navigation principale" className="hidden md:block">
-            <ul className="flex items-center gap-7">
-              {nav.links.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    className="rounded-md py-2 text-[15px] font-medium text-ink transition-colors hover:text-brand"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-              {offer.launchMode === "live" && offer.loginUrl ? (
-                <li>
-                  <a href={offer.loginUrl} className="rounded-md py-2 text-[15px] font-medium text-ink hover:text-brand">
-                    {nav.login}
-                  </a>
-                </li>
-              ) : null}
-            </ul>
-          </nav>
+        <nav aria-label="Navigation principale" className="hidden md:block">
+          <ul className="flex items-center gap-8">
+            {nav.links.map((link) => (
+              <li key={link.href}>
+                <a href={link.href} className="rounded-md py-2 text-[14px] font-medium text-ink/80 transition-colors hover:text-brand">
+                  {link.label}
+                </a>
+              </li>
+            ))}
+            {offer.launchMode === "live" && offer.loginUrl ? (
+              <li>
+                <a href={offer.loginUrl} className="rounded-md py-2 text-[14px] font-medium text-ink/80 hover:text-brand">
+                  {nav.login}
+                </a>
+              </li>
+            ) : null}
+          </ul>
+        </nav>
 
-          <div className="flex items-center gap-2">
-            <span className="hidden md:block">
-              <Button href={primary.href} onClick={onCta} size="compact" className="rounded-full px-5">
-                {primary.label}
-              </Button>
-            </span>
-            <span className="md:hidden">
-              <Button href={primary.href} onClick={onCta} size="compact" className="rounded-full px-4">
-                {compactLabel}
-              </Button>
-            </span>
-            <button
-              ref={toggleRef}
-              type="button"
-              className="inline-flex size-11 items-center justify-center rounded-full text-brand hover:bg-brand/5 md:hidden"
-              aria-expanded={open}
-              aria-controls={menuId}
-              aria-label={open ? nav.closeMenu : nav.openMenu}
-              onClick={() => setOpen((value) => !value)}
-            >
-              {open ? <X className="size-6" /> : <Menu className="size-6" />}
-            </button>
-          </div>
+        <div className="flex items-center gap-1">
+          <span className="hidden md:block">
+            <Button href={primary.href} onClick={onCta} size="compact">
+              {primary.label}
+            </Button>
+          </span>
+          <span className="md:hidden">
+            <Button href={primary.href} onClick={onCta} size="compact">
+              {compactLabel}
+            </Button>
+          </span>
+          <button
+            ref={toggleRef}
+            type="button"
+            className="inline-flex size-11 items-center justify-center rounded-full text-brand hover:bg-brand/5 md:hidden"
+            aria-expanded={open}
+            aria-controls={menuId}
+            aria-label={open ? nav.closeMenu : nav.openMenu}
+            onClick={() => setOpen((value) => !value)}
+          >
+            {open ? <X className="size-5" /> : <Menu className="size-5" />}
+          </button>
         </div>
       </div>
 
-      <div id={menuId} hidden={!open} className="container-page mt-2 md:hidden">
-        <nav aria-label="Navigation mobile" className="rounded-3xl bg-card px-5 py-3 shadow-preview ring-1 ring-line">
+      <div id={menuId} hidden={!open} className="border-t border-line/70 bg-page md:hidden">
+        <nav aria-label="Navigation mobile" className="container-page py-2">
           <ul className="flex flex-col">
             {nav.links.map((link) => (
               <li key={link.href}>

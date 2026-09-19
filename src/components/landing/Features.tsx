@@ -1,44 +1,58 @@
-import { Section, SectionHeading } from "@/components/ui/Section";
-import { IconTile } from "@/components/ui/IconTile";
-import { byMode, features } from "@/content/fr/landing";
-import { AgendaMini, BookingMini, EmailsMini, featureIcons } from "./FeatureCards";
+import { AgendaPreview } from "@/components/previews/AgendaPreview";
+import { BookingPreview } from "@/components/previews/BookingPreview";
+import { EmailsPreview } from "@/components/previews/EmailsPreview";
+import { byMode, features, preview } from "@/content/fr/landing";
+import { cn } from "@/lib/cn";
 
-const minis = { calendar: BookingMini, mail: EmailsMini, users: AgendaMini } as const;
-const tones = { calendar: "brand", mail: "success", users: "soft" } as const;
-const panels = {
-  calendar: "bg-[linear-gradient(160deg,#F4EEF6_0%,#FBF3EC_100%)]",
-  mail: "bg-[linear-gradient(160deg,#FBF3EC_0%,#EEF4EF_100%)]",
-  users: "bg-[linear-gradient(160deg,#EFEAF4_0%,#F8E6D9_100%)]",
-} as const;
+/**
+ * Trois écrans qui s'enchaînent : un titre court, une ligne, le produit.
+ * Fusionne les sections « fonctionnalités » et « aperçu » du cahier des
+ * charges, avec leurs textes et légendes exacts.
+ */
+const screens = [
+  { card: features.cards[0], tab: preview.tabs[1], Visual: BookingPreview, tone: "card" as const },
+  { card: features.cards[1], tab: preview.tabs[2], Visual: EmailsPreview, tone: "page" as const },
+  { card: features.cards[2], tab: preview.tabs[0], Visual: AgendaPreview, tone: "card" as const },
+];
 
 export function Features() {
+  const eyebrow = byMode(features.eyebrow);
   return (
-    <Section id="fonctionnalites" labelledBy="fonctionnalites-title">
-      <SectionHeading id="fonctionnalites-title" eyebrow={byMode(features.eyebrow)} title={features.title} />
-      <ul className="grid gap-5 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
-        {features.cards.map((card, index) => {
-          const Mini = minis[card.icon];
-          return (
-            <li
-              key={card.title}
-              className="reveal flex flex-col overflow-hidden rounded-card bg-card ring-1 ring-line md:last:col-span-2 lg:last:col-span-1"
-              style={{ "--d": `${index * 90}ms` } as React.CSSProperties}
-            >
-              <div className={`flex h-48 items-center justify-center px-6 md:h-56 ${panels[card.icon]}`}>
-                <Mini />
-              </div>
-              <div className="flex flex-col p-5 md:p-7">
-                <div className="flex items-center gap-3">
-                  <IconTile icon={featureIcons[card.icon]} tone={tones[card.icon]} size="sm" />
-                  <h3 className="text-[20px] leading-7 md:text-[22px]">{card.title}</h3>
-                </div>
-                <p className="mt-2 text-ink-muted md:hidden">{card.textShort}</p>
-                <p className="mt-3 hidden text-ink-muted md:block">{card.text}</p>
-              </div>
-            </li>
-          );
-        })}
-      </ul>
-    </Section>
+    <div id="fonctionnalites" aria-labelledby="fonctionnalites-title">
+      <h2 id="fonctionnalites-title" className="sr-only">
+        {features.title}
+      </h2>
+      {screens.map(({ card, tab, Visual, tone }, index) => (
+        <section
+          key={card.title}
+          id={index === 0 ? "apercu" : undefined}
+          aria-labelledby={`screen-${index}-title`}
+          className={cn("py-20 md:py-32", tone === "card" ? "bg-card" : "bg-page")}
+        >
+          <div className="container-page">
+            <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
+              {index === 0 && eyebrow ? <p className="mb-4 text-small font-medium text-ink-muted">{eyebrow}</p> : null}
+              <h3 id={`screen-${index}-title`} className="reveal text-h2-sm md:text-h2">
+                {card.title}.
+              </h3>
+              <p className="reveal mt-4 text-[17px] leading-7 text-ink-muted md:hidden" style={{ "--d": "80ms" } as React.CSSProperties}>
+                {card.textShort}
+              </p>
+              <p
+                className="reveal mt-5 hidden max-w-xl text-[19px] leading-8 text-ink-muted md:block md:text-[21px] md:leading-9"
+                style={{ "--d": "80ms" } as React.CSSProperties}
+              >
+                {card.text}
+              </p>
+            </div>
+            <figure className="reveal mx-auto mt-12 max-w-5xl md:mt-20" style={{ "--d": "160ms" } as React.CSSProperties}>
+              <Visual alt={tab.alt} />
+              <figcaption className="mt-6 text-center text-small text-ink-muted">{tab.caption}</figcaption>
+            </figure>
+          </div>
+        </section>
+      ))}
+      <p className="sr-only">{byMode(preview.prelaunchNote)}</p>
+    </div>
   );
 }

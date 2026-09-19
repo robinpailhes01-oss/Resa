@@ -5,7 +5,7 @@ import { FaqItem } from "./FaqItem";
 export function Faq() {
   const items = byMode(faq.items);
   return (
-    <Section id="faq" labelledBy="faq-title" tone="card">
+    <Section id="faq" labelledBy="faq-title" tone="page">
       <SectionHeading id="faq-title" title={faq.title} />
       <ul className="mx-auto max-w-3xl border-t border-line">
         {items.map((item) => (
