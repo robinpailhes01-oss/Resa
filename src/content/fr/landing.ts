@@ -26,8 +26,8 @@ type ByMode<T> = Record<LaunchMode, T>;
 export const nav = {
   links: [
     { href: "#fonctionnalites", label: "Fonctionnalités" },
+    { href: "#apercu", label: "Aperçu" },
     { href: "#tarif", label: "Tarif" },
-    { href: "#faq", label: "FAQ" },
   ],
   skipToContent: "Aller au contenu",
   openMenu: "Ouvrir le menu",
@@ -39,7 +39,7 @@ export const nav = {
 
 export const cta = {
   primary: {
-    prelaunch: { label: "Être informé du lancement", href: "#inscription" },
+    prelaunch: { label: "Me prévenir du lancement", href: "#inscription" },
     live: {
       label: offer.trialDays ? "Essayer gratuitement" : "Créer mon compte",
       href: offer.signupUrl ?? "#inscription",
@@ -49,17 +49,19 @@ export const cta = {
 };
 
 export const hero = {
-  eyebrow: "L’agenda en ligne des pros de la beauté",
+  eyebrow: "L’agenda des pros de la beauté",
   /** Deux segments : le retour à la ligne est un choix de mise en page, pas un <br> forcé. */
   title: ["Vos rendez-vous.", "Un prix tout simple."],
   intro: `Réservations en ligne, confirmations, rappels et demandes d’avis par email. ${brand} réunit l’essentiel pour organiser vos rendez-vous, dans une seule offre.`,
   /** Version courte affichée sur téléphone. */
-  introShort: "Réservations en ligne, confirmations, rappels et demandes d’avis par email. Une seule offre.",
+  introShort: "Réservations en ligne, confirmations, rappels et demandes d’avis par email.",
   pricePrefix: { prelaunch: "Tarif prévu", live: null } satisfies ByMode<string | null>,
   price: priceAmount,
   priceUnit: `HT${NBSP}/${NBSP}mois`,
-  priceNote: `Un établissement. ${capitalize(practitioners)}.`,
-  priceNoteShort: `${capitalize(practitioners)}, un établissement.`,
+  /** Sous le prix : « Tarif prévu au lancement » en pré-lancement. */
+  priceCaption: { prelaunch: "Tarif prévu au lancement", live: null } satisfies ByMode<string | null>,
+  priceNote: `Un établissement${NBSP}· ${capitalize(practitioners)}`,
+  priceNoteShort: `Un établissement${NBSP}· ${capitalize(practitioners)}`,
   prelaunchNotice: `${brand} est en préparation. Le tarif et les fonctionnalités seront confirmés à l’ouverture.`,
   microcopy: {
     prelaunch: "Sans paiement. Nous vous préviendrons à l’ouverture.",
@@ -70,30 +72,37 @@ export const hero = {
     live: "Capture de la version disponible",
   } satisfies ByMode<string>,
   previewBadge: "Rappel par email programmé",
+  /** Cartes flottantes autour de l'aperçu (états fictifs du produit). */
+  floatingCards: [
+    { id: "reminder", title: "Rappel par email", text: "Un rappel a été envoyé à vos clientes pour leurs rendez-vous de demain.", short: "Rappel par email envoyé" },
+    { id: "confirmed", title: "Réservation confirmée", text: "Le rendez-vous de Julie Martin pour une coupe a bien été confirmé par email.", short: "Réservation confirmée" },
+    { id: "review", title: "Demande d’avis envoyée", text: "Un email a été envoyé pour demander un avis après le rendez-vous de ce jour.", short: "Demande d’avis envoyée" },
+  ],
   previewAlt: `Aperçu de l’agenda ${brand} avec trois praticiens`,
 };
 
 export const features = {
   eyebrow: { prelaunch: "Les fonctionnalités prévues", live: null } satisfies ByMode<string | null>,
-  title: "L’essentiel pour gérer vos rendez-vous.",
+  title: "L’essentiel, tout simplement.",
+  intro: "Des outils pensés pour votre quotidien, sans complexité.",
   cards: [
     {
       icon: "calendar",
-      title: "Réservation en ligne",
-      text: "Partagez votre lien. Vos clients choisissent leur prestation et leur créneau, même lorsque vous êtes occupé.",
-      textShort: "Vos clients réservent seuls, depuis votre lien.",
+      title: "Réservations 24h/24",
+      text: "Vos clientes réservent en ligne, à tout moment, depuis votre site ou un lien dédié.",
+      textShort: "Vos clientes réservent à tout moment.",
+    },
+    {
+      icon: "agenda",
+      title: "Un agenda clair",
+      text: "Visualisez facilement vos rendez-vous par praticien, jour ou semaine. Déplacez, modifiez, restez organisé.",
+      textShort: "Tous vos rendez-vous au même endroit.",
     },
     {
       icon: "mail",
-      title: "Emails automatiques",
-      text: "Confirmez les rendez-vous, envoyez un rappel et invitez vos clients à laisser un avis après leur visite.",
-      textShort: "Confirmation, rappel et demande d’avis, envoyés pour vous.",
-    },
-    {
-      icon: "users",
-      title: "Agenda partagé",
-      text: "Retrouvez les rendez-vous de votre équipe dans une vue claire, accessible sur ordinateur, tablette et mobile.",
-      textShort: "Toute l’équipe sur un seul planning, partout.",
+      title: "Des emails automatiques",
+      text: "Confirmations, rappels et demandes d’avis : tout est envoyé automatiquement pour vous faire gagner du temps.",
+      textShort: "Confirmations, rappels et demandes d’avis.",
     },
   ] as const,
 };
@@ -149,13 +158,22 @@ export const howItWorks = {
 };
 
 export const pricing = {
-  title: "Une offre. Un prix clair.",
-  intro: "Les fonctions essentielles pour vos rendez-vous, réunies dans un seul abonnement.",
+  label: "Tarif",
+  title: "Une seule offre. Un prix clair.",
+  intro: "Toutes les fonctionnalités essentielles pour développer votre activité, à un tarif simple et sans surprise.",
+  priceCaption: { prelaunch: "Tarif prévu au lancement", live: null } satisfies ByMode<string | null>,
+  /** Liste courte affichée dans la bande tarif ; la liste complète reste dans `inclusions`. */
+  highlights: [
+    "Agenda et réservation en ligne",
+    "Confirmations et rappels par email",
+    "Demandes d’avis par email",
+    capitalize(practitioners),
+  ],
   planName: brand,
   pricePrefix: { prelaunch: "Tarif prévu", live: null } satisfies ByMode<string | null>,
   price: priceAmount,
   priceUnit: `HT${NBSP}/${NBSP}mois`,
-  scope: `Par établissement, ${practitioners}`,
+  scope: `Un établissement${NBSP}· ${capitalize(practitioners)}`,
   inclusionsTitle: "Ce qui est inclus",
   inclusions: [
     "Page de réservation et lien à partager",
@@ -308,14 +326,15 @@ export const waitlist = {
 
 export const footer = {
   brand,
-  tagline: "L’essentiel pour vos rendez-vous.",
+  tagline: "Les rendez-vous qui font rayonner votre métier.",
   links: [
     { href: "#fonctionnalites", label: "Fonctionnalités" },
+    { href: "#apercu", label: "Aperçu" },
     { href: "#tarif", label: "Tarif" },
-    { href: "#faq", label: "FAQ" },
   ],
   contactLabel: "Contact",
   legalLinks: [
+    { href: "#faq", label: "FAQ" },
     { href: "/mentions-legales", label: "Mentions légales" },
     { href: "/confidentialite", label: "Confidentialité" },
   ],
@@ -336,11 +355,11 @@ export const demo = {
   salonType: "Institut de beauté",
   city: "Montpellier",
   practitioners: [
-    { name: "Camille", role: "Esthéticienne", initials: "CA" },
+    { name: "Camille", role: "Coiffeuse", initials: "CA" },
     { name: "Sophie", role: "Esthéticienne", initials: "SO" },
-    { name: "Manon", role: "Esthéticienne", initials: "MA" },
+    { name: "Manon", role: "Prothésiste ongulaire", initials: "MA" },
   ],
-  date: { iso: "2026-09-21", long: "Lundi 21 septembre 2026", short: "Lun. 21 sept." },
+  date: { iso: "2026-09-21", long: "Lundi 21 septembre 2026", short: "Lundi 21 septembre" },
   reference: {
     client: "Emma Laurent",
     service: "Soin du visage",
@@ -348,7 +367,7 @@ export const demo = {
     end: "15:00",
     duration: "1 h",
     price: "60 €".replace(" ", NBSP),
-    practitioner: "Camille",
+    practitioner: "Sophie",
   },
 };
 

@@ -23,7 +23,7 @@ export function AppFrame({ alt, children, className, padded = true }: AppFramePr
     >
       <div
         aria-hidden="true"
-        className="overflow-hidden rounded-card bg-card text-ink shadow-preview ring-1 ring-line select-none"
+        className="overflow-hidden rounded-card bg-card text-ink ring-1 ring-line select-none"
       >
         {children}
       </div>

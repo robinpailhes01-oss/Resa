@@ -3,7 +3,6 @@ import { Features } from "@/components/landing/Features";
 import { Footer } from "@/components/landing/Footer";
 import { Header } from "@/components/landing/Header";
 import { Hero } from "@/components/landing/Hero";
-import { HowItWorks } from "@/components/landing/HowItWorks";
 import { Pricing } from "@/components/landing/Pricing";
 import { RevealObserver } from "@/components/landing/Reveal";
 import { Waitlist } from "@/components/landing/Waitlist";
@@ -43,7 +42,6 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
       <main id="contenu" className="flex-1">
         <Hero />
         <Features />
-        <HowItWorks />
         <Pricing />
         <Faq />
         <Waitlist initialState={initialState} />

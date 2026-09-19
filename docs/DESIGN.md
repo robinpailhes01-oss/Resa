@@ -12,7 +12,11 @@ Brief auto-rédigé à partir du cahier des charges v1.0, des maquettes Ritméa 
 - **Niveau d'assets** : C. Aucune photo ; les aperçus produit sont reconstruits en HTML. Page portée par la typographie, l'espace et les aperçus.
 - **Se positionner contre** : le catalogue Planity Pro (caisse, TPE, SMS, marketing, dix menus) et ses chiffres de marketplace. Reso vend une chose, à un prix.
 
-## Archétypes et direction
+## Direction retenue (19 septembre 2026)
+
+Refonte complète sur la base des maquettes fournies par la porteuse du projet : hero centré sur arcs concentriques avec pastilles d'icônes du métier, aperçu agenda sur socle lilas translucide et cartes flottantes inclinées, trois cartes de fonctionnalités avec mini-interfaces, bande tarif lilas en trois colonnes, formulaire en carte, FAQ compacte, pied de page léger. Palette prune, ivoire, lilas et abricot conservée à la place du violet des maquettes. La section « trois étapes » est retirée ; la FAQ et le formulaire (absents des maquettes) sont conservés car imposés par le cahier des charges.
+
+## Archétypes et direction (historique)
 
 - **Soignant + Souverain** : douceur des matières et ordre absolu. Type sans-serif humaniste, palette chaude et mate, mouvement lent et sûr.
 - **Direction nommée** : *la retenue d'un institut haut de gamme (ivoire mat, prune, lumière abricot) + la discipline typographique de Planity Pro / Linear*.

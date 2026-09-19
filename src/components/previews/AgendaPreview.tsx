@@ -1,13 +1,14 @@
-import { Calendar, ChevronLeft, ChevronRight, Mail, Plus, Settings, Sparkles, Users } from "lucide-react";
+import { Calendar, CalendarDays, ChevronDown, ChevronLeft, ChevronRight, Mail, Plus, Settings, Sparkles, Users } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import { demo } from "@/content/fr/landing";
 import { cn } from "@/lib/cn";
 import { AppFrame, Avatar } from "./AppFrame";
 
-type Slot = { start: number; end: number; title: string; client: string; tone: "soft" | "accent"; selected?: boolean };
+type Tone = "soft" | "accent" | "success";
+type Slot = { start: number; end: number; title: string; client: string; tone: Tone };
 
-/** Heures décimales : 9.5 = 09:30. Grille de 09:00 à 18:00. */
-const DAY_START = 9;
+/** Heures décimales : 9.5 = 09:30. Grille de 08:00 à 18:00. */
+const DAY_START = 8;
 const DAY_END = 18;
 const HOURS = Array.from({ length: DAY_END - DAY_START + 1 }, (_, i) => DAY_START + i);
 
@@ -15,28 +16,37 @@ const columns: Array<{ name: string; role: string; initials: string; slots: Slot
   {
     ...demo.practitioners[0],
     slots: [
-      { start: 9, end: 10, title: "Rehaussement de cils", client: "Chloé Bernard", tone: "soft" },
-      { start: 11, end: 12, title: "Massage relaxant", client: "Nina Moreau", tone: "accent" },
-      { start: 14, end: 15, title: demo.reference.service, client: demo.reference.client, tone: "soft", selected: true },
-      { start: 16, end: 17, title: "Beauté des mains", client: "Laura Simon", tone: "soft" },
+      { start: 9, end: 10, title: "Coupe & brushing", client: "Julie Martin", tone: "soft" },
+      { start: 11, end: 12.5, title: "Coloration", client: "Élodie Bernard", tone: "soft" },
+      { start: 14, end: 15, title: "Coupe & brushing", client: "Sophie Leroy", tone: "soft" },
+      { start: 16, end: 17, title: "Soin capillaire", client: "Laura Petit", tone: "soft" },
     ],
   },
   {
     ...demo.practitioners[1],
     slots: [
-      { start: 9.5, end: 10.5, title: "Soin du visage", client: "Julie Martin", tone: "accent" },
-      { start: 12, end: 13, title: "Épilation sourcils", client: "Anna Lefèvre", tone: "soft" },
-      { start: 14, end: 15, title: "Épilation maillot", client: "Sarah Petit", tone: "accent" },
+      { start: 10, end: 11, title: "Soin visage", client: "Manon Dubois", tone: "accent" },
+      { start: 13, end: 14, title: "Soin visage", client: "Claire Moreau", tone: "accent" },
+      { start: 14, end: 15, title: demo.reference.service, client: demo.reference.client, tone: "accent" },
+      { start: 15.5, end: 16.5, title: "Modelage bien-être", client: "Nathalie Robert", tone: "accent" },
     ],
   },
   {
     ...demo.practitioners[2],
     slots: [
-      { start: 9, end: 10, title: "Épilation demi-jambes", client: "Léa Dubois", tone: "soft" },
-      { start: 14.5, end: 15.5, title: "Massage dos", client: "Émilie Bertrand", tone: "soft" },
+      { start: 9.5, end: 10.5, title: "Manucure", client: "Léa Girard", tone: "success" },
+      { start: 12, end: 13, title: "Pose de vernis semi-permanent", client: "Amélie Thomas", tone: "success" },
+      { start: 14.5, end: 15.5, title: "Manucure", client: "Chloé Rousseau", tone: "success" },
+      { start: 17, end: 18, title: "Dépose + nouvelle pose", client: "Inès Morel", tone: "success" },
     ],
   },
 ];
+
+const toneClasses: Record<Tone, { bg: string; bar: string }> = {
+  soft: { bg: "bg-soft-tint", bar: "bg-[#B9A6CB]" },
+  accent: { bg: "bg-accent-tint", bar: "bg-accent" },
+  success: { bg: "bg-success-tint", bar: "bg-[#8FC7A9]" },
+};
 
 function formatHour(h: number): string {
   const hours = Math.floor(h);
@@ -44,23 +54,29 @@ function formatHour(h: number): string {
   return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
 }
 
-function SlotCard({ slot, rowHeight, order }: { slot: Slot; rowHeight: number; order: number }) {
-  const top = (slot.start - DAY_START) * rowHeight;
-  const height = (slot.end - slot.start) * rowHeight - 3;
+/** Ordre d'apparition des rendez-vous : chronologique, toutes colonnes confondues. */
+function fillOrder(slot: Slot): number {
+  const all = columns.flatMap((c) => c.slots).sort((a, b) => a.start - b.start || a.title.localeCompare(b.title));
+  return all.findIndex((s) => s === slot);
+}
+
+function SlotCard({ slot, rowHeight }: { slot: Slot; rowHeight: number }) {
+  const top = (slot.start - DAY_START) * rowHeight + 2;
+  const height = (slot.end - slot.start) * rowHeight - 4;
+  const tone = toneClasses[slot.tone];
   return (
     <div
-      className={cn(
-        "slot absolute inset-x-1 rounded-md px-2 py-1.5 text-[10px] leading-[1.3]",
-        slot.tone === "soft" ? "bg-soft-tint" : "bg-accent-tint",
-        slot.selected && "ring-2 ring-brand",
-      )}
-      style={{ top, height, "--i": order } as React.CSSProperties}
+      className={cn("slot absolute inset-x-1.5 flex overflow-hidden rounded-md text-[10px] leading-[1.3]", tone.bg)}
+      style={{ top, height, "--i": fillOrder(slot) } as React.CSSProperties}
     >
-      <div className="text-ink-muted">
-        {formatHour(slot.start)} – {formatHour(slot.end)}
+      <span className={cn("w-[3px] shrink-0", tone.bar)} />
+      <div className="min-w-0 px-2 py-1">
+        <div className="truncate font-semibold text-ink">{slot.title}</div>
+        <div className="text-ink-muted">
+          {formatHour(slot.start)} – {formatHour(slot.end)}
+        </div>
+        <div className="truncate text-ink-muted">{slot.client}</div>
       </div>
-      <div className="truncate font-semibold text-brand">{slot.title}</div>
-      <div className="truncate text-ink-muted">{slot.client}</div>
     </div>
   );
 }
@@ -74,15 +90,23 @@ function Sidebar() {
     { icon: Settings, label: "Paramètres" },
   ];
   return (
-    <aside className="hidden w-40 shrink-0 flex-col border-r border-line bg-page/70 p-3 @2xl:flex">
-      <Logo height={18} className="mb-5 ml-1" />
+    <aside className="hidden w-44 shrink-0 flex-col border-r border-line bg-page/70 p-3 @2xl:flex">
+      <Logo height={18} className="mb-4 ml-1" />
+      <div className="mb-3 flex items-center gap-2 rounded-lg bg-card p-2 ring-1 ring-line">
+        <span className="size-8 shrink-0 rounded-md bg-[linear-gradient(135deg,#EAB99A,#DDD5E5)]" />
+        <div className="min-w-0 flex-1 leading-tight">
+          <div className="truncate text-[11px] font-semibold text-ink">{demo.salon}</div>
+          <div className="truncate text-[9px] text-ink-muted">{demo.salonType}</div>
+        </div>
+        <ChevronDown className="size-3 text-ink-muted" />
+      </div>
       <ul className="space-y-0.5">
         {items.map(({ icon: Icon, label, active }) => (
           <li
             key={label}
             className={cn(
               "flex items-center gap-2 whitespace-nowrap rounded-md px-2 py-1.5 text-[11px]",
-              active ? "bg-soft font-semibold text-brand" : "text-ink-muted",
+              active ? "bg-soft-tint font-semibold text-brand" : "text-ink-muted",
             )}
           >
             <Icon className="size-3.5" strokeWidth={1.8} />
@@ -90,111 +114,69 @@ function Sidebar() {
           </li>
         ))}
       </ul>
-      <div className="mt-auto flex items-center gap-2 border-t border-line pt-3">
-        <Avatar initials="MA" tone="accent" size="sm" />
-        <div className="text-[10px] leading-tight">
-          <div className="font-semibold text-brand">{demo.salon}</div>
-          <div className="text-ink-muted">{demo.salonType}</div>
-        </div>
-      </div>
     </aside>
   );
 }
 
 function Toolbar() {
   return (
-    <div className="flex items-center justify-between gap-3 border-b border-line px-3 py-2.5 @sm:px-4">
-      <div className="min-w-0">
-        <div className="whitespace-nowrap text-[12px] font-bold text-brand @sm:text-[14px]">Mon agenda</div>
-        <div className="truncate text-[10px] text-ink-muted @sm:text-[11px]">{demo.date.long}</div>
+    <div className="border-b border-line px-3 py-2.5 @sm:px-4">
+      <div className="flex items-center justify-between gap-3">
+        <div className="text-[13px] font-bold text-ink @sm:text-[15px]">Mon agenda</div>
+        <div className="flex items-center gap-2">
+          <span className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-md bg-brand px-2 py-1.5 text-[10px] font-semibold text-white">
+            <Plus className="size-3" />
+            <span className="hidden @md:inline">Nouveau rendez-vous</span>
+            <span className="@md:hidden">Nouveau</span>
+          </span>
+          <Avatar initials="MA" tone="accent" size="sm" />
+        </div>
       </div>
-      {
-        <div className="hidden items-center gap-1.5 text-[10px] @xl:flex">
-          <span className="rounded-md border border-line px-2 py-1">Aujourd’hui</span>
+      <div className="mt-2 flex items-center justify-between gap-2 text-[10px]">
+        <div className="hidden items-center gap-1 @lg:flex">
           <span className="rounded-md border border-line p-1">
             <ChevronLeft className="size-3" />
           </span>
+          <span className="rounded-md border border-line px-2 py-1">Aujourd’hui</span>
           <span className="rounded-md border border-line p-1">
             <ChevronRight className="size-3" />
           </span>
-          <span className="ml-1 inline-flex rounded-md border border-line p-0.5">
-            <span className="rounded bg-soft px-2 py-0.5 font-semibold text-brand">Jour</span>
-            <span className="px-2 py-0.5 text-ink-muted">Semaine</span>
-          </span>
         </div>
-      }
-      <span className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-md bg-brand px-2 py-1.5 text-[10px] font-semibold text-white">
-        <Plus className="size-3" />
-        <span className="hidden @md:inline">Nouveau rendez-vous</span>
-        <span className="@md:hidden">Nouveau</span>
-      </span>
-    </div>
-  );
-}
-
-function DetailPanel() {
-  const r = demo.reference;
-  return (
-    <aside className="hidden w-44 shrink-0 border-l border-line p-3 text-[10px] @4xl:block">
-      <div className="mb-3 text-[12px] font-bold text-brand">Détail du rendez-vous</div>
-      <div className="mb-3 flex items-center gap-2 rounded-md border border-line p-2">
-        <Avatar initials="EL" size="sm" />
-        <div className="leading-tight">
-          <div className="font-semibold text-ink">{r.client}</div>
-          <div className="text-ink-muted">Cliente depuis mars 2024</div>
-        </div>
+        <span className="inline-flex items-center gap-1.5 rounded-md border border-line px-2 py-1 font-medium text-ink">
+          <CalendarDays className="size-3 text-ink-muted" />
+          {demo.date.short}
+        </span>
+        <span className="hidden rounded-md border border-line p-0.5 @lg:inline-flex">
+          <span className="rounded bg-soft-tint px-2 py-0.5 font-semibold text-brand">Jour</span>
+          <span className="px-2 py-0.5 text-ink-muted">Semaine</span>
+          <span className="px-2 py-0.5 text-ink-muted">Mois</span>
+        </span>
       </div>
-      <dl className="space-y-2">
-        <div>
-          <dt className="text-ink-muted">Prestation</dt>
-          <dd className="font-semibold text-ink">{r.service}</dd>
-        </div>
-        <div>
-          <dt className="text-ink-muted">Horaire</dt>
-          <dd className="font-semibold text-ink">
-            {r.start} – {r.end} · {r.duration}
-          </dd>
-        </div>
-        <div>
-          <dt className="text-ink-muted">Avec</dt>
-          <dd className="font-semibold text-ink">{r.practitioner}</dd>
-        </div>
-        <div>
-          <dt className="text-ink-muted">Statut</dt>
-          <dd>
-            <span className="inline-block rounded-full bg-success-tint px-2 py-0.5 font-semibold text-success">Confirmé</span>
-          </dd>
-        </div>
-        <div>
-          <dt className="text-ink-muted">Rappel client</dt>
-          <dd className="font-semibold text-ink">Email prévu 24 h avant</dd>
-        </div>
-      </dl>
-    </aside>
+    </div>
   );
 }
 
 /** Vue large : trois colonnes praticiens (dès 448 px de largeur de cadre). */
 function DesktopGrid() {
-  const rowHeight = 34;
+  const rowHeight = 30;
   return (
     <div className="hidden @md:block">
       <div className="grid grid-cols-[44px_repeat(3,1fr)] border-b border-line">
         <div />
-        {columns.map((column) => (
+        {columns.map((column, i) => (
           <div key={column.name} className="flex items-center gap-2 border-l border-line px-2 py-2">
-            <Avatar initials={column.initials} tone={column.name === "Sophie" ? "accent" : "soft"} size="sm" />
+            <Avatar initials={column.initials} tone={(["soft", "accent", "brand"] as const)[i]} size="sm" />
             <div className="leading-tight">
               <div className="text-[11px] font-semibold text-ink">{column.name}</div>
-              <div className="text-[9px] text-ink-muted">{column.role}</div>
+              <div className="truncate text-[9px] text-ink-muted">{column.role}</div>
             </div>
           </div>
         ))}
       </div>
-      <div className="grid grid-cols-[44px_repeat(3,1fr)]" style={{ height: (DAY_END - DAY_START) * rowHeight }}>
+      <div className="grid grid-cols-[44px_repeat(3,1fr)]" style={{ height: (DAY_END - DAY_START) * rowHeight + 8 }}>
         <div className="relative">
-          {HOURS.slice(0, -1).map((hour, i) => (
-            <div key={hour} className="absolute right-1.5 text-[9px] text-ink-muted" style={{ top: i * rowHeight - 5 }}>
+          {HOURS.map((hour, i) => (
+            <div key={hour} className="absolute right-2 text-[9px] text-ink-muted" style={{ top: i * rowHeight - 5 }}>
               {formatHour(hour)}
             </div>
           ))}
@@ -205,7 +187,7 @@ function DesktopGrid() {
               <div key={hour} className="absolute inset-x-0 border-t border-line/70" style={{ top: i * rowHeight }} />
             ))}
             {column.slots.map((slot) => (
-              <SlotCard key={slot.title + slot.start} slot={slot} rowHeight={rowHeight} order={fillOrder(slot)} />
+              <SlotCard key={slot.title + slot.start} slot={slot} rowHeight={rowHeight} />
             ))}
           </div>
         ))}
@@ -214,49 +196,80 @@ function DesktopGrid() {
   );
 }
 
-/** Vue mobile dédiée : un praticien à la fois, liste lisible. */
-function MobileList() {
+/** Vue téléphone dédiée : un praticien, une chronologie lisible. */
+function MobileTimeline() {
   const camille = columns[0];
+  const rowHeight = 44;
+  const start = 8;
+  const end = 17;
+  const hours = Array.from({ length: end - start + 1 }, (_, i) => start + i);
   return (
     <div className="@md:hidden">
-      <div className="flex min-w-0 gap-1.5 overflow-hidden border-b border-line px-3 py-2">
-        {columns.map((column, i) => (
-          <span
-            key={column.name}
-            className={cn(
-              "inline-flex items-center gap-1.5 rounded-full border px-2 py-1 text-[10px]",
-              i === 0 ? "border-brand bg-soft font-semibold text-brand" : "border-line text-ink-muted",
-            )}
-          >
-            <Avatar initials={column.initials} size="sm" tone={i === 0 ? "brand" : "soft"} />
-            {column.name}
-          </span>
-        ))}
+      <div className="flex items-center gap-3 border-b border-line px-4 py-3">
+        <span className="size-10 shrink-0 rounded-lg bg-[linear-gradient(135deg,#EAB99A,#DDD5E5)]" />
+        <div className="min-w-0 flex-1 leading-tight">
+          <div className="text-[14px] font-semibold text-ink">{demo.salon}</div>
+          <div className="text-[12px] text-ink-muted">{demo.salonType}</div>
+        </div>
+        <ChevronDown className="size-4 text-ink-muted" />
       </div>
-      <ul className="divide-y divide-line px-3">
-        {camille.slots.map((slot, i) => (
-          <li
-            key={slot.title}
-            className={cn("slot flex gap-3 py-2.5", slot.selected && "bg-soft-tint/60 -mx-3 px-3")}
-            style={{ "--i": i } as React.CSSProperties}
-          >
-            <div className="w-12 shrink-0 text-[10px] leading-tight text-ink-muted">
-              <div className="font-semibold text-ink">{formatHour(slot.start)}</div>
-              <div>{formatHour(slot.end)}</div>
+      <div className="px-4 pt-4">
+        <div className="text-[18px] font-bold text-ink">Mon agenda</div>
+        <div className="mt-2 flex items-center gap-2 text-[12px]">
+          <span className="rounded-md border border-line p-1.5 text-ink-muted">
+            <ChevronLeft className="size-3.5" />
+          </span>
+          <span className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-md border border-line py-1.5 font-medium text-ink">
+            <CalendarDays className="size-3.5 text-ink-muted" />
+            {demo.date.short}
+          </span>
+          <span className="rounded-md border border-line p-1.5 text-ink-muted">
+            <ChevronRight className="size-3.5" />
+          </span>
+        </div>
+        <div className="mt-4 flex items-center gap-2.5">
+          <Avatar initials={camille.initials} tone="accent" />
+          <div className="leading-tight">
+            <div className="text-[13px] font-semibold text-ink">{camille.name}</div>
+            <div className="text-[11px] text-ink-muted">{camille.role}</div>
+          </div>
+        </div>
+      </div>
+      <div className="relative mx-4 mt-3 mb-4 grid grid-cols-[44px_1fr]" style={{ height: (end - start) * rowHeight + 12 }}>
+        <div className="relative">
+          {hours.map((hour, i) => (
+            <div key={hour} className="absolute right-2 text-[11px] text-ink-muted" style={{ top: i * rowHeight - 6 }}>
+              {formatHour(hour)}
             </div>
-            <div className={cn("w-1 shrink-0 rounded-full", slot.tone === "soft" ? "bg-soft" : "bg-accent")} />
-            <div className="min-w-0 text-[11px] leading-tight">
-              <div className="truncate font-semibold text-brand">{slot.title}</div>
-              <div className="truncate text-ink-muted">{slot.client}</div>
-            </div>
-            {slot.selected ? (
-              <span className="ml-auto self-center rounded-full bg-success-tint px-2 py-0.5 text-[9px] font-semibold text-success">
-                Confirmé
-              </span>
-            ) : null}
-          </li>
-        ))}
-      </ul>
+          ))}
+        </div>
+        <div className="relative border-l border-line">
+          {hours.slice(0, -1).map((hour, i) => (
+            <div key={hour} className="absolute inset-x-0 border-t border-line/70" style={{ top: i * rowHeight }} />
+          ))}
+          {camille.slots.slice(0, 3).map((slot, i) => {
+            const tone = toneClasses[slot.tone];
+            const slotTop = (slot.start - start) * rowHeight + 3;
+            const height = (slot.end - slot.start) * rowHeight - 6;
+            return (
+              <div
+                key={slot.title + slot.start}
+                className={cn("slot absolute inset-x-2 flex overflow-hidden rounded-lg", tone.bg)}
+                style={{ top: slotTop, height, "--i": i } as React.CSSProperties}
+              >
+                <span className={cn("w-1 shrink-0", tone.bar)} />
+                <div className="min-w-0 px-3 py-2 text-[12px] leading-tight">
+                  <div className="truncate font-semibold text-ink">{slot.title}</div>
+                  <div className="mt-0.5 text-ink-muted">
+                    {formatHour(slot.start)} – {formatHour(slot.end)}
+                  </div>
+                  <div className="truncate text-ink-muted">{slot.client}</div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }
@@ -264,44 +277,25 @@ function MobileList() {
 type AgendaPreviewProps = {
   alt: string;
   className?: string;
-  badge?: string;
-  /** Sans barre latérale ni panneau de détail : pour le premier écran. */
-  compact?: boolean;
   /** Les rendez-vous se posent un à un à l'arrivée (signature du premier écran). */
   animate?: boolean;
 };
 
-/** Ordre d'apparition des rendez-vous : chronologique, toutes colonnes confondues. */
-function fillOrder(slot: Slot): number {
-  const all = columns.flatMap((c) => c.slots).sort((a, b) => a.start - b.start || a.title.localeCompare(b.title));
-  return all.findIndex((s) => s === slot);
-}
-
-export function AgendaPreview({ alt, className, badge, compact = false, animate = false }: AgendaPreviewProps) {
+export function AgendaPreview({ alt, className, animate = false }: AgendaPreviewProps) {
   return (
     <div className={cn("relative", animate && "agenda-fill", className)}>
       <AppFrame alt={alt}>
         <div className="flex">
-          {!compact ? <Sidebar /> : null}
+          <Sidebar />
           <div className="min-w-0 flex-1">
-            <Toolbar />
+            <div className="hidden @md:block">
+              <Toolbar />
+            </div>
             <DesktopGrid />
-            <MobileList />
+            <MobileTimeline />
           </div>
-          {!compact ? <DetailPanel /> : null}
         </div>
       </AppFrame>
-      {badge ? (
-        <div
-          aria-hidden="true"
-          className="badge-in absolute -bottom-3 left-4 inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-card px-3 py-1.5 text-small font-semibold text-brand shadow-card ring-1 ring-line sm:left-6"
-        >
-          <span className="inline-flex size-6 items-center justify-center rounded-full bg-accent-tint">
-            <Mail className="size-3.5" strokeWidth={2} />
-          </span>
-          {badge}
-        </div>
-      ) : null}
     </div>
   );
 }
