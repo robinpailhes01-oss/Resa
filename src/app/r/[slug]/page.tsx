@@ -431,10 +431,23 @@ export default async function ReservationPage({
                   label="Un message pour l’établissement (facultatif)"
                   maxLength={400}
                 />
+                {establishment.bookingTerms ? (
+                  <div className="rounded-xl bg-page px-4 py-3 text-[13px] leading-5 text-ink-muted">
+                    <p className="font-semibold text-ink">
+                      Conditions de {establishment.name}
+                    </p>
+                    <p className="mt-1 whitespace-pre-line">
+                      {establishment.bookingTerms}
+                    </p>
+                  </div>
+                ) : null}
                 <p className="text-[12px] leading-5 text-ink-muted">
                   Vos coordonnées servent uniquement à gérer ce rendez-vous.
                   Annulation possible en ligne jusqu’à{" "}
                   {establishment.cancellationHours} h avant.
+                  {establishment.bookingTerms
+                    ? " En confirmant, vous acceptez les conditions ci-dessus."
+                    : ""}
                 </p>
               </>
             </ActionForm>

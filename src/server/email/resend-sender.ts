@@ -7,6 +7,18 @@ type ResendOptions = {
   fetchImpl?: typeof fetch;
 };
 
+/**
+ * Compose l'en-tête From : `fromName` remplace le nom affiché d'EMAIL_FROM,
+ * l'adresse (entre chevrons ou nue) est conservée.
+ */
+export function composeFrom(configured: string, fromName?: string): string {
+  if (!fromName) return configured;
+  const match = configured.match(/<([^>]+)>\s*$/);
+  const address = (match ? match[1] : configured).trim();
+  const name = fromName.replace(/["<>\r\n]/g, "").trim();
+  return name ? `${name} <${address}>` : configured;
+}
+
 /** Adaptateur Resend (https://resend.com) via son API HTTP, sans SDK. */
 export class ResendEmailSender implements EmailSender {
   readonly name = "resend";
@@ -24,7 +36,7 @@ export class ResendEmailSender implements EmailSender {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: this.options.from,
+        from: composeFrom(this.options.from, message.fromName),
         to: [message.to],
         subject: message.subject,
         html: message.html,

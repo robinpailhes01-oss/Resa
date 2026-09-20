@@ -81,8 +81,8 @@ export default async function EmailsPage() {
             <Toggle
               id="notifyProOnBooking"
               name="notifyProOnBooking"
-              label="Me prévenir à chaque réservation en ligne"
-              help={`Envoyé à ${establishment.publicEmail ?? "votre adresse de connexion"}.`}
+              label="Me prévenir à chaque réservation et annulation en ligne"
+              help={`Envoyé à ${establishment.publicEmail ?? "votre adresse de connexion"} (modifiable dans Paramètres, email de contact).`}
               defaultChecked={s.notifyProOnBooking}
             />
           </>

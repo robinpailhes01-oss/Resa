@@ -9,6 +9,7 @@ import {
   Users,
   UserRound,
   ExternalLink,
+  LayoutDashboard,
 } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import type { Establishment } from "@/server/auth/guards";
@@ -17,6 +18,12 @@ import { cn } from "@/lib/cn";
 import { NavLink } from "./NavLink";
 
 const items = [
+  {
+    href: "/app",
+    label: "Tableau de bord",
+    icon: LayoutDashboard,
+    exact: true,
+  },
   { href: "/app/agenda", label: "Agenda", icon: CalendarDays },
   { href: "/app/clients", label: "Clients", icon: UserRound },
   { href: "/app/prestations", label: "Prestations", icon: Sparkles },
@@ -37,9 +44,9 @@ export function AppShell({
       <aside className="border-b border-line bg-card md:sticky md:top-0 md:flex md:h-screen md:w-60 md:shrink-0 md:flex-col md:border-b-0 md:border-r">
         <div className="flex items-center justify-between px-5 py-4 md:py-6">
           <Link
-            href="/app/agenda"
+            href="/app"
             className="inline-flex rounded-md"
-            aria-label="Reso – agenda"
+            aria-label="Reso – tableau de bord"
           >
             <Logo height={24} />
           </Link>
@@ -64,6 +71,7 @@ export function AppShell({
                 <li key={item.href} className="shrink-0">
                   <NavLink
                     href={item.href}
+                    exact={item.exact}
                     icon={<item.icon className="size-4" strokeWidth={1.8} />}
                   >
                     {item.label}

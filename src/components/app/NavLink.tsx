@@ -9,13 +9,17 @@ export function NavLink({
   href,
   icon,
   children,
+  exact = false,
 }: {
   href: string;
   icon: ReactNode;
   children: ReactNode;
+  /** Actif uniquement sur l'URL exacte (pour la racine de l'espace). */
+  exact?: boolean;
 }) {
   const pathname = usePathname();
-  const active = pathname === href || pathname.startsWith(`${href}/`);
+  const active =
+    pathname === href || (!exact && pathname.startsWith(`${href}/`));
   return (
     <Link
       href={href}

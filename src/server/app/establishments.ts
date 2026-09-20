@@ -72,6 +72,7 @@ export interface UpdateEstablishmentInput {
   phone: string | null;
   publicEmail: string | null;
   description: string | null;
+  bookingTerms: string | null;
   bookingEnabled: boolean;
   slotStepMin: number;
   minLeadMin: number;
@@ -84,6 +85,7 @@ export async function updateEstablishment(id: string, input: UpdateEstablishment
     update establishments set
       name = ${input.name}, business_type = ${input.businessType}, city = ${input.city}, postal_code = ${input.postalCode},
       address_line = ${input.addressLine}, phone = ${input.phone}, public_email = ${input.publicEmail}, description = ${input.description},
+      booking_terms = ${input.bookingTerms},
       booking_enabled = ${input.bookingEnabled}, slot_step_min = ${input.slotStepMin}, min_lead_min = ${input.minLeadMin},
       max_horizon_days = ${input.maxHorizonDays}, cancellation_hours = ${input.cancellationHours}
     where id = ${id}`;

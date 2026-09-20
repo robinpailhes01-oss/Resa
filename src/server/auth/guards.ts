@@ -16,6 +16,8 @@ export interface Establishment {
   phone: string | null;
   publicEmail: string | null;
   description: string | null;
+  /** Conditions affichées à la cliente avant confirmation et dans l'email. */
+  bookingTerms: string | null;
   timezone: string;
   bookingEnabled: boolean;
   slotStepMin: number;
@@ -36,6 +38,7 @@ export type EstablishmentRow = {
   phone: string | null;
   public_email: string | null;
   description: string | null;
+  booking_terms: string | null;
   timezone: string;
   booking_enabled: boolean;
   slot_step_min: number;
@@ -57,6 +60,7 @@ export function mapEstablishment(r: EstablishmentRow): Establishment {
     phone: r.phone,
     publicEmail: r.public_email,
     description: r.description,
+    bookingTerms: r.booking_terms,
     timezone: r.timezone,
     bookingEnabled: r.booking_enabled,
     slotStepMin: r.slot_step_min,

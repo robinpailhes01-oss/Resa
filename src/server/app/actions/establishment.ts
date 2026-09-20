@@ -54,6 +54,7 @@ export async function createEstablishmentAction(_prev: FormState, fd: FormData):
 
 const settingsSchema = establishmentSchema.extend({
   description: z.string().trim().max(600).transform((v) => v || null),
+  bookingTerms: z.string().trim().max(1500, "1 500 caractères maximum.").transform((v) => v || null),
   bookingEnabled: z.boolean(),
   slotStepMin: z.number().int().refine((v) => [5, 10, 15, 20, 30, 60].includes(v), "Pas de créneau invalide."),
   minLeadMin: z.number().int().min(0).max(7 * 24 * 60),
@@ -72,6 +73,7 @@ export async function updateEstablishmentAction(_prev: FormState, fd: FormData):
     phone: fd.get("phone") ?? "",
     publicEmail: fd.get("publicEmail") ?? "",
     description: fd.get("description") ?? "",
+    bookingTerms: fd.get("bookingTerms") ?? "",
     bookingEnabled: bool(fd, "bookingEnabled"),
     slotStepMin: int(fd, "slotStepMin", 15),
     minLeadMin: int(fd, "minLeadHours", 1) * 60,

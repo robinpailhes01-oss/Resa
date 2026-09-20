@@ -13,6 +13,7 @@ import { CopyField } from "@/components/app/CopyField";
 import { offer } from "@/config/offer";
 import { requireEstablishment } from "@/server/auth/guards";
 import { updateEstablishmentAction } from "@/server/app/actions/establishment";
+import { changePasswordAction } from "@/server/auth/actions";
 import { BUSINESS_TYPES } from "@/server/app/establishments";
 
 export const metadata: Metadata = { title: "Paramètres" };
@@ -146,6 +147,14 @@ export default async function ParametresPage() {
                 defaultValue={Math.round(e.minLeadMin / 60)}
               />
             </Grid2>
+            <TextArea
+              id="bookingTerms"
+              name="bookingTerms"
+              label="Conditions de réservation (facultatif)"
+              maxLength={1500}
+              defaultValue={e.bookingTerms ?? ""}
+              help="Affichées à la cliente avant qu’elle confirme, puis rappelées dans son email : retard toléré, acompte, politique d’annulation, accès…"
+            />
             <Grid2>
               <TextInput
                 id="maxHorizonDays"
@@ -179,13 +188,52 @@ export default async function ParametresPage() {
             ? ""
             : " Adresse non confirmée : vérifiez votre boîte mail."}
         </p>
-        <p className="mt-2 text-[14px] text-ink-muted">
-          Pour changer de mot de passe, utilisez{" "}
+        <div className="mt-5">
+          <ActionForm
+            action={changePasswordAction}
+            submitLabel="Changer le mot de passe"
+            variant="secondary"
+          >
+            <>
+              <TextInput
+                id="currentPassword"
+                name="currentPassword"
+                label="Mot de passe actuel"
+                type="password"
+                autoComplete="current-password"
+                required
+              />
+              <Grid2>
+                <TextInput
+                  id="newPassword"
+                  name="newPassword"
+                  label="Nouveau mot de passe"
+                  type="password"
+                  autoComplete="new-password"
+                  required
+                  minLength={8}
+                  help="8 caractères minimum."
+                />
+                <TextInput
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  label="Confirmer le nouveau mot de passe"
+                  type="password"
+                  autoComplete="new-password"
+                  required
+                  minLength={8}
+                />
+              </Grid2>
+            </>
+          </ActionForm>
+        </div>
+        <p className="mt-4 text-[13px] text-ink-muted">
+          Mot de passe oublié ? Utilisez{" "}
           <Link
             href="/mot-de-passe-oublie"
             className="font-medium text-brand underline underline-offset-4"
           >
-            mot de passe oublié
+            la réinitialisation par email
           </Link>
           .
         </p>

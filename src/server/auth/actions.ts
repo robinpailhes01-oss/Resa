@@ -184,3 +184,28 @@ export async function resendVerification(): Promise<void> {
   await sendVerificationEmail(user.id, user.email).catch(() => undefined);
 }
 
+/** Changement de mot de passe depuis les paramètres : mot de passe actuel requis, autres sessions révoquées. */
+export async function changePasswordAction(_prev: AuthState, formData: FormData): Promise<AuthState> {
+  const user = await getCurrentUser();
+  if (!user) redirect("/connexion?next=%2Fapp%2Fparametres");
+  const current = String(formData.get("currentPassword") ?? "");
+  const next = String(formData.get("newPassword") ?? "");
+  const confirm = String(formData.get("confirmPassword") ?? "");
+  const fieldErrors: Record<string, string> = {};
+  if (!isAcceptablePassword(next)) fieldErrors.newPassword = "8 caractères minimum.";
+  if (next !== confirm) fieldErrors.confirmPassword = "Les deux mots de passe ne correspondent pas.";
+  if (Object.keys(fieldErrors).length) return { fieldErrors };
+  try {
+    const rows = await getSql()<Array<{ password_hash: string }>>`select password_hash from users where id = ${user.id}`;
+    const ok = rows[0] ? await verifyPassword(current, rows[0].password_hash) : false;
+    if (!ok) return { fieldErrors: { currentPassword: "Mot de passe actuel incorrect." } };
+    const passwordHash = await hashPassword(next);
+    await getSql()`update users set password_hash = ${passwordHash} where id = ${user.id}`;
+    await revokeAllSessions(user.id);
+    await createSession(user.id);
+  } catch (error) {
+    console.error("[auth] changement de mot de passe", error instanceof Error ? error.message : error);
+    return { error: "Une erreur est survenue. Réessayez dans quelques instants." };
+  }
+  return { success: "Mot de passe modifié. Vos autres appareils ont été déconnectés." };
+}

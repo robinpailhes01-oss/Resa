@@ -66,7 +66,7 @@ src/components/app         composants de l'espace pro (formulaires, agenda jour,
 src/components/booking     coquille de la page de réservation
 src/app/api/waitlist       POST /api/waitlist, /confirm, /unsubscribe
 src/app/api/internal       emails de rendez-vous, rejeu liste d'attente, purge (protégés par secret)
-db/migrations              schéma SQL (0001 liste d'attente, 0002 application)
+db/migrations              schéma SQL (0001 liste d'attente, 0002 application, 0003 conditions et index)
 tests                      tests unitaires et d'intégration
 ```
 
@@ -89,11 +89,12 @@ Anti-abus : validation Zod stricte (champs inattendus rejetés), champ piège, 5
 
 ## Application
 
-- **Comptes** : inscription email + mot de passe (scrypt), email de vérification, réinitialisation par jeton haché (usage unique, 1 h). Session de 30 jours glissants dans un cookie `httpOnly` ; le jeton n'est stocké qu'haché.
-- **Établissement** : un par compte, identifiant d'URL généré depuis le nom, horaires hebdomadaires (jusqu'à deux plages par jour), horaires propres à un praticien possibles, règles de réservation (pas des créneaux, délai minimal, horizon, délai d'annulation), mise en pause de la réservation en ligne.
+- **Comptes** : inscription email + mot de passe (scrypt), email de vérification, réinitialisation par jeton haché (usage unique, 1 h), changement de mot de passe depuis Paramètres (révoque les autres sessions). Session de 30 jours glissants dans un cookie `httpOnly` ; le jeton n'est stocké qu'haché.
+- **Tableau de bord** (`/app`) : rendez-vous du jour, puis sur la période choisie (mois en cours, mois dernier, 30 jours) : nombre de rendez-vous et part en ligne, chiffre d'affaires réalisé et à venir, taux de remplissage (minutes réservées / minutes d'ouverture des praticiens actifs), annulations et absences, nouvelles clientes, rendez-vous par jour, prestations les plus demandées, activité par praticien. Calculs purs dans `src/lib/stats.ts` (testés), requêtes dans `src/server/app/stats.ts`.
+- **Établissement** : un par compte, identifiant d'URL généré depuis le nom, horaires hebdomadaires (jusqu'à deux plages par jour), horaires propres à un praticien possibles, règles de réservation (pas des créneaux, délai minimal, horizon, délai d'annulation), conditions de réservation libres (affichées avant confirmation, sur la page du rendez-vous et dans l'email de confirmation), mise en pause de la réservation en ligne. Tout est modifiable par l'établissement dans Paramètres.
 - **Rendez-vous** : les créneaux sont calculés par `computeSlots` (fonction pure testée) à partir des horaires, des rendez-vous existants et du tampon de la prestation. En base, une contrainte d'exclusion (`bookings_no_overlap`, GiST) rend le double-booking impossible même sous concurrence : une insertion en conflit renvoie « Ce créneau vient d'être réservé ».
 - **Réservation publique** `/r/<slug>` : prestation → praticien et créneau → coordonnées → confirmation. Champ piège, limitation par IP, pas de compte client. Le client reçoit un lien `/rdv/<jeton>` pour voir et annuler (tant que le délai d'annulation le permet).
-- **Emails automatiques** (table `email_jobs`) : confirmation, notification pro, rappel N heures avant, demande d'avis N heures après, annulation par le pro. Les envois immédiats partent après la réponse (`after()`), les envois différés par le cron `/api/internal/email-jobs`. Réglables dans **Emails automatiques**.
+- **Emails automatiques** (table `email_jobs`) : confirmation à la cliente, notification à l'établissement à chaque réservation et annulation en ligne (vers son email de contact, sinon l'adresse de connexion), rappel N heures avant, demande d'avis N heures après, annulation par le pro. Les emails clientes partent au nom de l'établissement (« Maison Alba via Reso », adresse d'`EMAIL_FROM`, Reply-To vers l'email de contact). Les envois immédiats partent après la réponse (`after()`), les envois différés par le cron `/api/internal/email-jobs`. Réglables dans **Emails automatiques**.
 - **Limites v1** : un seul compte par établissement (pas d'invitation d'équipe), pas de SMS, pas de paiement en ligne ni d'abonnement (à venir), limitation de débit en mémoire (par instance).
 
 ## Base de données

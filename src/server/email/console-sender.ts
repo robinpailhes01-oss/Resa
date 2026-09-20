@@ -11,7 +11,7 @@ export class ConsoleEmailSender implements EmailSender {
   async send(message: EmailMessage): Promise<void> {
     this.sent.push(message);
     if (process.env.NODE_ENV !== "test") {
-      console.info(`\n[email:console] À : ${message.to}\n[email:console] Objet : ${message.subject}\n${message.text}\n`);
+      console.info(`\n[email:console] De : ${message.fromName ?? "(EMAIL_FROM)"}\n[email:console] À : ${message.to}\n[email:console] Objet : ${message.subject}\n${message.text}\n`);
     }
   }
 }

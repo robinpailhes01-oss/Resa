@@ -113,5 +113,14 @@ export async function cancelByClientAction(_prev: FormState, fd: FormData): Prom
     return { error: `Ce rendez-vous ne peut plus être annulé en ligne (moins de ${establishment?.cancellationHours ?? 24} h avant). Contactez directement l’établissement.` };
   }
   if (outcome === "invalid") return { error: "Ce lien n’est pas valide." };
+  if (outcome === "cancelled") {
+    after(async () => {
+      try {
+        await processEmailJobs();
+      } catch (error) {
+        console.error("[emails] traitement", error instanceof Error ? error.message : error);
+      }
+    });
+  }
   redirect(`/rdv/${token}?annule=1`);
 }

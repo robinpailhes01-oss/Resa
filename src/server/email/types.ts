@@ -4,6 +4,8 @@ export interface EmailMessage {
   html: string;
   text: string;
   replyTo?: string;
+  /** Nom affiché de l'expéditeur (l'adresse reste celle d'EMAIL_FROM). */
+  fromName?: string;
 }
 
 export interface EmailSender {

@@ -51,6 +51,10 @@ Parcours vérifié par `node scripts/recette-app.mjs` (Playwright, serveur lanc�
 | A07 | Emails : confirmation client avec lien de gestion stable, notification pro, rappel et avis planifiés, annulation | OK | journal serveur en console, recette |
 | A08 | Annulation en ligne par le client dans le délai autorisé, refus au-delà | OK | recette, `isCancellableByClient` |
 | A09 | Aucun débordement horizontal à 390 px (espace pro, réservation, connexion) | OK | captures mobiles |
+| A10 | Tableau de bord : indicateurs du mois, comparaison, graphique, prestations, praticiens ; périodes mois / mois dernier / 30 jours | OK | `tests/stats.test.ts`, captures `15-dashboard-*.png` |
+| A11 | Conditions de réservation modifiables, affichées avant confirmation, sur la page du rendez-vous et dans l'email | OK | capture `17-public-conditions.png` |
+| A12 | Changement de mot de passe (mot de passe actuel requis, autres sessions révoquées, session courante conservée) | OK | recette |
+| A13 | Emails : expéditeur au nom de l'établissement, notification pro vers l'email de contact, annulation cliente notifiée au pro | OK | `tests/stats.test.ts` (composeFrom), journal serveur |
 
 ## Limites connues
 
