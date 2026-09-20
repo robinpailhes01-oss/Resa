@@ -48,13 +48,16 @@ function envInt(name: string, fallback: number): number {
   return Number.isInteger(value) && value > 0 ? value : fallback;
 }
 
-const globalLimiters = globalThis as unknown as { __resoRateLimiters?: { ip: RateLimiter; confirm: RateLimiter } };
+type Limiters = { ip: RateLimiter; confirm: RateLimiter; auth: RateLimiter; booking: RateLimiter };
+const globalLimiters = globalThis as unknown as { __resoRateLimiters?: Limiters };
 
-export function getRateLimiters(): { ip: RateLimiter; confirm: RateLimiter } {
+export function getRateLimiters(): Limiters {
   if (!globalLimiters.__resoRateLimiters) {
     globalLimiters.__resoRateLimiters = {
       ip: new SlidingWindowRateLimiter(envInt("RATE_LIMIT_IP_MAX", 5), envInt("RATE_LIMIT_IP_WINDOW_MIN", 15) * 60_000),
       confirm: new SlidingWindowRateLimiter(envInt("RATE_LIMIT_CONFIRM_MAX", 20), 15 * 60_000),
+      auth: new SlidingWindowRateLimiter(envInt("RATE_LIMIT_AUTH_MAX", 10), 15 * 60_000),
+      booking: new SlidingWindowRateLimiter(envInt("RATE_LIMIT_BOOKING_MAX", 10), 60 * 60_000),
     };
   }
   return globalLimiters.__resoRateLimiters;

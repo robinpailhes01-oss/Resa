@@ -36,8 +36,25 @@ Vérifié par lecture du code et inspection DOM : un seul H1, lien « Aller au c
 
 Aucun script tiers, une seule police WOFF2 (sous-ensemble latin, `font-display: swap`), aperçus en HTML sans image lourde. Lighthouse mobile non exécuté dans cet environnement : à faire sur la préproduction.
 
+## Application (étape 2)
+
+Parcours vérifié par `node scripts/recette-app.mjs` (Playwright, serveur lancé avec `DATABASE_URL` et `EMAIL_PROVIDER=console`), captures dans `tests/screenshots/app/` :
+
+| ID | Scénario | Résultat | Preuve |
+| --- | --- | --- | --- |
+| A01 | Inscription, email de vérification, session, déconnexion / reconnexion | OK | `tests/password.test.ts`, recette |
+| A02 | Création de l'établissement (slug unique, horaires par défaut, premier praticien) | OK | recette, `tests/time.test.ts` (slugify) |
+| A03 | Prestations (durée, prix, tampon, praticiens), équipe limitée à 3, horaires par jour | OK | recette |
+| A04 | Agenda jour par praticien, rendez-vous manuel, statuts (confirmé, terminé, absente, annulé), note interne | OK | recette |
+| A05 | Réservation publique en 4 étapes, créneaux respectant horaires, tampons, délai minimal et horizon | OK | `tests/availability.test.ts`, recette |
+| A06 | Double-booking impossible (contrainte d'exclusion GiST, tampon inclus, annulés ignorés) | OK | `tests/db-bookings.test.ts` |
+| A07 | Emails : confirmation client avec lien de gestion stable, notification pro, rappel et avis planifiés, annulation | OK | journal serveur en console, recette |
+| A08 | Annulation en ligne par le client dans le délai autorisé, refus au-delà | OK | recette, `isCancellableByClient` |
+| A09 | Aucun débordement horizontal à 390 px (espace pro, réservation, connexion) | OK | captures mobiles |
+
 ## Limites connues
 
 - Limitation de débit en mémoire : par instance serveur. Prévoir un store partagé (Redis) en déploiement multi-instances.
 - Pas de dispositif de consentement : aucun traceur n'est chargé, donc non requis pour cette version.
 - Textes légaux : gabarits avec bandeau « préproduction » tant que l'identité légale n'est pas renseignée.
+- Application : un compte par établissement, pas de SMS, pas de paiement d'abonnement (prévu plus tard). Les rappels dépendent du cron `/api/internal/email-jobs`.

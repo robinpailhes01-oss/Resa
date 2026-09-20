@@ -41,11 +41,13 @@ function readOptional(value: string | undefined): string | null {
 function readHttpsUrl(value: string | undefined, name: string): string | null {
   const raw = readOptional(value);
   if (!raw) return null;
+  // Chemin interne de l'application (ex. « /inscription ») : accepté tel quel.
+  if (raw.startsWith("/") && !raw.startsWith("//")) return raw;
   let parsed: URL;
   try {
     parsed = new URL(raw);
   } catch {
-    throw new Error(`${name} doit être une URL absolue valide (reçu : "${raw}").`);
+    throw new Error(`${name} doit être une URL absolue valide ou un chemin interne commençant par « / » (reçu : "${raw}").`);
   }
   if (parsed.protocol !== "https:" && parsed.hostname !== "localhost") {
     throw new Error(`${name} doit utiliser HTTPS (reçu : "${raw}").`);

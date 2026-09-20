@@ -27,6 +27,13 @@ describe("configuration commerciale", () => {
   it("refuse une URL non HTTPS ou invalide", () => {
     expect(() => buildConfig({ RESO_SIGNUP_URL: "http://app.example.com" })).toThrow(/HTTPS/);
     expect(() => buildConfig({ RESO_SIGNUP_URL: "pas-une-url" })).toThrow(/URL absolue/);
+    expect(() => buildConfig({ RESO_SIGNUP_URL: "//evil.example" })).toThrow(/URL absolue/);
+  });
+
+  it("accepte les chemins internes de l'application", () => {
+    const config = buildConfig({ RESO_LAUNCH_MODE: "live", RESO_SIGNUP_URL: "/inscription", RESO_LOGIN_URL: "/connexion" });
+    expect(config.signupUrl).toBe("/inscription");
+    expect(config.loginUrl).toBe("/connexion");
   });
 
   it("refuse un mode inconnu et un prix invalide", () => {
