@@ -50,9 +50,9 @@ export async function signUp(_prev: AuthState, formData: FormData): Promise<Auth
     return { fieldErrors };
   }
   const email = normalizeEmail(parsed.data.email);
-  const sql = getSql();
   let userId: string;
   try {
+    const sql = getSql();
     const existing = await sql`select id from users where email = ${email}`;
     if (existing.length > 0) {
       return { fieldErrors: { email: "Un compte existe déjà avec cette adresse. Connectez-vous." } };

@@ -1,11 +1,16 @@
 // Applique les migrations SQL de db/migrations dans l'ordre, une seule fois chacune.
 // Usage : DATABASE_URL=postgres://... node scripts/migrate.mjs
+// Avec --if-configured (build Vercel), l'absence de DATABASE_URL n'est pas une erreur.
 import postgres from "postgres";
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 
 const url = process.env.DATABASE_URL;
 if (!url) {
+  if (process.argv.includes("--if-configured")) {
+    console.warn("DATABASE_URL absent : migrations ignorées (l'application nécessitera une base).");
+    process.exit(0);
+  }
   console.error("DATABASE_URL manquant.");
   process.exit(1);
 }
