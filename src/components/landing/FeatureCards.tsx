@@ -5,7 +5,7 @@ import { Avatar } from "@/components/previews/AppFrame";
 
 /* Mini-interfaces décoratives des cartes de fonctionnalités (données fictives). */
 
-const frame = "w-full rounded-xl bg-card p-3 text-[10px] shadow-[0_10px_30px_-12px_rgba(73,51,68,0.25)] ring-1 ring-line";
+const frame = "w-full rounded-xl bg-card p-3 text-[10px] shadow-[0_10px_30px_-12px_rgba(105,80,232,0.18)] ring-1 ring-line";
 
 export function BookingMini() {
   const items = [

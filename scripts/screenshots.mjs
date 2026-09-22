@@ -11,6 +11,7 @@ mkdirSync(out, { recursive: true });
 const viewports = [
   { name: "320x568", width: 320, height: 568 },
   { name: "390x844", width: 390, height: 844 },
+  { name: "514x1536", width: 514, height: 1536 },
   { name: "768x1024", width: 768, height: 1024 },
   { name: "1024x768", width: 1024, height: 768 },
   { name: "1440x900", width: 1440, height: 900 },
@@ -28,8 +29,12 @@ for (const vp of viewports) {
   await page.evaluate(() => document.querySelectorAll(".reveal").forEach((el) => el.classList.add("is-visible")));
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
   await page.screenshot({ path: path.join(out, `home-${vp.name}-fold.png`) });
+  // Le plein écran doit rester stable quand Playwright change la surface de capture.
+  // Le mode réduit finalise aussi les transitions des sections hors écran.
+  await page.emulateMedia({ reducedMotion: "reduce" });
   await page.screenshot({ path: path.join(out, `home-${vp.name}-full.png`), fullPage: true });
   console.log(`${vp.name} — scroll horizontal : ${overflow ? "OUI (anomalie)" : "non"}`);
+  if (overflow) process.exitCode = 1;
   await page.close();
 }
 await browser.close();

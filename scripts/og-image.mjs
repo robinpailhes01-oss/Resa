@@ -10,17 +10,16 @@ const font = readFileSync(path.join(root, "src/assets/fonts/manrope-latin-wght-n
 const html = `<!doctype html><html lang="fr"><head><meta charset="utf-8"><style>
 @font-face{font-family:Manrope;src:url(data:font/woff2;base64,${font}) format('woff2');font-weight:200 800}
 html,body{margin:0}
-body{width:1200px;height:630px;background:#faf7f2;color:#493344;font-family:Manrope,system-ui,sans-serif;display:flex;flex-direction:column;justify-content:space-between;padding:72px;box-sizing:border-box}
+body{width:1200px;height:630px;background:radial-gradient(ellipse at 0% 100%,#ebe8ff,transparent 65%),radial-gradient(ellipse at 100% 50%,#eaf0ff,transparent 70%),#fff;color:#111116;font-family:Manrope,system-ui,sans-serif;display:flex;flex-direction:column;justify-content:space-between;padding:72px;box-sizing:border-box}
 .logo{display:flex;align-items:center;gap:14px}
-.mark{width:56px;height:56px;border-radius:14px;background:#493344;display:flex;align-items:center;justify-content:center}
-.mark span{color:#faf7f2;font-size:34px;font-weight:700;line-height:1}
+.mark{width:48px;height:48px}
 .name{font-size:44px;font-weight:700;letter-spacing:-1px}
-h1{font-size:76px;font-weight:700;line-height:1.05;letter-spacing:-2px;margin:0 0 18px}
-p{font-size:32px;color:#655b66;margin:0}
+h1{font-size:76px;font-weight:800;line-height:1.05;letter-spacing:-3px;margin:0 0 18px}
+p{font-size:28px;color:#696a80;margin:0}
 .tags{display:flex;gap:12px}
-.tags div{padding:12px 22px;border-radius:999px;background:#ddd5e5;font-size:24px;font-weight:600}
+.tags div{padding:12px 22px;border-radius:999px;background:#f1edff;color:#6950e8;font-size:24px;font-weight:600}
 </style></head><body>
-<div class="logo"><div class="mark"><span>r</span></div><div class="name">reso</div></div>
+<div class="logo"><svg class="mark" viewBox="0 0 26 26"><rect width="26" height="26" rx="8" fill="#a699ff"/><path d="M2 26C3 13 11 3 26 0V15C26 21.1 21.1 26 15 26Z" fill="#8064f4"/></svg><div class="name">reso</div></div>
 <div><h1>Vos rendez-vous.<br>Un prix tout simple.</h1><p>Agenda en ligne pour les pros de la beauté et du bien-être</p></div>
 <div class="tags"><div>Réservation en ligne</div><div>Emails automatiques</div><div>Agenda partagé</div></div>
 </body></html>`;

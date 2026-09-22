@@ -28,7 +28,7 @@ function jsonFor(outcome: Outcome, details?: Record<string, string>) {
 /** Repli sans JavaScript : redirection vers la section avec un état lisible (§16). */
 function redirectFor(request: Request, outcome: Outcome) {
   const state = outcome === "accepted" ? "ok" : outcome === "invalid" ? "email" : outcome === "rate_limited" ? "limite" : "erreur";
-  const url = new URL(`/?inscription=${state}#inscription`, request.url);
+  const url = new URL(`/preinscription?inscription=${state}#inscription`, request.url);
   return NextResponse.redirect(url, 303);
 }
 

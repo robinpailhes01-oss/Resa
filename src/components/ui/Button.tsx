@@ -5,15 +5,15 @@ import { cn } from "@/lib/cn";
 type Variant = "primary" | "secondary" | "ghost" | "inverse" | "link";
 type Size = "md" | "compact";
 
-/* Boutons en pilule, texte 16/600 ; la flèche des liens glisse au survol (classe btn). */
+/* CTA noirs, accents violets ; cibles tactiles de 44 px minimum. */
 const base =
   "btn inline-flex items-center justify-center gap-2 rounded-xl font-semibold text-[16px] leading-tight text-center disabled:cursor-not-allowed disabled:opacity-60 [&_svg]:size-[18px] [&_svg]:shrink-0";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-brand text-white hover:bg-brand-hover active:bg-brand-hover",
-  secondary: "bg-card text-brand ring-1 ring-line hover:bg-page active:bg-page",
+  primary: "bg-ink text-white shadow-[0_5px_12px_-6px_rgba(17,17,22,0.5)] hover:bg-[#2a2933] active:bg-[#2a2933]",
+  secondary: "bg-card/60 text-ink ring-1 ring-line hover:bg-soft-tint active:bg-soft-tint",
   ghost: "bg-transparent text-brand hover:bg-brand/5 active:bg-brand/10",
-  /** Sur fond prune : bouton blanc, texte prune. */
+  /** Sur fond coloré : bouton blanc, texte violet. */
   inverse: "bg-white text-brand hover:bg-page active:bg-page",
   /** Lien texte avec chevron, à la manière d'Apple. */
   link: "bg-transparent px-0 text-brand underline-offset-4 hover:underline [&_svg]:size-4",
@@ -21,7 +21,7 @@ const variants: Record<Variant, string> = {
 
 const sizes: Record<Size, string> = {
   md: "min-h-12 px-6 py-3",
-  compact: "min-h-10 px-4 py-2 text-[14px]",
+  compact: "min-h-11 px-4 py-2 text-[13px]",
 };
 
 type CommonProps = {

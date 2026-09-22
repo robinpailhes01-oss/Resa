@@ -3,6 +3,7 @@ import { Logo } from "@/components/ui/Logo";
 import { demo } from "@/content/fr/landing";
 import { cn } from "@/lib/cn";
 import { AppFrame, Avatar } from "./AppFrame";
+import { DemoPhoto } from "./DemoPhoto";
 
 type Tone = "soft" | "accent" | "success";
 type Slot = { start: number; end: number; title: string; client: string; tone: Tone };
@@ -43,7 +44,7 @@ const columns: Array<{ name: string; role: string; initials: string; slots: Slot
 ];
 
 const toneClasses: Record<Tone, { bg: string; bar: string }> = {
-  soft: { bg: "bg-soft-tint", bar: "bg-[#B9A6CB]" },
+  soft: { bg: "bg-soft-tint", bar: "bg-[#a699ff]" },
   accent: { bg: "bg-accent-tint", bar: "bg-accent" },
   success: { bg: "bg-success-tint", bar: "bg-[#8FC7A9]" },
 };
@@ -90,10 +91,10 @@ function Sidebar() {
     { icon: Settings, label: "Paramètres" },
   ];
   return (
-    <aside className="hidden w-44 shrink-0 flex-col border-r border-line bg-page/70 p-3 @2xl:flex">
-      <Logo height={18} className="mb-4 ml-1" />
+    <aside className="hidden w-44 shrink-0 flex-col border-r border-line bg-[#fafaff] p-3 @2xl:flex">
+      <Logo height={24} className="mb-5 ml-1" />
       <div className="mb-3 flex items-center gap-2 rounded-lg bg-card p-2 ring-1 ring-line">
-        <span className="size-8 shrink-0 rounded-md bg-[linear-gradient(135deg,#EAB99A,#DDD5E5)]" />
+        <DemoPhoto variant="salon" className="size-8 rounded-md" />
         <div className="min-w-0 flex-1 leading-tight">
           <div className="truncate text-[11px] font-semibold text-ink">{demo.salon}</div>
           <div className="truncate text-[9px] text-ink-muted">{demo.salonType}</div>
@@ -158,7 +159,7 @@ function Toolbar() {
 
 /** Vue large : trois colonnes praticiens (dès 448 px de largeur de cadre). */
 function DesktopGrid() {
-  const rowHeight = 30;
+  const rowHeight = 44;
   return (
     <div className="hidden @md:block">
       <div className="grid grid-cols-[44px_repeat(3,1fr)] border-b border-line">
@@ -206,72 +207,57 @@ const mobileSlots: Slot[] = [
 /** Vue téléphone dédiée : un praticien, une chronologie lisible. */
 function MobileTimeline() {
   const camille = columns[0];
-  const rowHeight = 54;
   const start = 8;
-  const end = 16;
-  const hours = Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  const hours = Array.from({ length: 9 }, (_, i) => start + i);
   return (
-    <div className="@md:hidden">
-      <div className="mx-3 mt-3 flex items-center gap-3 rounded-xl px-2 py-2 shadow-[0_6px_18px_-8px_rgba(73,51,68,0.2)] ring-1 ring-line/70">
-        <span className="size-11 shrink-0 rounded-lg bg-[linear-gradient(135deg,#EAB99A_0%,#F3E3D4_55%,#DDD5E5_100%)]" />
+    <div className="mobile-agenda @md:hidden">
+      <div className="agenda-salon">
+        <DemoPhoto variant="salon" className="agenda-salon-photo rounded-md" />
         <div className="min-w-0 flex-1 leading-tight">
-          <div className="text-[15px] font-semibold text-ink">{demo.salon}</div>
-          <div className="text-[12px] text-ink-muted">{demo.salonType}</div>
+          <div className="font-semibold text-ink">{demo.salon}</div>
+          <div className="agenda-salon-type text-ink-muted">{demo.salonType}</div>
         </div>
-        <ChevronDown className="size-4 text-ink-muted" />
+        <ChevronDown size={14} className="text-ink-muted" />
       </div>
-      <div className="px-4 pt-4">
-        <div className="text-[20px] font-bold text-ink">Mon agenda</div>
-        <div className="mt-2.5 flex items-center gap-2 text-[13px]">
-          <span className="rounded-lg border border-line px-3 py-2 text-ink-muted">
-            <ChevronLeft className="size-3.5" />
-          </span>
-          <span className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg border border-line py-2 font-medium text-ink">
-            <CalendarDays className="size-4 text-ink-muted" />
-            {demo.date.short}
-          </span>
-          <span className="rounded-lg border border-line px-3 py-2 text-ink-muted">
-            <ChevronRight className="size-3.5" />
-          </span>
+      <div className="agenda-toolbar">
+        <div className="agenda-heading">Mon agenda</div>
+        <div className="agenda-date">
+          <ChevronLeft size={13} className="text-ink-muted" />
+          <span><CalendarDays size={14} />{demo.date.short}</span>
+          <ChevronRight size={13} className="text-ink-muted" />
         </div>
-        <div className="mt-4 flex items-center gap-3">
-          <span className="inline-flex size-10 items-center justify-center rounded-full bg-[linear-gradient(135deg,#EAB99A,#DDD5E5)] text-[12px] font-bold text-brand">
-            {camille.initials}
-          </span>
+        <div className="agenda-practitioner">
+          <DemoPhoto variant="practitioner" className="agenda-portrait rounded-full" />
           <div className="leading-tight">
-            <div className="text-[14px] font-semibold text-ink">{camille.name}</div>
-            <div className="text-[12px] text-ink-muted">{camille.role}</div>
+            <div className="font-semibold text-ink">{camille.name}</div>
+            <div className="text-ink-muted">{camille.role}</div>
           </div>
         </div>
       </div>
-      <div className="relative mx-4 mb-4 mt-3 grid grid-cols-[44px_1fr]" style={{ height: (end - start) * rowHeight + 12 }}>
+      <div className="agenda-timeline">
         <div className="relative">
           {hours.map((hour, i) => (
-            <div key={hour} className="absolute right-2 text-[11px] text-ink-muted" style={{ top: i * rowHeight - 6 }}>
+            <div key={hour} className="agenda-hour" style={{ top: `calc(${i} * var(--agenda-hour) - 5px)` }}>
               {formatHour(hour)}
             </div>
           ))}
         </div>
-        <div className="relative border-l border-line">
-          {hours.slice(0, -1).map((hour, i) => (
-            <div key={hour} className="absolute inset-x-0 border-t border-line/70" style={{ top: i * rowHeight }} />
+        <div className="relative border-l border-line/50">
+          {hours.map((hour, i) => (
+            <div key={hour} className="absolute inset-x-0 border-t border-line/50" style={{ top: `calc(${i} * var(--agenda-hour))` }} />
           ))}
           {mobileSlots.map((slot, i) => {
             const tone = toneClasses[slot.tone];
-            const slotTop = (slot.start - start) * rowHeight + 3;
-            const height = (slot.end - slot.start) * rowHeight - 6;
             return (
               <div
                 key={slot.title + slot.start}
-                className={cn("slot absolute inset-x-2 flex overflow-hidden rounded-lg", tone.bg)}
-                style={{ top: slotTop, height, "--i": i } as React.CSSProperties}
+                className={cn("slot agenda-slot", tone.bg)}
+                style={{ top: `calc(${slot.start - start} * var(--agenda-hour) + 2px)`, "--i": i } as React.CSSProperties}
               >
-                <span className={cn("w-1 shrink-0", tone.bar)} />
-                <div className="min-w-0 px-3 py-1 text-[11px] leading-[14px]">
-                  <div className="truncate text-[13px] leading-[17px] font-semibold text-ink">{slot.title}</div>
-                  <div className="text-ink-muted">
-                    {formatHour(slot.start)} – {formatHour(slot.end)}
-                  </div>
+                <span className={cn("w-0.5 shrink-0", tone.bar)} />
+                <div className="agenda-slot-copy">
+                  <div className="truncate font-semibold text-ink">{slot.title}</div>
+                  <div className="text-ink-muted">{formatHour(slot.start)} – {formatHour(slot.end)}</div>
                   <div className="truncate text-ink-muted">{slot.client}</div>
                 </div>
               </div>
