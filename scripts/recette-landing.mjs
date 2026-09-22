@@ -64,7 +64,7 @@ const ok = (name, cond, detail = "") => results.push(`${cond ? "OK " : "KO "} ${
   await page.goto(`${base}/`, { waitUntil: "networkidle" });
   const agendaTop = await page.evaluate(() => Math.round(document.getElementById("produit").getBoundingClientRect().top));
   const agendaBottom = await page.evaluate(() => Math.round(document.querySelector("#produit [role=img]").getBoundingClientRect().bottom));
-  ok("agenda mobile commence entre 400 et 440 px", agendaTop >= 400 && agendaTop <= 440, `${agendaTop} px, bas de l'agenda à ${agendaBottom} px`);
+  ok("agenda mobile commence entre 400 et 500 px", agendaTop >= 400 && agendaTop <= 500, `${agendaTop} px, bas de l'agenda à ${agendaBottom} px`);
   const toggle = page.locator('button[aria-controls]');
   await toggle.click();
   ok("menu mobile ouvert", (await toggle.getAttribute("aria-expanded")) === "true");

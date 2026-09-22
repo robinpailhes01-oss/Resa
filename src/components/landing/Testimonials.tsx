@@ -50,13 +50,16 @@ export function Testimonials() {
           </ul>
         </>
       ) : (
-        <div className="reveal card mx-auto flex max-w-3xl flex-col items-center px-6 py-12 text-center md:px-12 md:py-16">
-          <p className="eyebrow">{testimonialsSection.label}</p>
-          <h2 id="avis-title" className="heading-2 mt-3">
+        <div className="reveal panel-dark relative mx-auto flex max-w-[1120px] flex-col items-center overflow-hidden rounded-[28px] px-6 py-14 text-center text-white md:rounded-[32px] md:px-12 md:py-20">
+          <svg aria-hidden="true" viewBox="0 0 120 96" className="pointer-events-none absolute -right-4 top-6 h-24 w-auto text-white/12 md:right-12 md:top-10 md:h-32" fill="currentColor">
+            <path d="M0 96V58C0 26 14 8 44 0l6 12C34 18 26 30 26 44h22v52H0Zm72 0V58c0-32 14-50 44-58l6 12c-16 6-24 18-24 32h22v52H72Z" />
+          </svg>
+          <p className="eyebrow !text-white/70">{testimonialsSection.label}</p>
+          <h2 id="avis-title" className="heading-2 mt-3 !text-white">
             {testimonialsSection.pending.title}
           </h2>
-          <p className="mt-4 max-w-xl text-[16px] leading-7 text-ink-muted md:text-[17px]">{testimonialsSection.pending.text}</p>
-          <CtaLink href={primary.href} placement="footer" signup={offer.launchMode === "live"} className="mt-8">
+          <p className="mt-4 max-w-xl text-[16px] leading-7 text-white/80 md:text-[17px]">{testimonialsSection.pending.text}</p>
+          <CtaLink href={primary.href} placement="footer" signup={offer.launchMode === "live"} variant="inverse" className="mt-8">
             {primary.label}
           </CtaLink>
         </div>

@@ -1,6 +1,6 @@
 import { CalendarDays, ChevronDown, ChevronLeft, ChevronRight, Mail, Plus, Settings, Sparkles, Users } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
-import { demo, hero } from "@/content/fr/landing";
+import { demo } from "@/content/fr/landing";
 import { cn } from "@/lib/cn";
 import { AppFrame, Avatar } from "./AppFrame";
 import { DemoPhoto } from "./DemoPhoto";
@@ -181,14 +181,12 @@ function DesktopGrid({ dayStart, dayEnd, rowHeight }: { dayStart: number; dayEnd
   );
 }
 
-/** Vue téléphone : la journée de Camille, une seule colonne lisible. */
-function MobileTimeline() {
+/** Journée de Camille, une seule colonne lisible : vue téléphone et vue rapprochée. */
+function DayTimeline({ rowHeight = 38, dayEnd = 16, className }: { rowHeight?: number; dayEnd?: number; className?: string }) {
   const dayStart = 8;
-  const dayEnd = 16;
-  const rowHeight = 38;
   const hours = Array.from({ length: dayEnd - dayStart + 1 }, (_, i) => dayStart + i);
   return (
-    <div className="@xl:hidden">
+    <div className={className}>
       <div className="flex items-center justify-between gap-3 border-b border-line px-3.5 py-2.5">
         <div className="flex min-w-0 items-center gap-2.5">
           <DemoPhoto variant="salon" className="size-8 rounded-lg" />
@@ -231,30 +229,9 @@ function MobileTimeline() {
             <div key={hour} className="absolute inset-x-0 border-t border-line/80" style={{ top: i * rowHeight }} />
           ))}
           {camille.map((slot) => (
-            <SlotCard key={slot.title + slot.start} slot={slot} dayStart={dayStart} rowHeight={rowHeight} dense />
+            <SlotCard key={slot.title + slot.start} slot={slot} dayStart={dayStart} rowHeight={rowHeight} dense={rowHeight < 44} />
           ))}
         </div>
-      </div>
-    </div>
-  );
-}
-
-/** Carte flottante « Rappel par email envoyé », posée sur le bord de la fenêtre. */
-export function ReminderCard({ className }: { className?: string }) {
-  return (
-    <div
-      aria-hidden="true"
-      className={cn(
-        "demo-card pointer-events-none absolute z-10 flex w-[196px] items-start gap-2.5 rounded-xl border border-line bg-card p-3 shadow-float sm:w-[220px]",
-        className,
-      )}
-    >
-      <span className="envelope inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-soft-tint text-brand">
-        <Mail className="size-4" strokeWidth={1.9} />
-      </span>
-      <div className="min-w-0 leading-tight">
-        <div className="text-[12px] font-semibold text-ink">{hero.floatingCard.title}</div>
-        <div className="mt-0.5 truncate text-[11px] text-ink-muted">{hero.floatingCard.text}</div>
       </div>
     </div>
   );
@@ -263,21 +240,28 @@ export function ReminderCard({ className }: { className?: string }) {
 type AgendaPreviewProps = {
   alt: string;
   className?: string;
-  /** Vue rapprochée : trois colonnes sans barre latérale, plage horaire resserrée. */
-  closeup?: boolean;
+  /** « day » : la journée de Camille seule, plus grande (vue rapprochée). */
+  variant?: "full" | "day";
 };
 
-export function AgendaPreview({ alt, className, closeup = false }: AgendaPreviewProps) {
+export function AgendaPreview({ alt, className, variant = "full" }: AgendaPreviewProps) {
+  if (variant === "day") {
+    return (
+      <AppFrame alt={alt} className={className}>
+        <DayTimeline rowHeight={48} dayEnd={15} />
+      </AppFrame>
+    );
+  }
   return (
     <AppFrame alt={alt} className={className}>
       <div className="flex">
-        {closeup ? null : <Sidebar />}
+        <Sidebar />
         <div className="min-w-0 flex-1">
           <div className="hidden @xl:block">
             <Toolbar />
           </div>
-          {closeup ? <DesktopGrid dayStart={9} dayEnd={15} rowHeight={56} /> : <DesktopGrid dayStart={8} dayEnd={18} rowHeight={48} />}
-          <MobileTimeline />
+          <DesktopGrid dayStart={8} dayEnd={18} rowHeight={48} />
+          <DayTimeline className="@xl:hidden" />
         </div>
       </div>
     </AppFrame>

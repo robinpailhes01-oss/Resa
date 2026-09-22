@@ -63,8 +63,8 @@ export const hero = {
   } satisfies ByMode<string>,
   /** Carte flottante posée sur l'aperçu ; état fictif du produit. */
   floatingCard: { title: "Rappel par email envoyé", text: "Julie Martin · demain 09:00" },
-  /** Second élément décoratif, discret : une réservation qui vient d'arriver. */
-  floatingPill: "Nouvelle réservation en ligne",
+  /** Seconde carte flottante : une réservation qui vient d'arriver (fictif). */
+  floatingPill: { title: "Nouvelle réservation en ligne", text: "Il y a 2 minutes" },
   previewAlt: `Aperçu illustratif de l’agenda ${brand} : la journée de Camille chez Maison Alba, un établissement fictif.`,
 };
 
@@ -73,7 +73,9 @@ export const features = {
   main: {
     title: "Votre journée, en un regard.",
     text: "Retrouvez vos rendez-vous, vos praticiens et les informations utiles dans un agenda clair, pensé pour votre quotidien.",
-    alt: `Vue rapprochée de l’agenda ${brand} : trois praticiens et leurs rendez-vous du jour, données fictives.`,
+    alt: `Vue rapprochée de l’agenda ${brand} : la journée de Camille et ses trois rendez-vous, données fictives.`,
+    /** Pastille posée sur l'aperçu (fictif). */
+    chip: { title: "3 rendez-vous", text: "aujourd’hui" },
   },
   cards: [
     {
@@ -81,12 +83,15 @@ export const features = {
       title: "Vos clientes réservent quand elles le souhaitent.",
       text: "Partagez votre lien de réservation et laissez vos clientes choisir leur prestation et leur créneau.",
       alt: `Aperçu de la page de réservation ${brand} : choix d’une prestation puis d’un créneau, données fictives.`,
+      chip: { title: "Réservation en ligne", text: "24h/24 et 7j/7" },
     },
     {
       id: "emails",
       title: "Les bons emails, au bon moment.",
       text: "Confirmation, rappel et demande d’avis sont envoyés automatiquement.",
       alt: `Aperçu d’un email de confirmation envoyé par ${brand} au nom d’un établissement fictif.`,
+      chip: { title: "Emails automatiques", text: "Sans effort" },
+      steps: ["Confirmation", "Rappel", "Demande d’avis"],
     },
   ] as const,
 };
@@ -111,8 +116,10 @@ export const pricing = {
   highlights: [
     "Agenda et réservation en ligne",
     "Confirmations, rappels et demandes d’avis par email",
+    capitalize(practitioners),
     `Sans commission de réservation prélevée par ${brand}`,
   ],
+  badge: "Tout inclus",
   inclusionsTitle: "Ce qui est inclus",
   inclusions: [
     "Page de réservation et lien à partager",

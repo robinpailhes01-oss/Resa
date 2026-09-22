@@ -55,8 +55,8 @@ export function Header() {
       <div className="container-page">
         <div
           className={cn(
-            "flex h-12 items-center justify-between gap-4 rounded-2xl border bg-card/90 pl-4 pr-1.5 backdrop-blur-md transition-[box-shadow,border-color] duration-300 md:h-14 md:pl-5 md:pr-2",
-            scrolled || open ? "border-line shadow-[0_8px_30px_-12px_rgba(23,23,27,0.14)]" : "border-transparent shadow-none",
+            "flex h-12 items-center justify-between gap-4 rounded-2xl border border-ink/8 pl-4 pr-1.5 shadow-[0_6px_24px_-14px_rgba(17,17,22,0.18)] backdrop-blur-xl transition-[background-color,box-shadow] duration-300 md:h-14 md:pl-5 md:pr-2",
+            scrolled || open ? "bg-card/95 shadow-[0_10px_32px_-14px_rgba(17,17,22,0.22)]" : "bg-card/75",
           )}
         >
           <Link href="/" className="inline-flex items-center rounded-md" aria-label={`${offer.brandName} – accueil`}>

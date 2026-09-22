@@ -10,8 +10,8 @@ const base =
   "btn inline-flex items-center justify-center gap-2 rounded-button font-semibold text-[15px] leading-tight text-center disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:transform-none [&_svg]:size-[18px] [&_svg]:shrink-0";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-ink text-white shadow-[0_1px_2px_rgba(23,23,27,0.12)] hover:bg-ink-hover hover:shadow-[0_6px_16px_-6px_rgba(23,23,27,0.35)]",
-  secondary: "bg-card text-ink border border-line shadow-card hover:border-control/60 hover:shadow-lift",
+  primary: "bg-ink text-white shadow-[0_1px_2px_rgba(17,17,22,0.16),0_8px_20px_-10px_rgba(17,17,22,0.45)] hover:bg-ink-hover hover:shadow-[0_2px_4px_rgba(17,17,22,0.14),0_12px_28px_-10px_rgba(17,17,22,0.5)]",
+  secondary: "bg-card text-ink border border-ink/10 shadow-card hover:border-ink/20 hover:shadow-lift",
   ghost: "bg-transparent text-ink hover:bg-ink/5 active:bg-ink/10",
   /** Sur fond sombre : bouton blanc, texte noir. */
   inverse: "bg-white text-ink hover:bg-page",
