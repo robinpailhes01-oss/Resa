@@ -98,14 +98,22 @@ function buildConfig(env: Env): OfferConfig {
     siteUrl: readOptional(env.RESO_SITE_URL) ?? "http://localhost:3000",
   };
 
+  // L'application est intégrée au site : en mode live, l'inscription et la
+  // connexion pointent par défaut sur ses propres pages.
+  if (config.launchMode === "live") {
+    config.signupUrl ??= "/inscription";
+    config.loginUrl ??= "/connexion";
+  }
+
   assertLaunchRules(config);
   return config;
 }
 
 /**
  * Règle de mise en production (§2) : un mode live ne peut pas être activé
- * sans URL de création de compte validée. Le build échoue explicitement
- * plutôt que d'afficher un bouton inactif ou un lien « # ».
+ * sans URL de création de compte. Le build échoue explicitement plutôt que
+ * d'afficher un bouton inactif ou un lien « # » (les chemins internes de
+ * l'application servent de défaut).
  */
 export function assertLaunchRules(config: OfferConfig): void {
   if (config.launchMode === "live" && !config.signupUrl) {
@@ -115,7 +123,25 @@ export function assertLaunchRules(config: OfferConfig): void {
   }
 }
 
-export const offer: OfferConfig = buildConfig(process.env);
+/**
+ * Accès littéraux à process.env : Next.js les fige au build (clé `env` de
+ * next.config.ts) dans le bundle serveur comme dans le bundle client, ce qui
+ * garantit un rendu identique des deux côtés.
+ */
+const runtimeEnv: Env = {
+  RESO_LAUNCH_MODE: process.env.RESO_LAUNCH_MODE,
+  RESO_MONTHLY_PRICE_EX_VAT: process.env.RESO_MONTHLY_PRICE_EX_VAT,
+  RESO_PRACTITIONER_LIMIT: process.env.RESO_PRACTITIONER_LIMIT,
+  RESO_TRIAL_DAYS: process.env.RESO_TRIAL_DAYS,
+  RESO_SIGNUP_URL: process.env.RESO_SIGNUP_URL,
+  RESO_LOGIN_URL: process.env.RESO_LOGIN_URL,
+  RESO_SUPPORT_EMAIL: process.env.RESO_SUPPORT_EMAIL,
+  RESO_LEGAL_ENTITY: process.env.RESO_LEGAL_ENTITY,
+  RESO_PRIVACY_VERSION: process.env.RESO_PRIVACY_VERSION,
+  RESO_SITE_URL: process.env.RESO_SITE_URL,
+};
+
+export const offer: OfferConfig = buildConfig(runtimeEnv);
 
 export const isPrelaunch = offer.launchMode === "prelaunch";
 export const isLive = offer.launchMode === "live";

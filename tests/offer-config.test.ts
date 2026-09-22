@@ -14,8 +14,11 @@ describe("configuration commerciale", () => {
     expect(config.trialDays).toBeNull();
   });
 
-  it("refuse le mode live sans URL d'inscription (règle de mise en production)", () => {
-    expect(() => buildConfig({ RESO_LAUNCH_MODE: "live" })).toThrow(/RESO_SIGNUP_URL/);
+  it("en mode live, pointe par défaut sur les pages intégrées d'inscription et de connexion", () => {
+    const config = buildConfig({ RESO_LAUNCH_MODE: "live" });
+    expect(config.launchMode).toBe("live");
+    expect(config.signupUrl).toBe("/inscription");
+    expect(config.loginUrl).toBe("/connexion");
   });
 
   it("accepte le mode live avec une URL HTTPS validée (F15)", () => {

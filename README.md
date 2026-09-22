@@ -39,6 +39,7 @@ Sans `DATABASE_URL`, seule la landing fonctionne : les demandes vont dans `.data
 | `npm run db:migrate` | Applique les migrations SQL (`DATABASE_URL` requis) |
 | `npm run screenshots` | Captures de la landing aux 7 largeurs de référence + contrôle du scroll horizontal (serveur lancé) ; `--docs` régénère `docs/previews/` |
 | `node scripts/recette-landing.mjs` | Recette fonctionnelle de la landing : navigation, menu mobile, CTA, préinscription avec et sans JavaScript, mouvement réduit |
+| `node scripts/recette-parcours.mjs` | Parcours complet d'un établissement en mode live : landing → inscription → vérification d'email → onboarding → réservation cliente → mot de passe oublié → reconnexion (serveur lancé avec `RESO_LAUNCH_MODE=live`) |
 | `node scripts/recette-app.mjs` | Recette de bout en bout de l'application avec Playwright (compte → établissement → réservation publique → annulation) |
 | `node scripts/og-image.mjs` | Régénère `src/app/opengraph-image.png` |
 
@@ -76,7 +77,7 @@ tests                      tests unitaires et d'intégration
 Toutes les valeurs affichées (prix, nombre de praticiens, CTA, métadonnées) dérivent de `src/config/offer.ts`, alimenté par les variables `RESO_*` (voir `.env.example`).
 
 - **Changer le prix** : `RESO_MONTHLY_PRICE_EX_VAT=39` puis rebuild. Le format français avec espaces insécables est appliqué partout.
-- **Passer en mode live** : `RESO_LAUNCH_MODE=live` **et** `RESO_SIGNUP_URL=/inscription` (chemin interne de l'application, ou URL HTTPS absolue). Sans URL, le build échoue volontairement. `RESO_LOGIN_URL=/connexion` affiche le lien Connexion ; `RESO_TRIAL_DAYS` ne doit être renseigné qu'une fois l'essai validé. En live, le formulaire d'attente est remplacé par un bloc CTA et les textes (FAQ, mentions) basculent. L'application elle-même (`/inscription`, `/app`, `/r/<slug>`) fonctionne dans les deux modes.
+- **Passer en mode live** : `RESO_LAUNCH_MODE=live`. Les CTA deviennent « Créer mon compte » vers `/inscription`, le lien Connexion vers `/connexion` (surchargeables par `RESO_SIGNUP_URL` et `RESO_LOGIN_URL`, chemins internes ou URLs HTTPS), le formulaire d'attente est remplacé par un bloc CTA et les textes (FAQ, mentions) basculent. `RESO_TRIAL_DAYS` ne doit être renseigné qu'une fois l'essai validé. L'application elle-même (`/inscription`, `/app`, `/r/<slug>`) fonctionne dans les deux modes, avec une base de données.
 - **Pages légales** : `RESO_LEGAL_ENTITY`, `RESO_HOSTING_PROVIDER`, `RESO_SUPPORT_EMAIL`, `RESO_PUBLICATION_DIRECTOR`. Tant qu'elles manquent, les pages affichent un bandeau « préproduction » et n'inventent rien.
 - **Indexation** : `RESO_INDEXABLE=true` uniquement en production validée (sinon `noindex` et `robots.txt` bloquant).
 

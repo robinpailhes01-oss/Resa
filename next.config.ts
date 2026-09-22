@@ -12,6 +12,21 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // La configuration commerciale (src/config/offer.ts) est lue dans process.env
+  // côté serveur et côté client : ces clés sont figées au build pour que les
+  // deux rendus soient identiques (sinon erreur d'hydratation en mode live).
+  env: {
+    RESO_LAUNCH_MODE: process.env.RESO_LAUNCH_MODE ?? "",
+    RESO_MONTHLY_PRICE_EX_VAT: process.env.RESO_MONTHLY_PRICE_EX_VAT ?? "",
+    RESO_PRACTITIONER_LIMIT: process.env.RESO_PRACTITIONER_LIMIT ?? "",
+    RESO_TRIAL_DAYS: process.env.RESO_TRIAL_DAYS ?? "",
+    RESO_SIGNUP_URL: process.env.RESO_SIGNUP_URL ?? "",
+    RESO_LOGIN_URL: process.env.RESO_LOGIN_URL ?? "",
+    RESO_SUPPORT_EMAIL: process.env.RESO_SUPPORT_EMAIL ?? "",
+    RESO_LEGAL_ENTITY: process.env.RESO_LEGAL_ENTITY ?? "",
+    RESO_PRIVACY_VERSION: process.env.RESO_PRIVACY_VERSION ?? "",
+    RESO_SITE_URL: process.env.RESO_SITE_URL ?? "",
+  },
   poweredByHeader: false,
   reactStrictMode: true,
   async headers() {

@@ -10,6 +10,12 @@
 - `node scripts/recette-landing.mjs` : un seul `h1` et hiérarchie des titres ; ancres `#produit`, `#fonctionnalites`, `#avis`, `#tarif` ; liens de navigation identiques depuis `/` et `/preinscription` ; le titre d’une section reste sous la barre après un clic sur une ancre ; cinq CTA vers `/preinscription` avec conservation des paramètres UTM ; démonstration de l’agenda terminée à l’état final ; état final immédiat avec `prefers-reduced-motion` ; menu mobile (ouverture, fermeture avec Échap, retour du focus) ; agenda mobile entre 400 et 500 px du haut (484 px à 375, 390 et 430 px de large) ; éléments flottants non coupés ; cibles tactiles ≥ 44 px ; préinscription : erreur associée au champ email et focus, confirmation après réponse 202, FAQ et mentions commerciales présentes, lien de retour ; sans JavaScript : contenu essentiel et aperçus visibles, réponses FAQ lisibles, POST natif puis redirection 303 vers `/preinscription?inscription=ok` ; anciennes URL `/?inscription=…` redirigées.
 - Emails et stockage de recette : `EMAIL_PROVIDER=console` et base locale ; aucun envoi réel. En production, sans base ou sans fournisseur email configuré, l’API répond 503 et le formulaire affiche une erreur : aucun faux envoi.
 
+## Parcours établissement en mode live
+
+`node scripts/recette-parcours.mjs` (serveur construit et lancé avec `RESO_LAUNCH_MODE=live`, base locale, emails console), 20 contrôles : landing avec « Créer mon compte » et lien Connexion, inscription, lien de vérification d’email valide, création de l’établissement, prestations, équipe, horaires, lien public et conditions de réservation, réservation par une cliente sur téléphone avec conditions affichées, emails de confirmation et de notification, bandeau « Période de lancement » (paiement non activé) sur le tableau de bord, fiche du rendez-vous, mot de passe oublié, réinitialisation puis reconnexion ; aucune erreur JavaScript. Captures dans `tests/screenshots/parcours/` (non versionnées).
+
+Correctif issu de cette recette : la configuration commerciale est désormais figée au build dans les deux bundles (clé `env` de `next.config.ts`), sinon le mode live provoquait une erreur d’hydratation sur la landing.
+
 ## Captures réelles du site
 
 - [Ordinateur, 1440 px](previews/landing-desktop.png)
