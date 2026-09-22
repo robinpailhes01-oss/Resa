@@ -25,8 +25,9 @@ type ByMode<T> = Record<LaunchMode, T>;
 
 export const nav = {
   links: [
+    { href: "/#produit", label: "Produit" },
     { href: "/#fonctionnalites", label: "Fonctionnalités" },
-    { href: "/#apercu", label: "Aperçu" },
+    { href: "/#avis", label: "Avis" },
     { href: "/#tarif", label: "Tarif" },
   ],
   skipToContent: "Aller au contenu",
@@ -45,136 +46,73 @@ export const cta = {
       href: offer.signupUrl ?? "/preinscription",
     },
   } satisfies ByMode<{ label: string; href: string }>,
-  secondary: { label: `Découvrir ${brand}`, href: "/#apercu" },
+  secondary: { label: `Découvrir ${brand}`, href: "/#produit" },
 };
 
 export const hero = {
-  eyebrow: "L’agenda des pros de la beauté",
-  /** Deux lignes sur ordinateur, trois sur téléphone. */
-  title: ["Vos rendez-vous.", "Un prix", "tout simple."],
-  intro: "Réservations en ligne, confirmations, rappels et demandes d’avis par email.",
-  /** Version courte affichée sur téléphone. */
-  introShort: "Réservations en ligne, confirmations,\nrappels et demandes d’avis par email.",
-  pricePrefix: { prelaunch: "Tarif prévu", live: null } satisfies ByMode<string | null>,
-  price: priceAmount,
-  priceUnit: `HT${NBSP}/${NBSP}mois`,
-  /** Sous le prix : « Tarif prévu au lancement » en pré-lancement. */
-  priceCaption: { prelaunch: "Tarif prévu au lancement", live: null } satisfies ByMode<string | null>,
-  priceNote: `Un établissement${NBSP}· ${capitalize(practitioners)}`,
-  priceNoteShort: `Un établissement${NBSP}· ${capitalize(practitioners)}`,
-  prelaunchNotice: `${brand} est en préparation. Le tarif et les fonctionnalités seront confirmés à l’ouverture.`,
-  microcopy: {
-    prelaunch: "Sans paiement. Nous vous préviendrons à l’ouverture.",
-    live: "Sans engagement mensuel selon contrat.",
-  } satisfies ByMode<string>,
+  eyebrow: "Pensé pour les professionnels de la beauté",
+  /** Deux lignes, sur tous les écrans. */
+  title: ["Votre agenda.", "L’esprit libre."],
+  intro: "Réservations en ligne, agenda partagé et emails automatiques. Tout ce qu’il faut pour organiser votre activité, dans une seule offre.",
+  /** Ligne de réassurance sous les boutons. */
+  reassurance: [priceCompact, "Un établissement", capitalize(practitioners)],
+  reassuranceCaption: { prelaunch: "Tarif prévu au lancement", live: null } satisfies ByMode<string | null>,
   previewCaption: {
-    prelaunch: "Aperçu du produit en préparation",
-    live: "Capture de la version disponible",
+    prelaunch: "Aperçu illustratif du produit en préparation, données fictives.",
+    live: "Aperçu avec des données fictives.",
   } satisfies ByMode<string>,
-  previewBadge: "Rappel par email programmé",
-  /** Cartes flottantes autour de l'aperçu (états fictifs du produit). */
-  floatingCards: [
-    { id: "reminder", title: "Rappel par email", text: "Un rappel a été envoyé à vos clientes pour leurs rendez-vous de demain.", short: "Rappel par email envoyé" },
-    { id: "confirmed", title: "Réservation confirmée", text: "Le rendez-vous de Julie Martin pour une coupe a bien été confirmé par email.", short: "Réservation confirmée" },
-    { id: "review", title: "Demande d’avis envoyée", text: "Un email a été envoyé pour demander un avis après le rendez-vous de ce jour.", short: "Demande d’avis envoyée" },
-  ],
-  previewAlt: `Aperçu illustratif de l’agenda ${brand}. Maison Alba et ses rendez-vous sont fictifs.`,
+  /** Carte flottante posée sur l'aperçu ; état fictif du produit. */
+  floatingCard: { title: "Rappel par email envoyé", text: "Julie Martin · demain 09:00" },
+  /** Second élément décoratif, discret : une réservation qui vient d'arriver. */
+  floatingPill: "Nouvelle réservation en ligne",
+  previewAlt: `Aperçu illustratif de l’agenda ${brand} : la journée de Camille chez Maison Alba, un établissement fictif.`,
 };
 
 export const features = {
-  eyebrow: { prelaunch: "Les fonctionnalités prévues", live: null } satisfies ByMode<string | null>,
-  title: "L’essentiel,\ntout simplement.",
-  intro: "Des outils pensés pour votre quotidien, sans complexité.",
+  eyebrow: { prelaunch: "Ce que prépare Reso", live: "Fonctionnalités" } satisfies ByMode<string>,
+  main: {
+    title: "Votre journée, en un regard.",
+    text: "Retrouvez vos rendez-vous, vos praticiens et les informations utiles dans un agenda clair, pensé pour votre quotidien.",
+    alt: `Vue rapprochée de l’agenda ${brand} : trois praticiens et leurs rendez-vous du jour, données fictives.`,
+  },
   cards: [
     {
-      icon: "calendar",
-      title: "Réservations 24h/24",
-      text: "Vos clients réservent en ligne, à tout moment, depuis votre site ou un lien dédié.",
-      textShort: "Vos clients réservent à tout moment.",
-    },
-    {
-      icon: "agenda",
-      title: "Un agenda clair",
-      text: "Visualisez facilement vos rendez-vous par praticien, jour ou semaine. Déplacez, modifiez, restez organisé.",
-      textShort: "Tous vos rendez-vous au même endroit.",
-    },
-    {
-      icon: "mail",
-      title: "Des emails automatiques",
-      text: "Confirmations, rappels et demandes d’avis : tout est envoyé automatiquement pour vous faire gagner du temps.",
-      textShort: "Confirmations, rappels et demandes d’avis.",
-    },
-  ] as const,
-};
-
-export const preview = {
-  title: `Un aperçu de votre quotidien avec ${brand}.`,
-  intro: "Un agenda lisible, une réservation simple et des emails qui accompagnent chaque rendez-vous.",
-  tabs: [
-    {
-      id: "agenda",
-      label: "Agenda",
-      caption: "Visualisez votre journée et retrouvez les informations de chaque rendez-vous.",
-      alt: `Aperçu de l’agenda ${brand} avec trois praticiens et leurs rendez-vous de la journée`,
-    },
-    {
       id: "booking",
-      label: "Réservation",
-      caption: "Vos clients choisissent leur rendez-vous depuis votre lien de réservation.",
-      alt: `Aperçu de la page de réservation ${brand} : choix d’une prestation puis d’un créneau`,
+      title: "Vos clientes réservent quand elles le souhaitent.",
+      text: "Partagez votre lien de réservation et laissez vos clientes choisir leur prestation et leur créneau.",
+      alt: `Aperçu de la page de réservation ${brand} : choix d’une prestation puis d’un créneau, données fictives.`,
     },
     {
       id: "emails",
-      label: "Emails",
-      caption: "Confirmation, rappel et demande d’avis : les messages utiles au bon moment.",
-      alt: `Aperçu des emails automatiques ${brand} : confirmation, rappel et demande d’avis`,
+      title: "Les bons emails, au bon moment.",
+      text: "Confirmation, rappel et demande d’avis sont envoyés automatiquement.",
+      alt: `Aperçu d’un email de confirmation envoyé par ${brand} au nom d’un établissement fictif.`,
     },
   ] as const,
-  prelaunchNote: {
-    prelaunch: "Aperçus illustratifs du produit en préparation. Données fictives.",
-    live: "Données fictives à titre d’illustration.",
-  } satisfies ByMode<string>,
 };
 
-export type PreviewTabId = (typeof preview.tabs)[number]["id"];
-
-export const howItWorks = {
-  eyebrow: { prelaunch: `Comment ${brand} fonctionnera`, live: `Comment ${brand} fonctionne` } satisfies ByMode<string>,
-  title: "Votre organisation, en trois étapes.",
-  steps: [
-    {
-      title: "Configurez votre espace",
-      text: "Ajoutez vos prestations, vos horaires et les membres de votre équipe.",
-    },
-    {
-      title: "Partagez votre lien",
-      text: "Placez votre lien de réservation sur votre site, vos réseaux sociaux ou dans vos messages.",
-    },
-    {
-      title: "Retrouvez vos rendez-vous",
-      text: "Consultez votre agenda et laissez les emails accompagner vos clients avant et après leur visite.",
-    },
-  ],
+export const testimonialsSection = {
+  label: "Les avis",
+  title: "Ce qu’en disent les professionnels.",
+  /** Bloc affiché tant qu'aucun témoignage réel n'est publié (src/content/fr/testimonials.ts). */
+  pending: {
+    title: "Les premiers retours arrivent bientôt.",
+    text: `${brand} est en préparation. Les témoignages des professionnels seront publiés après leurs premières utilisations.`,
+  },
 };
 
 export const pricing = {
-  label: "Tarif",
-  title: "Une seule offre. Un prix clair.",
-  intro: "Toutes les fonctionnalités essentielles pour développer votre activité, à un tarif simple et sans surprise.",
+  label: "Une offre simple",
+  title: ["Tout l’essentiel.", "Un prix clair."],
   priceCaption: { prelaunch: "Tarif prévu au lancement", live: null } satisfies ByMode<string | null>,
-  /** Liste courte affichée dans la bande tarif ; la liste complète reste dans `inclusions`. */
-  highlights: [
-    "Agenda et réservation en ligne",
-    "Confirmations et rappels par email",
-    "Demandes d’avis par email",
-    capitalize(practitioners),
-  ],
-  highlightsCompact: ["Agenda et réservation en ligne", "Emails automatiques", capitalize(practitioners)],
-  planName: brand,
-  pricePrefix: { prelaunch: "Tarif prévu", live: null } satisfies ByMode<string | null>,
   price: priceAmount,
   priceUnit: `HT${NBSP}/${NBSP}mois`,
   scope: `Un établissement${NBSP}· ${capitalize(practitioners)}`,
+  highlights: [
+    "Agenda et réservation en ligne",
+    "Confirmations, rappels et demandes d’avis par email",
+    `Sans commission de réservation prélevée par ${brand}`,
+  ],
   inclusionsTitle: "Ce qui est inclus",
   inclusions: [
     "Page de réservation et lien à partager",
@@ -186,8 +124,8 @@ export const pricing = {
     "Accès sur ordinateur, tablette et mobile",
   ],
   mentions: [
-    `Sans commission de réservation prélevée par ${brand}.`,
-    "SMS, caisse et terminal de paiement non inclus. Les éventuels frais de paiement en ligne sont distincts.",
+    "SMS, caisse et terminal de paiement non inclus.",
+    "Les éventuels frais de paiement en ligne sont distincts.",
   ],
   afterCta: {
     prelaunch: "Offre en préparation. Conditions définitives communiquées à l’ouverture.",
@@ -329,13 +267,14 @@ export const footer = {
   brand,
   tagline: "Les rendez-vous qui font rayonner votre métier.",
   links: [
+    { href: "/#produit", label: "Produit" },
     { href: "/#fonctionnalites", label: "Fonctionnalités" },
-    { href: "/#apercu", label: "Aperçu" },
+    { href: "/#avis", label: "Avis" },
     { href: "/#tarif", label: "Tarif" },
   ],
   contactLabel: "Contact",
   legalLinks: [
-    { href: "/preinscription#faq", label: "FAQ" },
+    { href: "/preinscription#faq", label: "Questions fréquentes" },
     { href: "/mentions-legales", label: "Mentions légales" },
     { href: "/confidentialite", label: "Confidentialité" },
   ],
@@ -361,6 +300,12 @@ export const demo = {
     { name: "Manon", role: "Prothésiste ongulaire", initials: "MA" },
   ],
   date: { iso: "2026-09-21", long: "Lundi 21 septembre 2026", short: "Lundi 21 septembre" },
+  /** Journée de Camille telle que montrée dans l'aperçu (fictif). */
+  camilleDay: [
+    { start: 9, end: 10, title: "Coupe & brushing", client: "Julie Martin", tone: "soft" },
+    { start: 11, end: 12.5, title: "Coloration", client: "Élodie Bernard", tone: "accent" },
+    { start: 14, end: 15, title: "Soin capillaire", client: "Sophie Leroy", tone: "success" },
+  ] as const,
   reference: {
     client: "Emma Laurent",
     service: "Soin du visage",

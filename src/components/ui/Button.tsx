@@ -7,21 +7,21 @@ type Size = "md" | "compact";
 
 /* CTA noirs, accents violets ; cibles tactiles de 44 px minimum. */
 const base =
-  "btn inline-flex items-center justify-center gap-2 rounded-xl font-semibold text-[16px] leading-tight text-center disabled:cursor-not-allowed disabled:opacity-60 [&_svg]:size-[18px] [&_svg]:shrink-0";
+  "btn inline-flex items-center justify-center gap-2 rounded-button font-semibold text-[15px] leading-tight text-center disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:transform-none [&_svg]:size-[18px] [&_svg]:shrink-0";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-ink text-white shadow-[0_5px_12px_-6px_rgba(17,17,22,0.5)] hover:bg-[#2a2933] active:bg-[#2a2933]",
-  secondary: "bg-card/60 text-ink ring-1 ring-line hover:bg-soft-tint active:bg-soft-tint",
-  ghost: "bg-transparent text-brand hover:bg-brand/5 active:bg-brand/10",
-  /** Sur fond coloré : bouton blanc, texte violet. */
-  inverse: "bg-white text-brand hover:bg-page active:bg-page",
-  /** Lien texte avec chevron, à la manière d'Apple. */
-  link: "bg-transparent px-0 text-brand underline-offset-4 hover:underline [&_svg]:size-4",
+  primary: "bg-ink text-white shadow-[0_1px_2px_rgba(23,23,27,0.12)] hover:bg-ink-hover hover:shadow-[0_6px_16px_-6px_rgba(23,23,27,0.35)]",
+  secondary: "bg-card text-ink border border-line shadow-card hover:border-control/60 hover:shadow-lift",
+  ghost: "bg-transparent text-ink hover:bg-ink/5 active:bg-ink/10",
+  /** Sur fond sombre : bouton blanc, texte noir. */
+  inverse: "bg-white text-ink hover:bg-page",
+  /** Lien texte avec chevron. */
+  link: "bg-transparent px-0 text-ink underline-offset-4 hover:underline hover:transform-none [&_svg]:size-4",
 };
 
 const sizes: Record<Size, string> = {
-  md: "min-h-12 px-6 py-3",
-  compact: "min-h-11 px-4 py-2 text-[13px]",
+  md: "min-h-12 px-5 py-3",
+  compact: "min-h-10 px-4 py-2 text-[14px]",
 };
 
 type CommonProps = {

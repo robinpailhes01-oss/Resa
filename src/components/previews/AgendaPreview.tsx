@@ -1,53 +1,48 @@
-import { Calendar, CalendarDays, ChevronDown, ChevronLeft, ChevronRight, Mail, Plus, Settings, Sparkles, Users } from "lucide-react";
+import { CalendarDays, ChevronDown, ChevronLeft, ChevronRight, Mail, Plus, Settings, Sparkles, Users } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
-import { demo } from "@/content/fr/landing";
+import { demo, hero } from "@/content/fr/landing";
 import { cn } from "@/lib/cn";
 import { AppFrame, Avatar } from "./AppFrame";
 import { DemoPhoto } from "./DemoPhoto";
 
+/*
+ * Aperçu de l'agenda : HTML/CSS uniquement, données fictives (Maison Alba,
+ * Camille et ses clientes n'existent pas). Le cadre s'adapte à sa largeur via
+ * les container queries : trois praticiens sur grand écran, la journée de
+ * Camille seule sur téléphone.
+ */
+
 type Tone = "soft" | "accent" | "success";
-type Slot = { start: number; end: number; title: string; client: string; tone: Tone };
+type Slot = { start: number; end: number; title: string; client: string; tone: Tone; demo?: boolean };
 
-/** Heures décimales : 9.5 = 09:30. Grille de 08:00 à 18:00. */
-const DAY_START = 8;
-const DAY_END = 18;
-const HOURS = Array.from({ length: DAY_END - DAY_START + 1 }, (_, i) => DAY_START + i);
+const toneClasses: Record<Tone, { bg: string; bar: string }> = {
+  soft: { bg: "bg-soft-tint", bar: "bg-brand" },
+  accent: { bg: "bg-accent-tint", bar: "bg-accent" },
+  success: { bg: "bg-success-tint", bar: "bg-mint" },
+};
 
-const columns: Array<{ name: string; role: string; initials: string; slots: Slot[] }> = [
-  {
-    ...demo.practitioners[0],
-    slots: [
-      { start: 9, end: 10, title: "Coupe & brushing", client: "Julie Martin", tone: "soft" },
-      { start: 11, end: 12.5, title: "Coloration", client: "Élodie Bernard", tone: "soft" },
-      { start: 14, end: 15, title: "Coupe & brushing", client: "Sophie Leroy", tone: "soft" },
-      { start: 16, end: 17, title: "Soin capillaire", client: "Laura Petit", tone: "soft" },
-    ],
-  },
+/** Journée de Camille : le premier rendez-vous est celui que la démonstration pose dans l'agenda. */
+const camille: Slot[] = demo.camilleDay.map((slot, i) => ({ ...slot, demo: i === 0 }));
+
+const columns: Array<{ name: string; role: string; initials: string; portrait?: boolean; slots: Slot[] }> = [
+  { ...demo.practitioners[0], portrait: true, slots: camille },
   {
     ...demo.practitioners[1],
     slots: [
       { start: 10, end: 11, title: "Soin visage", client: "Manon Dubois", tone: "accent" },
-      { start: 13, end: 14, title: "Soin visage", client: "Claire Moreau", tone: "accent" },
-      { start: 14, end: 15, title: demo.reference.service, client: demo.reference.client, tone: "accent" },
-      { start: 15.5, end: 16.5, title: "Modelage bien-être", client: "Nathalie Robert", tone: "accent" },
+      { start: 14, end: 15, title: demo.reference.service, client: demo.reference.client, tone: "soft" },
+      { start: 16, end: 17, title: "Modelage bien-être", client: "Nathalie Robert", tone: "success" },
     ],
   },
   {
     ...demo.practitioners[2],
     slots: [
       { start: 9.5, end: 10.5, title: "Manucure", client: "Léa Girard", tone: "success" },
-      { start: 12, end: 13, title: "Pose de vernis semi-permanent", client: "Amélie Thomas", tone: "success" },
-      { start: 14.5, end: 15.5, title: "Manucure", client: "Chloé Rousseau", tone: "success" },
-      { start: 17, end: 18, title: "Dépose + nouvelle pose", client: "Inès Morel", tone: "success" },
+      { start: 13, end: 14, title: "Pose semi-permanent", client: "Amélie Thomas", tone: "soft" },
+      { start: 15.5, end: 16.5, title: "Manucure", client: "Chloé Rousseau", tone: "accent" },
     ],
   },
 ];
-
-const toneClasses: Record<Tone, { bg: string; bar: string }> = {
-  soft: { bg: "bg-soft-tint", bar: "bg-[#a699ff]" },
-  accent: { bg: "bg-accent-tint", bar: "bg-accent" },
-  success: { bg: "bg-success-tint", bar: "bg-[#8FC7A9]" },
-};
 
 function formatHour(h: number): string {
   const hours = Math.floor(h);
@@ -55,28 +50,21 @@ function formatHour(h: number): string {
   return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
 }
 
-/** Ordre d'apparition des rendez-vous : chronologique, toutes colonnes confondues. */
-function fillOrder(slot: Slot): number {
-  const all = columns.flatMap((c) => c.slots).sort((a, b) => a.start - b.start || a.title.localeCompare(b.title));
-  return all.findIndex((s) => s === slot);
-}
-
-function SlotCard({ slot, rowHeight }: { slot: Slot; rowHeight: number }) {
-  const top = (slot.start - DAY_START) * rowHeight + 2;
-  const height = (slot.end - slot.start) * rowHeight - 4;
+function SlotCard({ slot, dayStart, rowHeight, dense = false }: { slot: Slot; dayStart: number; rowHeight: number; dense?: boolean }) {
+  const top = (slot.start - dayStart) * rowHeight + 3;
+  const height = (slot.end - slot.start) * rowHeight - 6;
   const tone = toneClasses[slot.tone];
   return (
     <div
-      className={cn("slot absolute inset-x-1.5 flex overflow-hidden rounded-md text-[10px] leading-[1.3]", tone.bg)}
-      style={{ top, height, "--i": fillOrder(slot) } as React.CSSProperties}
+      className={cn("absolute inset-x-1.5 flex overflow-hidden rounded-lg", tone.bg, slot.demo && "demo-slot")}
+      style={{ top, height }}
     >
-      <span className={cn("w-[3px] shrink-0", tone.bar)} />
-      <div className="min-w-0 px-2 py-1">
+      <span className={cn("my-1.5 ml-1.5 w-[3px] shrink-0 rounded-full", tone.bar)} />
+      <div className={cn("min-w-0 px-2 leading-[1.35]", dense ? "py-1 text-[11px]" : "py-1.5 text-[12px]")}>
         <div className="truncate font-semibold text-ink">{slot.title}</div>
-        <div className="text-ink-muted">
-          {formatHour(slot.start)} – {formatHour(slot.end)}
+        <div className="truncate text-ink-muted">
+          {formatHour(slot.start)} – {formatHour(slot.end)} · {slot.client}
         </div>
-        <div className="truncate text-ink-muted">{slot.client}</div>
       </div>
     </div>
   );
@@ -84,33 +72,33 @@ function SlotCard({ slot, rowHeight }: { slot: Slot; rowHeight: number }) {
 
 function Sidebar() {
   const items = [
-    { icon: Calendar, label: "Agenda", active: true },
+    { icon: CalendarDays, label: "Agenda", active: true },
     { icon: Users, label: "Clients" },
     { icon: Sparkles, label: "Prestations" },
     { icon: Mail, label: "Emails" },
     { icon: Settings, label: "Paramètres" },
   ];
   return (
-    <aside className="hidden w-44 shrink-0 flex-col border-r border-line bg-[#fafaff] p-3 @2xl:flex">
-      <Logo height={24} className="mb-5 ml-1" />
-      <div className="mb-3 flex items-center gap-2 rounded-lg bg-card p-2 ring-1 ring-line">
-        <DemoPhoto variant="salon" className="size-8 rounded-md" />
+    <aside className="hidden w-48 shrink-0 flex-col border-r border-line bg-page/70 p-4 @3xl:flex">
+      <Logo height={22} className="mb-6 ml-1" />
+      <div className="mb-4 flex items-center gap-2.5 rounded-xl border border-line bg-card p-2">
+        <DemoPhoto variant="salon" className="size-8 rounded-lg" />
         <div className="min-w-0 flex-1 leading-tight">
-          <div className="truncate text-[11px] font-semibold text-ink">{demo.salon}</div>
-          <div className="truncate text-[9px] text-ink-muted">{demo.salonType}</div>
+          <div className="truncate text-[12px] font-semibold text-ink">{demo.salon}</div>
+          <div className="truncate text-[11px] text-ink-muted">{demo.salonType}</div>
         </div>
-        <ChevronDown className="size-3 text-ink-muted" />
+        <ChevronDown className="size-3.5 text-ink-muted" />
       </div>
       <ul className="space-y-0.5">
         {items.map(({ icon: Icon, label, active }) => (
           <li
             key={label}
             className={cn(
-              "flex items-center gap-2 whitespace-nowrap rounded-md px-2 py-1.5 text-[11px]",
-              active ? "bg-soft-tint font-semibold text-brand" : "text-ink-muted",
+              "flex items-center gap-2.5 whitespace-nowrap rounded-lg px-2.5 py-2 text-[12px] font-medium",
+              active ? "bg-soft-tint text-brand" : "text-ink-muted",
             )}
           >
-            <Icon className="size-3.5" strokeWidth={1.8} />
+            <Icon className="size-4" strokeWidth={1.8} />
             {label}
           </li>
         ))}
@@ -121,74 +109,70 @@ function Sidebar() {
 
 function Toolbar() {
   return (
-    <div className="border-b border-line px-3 py-2.5 @sm:px-4">
-      <div className="flex items-center justify-between gap-3">
-        <div className="text-[13px] font-bold text-ink @sm:text-[15px]">Mon agenda</div>
-        <div className="flex items-center gap-2">
-          <span className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-md bg-brand px-2 py-1.5 text-[10px] font-semibold text-white">
-            <Plus className="size-3" />
-            <span className="hidden @md:inline">Nouveau rendez-vous</span>
-            <span className="@md:hidden">Nouveau</span>
+    <div className="flex items-center justify-between gap-3 border-b border-line px-4 py-3">
+      <div className="flex items-center gap-3">
+        <div className="text-[14px] font-bold tracking-tight text-ink">Agenda</div>
+        <span className="hidden items-center overflow-hidden rounded-lg border border-line text-[11px] @lg:inline-flex">
+          <span className="px-2 py-1 text-ink-muted">
+            <ChevronLeft className="size-3.5" />
           </span>
-          <Avatar initials="MA" tone="accent" size="sm" />
-        </div>
-      </div>
-      <div className="mt-2 flex items-center justify-between gap-2 text-[10px]">
-        <div className="hidden items-center gap-1 @lg:flex">
-          <span className="rounded-md border border-line p-1">
-            <ChevronLeft className="size-3" />
+          <span className="border-x border-line px-2.5 py-1 font-medium text-ink">Aujourd’hui</span>
+          <span className="px-2 py-1 text-ink-muted">
+            <ChevronRight className="size-3.5" />
           </span>
-          <span className="rounded-md border border-line px-2 py-1">Aujourd’hui</span>
-          <span className="rounded-md border border-line p-1">
-            <ChevronRight className="size-3" />
-          </span>
-        </div>
-        <span className="inline-flex items-center gap-1.5 rounded-md border border-line px-2 py-1 font-medium text-ink">
-          <CalendarDays className="size-3 text-ink-muted" />
-          {demo.date.short}
         </span>
-        <span className="hidden rounded-md border border-line p-0.5 @lg:inline-flex">
-          <span className="rounded bg-soft-tint px-2 py-0.5 font-semibold text-brand">Jour</span>
-          <span className="px-2 py-0.5 text-ink-muted">Semaine</span>
-          <span className="px-2 py-0.5 text-ink-muted">Mois</span>
+        <span className="hidden whitespace-nowrap text-[12px] font-medium text-ink-muted @2xl:inline">{demo.date.short}</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <span className="hidden overflow-hidden rounded-lg border border-line p-0.5 text-[11px] @xl:inline-flex">
+          <span className="rounded-md bg-soft-tint px-2.5 py-1 font-semibold text-brand">Jour</span>
+          <span className="px-2.5 py-1 text-ink-muted">Semaine</span>
+        </span>
+        <span className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg bg-ink px-2.5 py-1.5 text-[11px] font-semibold text-white">
+          <Plus className="size-3.5" />
+          Nouveau rendez-vous
         </span>
       </div>
     </div>
   );
 }
 
-/** Vue large : trois colonnes praticiens (dès 448 px de largeur de cadre). */
-function DesktopGrid() {
-  const rowHeight = 44;
+/** Vue large : trois colonnes praticiens (dès 576 px de largeur de cadre). */
+function DesktopGrid({ dayStart, dayEnd, rowHeight }: { dayStart: number; dayEnd: number; rowHeight: number }) {
+  const hours = Array.from({ length: dayEnd - dayStart + 1 }, (_, i) => dayStart + i);
   return (
-    <div className="hidden @md:block">
-      <div className="grid grid-cols-[44px_repeat(3,1fr)] border-b border-line">
+    <div className="hidden @xl:block">
+      <div className="grid grid-cols-[52px_repeat(3,1fr)] border-b border-line">
         <div />
         {columns.map((column, i) => (
-          <div key={column.name} className="flex items-center gap-2 border-l border-line px-2 py-2">
-            <Avatar initials={column.initials} tone={(["soft", "accent", "brand"] as const)[i]} size="sm" />
-            <div className="leading-tight">
-              <div className="text-[11px] font-semibold text-ink">{column.name}</div>
-              <div className="truncate text-[9px] text-ink-muted">{column.role}</div>
+          <div key={column.name} className="flex items-center gap-2.5 border-l border-line px-3 py-2.5">
+            {column.portrait ? (
+              <DemoPhoto variant="practitioner" className="size-7 rounded-full" />
+            ) : (
+              <Avatar initials={column.initials} tone={(["soft", "accent", "mint"] as const)[i]} size="sm" />
+            )}
+            <div className="min-w-0 leading-tight">
+              <div className="text-[12px] font-semibold text-ink">{column.name}</div>
+              <div className="truncate text-[11px] text-ink-muted">{column.role}</div>
             </div>
           </div>
         ))}
       </div>
-      <div className="grid grid-cols-[44px_repeat(3,1fr)]" style={{ height: (DAY_END - DAY_START) * rowHeight + 8 }}>
+      <div className="grid grid-cols-[52px_repeat(3,1fr)]" style={{ height: (dayEnd - dayStart) * rowHeight + 10 }}>
         <div className="relative">
-          {HOURS.map((hour, i) => (
-            <div key={hour} className="absolute right-2 text-[9px] text-ink-muted" style={{ top: i * rowHeight - 5 }}>
+          {hours.map((hour, i) => (
+            <div key={hour} className="absolute right-2.5 text-[11px] tabular-nums text-ink-muted" style={{ top: i * rowHeight - 7 }}>
               {formatHour(hour)}
             </div>
           ))}
         </div>
         {columns.map((column) => (
           <div key={column.name} className="relative border-l border-line">
-            {HOURS.slice(0, -1).map((hour, i) => (
-              <div key={hour} className="absolute inset-x-0 border-t border-line/70" style={{ top: i * rowHeight }} />
+            {hours.slice(0, -1).map((hour, i) => (
+              <div key={hour} className="absolute inset-x-0 border-t border-line/80" style={{ top: i * rowHeight }} />
             ))}
             {column.slots.map((slot) => (
-              <SlotCard key={slot.title + slot.start} slot={slot} rowHeight={rowHeight} />
+              <SlotCard key={slot.title + slot.start} slot={slot} dayStart={dayStart} rowHeight={rowHeight} />
             ))}
           </div>
         ))}
@@ -197,73 +181,80 @@ function DesktopGrid() {
   );
 }
 
-/** Créneaux de la journée de Camille tels que présentés sur téléphone (maquette). */
-const mobileSlots: Slot[] = [
-  { start: 9, end: 10, title: "Coupe & brushing", client: "Julie Martin", tone: "soft" },
-  { start: 11, end: 12.5, title: "Coloration", client: "Élodie Bernard", tone: "accent" },
-  { start: 14, end: 15, title: "Soin capillaire", client: "Sophie Leroy", tone: "success" },
-];
-
-/** Vue téléphone dédiée : un praticien, une chronologie lisible. */
+/** Vue téléphone : la journée de Camille, une seule colonne lisible. */
 function MobileTimeline() {
-  const camille = columns[0];
-  const start = 8;
-  const hours = Array.from({ length: 9 }, (_, i) => start + i);
+  const dayStart = 8;
+  const dayEnd = 16;
+  const rowHeight = 38;
+  const hours = Array.from({ length: dayEnd - dayStart + 1 }, (_, i) => dayStart + i);
   return (
-    <div className="mobile-agenda @md:hidden">
-      <div className="agenda-salon">
-        <DemoPhoto variant="salon" className="agenda-salon-photo rounded-md" />
-        <div className="min-w-0 flex-1 leading-tight">
-          <div className="font-semibold text-ink">{demo.salon}</div>
-          <div className="agenda-salon-type text-ink-muted">{demo.salonType}</div>
-        </div>
-        <ChevronDown size={14} className="text-ink-muted" />
-      </div>
-      <div className="agenda-toolbar">
-        <div className="agenda-heading">Mon agenda</div>
-        <div className="agenda-date">
-          <ChevronLeft size={13} className="text-ink-muted" />
-          <span><CalendarDays size={14} />{demo.date.short}</span>
-          <ChevronRight size={13} className="text-ink-muted" />
-        </div>
-        <div className="agenda-practitioner">
-          <DemoPhoto variant="practitioner" className="agenda-portrait rounded-full" />
-          <div className="leading-tight">
-            <div className="font-semibold text-ink">{camille.name}</div>
-            <div className="text-ink-muted">{camille.role}</div>
+    <div className="@xl:hidden">
+      <div className="flex items-center justify-between gap-3 border-b border-line px-3.5 py-2.5">
+        <div className="flex min-w-0 items-center gap-2.5">
+          <DemoPhoto variant="salon" className="size-8 rounded-lg" />
+          <div className="min-w-0 leading-tight">
+            <div className="truncate text-[12px] font-semibold text-ink">{demo.salon}</div>
+            <div className="truncate text-[11px] text-ink-muted">{demo.salonType}</div>
           </div>
         </div>
+        <span className="inline-flex shrink-0 items-center gap-1 rounded-lg bg-ink px-2 py-1.5 text-[11px] font-semibold text-white">
+          <Plus className="size-3.5" />
+          Nouveau
+        </span>
       </div>
-      <div className="agenda-timeline">
+      <div className="flex items-center justify-between px-3.5 pb-2 pt-3">
+        <div className="text-[15px] font-bold tracking-tight text-ink">Agenda</div>
+        <span className="inline-flex items-center gap-2 rounded-lg border border-line px-2 py-1 text-[11px] font-medium text-ink">
+          <ChevronLeft className="size-3.5 text-ink-muted" />
+          <CalendarDays className="size-3.5 text-brand" />
+          {demo.date.short}
+          <ChevronRight className="size-3.5 text-ink-muted" />
+        </span>
+      </div>
+      <div className="flex items-center gap-2.5 px-3.5 pb-2.5">
+        <DemoPhoto variant="practitioner" className="size-7 rounded-full" />
+        <div className="leading-tight">
+          <div className="text-[12px] font-semibold text-ink">{columns[0].name}</div>
+          <div className="text-[11px] text-ink-muted">{columns[0].role}</div>
+        </div>
+      </div>
+      <div className="grid grid-cols-[44px_1fr] border-t border-line" style={{ height: (dayEnd - dayStart) * rowHeight + 10 }}>
         <div className="relative">
           {hours.map((hour, i) => (
-            <div key={hour} className="agenda-hour" style={{ top: `calc(${i} * var(--agenda-hour) - 5px)` }}>
+            <div key={hour} className="absolute right-2 text-[11px] tabular-nums text-ink-muted" style={{ top: i * rowHeight - 7 }}>
               {formatHour(hour)}
             </div>
           ))}
         </div>
-        <div className="relative border-l border-line/50">
-          {hours.map((hour, i) => (
-            <div key={hour} className="absolute inset-x-0 border-t border-line/50" style={{ top: `calc(${i} * var(--agenda-hour))` }} />
+        <div className="relative border-l border-line">
+          {hours.slice(0, -1).map((hour, i) => (
+            <div key={hour} className="absolute inset-x-0 border-t border-line/80" style={{ top: i * rowHeight }} />
           ))}
-          {mobileSlots.map((slot, i) => {
-            const tone = toneClasses[slot.tone];
-            return (
-              <div
-                key={slot.title + slot.start}
-                className={cn("slot agenda-slot", tone.bg)}
-                style={{ top: `calc(${slot.start - start} * var(--agenda-hour) + 2px)`, "--i": i } as React.CSSProperties}
-              >
-                <span className={cn("w-0.5 shrink-0", tone.bar)} />
-                <div className="agenda-slot-copy">
-                  <div className="truncate font-semibold text-ink">{slot.title}</div>
-                  <div className="text-ink-muted">{formatHour(slot.start)} – {formatHour(slot.end)}</div>
-                  <div className="truncate text-ink-muted">{slot.client}</div>
-                </div>
-              </div>
-            );
-          })}
+          {camille.map((slot) => (
+            <SlotCard key={slot.title + slot.start} slot={slot} dayStart={dayStart} rowHeight={rowHeight} dense />
+          ))}
         </div>
+      </div>
+    </div>
+  );
+}
+
+/** Carte flottante « Rappel par email envoyé », posée sur le bord de la fenêtre. */
+export function ReminderCard({ className }: { className?: string }) {
+  return (
+    <div
+      aria-hidden="true"
+      className={cn(
+        "demo-card pointer-events-none absolute z-10 flex w-[196px] items-start gap-2.5 rounded-xl border border-line bg-card p-3 shadow-float sm:w-[220px]",
+        className,
+      )}
+    >
+      <span className="envelope inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-soft-tint text-brand">
+        <Mail className="size-4" strokeWidth={1.9} />
+      </span>
+      <div className="min-w-0 leading-tight">
+        <div className="text-[12px] font-semibold text-ink">{hero.floatingCard.title}</div>
+        <div className="mt-0.5 truncate text-[11px] text-ink-muted">{hero.floatingCard.text}</div>
       </div>
     </div>
   );
@@ -272,25 +263,23 @@ function MobileTimeline() {
 type AgendaPreviewProps = {
   alt: string;
   className?: string;
-  /** Les rendez-vous se posent un à un à l'arrivée (signature du premier écran). */
-  animate?: boolean;
+  /** Vue rapprochée : trois colonnes sans barre latérale, plage horaire resserrée. */
+  closeup?: boolean;
 };
 
-export function AgendaPreview({ alt, className, animate = false }: AgendaPreviewProps) {
+export function AgendaPreview({ alt, className, closeup = false }: AgendaPreviewProps) {
   return (
-    <div className={cn("relative", animate && "agenda-fill", className)}>
-      <AppFrame alt={alt}>
-        <div className="flex">
-          <Sidebar />
-          <div className="min-w-0 flex-1">
-            <div className="hidden @md:block">
-              <Toolbar />
-            </div>
-            <DesktopGrid />
-            <MobileTimeline />
+    <AppFrame alt={alt} className={className}>
+      <div className="flex">
+        {closeup ? null : <Sidebar />}
+        <div className="min-w-0 flex-1">
+          <div className="hidden @xl:block">
+            <Toolbar />
           </div>
+          {closeup ? <DesktopGrid dayStart={9} dayEnd={15} rowHeight={56} /> : <DesktopGrid dayStart={8} dayEnd={18} rowHeight={48} />}
+          <MobileTimeline />
         </div>
-      </AppFrame>
-    </div>
+      </div>
+    </AppFrame>
   );
 }

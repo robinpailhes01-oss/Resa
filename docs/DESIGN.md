@@ -1,44 +1,53 @@
 # Reso — direction de design de la landing page
 
-## Référence retenue — 19 septembre 2026
+## Direction retenue — 22 septembre 2026
 
-La référence mobile retenue est l’image `8FF0AF59-4F98-48DD-BA52-D748D6AC7761.jpeg` (514 × 1536), confirmée à droite du comparatif envoyé par le client. La priorité est de reproduire sa composition compacte, particulièrement le premier écran : fond blanc, dégradés bleu pâle et lavande, titres noirs centrés, boutons noirs, symbole violet et aperçu d’agenda entouré de cartes flottantes. Cette direction remplace la palette prune / ivoire du premier cahier des charges.
+Landing de pré-lancement au niveau d’un SaaS mature : lumineuse, sobre, centrée sur le produit, dans l’esprit d’Apple et de Linear. Le fond beige, les aplats prune, les cercles concentriques et les icônes flottantes de la version précédente sont retirés. L’agenda, cœur du produit, est visible dès le premier écran.
 
-La cible reste le professionnel de la beauté ou du bien-être, seul ou en petite équipe. L’action principale reste « Me prévenir du lancement ». Le prix prévu est centralisé dans `src/config/offer.ts` : 39 € HT / mois, un établissement, jusqu’à trois praticiens. Aucun témoignage, partenariat ou chiffre d’adoption fictif.
+La cible reste le professionnel de la beauté, seul ou en petite équipe. L’action principale est « Me prévenir du lancement ». Le prix et la limite de praticiens sont centralisés dans `src/config/offer.ts` (39 € HT / mois, un établissement, jusqu’à trois praticiens) et tous les textes dans `src/content/fr/landing.ts`. Aucun témoignage, chiffre, note, logo ou partenariat fictif.
 
 ## Composition
 
-- Barre blanche arrondie, limitée à 880 px utiles sur grand écran ; sur téléphone, hauteur de 44 px et largeur de 75 %, logo et menu tactile.
-- Accroche en deux lignes sur ordinateur et trois sur téléphone, description courte, prix et CTA visibles au premier écran.
-- Arcs elliptiques fins sur les côtés du texte mobile, icônes métier décoratives, halos bleu pâle et lavande derrière l’aperçu. Aucun cercle ne traverse le titre.
-- Agenda HTML : trois praticiens sur grand écran, une journée de Camille sur téléphone. Les données sont fictives ; ce n’est pas encore l’application de réservation.
-- Trois notifications sur ordinateur ; une notification email à droite du cadre sur téléphone, 50 px sous le haut de l’agenda. Vignettes photographiques de démonstration pour le salon et Camille, générées et optimisées en WebP local.
-- Fonctionnalités : trois cartes avec mini-interfaces sur ordinateur, trois lignes empilées sur téléphone.
-- Offre unique : panneau lavande en trois colonnes à partir de 1024 px, empilé en dessous. Sur téléphone, trois inclusions courtes et un CTA noir reprennent la maquette ; les détails commerciaux sont lisibles sur la page de préinscription.
-- La landing se termine par un pied de page compact avec les deux liens légaux. La FAQ et le formulaire existant sont regroupés sur `/preinscription`, accessible depuis chaque CTA. Les liens du menu reviennent vers les sections de la landing. Les paramètres de campagne sont transmis au formulaire. Les anciennes URL `/?inscription=…` restent compatibles.
+1. **Navigation** : barre blanche fine et flottante (48 px sur téléphone, 56 px au-delà), même largeur que le contenu (1120 px), logo à gauche, liens Produit / Fonctionnalités / Avis / Tarif, CTA noir à droite, menu tactile sur téléphone. Ombre très douce après le scroll. Les ancres portent une marge (`--nav-offset`) : aucun titre de section ne passe sous la barre.
+2. **Premier écran** : badge discret, titre en deux lignes, description, CTA noir, lien « Découvrir Reso », ligne de réassurance, puis la fenêtre blanche de l’agenda (bordure fine, ombre profonde et diffuse, inclinaison de 3° à partir de 1024 px). Sur téléphone, l’agenda commence à 440 px du haut et occupe le premier écran de 390 × 844 ; le lien secondaire remplace le second bouton.
+3. **Décoration** : un halo lavande et bleu très pâle derrière l’agenda, le centre du hero reste blanc. Deux éléments flottants seulement : la carte « Rappel par email envoyé » et, sur grand écran, une pastille « Nouvelle réservation en ligne ».
+4. **Aperçu de l’agenda** (`src/components/previews/AgendaPreview.tsx`) : HTML/CSS uniquement, données fictives (Maison Alba, Camille et ses clientes). Trois praticiens à partir de 576 px de largeur de cadre, la journée de Camille seule en dessous. Rendez-vous lavande, pêche et menthe avec barre colorée, grille fine, textes de 11 px minimum, photo du salon et portrait fictif de Camille.
+5. **Fonctionnalités** : un grand bloc éditorial (titre, texte, vue rapprochée de l’agenda) puis deux cartes : réservation en ligne et email de confirmation, chacune avec une interface lisible.
+6. **Avis** : section dédiée avant le tarif. Tant que `src/content/fr/testimonials.ts` est vide, un bloc de pré-lancement s’affiche ; dès qu’un témoignage autorisé est ajouté (citation, prénom, établissement, activité, photo facultative), des cartes le remplacent automatiquement.
+7. **Tarif** : une carte compacte et centrée (label, titre, prix, périmètre, trois inclusions, CTA), précisions discrètes en dessous. Plus de trois colonnes séparées par des traits.
+8. **Pied de page** léger : logo, liens de sections et liens légaux. La FAQ et le formulaire de préinscription vivent sur `/preinscription`, ouverte par tous les CTA avec les paramètres de campagne.
 
 ## Tokens
 
 | Usage | Valeur |
 | --- | --- |
-| Fond et cartes | `#FFFFFF` |
-| Titres et CTA | `#111116` |
-| Accent violet, liens, focus | `#6950E8` |
-| Violet au survol | `#5139C5` |
-| Lavande | `#DED7FF` / `#F1EDFF` |
-| Bleu pâle des halos | `#EAF0FF` |
-| Texte secondaire | `#696A80` |
-| Bordures décoratives | `#E9EAF2` |
-| Bordures des champs | `#9091A7` |
-| Rendez-vous pêche | `#FFF0EC` / `#F49C91` |
-| Rendez-vous menthe | `#E5F5EE` |
+| Fond principal | `#FAFAFC` |
+| Surfaces | `#FFFFFF` |
+| Titres et boutons principaux | `#17171B` |
+| Texte secondaire | `#686873` |
+| Accent Reso (sélection, icône, lien, détail d’agenda) | `#7557E8` |
+| Lavande très claire | `#F3F0FF` (rendez-vous : `#E6E0FF`) |
+| Bordures | `#EAEAEE` |
+| Rendez-vous pêche | `#FFF0E6` / barre `#F4B28F` |
+| Rendez-vous menthe | `#E6F6EC` / barre `#7FD0A4` |
 
-Styles de composition mobile centralisés dans `src/app/globals.css`, limités à moins de 640 px ; aucun zoom global ni capture statique à la place du site. Manrope variable locale, avec titres 800 et texte courant 400–600. Les CTA de la landing mobile ont une hauteur de 40 px pour suivre la référence. Le menu conserve une cible de 44 px et le véritable formulaire ses boutons de 48 px. L’agenda est une illustration HTML compacte : ses éléments ne sont pas des commandes interactives. Le symbole du logo est un SVG local, repris dans la favicon ; le visuel de partage est régénéré par `scripts/og-image.mjs`.
+Manrope variable locale ; titres en 700, interlettrage −0,03 em, tailles contenues (`.display` 34 → 60 px, `.heading-2` 28 → 42 px). Ombres extrêmement légères (`--shadow-card`, `--shadow-lift`, `--shadow-window`, `--shadow-float`) ; la hiérarchie repose sur les bordures fines, les surfaces et l’espace blanc. Le logo final (symbole violet + mot « reso ») est conservé.
 
-## Mouvement et accessibilité
+## Mouvement
 
-Les apparitions CSS existantes et les interactions clavier sont conservées. Le mode `prefers-reduced-motion` affiche les éléments sans animation. Sans JavaScript, le contenu reste lisible et le formulaire utilise son POST natif. Les illustrations d’interface sont décoratives et accompagnées d’une description accessible.
+CSS et IntersectionObserver uniquement, aucune bibliothèque. Activé par `html.js` ; sans JavaScript tout est visible.
+
+- Apparition des sections au scroll : 12 px, 550 ms (450 ms sur téléphone), décalage de 80 ms entre cartes.
+- Arrivée du premier écran : 12 px, 600 ms.
+- Démonstration unique de l’agenda (`.demo-stage`), jouée quand il devient visible : le rendez-vous de Julie Martin apparaît et se pose dans la grille (650 ms), puis la carte « Rappel par email envoyé » apparaît (500 ms). Rien ne boucle.
+- Petit sursaut de l’enveloppe de la carte email à l’apparition.
+- Boutons soulevés de 2 px, cartes de 3 px, ombre légèrement renforcée au survol.
+- `prefers-reduced-motion: reduce` : état final immédiat, aucune transition, pas d’inclinaison de la fenêtre.
+
+## Accessibilité
+
+Un seul `h1`, titres hiérarchisés, contrastes AA, focus visible, navigation clavier, menu refermable avec Échap avec retour du focus, aperçus décoratifs décrits par un `aria-label` mentionnant leur caractère fictif, formulaire de préinscription fonctionnel sans JavaScript (POST natif puis redirection sur la même origine).
 
 ## Validation
 
-Voir `docs/recette-maquettes.md` pour les vérifications de cette passe et les captures du site implémenté.
+Voir `docs/recette-landing.md` pour les vérifications et les captures réelles du site dans `docs/previews/`.

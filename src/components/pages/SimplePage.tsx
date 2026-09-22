@@ -25,7 +25,7 @@ export function SimplePage({ title, intro, children, width = "prose" }: SimplePa
       </header>
       <main id="contenu" className="flex-1 py-12 md:py-20">
         <div className={`container-page ${width === "narrow" ? "max-w-2xl" : "max-w-3xl"}`}>
-          <h1 className="text-display-sm md:text-[44px] md:leading-[50px]">{title}</h1>
+          <h1 className="heading-2">{title}</h1>
           {intro ? <p className="mt-4 text-ink-muted">{intro}</p> : null}
           <div className="prose-page mt-10">{children}</div>
         </div>

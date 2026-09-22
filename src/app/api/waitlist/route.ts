@@ -28,7 +28,10 @@ function jsonFor(outcome: Outcome, details?: Record<string, string>) {
 /** Repli sans JavaScript : redirection vers la section avec un état lisible (§16). */
 function redirectFor(request: Request, outcome: Outcome) {
   const state = outcome === "accepted" ? "ok" : outcome === "invalid" ? "email" : outcome === "rate_limited" ? "limite" : "erreur";
-  const url = new URL(`/preinscription?inscription=${state}#inscription`, request.url);
+  // L'origine de la page (déjà contrôlée) prime sur l'hôte vu par le serveur :
+  // la redirection reste sur la même origine, ce qu'exige la CSP form-action.
+  const origin = request.headers.get("origin");
+  const url = new URL(`/preinscription?inscription=${state}#inscription`, origin && /^https?:\/\//.test(origin) ? origin : request.url);
   return NextResponse.redirect(url, 303);
 }
 

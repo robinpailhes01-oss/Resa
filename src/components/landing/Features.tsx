@@ -1,46 +1,51 @@
-import { Section, SectionHeading } from "@/components/ui/Section";
-import { features } from "@/content/fr/landing";
-import { featureIcons, featureMinis } from "./FeatureCards";
+import { AgendaPreview } from "@/components/previews/AgendaPreview";
+import { BookingPreview } from "@/components/previews/BookingPreview";
+import { EmailPreview } from "@/components/previews/EmailPreview";
+import { Section } from "@/components/ui/Section";
+import { byMode, features } from "@/content/fr/landing";
 
+type Delay = { "--d": string } & React.CSSProperties;
+
+/** Composition éditoriale : un grand bloc produit, puis deux cartes complémentaires. */
 export function Features() {
+  const [booking, emails] = features.cards;
   return (
-    <Section id="fonctionnalites" labelledBy="fonctionnalites-title" tone="page" className="reso-features md:!pt-8 md:!pb-12">
-      <SectionHeading
-        id="fonctionnalites-title"
-        title={features.title}
-        intro={features.intro}
-        introShort={features.intro}
-      />
-      <ul className="mx-auto grid gap-3 md:grid-cols-3 md:gap-4">
-        {features.cards.map((card, index) => {
-          const Icon = featureIcons[card.icon];
-          const Mini = featureMinis[card.icon];
-          return (
-            <li
-              key={card.title}
-              className="feature-row reveal flex items-center gap-4 rounded-2xl bg-card p-4 ring-1 ring-line md:flex-col md:items-stretch md:gap-5 md:p-5 xl:min-h-[260px] xl:flex-row xl:gap-4 xl:p-6"
-              style={{ "--d": `${index * 90}ms` } as React.CSSProperties}
-            >
-              <div className="flex min-w-0 flex-1 items-center gap-4 md:flex-col md:items-start md:justify-center md:gap-0">
-                <span
-                  aria-hidden="true"
-                  className="feature-icon inline-flex size-12 shrink-0 items-center justify-center rounded-xl bg-soft-tint text-brand md:size-14"
-                >
-                  <Icon className="size-6 md:size-7" strokeWidth={1.8} />
-                </span>
-                <div className="min-w-0">
-                  <h3 className="text-[15px] font-bold leading-6 tracking-tight text-ink md:mt-5 md:text-[17px] md:leading-6">{card.title}</h3>
-                  <p className="mt-0.5 text-[14px] leading-5 text-ink-muted md:hidden">{card.textShort}</p>
-                  <p className="mt-2 hidden text-[15px] leading-6 text-ink-muted md:block">{card.text}</p>
-                </div>
-              </div>
-              <div className="hidden w-full shrink-0 items-center md:flex xl:w-[44%]">
-                <Mini />
-              </div>
-            </li>
-          );
-        })}
-      </ul>
+    <Section id="fonctionnalites" labelledBy="fonctionnalites-title" className="!pt-10 md:!pt-16">
+      <article className="reveal card overflow-hidden">
+        <div className="grid gap-8 p-6 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:items-center md:gap-10 md:p-10">
+          <div className="max-w-md">
+            <p className="eyebrow">{byMode(features.eyebrow)}</p>
+            <h2 id="fonctionnalites-title" className="heading-2 mt-3">
+              {features.main.title}
+            </h2>
+            <p className="mt-4 text-[16px] leading-7 text-ink-muted md:text-[17px]">{features.main.text}</p>
+          </div>
+          <div className="-mb-12 -mr-6 md:-mb-16 md:-mr-10">
+            <AgendaPreview alt={features.main.alt} closeup className="[&_.product-window]:rounded-b-none [&_.product-window]:rounded-r-none [&_.product-window]:border-b-0 [&_.product-window]:border-r-0 [&_.product-window]:shadow-none" />
+          </div>
+        </div>
+      </article>
+
+      <div className="mt-5 grid gap-5 md:grid-cols-2 md:gap-6">
+        <article className="reveal card card-hover flex flex-col overflow-hidden" style={{ "--d": "80ms" } as Delay}>
+          <div className="p-6 md:p-8">
+            <h3 className="heading-3">{booking.title}</h3>
+            <p className="mt-3 text-[15px] leading-6 text-ink-muted md:text-[16px]">{booking.text}</p>
+          </div>
+          <div className="mt-auto px-6 md:px-8">
+            <BookingPreview alt={booking.alt} className="[&_.product-window]:rounded-b-none [&_.product-window]:border-b-0 [&_.product-window]:shadow-none" />
+          </div>
+        </article>
+        <article className="reveal card card-hover flex flex-col overflow-hidden" style={{ "--d": "160ms" } as Delay}>
+          <div className="p-6 md:p-8">
+            <h3 className="heading-3">{emails.title}</h3>
+            <p className="mt-3 text-[15px] leading-6 text-ink-muted md:text-[16px]">{emails.text}</p>
+          </div>
+          <div className="mt-auto px-6 md:px-8">
+            <EmailPreview alt={emails.alt} className="[&_.product-window]:rounded-b-none [&_.product-window]:border-b-0 [&_.product-window]:shadow-none" />
+          </div>
+        </article>
+      </div>
     </Section>
   );
 }

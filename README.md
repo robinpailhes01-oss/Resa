@@ -37,7 +37,8 @@ Sans `DATABASE_URL`, seule la landing fonctionne : les demandes vont dans `.data
 | `npm run build` / `npm start` | Build et serveur de production |
 | `npm run lint` · `npm run typecheck` · `npm test` | Qualité (regroupées dans `npm run check`) |
 | `npm run db:migrate` | Applique les migrations SQL (`DATABASE_URL` requis) |
-| `npm run screenshots` | Captures de la landing aux 6 largeurs de référence + contrôle du scroll horizontal (serveur lancé) |
+| `npm run screenshots` | Captures de la landing aux 7 largeurs de référence + contrôle du scroll horizontal (serveur lancé) ; `--docs` régénère `docs/previews/` |
+| `node scripts/recette-landing.mjs` | Recette fonctionnelle de la landing : navigation, menu mobile, CTA, préinscription avec et sans JavaScript, mouvement réduit |
 | `node scripts/recette-app.mjs` | Recette de bout en bout de l'application avec Playwright (compte → établissement → réservation publique → annulation) |
 | `node scripts/og-image.mjs` | Régénère `src/app/opengraph-image.png` |
 
@@ -117,7 +118,7 @@ Développement sans Docker : un PostgreSQL local suffit (`initdb`, `pg_ctl start
 
 ## Recette
 
-Voir `docs/recette.md` pour l'état des critères F01 à F15 de la landing, la matrice de captures et le parcours de recette de l'application (`node scripts/recette-app.mjs`).
+Voir `docs/recette.md` pour l'état des critères F01 à F15 de la landing et le parcours de recette de l'application (`node scripts/recette-app.mjs`), `docs/recette-landing.md` pour la refonte de la landing et `docs/DESIGN.md` pour la direction de design.
 
 ## Décisions à obtenir avant publication publique
 

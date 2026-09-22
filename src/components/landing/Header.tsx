@@ -11,7 +11,11 @@ import { track } from "@/lib/analytics";
 import { cn } from "@/lib/cn";
 import { useAttributionHref } from "@/lib/useAttributionHref";
 
-/** Barre flottante blanche, navigation compacte et menu tactile sur téléphone. */
+/**
+ * Navigation blanche, fine et flottante : logo, liens de sections, CTA noir.
+ * Sticky, avec une ombre très douce après le scroll. Les sections ont une marge
+ * d'ancrage (--nav-offset) pour que leurs titres ne passent jamais dessous.
+ */
 export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -19,10 +23,9 @@ export function Header() {
   const menuId = useId();
   const primary = byMode(cta.primary);
   const primaryHref = useAttributionHref(primary.href);
-  const compactLabel = byMode(nav.compactCta);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => setScrolled(window.scrollY > 4);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -48,30 +51,30 @@ export function Header() {
   };
 
   return (
-    <header className="reso-header sticky top-0 z-40 pt-3 md:pt-4">
-      <div className="container-page !max-w-[960px]">
+    <header className="sticky top-0 z-40 pt-2 md:pt-4">
+      <div className="container-page">
         <div
           className={cn(
-            "header-bar flex h-14 items-center justify-between gap-4 rounded-2xl bg-card/95 pl-4 pr-1.5 ring-1 backdrop-blur-md transition-shadow duration-200 md:h-16 md:pl-5",
-            scrolled ? "shadow-[0_12px_40px_-12px_rgba(105,80,232,0.18)] ring-line" : "shadow-card ring-line",
+            "flex h-12 items-center justify-between gap-4 rounded-2xl border bg-card/90 pl-4 pr-1.5 backdrop-blur-md transition-[box-shadow,border-color] duration-300 md:h-14 md:pl-5 md:pr-2",
+            scrolled || open ? "border-line shadow-[0_8px_30px_-12px_rgba(23,23,27,0.14)]" : "border-transparent shadow-none",
           )}
         >
           <Link href="/" className="inline-flex items-center rounded-md" aria-label={`${offer.brandName} – accueil`}>
-            <Logo height={30} />
+            <Logo height={26} />
           </Link>
 
           <nav aria-label="Navigation principale" className="hidden md:block">
-            <ul className="flex items-center gap-6">
+            <ul className="flex items-center gap-7">
               {nav.links.map((link) => (
                 <li key={link.href}>
-                  <a href={link.href} className="inline-flex min-h-11 items-center rounded-md text-[13px] font-medium text-ink-muted transition-colors hover:text-brand">
+                  <a href={link.href} className="inline-flex min-h-11 items-center rounded-md text-[14px] font-medium text-ink-muted transition-colors hover:text-ink">
                     {link.label}
                   </a>
                 </li>
               ))}
               {offer.launchMode === "live" && offer.loginUrl ? (
                 <li>
-                  <a href={offer.loginUrl} className="rounded-md py-2 text-[14px] font-medium text-ink/80 hover:text-brand">
+                  <a href={offer.loginUrl} className="inline-flex min-h-11 items-center rounded-md text-[14px] font-medium text-ink-muted hover:text-ink">
                     {nav.login}
                   </a>
                 </li>
@@ -81,34 +84,34 @@ export function Header() {
 
           <div className="flex items-center gap-1">
             <span className="hidden md:block">
-              <Button href={primaryHref} onClick={onCta} size="compact" className="rounded-xl px-4">
+              <Button href={primaryHref} onClick={onCta} size="compact">
                 {primary.label}
               </Button>
             </span>
             <button
               ref={toggleRef}
               type="button"
-              className="inline-flex size-11 items-center justify-center rounded-xl text-ink hover:bg-soft-tint md:hidden"
+              className="inline-flex size-11 items-center justify-center rounded-xl text-ink hover:bg-page md:hidden"
               aria-expanded={open}
               aria-controls={menuId}
               aria-label={open ? nav.closeMenu : nav.openMenu}
               onClick={() => setOpen((value) => !value)}
             >
-              {open ? <X className="size-6" /> : <Menu className="size-6" />}
+              {open ? <X className="size-5" /> : <Menu className="size-5" />}
             </button>
           </div>
         </div>
       </div>
 
       <div id={menuId} hidden={!open} className="container-page mt-2 md:hidden">
-        <nav aria-label="Navigation mobile" className="rounded-2xl bg-card px-5 py-3 shadow-preview ring-1 ring-line">
-          <ul className="flex flex-col">
+        <nav aria-label="Navigation mobile" className="card px-4 py-2 shadow-lift">
+          <ul className="flex flex-col divide-y divide-line">
             {nav.links.map((link) => (
               <li key={link.href}>
                 <a
                   href={link.href}
                   onClick={() => close(false)}
-                  className="block rounded-md py-3 text-[17px] font-medium text-ink hover:text-brand"
+                  className="block rounded-md py-3.5 text-[16px] font-medium text-ink hover:text-brand"
                 >
                   {link.label}
                 </a>
@@ -116,14 +119,14 @@ export function Header() {
             ))}
             {offer.launchMode === "live" && offer.loginUrl ? (
               <li>
-                <a href={offer.loginUrl} className="block rounded-md py-3 text-[17px] font-medium text-ink hover:text-brand">
+                <a href={offer.loginUrl} className="block rounded-md py-3.5 text-[16px] font-medium text-ink hover:text-brand">
                   {nav.login}
                 </a>
               </li>
             ) : null}
             <li className="pb-2 pt-3">
               <Button href={primaryHref} onClick={() => { onCta(); close(false); }} fullWidth>
-                {compactLabel}
+                {primary.label}
               </Button>
             </li>
           </ul>

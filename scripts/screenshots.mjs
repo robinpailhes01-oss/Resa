@@ -1,12 +1,15 @@
-// Captures de recette (cahier des charges §18) aux largeurs de référence.
-// Usage : BASE_URL=http://localhost:3000 node scripts/screenshots.mjs
+// Captures de recette aux largeurs de référence, et captures réelles pour docs/previews.
+// Usage : BASE_URL=http://localhost:3000 node scripts/screenshots.mjs [--docs]
 import { chromium } from "playwright";
 import { mkdirSync } from "node:fs";
 import path from "node:path";
 
 const base = process.env.BASE_URL ?? "http://localhost:3000";
 const out = path.join(process.cwd(), "tests/screenshots");
+const docs = path.join(process.cwd(), "docs/previews");
+const withDocs = process.argv.includes("--docs");
 mkdirSync(out, { recursive: true });
+if (withDocs) mkdirSync(docs, { recursive: true });
 
 const viewports = [
   { name: "320x568", width: 320, height: 568 },
@@ -21,20 +24,32 @@ const viewports = [
 const browser = await chromium.launch();
 for (const vp of viewports) {
   const page = await browser.newPage({ viewport: { width: vp.width, height: vp.height }, deviceScaleFactor: 1 });
+  const errors = [];
+  page.on("pageerror", (e) => errors.push(e.message));
   await page.goto(`${base}/`, { waitUntil: "networkidle" });
   await page.evaluate(() => document.fonts.ready);
-  // Laisse la séquence d'arrivée du premier écran se terminer.
+  // Laisse la séquence d'arrivée du premier écran et la démonstration de l'agenda se terminer.
   await page.waitForTimeout(2600);
-  // Rend visibles les éléments à apparition différée pour la capture pleine page.
-  await page.evaluate(() => document.querySelectorAll(".reveal").forEach((el) => el.classList.add("is-visible")));
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
   await page.screenshot({ path: path.join(out, `home-${vp.name}-fold.png`) });
-  // Le plein écran doit rester stable quand Playwright change la surface de capture.
-  // Le mode réduit finalise aussi les transitions des sections hors écran.
-  await page.emulateMedia({ reducedMotion: "reduce" });
+  if (withDocs && vp.width === 390) await page.screenshot({ path: path.join(docs, "hero-mobile.png") });
+  // Finalise les apparitions différées pour la capture pleine page.
+  await page.evaluate(() => document.querySelectorAll(".reveal, .demo-stage").forEach((el) => el.classList.add("is-visible")));
+  await page.waitForTimeout(1800);
   await page.screenshot({ path: path.join(out, `home-${vp.name}-full.png`), fullPage: true });
-  console.log(`${vp.name} — scroll horizontal : ${overflow ? "OUI (anomalie)" : "non"}`);
-  if (overflow) process.exitCode = 1;
+  if (withDocs) {
+    if (vp.width === 1440) {
+      await page.screenshot({ path: path.join(docs, "landing-desktop.png"), fullPage: true });
+      for (const [id, file] of [["avis", "section-avis.png"], ["tarif", "section-tarif.png"]]) {
+        const el = page.locator(`#${id}`);
+        await el.screenshot({ path: path.join(docs, file) });
+      }
+    }
+    if (vp.width === 390) await page.screenshot({ path: path.join(docs, "landing-mobile.png"), fullPage: true });
+    if (vp.width === 514) await page.screenshot({ path: path.join(docs, "landing-mobile-514.png"), fullPage: true });
+  }
+  console.log(`${vp.name} — scroll horizontal : ${overflow ? "OUI (anomalie)" : "non"}${errors.length ? ` — erreurs JS : ${errors.join(" | ")}` : ""}`);
+  if (overflow || errors.length) process.exitCode = 1;
   await page.close();
 }
 await browser.close();

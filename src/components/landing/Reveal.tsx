@@ -3,12 +3,13 @@
 import { useEffect } from "react";
 
 /**
- * Active l'apparition unique des éléments `.reveal` (16 px, cadence via --d)
- * via IntersectionObserver. Sans JavaScript, tout est visible d'emblée.
+ * Active, une seule fois, l'apparition des éléments `.reveal` (12 px) et la
+ * démonstration `.demo-stage` via IntersectionObserver. Sans JavaScript ou
+ * avec prefers-reduced-motion, tout est visible dans son état final.
  */
 export function RevealObserver() {
   useEffect(() => {
-    const elements = Array.from(document.querySelectorAll<HTMLElement>(".reveal"));
+    const elements = Array.from(document.querySelectorAll<HTMLElement>(".reveal, .demo-stage"));
     if (elements.length === 0) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced || !("IntersectionObserver" in window)) {
@@ -24,7 +25,7 @@ export function RevealObserver() {
           }
         }
       },
-      { rootMargin: "0px 0px -10% 0px", threshold: 0.1 },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.15 },
     );
     elements.forEach((el) => observer.observe(el));
     return () => observer.disconnect();

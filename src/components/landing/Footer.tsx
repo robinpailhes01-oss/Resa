@@ -3,49 +3,46 @@ import { Logo } from "@/components/ui/Logo";
 import { offer } from "@/config/offer";
 import { footer } from "@/content/fr/landing";
 
-export function Footer({ compact = false }: { compact?: boolean }) {
-  if (compact) return (
-    <footer className="compact-footer bg-page">
-      <Link href="/" aria-label={`${offer.brandName} – accueil`}><Logo height={22} /></Link>
-      <nav aria-label="Liens de pied de page">
-        {footer.legalLinks.filter((link) => !link.href.includes("#faq")).map((link) => (
-          <Link key={link.href} href={link.href} className="text-ink-muted hover:text-brand">{link.label}</Link>
-        ))}
-      </nav>
-    </footer>
-  );
+/** Pied de page léger : logo, liens de sections, liens légaux, signature. */
+export function Footer() {
   const year = new Date().getFullYear();
+  const linkClass = "inline-flex min-h-11 items-center text-[13px] text-ink-muted underline-offset-4 hover:text-ink hover:underline";
   return (
     <footer className="border-t border-line bg-page">
-      <div className="container-page flex flex-col gap-5 py-8 md:flex-row md:items-center md:justify-between">
-        <Logo height={26} />
+      <div className="container-page flex flex-col gap-6 py-10 md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-col gap-2">
+          <Link href="/" aria-label={`${offer.brandName} – accueil`} className="inline-flex w-fit rounded-md">
+            <Logo height={24} />
+          </Link>
+          <p className="text-[13px] text-ink-muted">{footer.tagline}</p>
+        </div>
         <nav aria-label="Liens de pied de page">
-          <ul className="flex flex-wrap gap-x-5 gap-y-2 text-[13px]">
+          <ul className="flex flex-wrap gap-x-6 gap-y-1">
+            {footer.links.map((link) => (
+              <li key={link.href}>
+                <a href={link.href} className={linkClass}>
+                  {link.label}
+                </a>
+              </li>
+            ))}
             {footer.legalLinks.map((link) => (
               <li key={link.href}>
-                {link.href.startsWith("#") ? (
-                  <a href={link.href} className="text-ink-muted underline-offset-4 hover:text-brand hover:underline">
-                    {link.label}
-                  </a>
-                ) : (
-                  <Link href={link.href} className="text-ink-muted underline-offset-4 hover:text-brand hover:underline">
-                    {link.label}
-                  </Link>
-                )}
+                <Link href={link.href} className={linkClass}>
+                  {link.label}
+                </Link>
               </li>
             ))}
             {offer.supportEmail ? (
               <li>
-                <a href={`mailto:${offer.supportEmail}`} className="text-ink-muted underline-offset-4 hover:text-brand hover:underline">
+                <a href={`mailto:${offer.supportEmail}`} className={linkClass}>
                   {footer.contactLabel}
                 </a>
               </li>
             ) : null}
           </ul>
         </nav>
-        <p className="text-[13px] text-ink-muted">{footer.tagline}</p>
       </div>
-      <div className="container-page pb-6 text-[12px] text-ink-muted/80">{footer.copyright(year)}</div>
+      <div className="container-page pb-8 text-[12px] text-ink-muted/80">{footer.copyright(year)}</div>
     </footer>
   );
 }
