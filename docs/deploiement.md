@@ -20,7 +20,7 @@ Durée : environ 20 minutes. Rien à installer sur votre ordinateur.
    ```
 5. Remplacez `[YOUR-PASSWORD]` par le mot de passe copié à l’étape 2. Gardez cette URL : c’est votre `DATABASE_URL`.
 
-> **Attention** : n’utilisez ni l’URL du projet (`https://xxxx.supabase.co`), ni la connexion « Direct » (`db.xxxx.supabase.co:5432`) : la première n’héberge pas la base, la seconde n’est joignable qu’en IPv6, que Vercel n’a pas. Le build échoue alors avec `CONNECT_TIMEOUT` à l’étape des migrations. Seule l’URL du **pooler** (`…pooler.supabase.com`) fonctionne.
+> **Attention** : n’utilisez ni l’URL du projet (`https://xxxx.supabase.co`), ni la connexion « Direct » (`db.xxxx.supabase.co:5432`) : la première n’héberge pas la base, la seconde n’est joignable qu’en IPv6, que Vercel n’a pas. Le build échoue alors avec `CONNECT_TIMEOUT` à l’étape des migrations. Seule l’URL du **pooler** (`…pooler.supabase.com`) fonctionne, et elle doit être **copiée telle quelle** depuis le bouton Connect : la région dans l’hôte (`aws-0-eu-west-3`, `aws-1-eu-west-3`, `aws-0-eu-central-1`…) est propre à votre projet. Avec une mauvaise région, le build échoue avec `tenant/user … not found`.
 
 Les tables sont créées automatiquement par Reso au premier déploiement (migrations dans `db/migrations`). Vous n’avez rien à faire dans l’éditeur SQL.
 

@@ -19,9 +19,16 @@ if (!url) {
 // Aide au diagnostic : sur Supabase, seule l'URL du pooler (aws-…pooler.supabase.com,
 // port 6543 ou 5432) est joignable depuis Vercel ; « db.<ref>.supabase.co » n'a pas
 // d'adresse IPv4 et « <ref>.supabase.co » n'héberge pas PostgreSQL.
-function supabaseHint(connectionString) {
+function supabaseHint(connectionString, message = "") {
   try {
     const host = new URL(connectionString).hostname;
+    if (host.endsWith(".pooler.supabase.com") && /tenant|user .* not found/i.test(message)) {
+      return [
+        `Le pooler « ${host} » ne connaît pas ce projet : la région dans l'hôte ne correspond pas.`,
+        "Copiez la chaîne exacte affichée par Supabase (bouton Connect → Transaction pooler), sans la retaper :",
+        "la partie « aws-X-<region>.pooler.supabase.com » doit être celle de votre projet.",
+      ].join("\n");
+    }
     if (host.endsWith(".supabase.co")) {
       const ref = host.replace(/^db\./, "").split(".")[0];
       return [
@@ -57,7 +64,7 @@ try {
   console.log(count === 0 ? "Base à jour." : `${count} migration(s) appliquée(s).`);
 } catch (error) {
   console.error(`Migration impossible : ${error?.message ?? error}`);
-  const hint = supabaseHint(url);
+  const hint = supabaseHint(url, String(error?.message ?? ""));
   if (hint) console.error(hint);
   process.exitCode = 1;
 } finally {
