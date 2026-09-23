@@ -3,6 +3,7 @@ import { cache } from "react";
 import { redirect } from "next/navigation";
 import { getSql } from "@/server/db";
 import { getCurrentUser, type SessionUser } from "./session";
+import type { SubscriptionStatus } from "@/lib/trial";
 
 export interface Establishment {
   id: string;
@@ -24,6 +25,10 @@ export interface Establishment {
   minLeadMin: number;
   maxHorizonDays: number;
   cancellationHours: number;
+  /** Statut d'abonnement (essai, actif, arrêté). */
+  subscriptionStatus: SubscriptionStatus;
+  /** Fin de l'essai gratuit. */
+  trialEndsAt: Date | null;
 }
 
 export type EstablishmentRow = {
@@ -45,6 +50,8 @@ export type EstablishmentRow = {
   min_lead_min: number;
   max_horizon_days: number;
   cancellation_hours: number;
+  subscription_status: SubscriptionStatus;
+  trial_ends_at: Date | string | null;
 };
 
 export function mapEstablishment(r: EstablishmentRow): Establishment {
@@ -67,6 +74,8 @@ export function mapEstablishment(r: EstablishmentRow): Establishment {
     minLeadMin: r.min_lead_min,
     maxHorizonDays: r.max_horizon_days,
     cancellationHours: r.cancellation_hours,
+    subscriptionStatus: r.subscription_status,
+    trialEndsAt: r.trial_ends_at ? new Date(r.trial_ends_at) : null,
   };
 }
 

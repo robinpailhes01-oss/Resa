@@ -2,6 +2,8 @@ import "server-only";
 import { getSql } from "@/server/db";
 import { mapEstablishment, type Establishment, type EstablishmentRow } from "@/server/auth/guards";
 import { slugify } from "@/lib/slug";
+import { trialEndDate } from "@/lib/trial";
+import { offer } from "@/config/offer";
 
 export const BUSINESS_TYPES = [
   { value: "institut", label: "Institut de beauté" },
@@ -49,9 +51,13 @@ export async function createEstablishment(userId: string, input: NewEstablishmen
       if (taken.length === 0) break;
       slug = `${base}-${i}`;
     }
+    // Essai gratuit : fin calculée à la création ; sans essai configuré,
+    // l'établissement est activé directement (paiement géré hors ligne).
+    const trialEndsAt = offer.trialDays ? trialEndDate(offer.trialDays) : null;
+    const status = offer.trialDays ? "trial" : "active";
     const [row] = await tx<EstablishmentRow[]>`
-      insert into establishments (owner_user_id, name, slug, business_type, city, postal_code, address_line, phone, public_email)
-      values (${userId}, ${input.name}, ${slug}, ${input.businessType}, ${input.city}, ${input.postalCode}, ${input.addressLine}, ${input.phone}, ${input.publicEmail})
+      insert into establishments (owner_user_id, name, slug, business_type, city, postal_code, address_line, phone, public_email, subscription_status, trial_ends_at)
+      values (${userId}, ${input.name}, ${slug}, ${input.businessType}, ${input.city}, ${input.postalCode}, ${input.addressLine}, ${input.phone}, ${input.publicEmail}, ${status}, ${trialEndsAt})
       returning *`;
     await tx`insert into memberships (user_id, establishment_id, role) values (${userId}, ${row.id}, 'owner')`;
     await tx`insert into notification_settings (establishment_id) values (${row.id})`;

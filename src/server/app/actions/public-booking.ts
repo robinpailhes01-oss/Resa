@@ -8,6 +8,7 @@ import type { FormState } from "@/components/app/ActionForm";
 import { getRateLimiters } from "@/server/rate-limit";
 import { isValidEmail, normalizeEmail } from "@/server/waitlist/email-normalize";
 import { isDateKey } from "@/lib/time";
+import { canAcceptOnlineBookings, resolveAccess } from "@/lib/trial";
 import { SlotUnavailableError, availableSlots, cancelBookingByClient, createBooking, getBookingByManageToken } from "../bookings";
 import { getEstablishmentById, getEstablishmentBySlug } from "../establishments";
 import { processEmailJobs } from "../notifications";
@@ -54,7 +55,9 @@ export async function publicBookAction(_prev: FormState, fd: FormData): Promise<
   }
   const d = parsed.data;
   const establishment = await getEstablishmentBySlug(d.slug);
-  if (!establishment || !establishment.bookingEnabled) return { error: "La réservation en ligne n’est pas disponible pour cet établissement." };
+  if (!establishment || !establishment.bookingEnabled || !canAcceptOnlineBookings(resolveAccess(establishment))) {
+    return { error: "La réservation en ligne n’est pas disponible pour cet établissement." };
+  }
   const [service, practitioner] = await Promise.all([getService(establishment.id, d.serviceId), getPractitioner(establishment.id, d.practitionerId)]);
   if (!service || !service.active || !practitioner || !practitioner.active) return { error: "Cette prestation n’est plus proposée." };
   if (service.practitionerIds.length > 0 && !service.practitionerIds.includes(practitioner.id)) return { error: "Ce praticien ne réalise pas cette prestation." };

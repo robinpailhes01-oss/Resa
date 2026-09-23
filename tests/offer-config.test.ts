@@ -11,7 +11,7 @@ describe("configuration commerciale", () => {
     expect(config.practitionerLimit).toBe(3);
     expect(config.signupUrl).toBeNull();
     expect(config.loginUrl).toBeNull();
-    expect(config.trialDays).toBeNull();
+    expect(config.trialDays).toBe(7);
   });
 
   it("en mode live, pointe par défaut sur les pages intégrées d'inscription et de connexion", () => {

@@ -15,7 +15,7 @@ export function Pricing() {
       <div id="tarif-card" className="reveal panel-pricing relative mx-auto max-w-[1120px] overflow-hidden rounded-[28px] border border-ink/8 shadow-card md:rounded-[32px]">
         <span className="absolute right-5 top-5 inline-flex items-center gap-1.5 rounded-full bg-brand px-3 py-1.5 text-[12px] font-semibold text-white md:right-8 md:top-8">
           <Sparkles className="size-3.5" aria-hidden="true" />
-          {pricing.badge}
+          {byMode(pricing.badge)}
         </span>
         <div className="grid gap-10 px-6 py-10 md:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] md:gap-12 md:px-12 md:py-14">
           <div className="pt-6 md:pt-0">

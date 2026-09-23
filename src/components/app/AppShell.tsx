@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import type { Establishment } from "@/server/auth/guards";
+import { AccessBanner } from "./AccessBanner";
 import { signOut } from "@/server/auth/actions";
 import { cn } from "@/lib/cn";
 import { NavLink } from "./NavLink";
@@ -108,6 +109,7 @@ export function AppShell({
         </div>
       </aside>
       <main id="contenu" className="min-w-0 flex-1 px-4 py-6 md:px-10 md:py-10">
+        {establishment ? <AccessBanner establishment={establishment} /> : null}
         {children}
       </main>
     </div>

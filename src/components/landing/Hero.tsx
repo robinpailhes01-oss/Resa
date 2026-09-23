@@ -48,7 +48,7 @@ export function Hero() {
             </Button>
           </div>
           <p className="enter mt-3 text-[13px] text-ink-muted md:mt-5 md:text-[14px]" style={d(300)}>
-            {hero.reassurance.join(" · ")}
+            {byMode(hero.reassurance).join(" · ")}
             {caption ? <span className="hidden sm:inline"> · {caption}</span> : null}
           </p>
         </div>

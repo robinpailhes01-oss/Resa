@@ -17,7 +17,7 @@ export interface OfferConfig {
   monthlyPriceExVat: number;
   currency: "EUR";
   practitionerLimit: number;
-  /** Durée d'essai en jours. `null` tant qu'elle n'est pas approuvée. */
+  /** Durée de l'essai gratuit en jours (7 par défaut ; RESO_TRIAL_DAYS=0 la désactive). */
   trialDays: number | null;
   /** URL réelle de création de compte. `null` tant qu'elle n'est pas validée. */
   signupUrl: string | null;
@@ -71,13 +71,13 @@ function readPrice(value: string | undefined, fallback: number): number {
   return parsed;
 }
 
-function readInt(value: string | undefined, fallback: number | null): number | null {
+function readInt(value: string | undefined, fallback: number | null, { allowZero = false } = {}): number | null {
   if (!value || !value.trim()) return fallback;
   const parsed = Number.parseInt(value, 10);
-  if (!Number.isInteger(parsed) || parsed <= 0) {
+  if (!Number.isInteger(parsed) || parsed < 0 || (parsed === 0 && !allowZero)) {
     throw new Error(`Valeur entière invalide : "${value}".`);
   }
-  return parsed;
+  return parsed === 0 ? null : parsed;
 }
 
 type Env = Record<string, string | undefined>;
@@ -89,7 +89,7 @@ function buildConfig(env: Env): OfferConfig {
     monthlyPriceExVat: readPrice(env.RESO_MONTHLY_PRICE_EX_VAT, 39),
     currency: "EUR",
     practitionerLimit: readInt(env.RESO_PRACTITIONER_LIMIT, 3) ?? 3,
-    trialDays: readInt(env.RESO_TRIAL_DAYS, null),
+    trialDays: readInt(env.RESO_TRIAL_DAYS, 7, { allowZero: true }),
     signupUrl: readHttpsUrl(env.RESO_SIGNUP_URL, "RESO_SIGNUP_URL"),
     loginUrl: readHttpsUrl(env.RESO_LOGIN_URL, "RESO_LOGIN_URL"),
     supportEmail: readOptional(env.RESO_SUPPORT_EMAIL),

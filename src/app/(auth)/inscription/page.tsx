@@ -13,7 +13,11 @@ export default async function InscriptionPage() {
   return (
     <AuthShell
       title="Créez votre espace"
-      intro={`Quelques minutes suffisent pour ouvrir votre agenda ${offer.brandName} et partager votre lien de réservation.`}
+      intro={
+        offer.trialDays
+          ? `${offer.trialDays} jours d’essai gratuit, sans carte bancaire. Quelques minutes suffisent pour ouvrir votre agenda ${offer.brandName} et partager votre lien de réservation.`
+          : `Quelques minutes suffisent pour ouvrir votre agenda ${offer.brandName} et partager votre lien de réservation.`
+      }
       footer={
         <>
           Déjà un compte ?{" "}

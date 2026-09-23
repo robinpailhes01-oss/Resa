@@ -38,7 +38,7 @@ const submit = (sel) => page.click(`form:has(${sel}) button[type="submit"]`);
 await page.goto(`${BASE}/`, { waitUntil: "networkidle" });
 await page.waitForTimeout(1500);
 const heroCta = await page.locator('#hero a.btn').first();
-ok("landing live : CTA « Créer mon compte » vers /inscription", (await heroCta.textContent())?.includes("Créer mon compte") && (await heroCta.getAttribute("href")) === "/inscription");
+ok("landing live : CTA « Essayer gratuitement » vers /inscription", (await heroCta.textContent())?.includes("Essayer gratuitement") && (await heroCta.getAttribute("href")) === "/inscription");
 ok("landing live : lien Connexion dans la navigation", (await page.locator('nav[aria-label="Navigation principale"] a[href="/connexion"]').count()) === 1);
 await shot("landing-live");
 
@@ -163,7 +163,7 @@ if (LOG) {
 // 11. Côté pro : tableau de bord, fiche du rendez-vous
 await page.goto(`${BASE}/app`);
 await page.waitForLoadState("networkidle");
-ok("tableau de bord : bandeau de lancement (paiement non activé)", (await page.locator("text=Période de lancement").count()) > 0);
+ok("tableau de bord : bandeau d'essai gratuit (7 jours restants)", (await page.locator('[data-access="trial"]').count()) > 0 && (await page.locator("text=Essai gratuit · 7 jours restants").count()) > 0);
 await shot("tableau-de-bord");
 const bookedDate = new URL(rdvUrl).searchParams.get("date") ?? null;
 await page.goto(`${BASE}/app/agenda${bookedDate ? `?date=${bookedDate}` : ""}`);

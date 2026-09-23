@@ -35,9 +35,12 @@ export const nav = {
   openMenu: "Ouvrir le menu",
   closeMenu: "Fermer le menu",
   /** Bouton compact du header mobile en pré-lancement. */
-  compactCta: { prelaunch: "Me prévenir", live: "Créer mon compte" } satisfies ByMode<string>,
+  compactCta: { prelaunch: "Me prévenir", live: offer.trialDays ? "Essai gratuit" : "Créer mon compte" } satisfies ByMode<string>,
   login: "Connexion",
 };
+
+/** « 7 jours d’essai gratuit » (vide sans essai configuré). */
+export const trialLabel = offer.trialDays ? `${offer.trialDays} jours d’essai gratuit` : "";
 
 export const cta = {
   primary: {
@@ -56,7 +59,10 @@ export const hero = {
   title: ["Votre agenda.", "L’esprit libre."],
   intro: "Réservations en ligne, agenda partagé et emails automatiques. Tout ce qu’il faut pour organiser votre activité, dans une seule offre.",
   /** Ligne de réassurance sous les boutons. */
-  reassurance: [priceCompact, "Un établissement", capitalize(practitioners)],
+  reassurance: {
+    prelaunch: [priceCompact, "Un établissement", capitalize(practitioners)],
+    live: offer.trialDays ? [trialLabel, "Sans carte bancaire", `${priceCompact} ensuite`] : [priceCompact, "Un établissement", capitalize(practitioners)],
+  } satisfies ByMode<string[]>,
   reassuranceCaption: { prelaunch: "Tarif prévu au lancement", live: null } satisfies ByMode<string | null>,
   previewCaption: {
     prelaunch: "Aperçu illustratif du produit en préparation, données fictives.",
@@ -139,7 +145,7 @@ export const pricing = {
     capitalize(practitioners),
     `Sans commission de réservation prélevée par ${brand}`,
   ],
-  badge: "Tout inclus",
+  badge: { prelaunch: "Tout inclus", live: offer.trialDays ? trialLabel : "Tout inclus" } satisfies ByMode<string>,
   inclusionsTitle: "Ce qui est inclus",
   inclusions: [
     "Page de réservation et lien à partager",
@@ -156,7 +162,9 @@ export const pricing = {
   ],
   afterCta: {
     prelaunch: "Offre en préparation. Conditions définitives communiquées à l’ouverture.",
-    live: "Sans engagement mensuel selon contrat.",
+    live: offer.trialDays
+      ? `${trialLabel}, sans carte bancaire. Ensuite ${priceCompact}, sans engagement de durée.`
+      : "Sans engagement mensuel selon contrat.",
   } satisfies ByMode<string>,
 };
 
@@ -234,6 +242,12 @@ const faqLive: FaqItem[] = [
     question: `Est-ce que ${brand} remplace mon logiciel de caisse ?`,
     answer:
       "Non. L’offre concerne la réservation, l’agenda et les emails liés aux rendez-vous. La caisse et le terminal de paiement ne sont pas inclus.",
+  },
+  {
+    question: "Comment fonctionne l’essai gratuit ?",
+    answer: offer.trialDays
+      ? `Vous disposez de ${offer.trialDays} jours pour utiliser ${brand} avec toutes ses fonctionnalités, sans carte bancaire. À la fin de l’essai, votre page de réservation en ligne est suspendue tant que l’abonnement (${priceCompact}) n’est pas activé ; votre agenda et vos données restent accessibles.`
+      : `Créez votre compte et utilisez ${brand} avec toutes ses fonctionnalités. Les conditions de l’abonnement (${priceCompact}) sont indiquées avant la création de votre compte.`,
   },
   {
     question: "Comment commencer ?",

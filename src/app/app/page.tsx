@@ -23,7 +23,6 @@ import { listOpeningHours } from "@/server/app/hours";
 import { listPractitioners } from "@/server/app/practitioners";
 import { listServices } from "@/server/app/services";
 import { getDashboardStats } from "@/server/app/stats";
-import { launchNotice } from "@/content/fr/app";
 
 export const metadata: Metadata = { title: "Tableau de bord" };
 
@@ -118,10 +117,6 @@ export default async function DashboardPage({
         }
       />
       <OnboardingChecklist steps={steps} slug={establishment.slug} />
-      <p className="mb-6 rounded-xl border border-line bg-soft-tint/60 px-4 py-3 text-[14px] leading-6 text-ink">
-        <span className="font-semibold">{launchNotice.title} · </span>
-        {launchNotice.text}
-      </p>
 
       <Card className="mb-6">
         <div className="flex flex-wrap items-baseline justify-between gap-2">

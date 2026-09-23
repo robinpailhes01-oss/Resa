@@ -23,6 +23,7 @@ import { effectiveRanges } from "@/server/app/hours";
 import { listPractitioners } from "@/server/app/practitioners";
 import { listServices } from "@/server/app/services";
 import { cn } from "@/lib/cn";
+import { canAcceptOnlineBookings, resolveAccess } from "@/lib/trial";
 
 export async function generateMetadata({
   params,
@@ -53,7 +54,7 @@ export default async function ReservationPage({
   const establishment = await getEstablishmentBySlug(slug);
   if (!establishment) notFound();
 
-  if (!establishment.bookingEnabled) {
+  if (!establishment.bookingEnabled || !canAcceptOnlineBookings(resolveAccess(establishment))) {
     return (
       <BookingShell establishment={establishment}>
         <StatusMessage tone="pending">
