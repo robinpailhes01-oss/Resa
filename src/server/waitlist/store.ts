@@ -1,3 +1,4 @@
+import { readDatabaseUrl } from "@/server/database-url";
 import path from "node:path";
 import { FileWaitlistStore } from "./file-store";
 import { MemoryWaitlistStore } from "./memory-store";
@@ -9,7 +10,7 @@ const holder = globalThis as unknown as { __resoWaitlistStore?: Holder };
 
 /**
  * Sélection du store :
- * - DATABASE_URL défini → PostgreSQL ;
+ * - DATABASE_URL (ou POSTGRES_URL, intégration Supabase de Vercel) défini → PostgreSQL ;
  * - sinon, hors production ou si WAITLIST_FILE est défini → fichier JSON local ;
  * - sinon → StoreUnavailableError (le formulaire répond 503, jamais un faux succès).
  */
@@ -18,7 +19,7 @@ export async function getWaitlistStore(): Promise<WaitlistStore> {
   if (h.store) return h.store;
   if (!h.init) {
     h.init = (async () => {
-      const url = process.env.DATABASE_URL?.trim();
+      const url = readDatabaseUrl();
       if (url) {
         h.store = PostgresWaitlistStore.fromUrl(url);
         return h.store;
@@ -35,7 +36,7 @@ export async function getWaitlistStore(): Promise<WaitlistStore> {
         h.store = file;
         return h.store;
       }
-      throw new StoreUnavailableError("DATABASE_URL manquant en production");
+      throw new StoreUnavailableError("DATABASE_URL ou POSTGRES_URL manquant en production");
     })();
   }
   return h.init;

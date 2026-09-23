@@ -5,13 +5,14 @@ import postgres from "postgres";
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 
-const url = process.env.DATABASE_URL;
+// DATABASE_URL, ou POSTGRES_URL injectée par l'intégration Supabase de Vercel.
+const url = process.env.DATABASE_URL?.trim() || process.env.POSTGRES_URL?.trim();
 if (!url) {
   if (process.argv.includes("--if-configured")) {
-    console.warn("DATABASE_URL absent : migrations ignorées (l'application nécessitera une base).");
+    console.warn("DATABASE_URL / POSTGRES_URL absent : migrations ignorées (l'application nécessitera une base).");
     process.exit(0);
   }
-  console.error("DATABASE_URL manquant.");
+  console.error("DATABASE_URL ou POSTGRES_URL manquant.");
   process.exit(1);
 }
 

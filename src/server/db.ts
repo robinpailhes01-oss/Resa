@@ -1,3 +1,4 @@
+import { readDatabaseUrl } from "./database-url";
 import postgres, { type Sql, type TransactionSql } from "postgres";
 
 /** Connexion ou transaction : les modules acceptent les deux. */
@@ -6,7 +7,7 @@ export type Db = Sql | TransactionSql;
 const holder = globalThis as unknown as { __resoSql?: Sql };
 
 export class DatabaseUnavailableError extends Error {
-  constructor(message = "Base de données non configurée (DATABASE_URL manquant)") {
+  constructor(message = "Base de données non configurée (DATABASE_URL ou POSTGRES_URL manquant)") {
     super(message);
     this.name = "DatabaseUnavailableError";
   }
@@ -18,7 +19,7 @@ export class DatabaseUnavailableError extends Error {
  */
 export function getSql(): Sql {
   if (holder.__resoSql) return holder.__resoSql;
-  const url = process.env.DATABASE_URL?.trim();
+  const url = readDatabaseUrl();
   if (!url) throw new DatabaseUnavailableError();
   holder.__resoSql = postgres(url, {
     max: 8,
@@ -31,5 +32,5 @@ export function getSql(): Sql {
 }
 
 export function hasDatabase(): boolean {
-  return Boolean(process.env.DATABASE_URL?.trim());
+  return Boolean(readDatabaseUrl());
 }
