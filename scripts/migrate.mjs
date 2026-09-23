@@ -43,6 +43,41 @@ function supabaseHint(connectionString, message = "") {
   return null;
 }
 
+// Vérification de la forme de l'URL avant toute connexion : le mot de passe
+// n'est jamais affiché, seulement la structure (protocole, utilisateur, hôte, port, base).
+function describeUrl(raw) {
+  const start = raw.slice(0, 14).replace(/[^\x20-\x7e]/g, "?");
+  let parsed;
+  try {
+    parsed = new URL(raw);
+  } catch {
+    return { ok: false, message: `La valeur ne ressemble pas à une URL (elle commence par « ${start}… », ${raw.length} caractères).` };
+  }
+  const problems = [];
+  if (!/^postgres(ql)?:$/.test(parsed.protocol)) problems.push(`le préfixe est « ${parsed.protocol}// » au lieu de « postgresql:// »`);
+  if (!parsed.hostname) problems.push("l'hôte est vide");
+  if (!parsed.username) problems.push("l'utilisateur est vide");
+  if (/^[a-z]+:\/\/[^@]*[\[\]][^@]*@/i.test(raw)) problems.push("le mot de passe contient encore des crochets « [ ] »");
+  if (/\s/.test(raw)) problems.push("la valeur contient un espace ou un retour à la ligne");
+  const shape = `${parsed.protocol}//${parsed.username || "?"}:${parsed.password ? "•••" : "(vide)"}@${parsed.hostname || "?"}:${parsed.port || "(défaut)"}${parsed.pathname || ""}`;
+  return { ok: problems.length === 0, message: `Forme lue : ${shape}${problems.length ? `\nProblèmes : ${problems.join(" ; ")}.` : ""}` };
+}
+
+const shape = describeUrl(url);
+if (!shape.ok) {
+  console.error("DATABASE_URL / POSTGRES_URL invalide.");
+  console.error(shape.message);
+  console.error(
+    [
+      "Attendu : postgresql://postgres.<ref>:<mot de passe>@<hôte>.pooler.supabase.com:6543/postgres",
+      "Vérifiez : pas de guillemets, pas de « DATABASE_URL= » devant, pas d'espace, mot de passe sans crochets.",
+      "Si le mot de passe contient @ # % / ? ou &, encodez-le (@ → %40, # → %23, % → %25, / → %2F, ? → %3F, & → %26).",
+    ].join("\n"),
+  );
+  process.exit(1);
+}
+console.log(`Base : ${shape.message}`);
+
 const sql = postgres(url, { max: 1, prepare: false, connect_timeout: 15, onnotice: () => {} });
 const dir = path.join(process.cwd(), "db", "migrations");
 
