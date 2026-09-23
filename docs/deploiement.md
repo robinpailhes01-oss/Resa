@@ -20,6 +20,8 @@ Durée : environ 20 minutes. Rien à installer sur votre ordinateur.
    ```
 5. Remplacez `[YOUR-PASSWORD]` par le mot de passe copié à l’étape 2. Gardez cette URL : c’est votre `DATABASE_URL`.
 
+> **Attention** : n’utilisez ni l’URL du projet (`https://xxxx.supabase.co`), ni la connexion « Direct » (`db.xxxx.supabase.co:5432`) : la première n’héberge pas la base, la seconde n’est joignable qu’en IPv6, que Vercel n’a pas. Le build échoue alors avec `CONNECT_TIMEOUT` à l’étape des migrations. Seule l’URL du **pooler** (`…pooler.supabase.com`) fonctionne.
+
 Les tables sont créées automatiquement par Reso au premier déploiement (migrations dans `db/migrations`). Vous n’avez rien à faire dans l’éditeur SQL.
 
 > Alternative : dans Vercel, onglet **Storage → Create Database → Supabase**. L’intégration crée le projet Supabase et injecte `POSTGRES_URL` toute seule ; Reso l’accepte à la place de `DATABASE_URL`. Dans ce cas, sautez les étapes 3 à 5 et ne renseignez pas `DATABASE_URL` à l’étape 2 ci-dessous.
@@ -33,9 +35,9 @@ Les tables sont créées automatiquement par Reso au premier déploiement (migra
 |---|---|---|
 | `DATABASE_URL` | l’URL de l’étape 1 | base de données (comptes, agendas, rendez-vous) |
 | `RESO_LAUNCH_MODE` | `live` | ouvre l’inscription et la connexion sur le site |
-| `RESO_SITE_URL` | `https://resa-lemon.vercel.app` | liens absolus des emails, canonical |
+| `RESO_SITE_URL` | `https://reso-app.fr` (ou `https://resa-lemon.vercel.app` tant que le domaine n’est pas rattaché) | liens absolus des emails, canonical |
 | `INTERNAL_TASKS_SECRET` | une longue chaîne aléatoire | protège les routes internes (rappels par email) |
-| `RESO_SUPPORT_EMAIL` | votre adresse de contact | affichée aux établissements pour activer l’abonnement |
+| `RESO_SUPPORT_EMAIL` | `contact@reso-app.fr` | affichée aux établissements pour activer l’abonnement, adresse de réponse des emails |
 | `RESO_TRIAL_DAYS` | `7` (facultatif, 7 par défaut) | durée de l’essai gratuit ; `0` le désactive |
 | `RESO_INDEXABLE` | `true` quand le site est prêt | autorise Google à indexer la landing |
 
@@ -43,8 +45,10 @@ Emails (nécessaires pour la vérification de compte, les confirmations, rappels
 
 | Variable | Valeur |
 |---|---|
-| `RESEND_API_KEY` | clé créée sur https://resend.com (compte gratuit) |
-| `EMAIL_FROM` | `Reso <bonjour@votre-domaine.fr>` avec un domaine vérifié dans Resend |
+| `RESEND_API_KEY` | clé API créée dans Resend → API Keys (permission « Sending access », domaine `reso-app.fr`) |
+| `EMAIL_FROM` | `Reso <contact@reso-app.fr>` |
+
+`EMAIL_FROM` est l’expéditeur qui apparaît dans la boîte de réception de vos clients : un nom affiché puis, entre chevrons, une adresse du domaine vérifié dans Resend. Avec `contact@reso-app.fr`, les réponses arrivent dans votre boîte Hostinger. Vous pouvez aussi utiliser une adresse qui n’existe pas comme boîte (par exemple `Reso <rendez-vous@reso-app.fr>`) : Resend envoie quand même, et l’adresse de réponse reste `RESO_SUPPORT_EMAIL`.
 
 Sans ces deux variables, l’inscription et les réservations fonctionnent, mais aucun email ne part.
 
@@ -87,6 +91,16 @@ update establishments set subscription_status = 'cancelled' where slug = 'instit
 
 Quand le paiement en ligne sera branché (Stripe), cette activation deviendra automatique.
 
-## 6. Domaine personnalisé (plus tard)
+## 6. Rattacher reso-app.fr (domaine chez Hostinger)
 
-Vercel → projet → **Settings → Domains** → ajoutez votre domaine et suivez les instructions DNS. Mettez ensuite `RESO_SITE_URL` à jour et redéployez.
+Ne changez pas les serveurs de noms : vos emails (boîte Hostinger et Resend) dépendent des enregistrements DNS actuels. Il suffit d’ajouter deux enregistrements.
+
+1. Vercel → projet **resa** → **Settings → Domains** → **Add** → `reso-app.fr`. Acceptez la proposition d’ajouter aussi `www.reso-app.fr` avec redirection vers `reso-app.fr`. Vercel affiche les valeurs DNS attendues.
+2. Hostinger → **Domaines → reso-app.fr → DNS / Nameservers** :
+   - supprimez l’enregistrement **A** de `@` qui pointe vers la page « parked » (`2.57.91.91`) et créez un **A** `@` → `76.76.21.21` ;
+   - modifiez le **CNAME** `www` pour qu’il pointe vers `cname.vercel-dns.com` (au lieu de `reso-app.fr`).
+   Ne touchez ni aux **MX**, ni aux **TXT** (`v=spf1…`, `resend._domainkey`, `send`, `_dmarc`).
+3. Revenez dans Vercel : le domaine passe en « Valid Configuration » après quelques minutes (jusqu’à une heure). Le certificat HTTPS est automatique.
+4. Mettez `RESO_SITE_URL` à `https://reso-app.fr` et `RESO_INDEXABLE` à `true`, puis redéployez.
+
+Pour vérifier : `https://reso-app.fr` doit afficher Reso, et `https://www.reso-app.fr` rediriger vers `https://reso-app.fr`.

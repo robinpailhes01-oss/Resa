@@ -16,7 +16,27 @@ if (!url) {
   process.exit(1);
 }
 
-const sql = postgres(url, { max: 1, prepare: false, onnotice: () => {} });
+// Aide au diagnostic : sur Supabase, seule l'URL du pooler (aws-…pooler.supabase.com,
+// port 6543 ou 5432) est joignable depuis Vercel ; « db.<ref>.supabase.co » n'a pas
+// d'adresse IPv4 et « <ref>.supabase.co » n'héberge pas PostgreSQL.
+function supabaseHint(connectionString) {
+  try {
+    const host = new URL(connectionString).hostname;
+    if (host.endsWith(".supabase.co")) {
+      const ref = host.replace(/^db\./, "").split(".")[0];
+      return [
+        `L'hôte « ${host} » n'est pas joignable depuis Vercel.`,
+        "Utilisez la chaîne « Transaction pooler » du bouton Connect de Supabase, de la forme :",
+        `postgresql://postgres.${ref}:[MOT_DE_PASSE]@aws-0-<region>.pooler.supabase.com:6543/postgres`,
+      ].join("\n");
+    }
+  } catch {
+    /* URL illisible : pas d'indice supplémentaire */
+  }
+  return null;
+}
+
+const sql = postgres(url, { max: 1, prepare: false, connect_timeout: 15, onnotice: () => {} });
 const dir = path.join(process.cwd(), "db", "migrations");
 
 try {
@@ -35,6 +55,11 @@ try {
     count += 1;
   }
   console.log(count === 0 ? "Base à jour." : `${count} migration(s) appliquée(s).`);
+} catch (error) {
+  console.error(`Migration impossible : ${error?.message ?? error}`);
+  const hint = supabaseHint(url);
+  if (hint) console.error(hint);
+  process.exitCode = 1;
 } finally {
-  await sql.end();
+  await sql.end({ timeout: 5 });
 }
