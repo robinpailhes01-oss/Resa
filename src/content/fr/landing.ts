@@ -132,12 +132,56 @@ export const testimonialsSection = {
   },
 };
 
+export interface PricingProfile {
+  value: string;
+  /** Libellé du sélecteur. */
+  label: string;
+  /** Titre de la carte. */
+  name: string;
+  description: string;
+  features: string[];
+}
+
 export const pricing = {
   label: "Une offre simple",
   title: ["Tout l’essentiel.", "Un prix clair."],
+  intro: "Un seul tarif, quel que soit votre profil. Choisissez le vôtre pour voir ce que Reso vous apporte au quotidien.",
+  selectorLabel: "Votre profil",
+  /** Même offre, même prix : seule la présentation change selon le profil. */
+  profiles: [
+    {
+      value: "solo",
+      label: "Solo",
+      name: "Vous travaillez seule",
+      description: "Votre agenda, votre page de réservation et vos emails automatiques, sans rien à installer ni à paramétrer chaque jour.",
+      features: [
+        "Page de réservation et lien à partager",
+        "Agenda clair sur téléphone et ordinateur",
+        "Fichier clients et historique des rendez-vous",
+        "Confirmations et rappels par email",
+        "Demandes d’avis par email après la visite",
+        `Sans commission de réservation prélevée par ${brand}`,
+      ],
+    },
+    {
+      value: "equipe",
+      label: "Petite équipe",
+      name: "Vous êtes plusieurs au salon",
+      description: "Chaque praticien a son agenda, vous gardez la vue d’ensemble, et vos clientes choisissent avec qui réserver.",
+      features: [
+        `Agenda pour ${practitioners}, au même prix`,
+        "Un agenda par praticien et une vue d’ensemble",
+        "Prestations réalisées par un ou plusieurs praticiens",
+        "Vos clientes choisissent avec qui réserver",
+        "Confirmations, rappels et demandes d’avis par email",
+        `Sans commission de réservation prélevée par ${brand}`,
+      ],
+    },
+  ] satisfies PricingProfile[],
   priceCaption: { prelaunch: "Tarif prévu au lancement", live: null } satisfies ByMode<string | null>,
   price: priceAmount,
   priceUnit: `HT${NBSP}/${NBSP}mois`,
+  billing: { prelaunch: "Un établissement, facturé chaque mois", live: "Facturé chaque mois, sans engagement de durée" } satisfies ByMode<string>,
   scope: `Un établissement${NBSP}· ${capitalize(practitioners)}`,
   highlights: [
     "Agenda et réservation en ligne",
@@ -166,6 +210,7 @@ export const pricing = {
       ? `${trialLabel}, sans carte bancaire. Ensuite ${priceCompact}, sans engagement de durée.`
       : "Sans engagement mensuel selon contrat.",
   } satisfies ByMode<string>,
+  help: { text: "Une question sur l’offre ?", label: "Voir les questions fréquentes", href: "/#faq" },
 };
 
 export interface FaqItem {
