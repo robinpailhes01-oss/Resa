@@ -12,23 +12,50 @@ import { cn } from "@/lib/cn";
 import { useAttributionHref } from "@/lib/useAttributionHref";
 
 /**
- * Navigation blanche, fine et flottante : logo, liens de sections, CTA noir.
- * Sticky, avec une ombre très douce après le scroll. Les sections ont une marge
- * d'ancrage (--nav-offset) pour que leurs titres ne passent jamais dessous.
+ * Navigation qui se transforme au scroll : barre pleine largeur et transparente
+ * en haut de page, capsule blanche floutée dès que l'on descend, compacte tant
+ * que l'on descend, restaurée dès que l'on remonte. Le lien de la section
+ * visible est souligné. Les ancres gardent une marge (--nav-offset).
  */
 export function Header() {
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [floating, setFloating] = useState(false);
+  const [compact, setCompact] = useState(false);
+  const [active, setActive] = useState<string | null>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const menuId = useId();
   const primary = byMode(cta.primary);
   const primaryHref = useAttributionHref(primary.href);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 4);
-    onScroll();
+    let lastY = window.scrollY;
+    let frame = 0;
+    const update = () => {
+      const y = window.scrollY;
+      const delta = y - lastY;
+      setFloating(y > 8);
+      if (delta > 6) setCompact(y > 160);
+      else if (delta < -6) setCompact(false);
+      const marker = y + window.innerHeight * 0.34;
+      let next: string | null = null;
+      for (const link of nav.links) {
+        const id = link.href.split("#")[1];
+        const section = id ? document.getElementById(id) : null;
+        if (section && section.offsetTop <= marker) next = link.href;
+      }
+      setActive(window.location.pathname === "/" ? next : null);
+      lastY = y;
+      frame = 0;
+    };
+    const onScroll = () => {
+      if (!frame) frame = window.requestAnimationFrame(update);
+    };
+    update();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
   }, []);
 
   const close = useCallback((restoreFocus: boolean) => {
@@ -51,30 +78,25 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-40 pt-2 md:pt-4">
+    <header className={cn("nav-root sticky top-0 z-40", (floating || open) && "is-floating", compact && !open && "is-compact")}>
       <div className="container-page">
-        <div
-          className={cn(
-            "flex h-12 items-center justify-between gap-4 rounded-2xl border border-ink/8 pl-4 pr-1.5 shadow-[0_6px_24px_-14px_rgba(17,17,22,0.18)] backdrop-blur-xl transition-[background-color,box-shadow] duration-300 md:h-14 md:pl-5 md:pr-2",
-            scrolled || open ? "bg-card/95 shadow-[0_10px_32px_-14px_rgba(17,17,22,0.22)]" : "bg-card/75",
-          )}
-        >
-          <Link href="/" className="inline-flex items-center rounded-md" aria-label={`${offer.brandName} – accueil`}>
+        <div className="nav-shell">
+          <Link href="/" className="inline-flex shrink-0 items-center rounded-md" aria-label={`${offer.brandName} – accueil`}>
             <Logo height={26} />
           </Link>
 
-          <nav aria-label="Navigation principale" className="hidden md:block">
+          <nav aria-label="Navigation principale" className="nav-links hidden md:block">
             <ul className="flex items-center gap-7">
               {nav.links.map((link) => (
                 <li key={link.href}>
-                  <a href={link.href} className="inline-flex min-h-11 items-center rounded-md text-[14px] font-medium text-ink-muted transition-colors hover:text-ink">
+                  <a href={link.href} aria-current={active === link.href ? "location" : undefined} className="nav-link inline-flex min-h-11 items-center text-[14px] font-medium text-ink-muted transition-colors hover:text-ink">
                     {link.label}
                   </a>
                 </li>
               ))}
               {offer.launchMode === "live" && offer.loginUrl ? (
                 <li>
-                  <a href={offer.loginUrl} className="inline-flex min-h-11 items-center rounded-md text-[14px] font-medium text-ink-muted hover:text-ink">
+                  <a href={offer.loginUrl} className="nav-link inline-flex min-h-11 items-center text-[14px] font-medium text-ink-muted hover:text-ink">
                     {nav.login}
                   </a>
                 </li>
@@ -82,7 +104,7 @@ export function Header() {
             </ul>
           </nav>
 
-          <div className="flex items-center gap-1">
+          <div className="flex shrink-0 items-center gap-1">
             <span className="hidden md:block">
               <Button href={primaryHref} onClick={onCta} size="compact">
                 {primary.label}
@@ -108,11 +130,7 @@ export function Header() {
           <ul className="flex flex-col divide-y divide-line">
             {nav.links.map((link) => (
               <li key={link.href}>
-                <a
-                  href={link.href}
-                  onClick={() => close(false)}
-                  className="block rounded-md py-3.5 text-[16px] font-medium text-ink hover:text-brand"
-                >
+                <a href={link.href} onClick={() => close(false)} className="block rounded-md py-3.5 text-[16px] font-medium text-ink hover:text-brand">
                   {link.label}
                 </a>
               </li>

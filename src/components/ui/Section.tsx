@@ -35,7 +35,7 @@ type SectionHeadingProps = {
 /** Titre de section : petit label, titre serré, une ligne d'intro. */
 export function SectionHeading({ id, eyebrow, title, intro, align = "center", className }: SectionHeadingProps) {
   return (
-    <div className={cn("reveal flex max-w-2xl flex-col gap-3", align === "center" ? "mx-auto items-center text-center" : "items-start text-left", className)}>
+    <div className={cn("reveal reveal-blur flex max-w-2xl flex-col gap-3", align === "center" ? "mx-auto items-center text-center" : "items-start text-left", className)}>
       {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
       <h2 id={id} className="heading-2">
         {title}

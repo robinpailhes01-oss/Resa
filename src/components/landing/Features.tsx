@@ -5,6 +5,7 @@ import { EmailPreview } from "@/components/previews/EmailPreview";
 import { Section } from "@/components/ui/Section";
 import { byMode, features } from "@/content/fr/landing";
 import { FloatCard } from "./FloatCard";
+import { SpotlightCard } from "@/components/ui/SpotlightCard";
 
 type Delay = { "--d": string } & React.CSSProperties;
 const stepIcons = [CalendarCheck, Send, MessageSquareHeart];
@@ -34,7 +35,7 @@ export function Features() {
       </article>
 
       <div className="mt-6 grid gap-6 md:grid-cols-2">
-        <article className="reveal card card-hover relative flex flex-col overflow-hidden" style={{ "--d": "80ms" } as Delay}>
+        <SpotlightCard className="reveal card card-hover relative flex flex-col overflow-hidden" style={{ "--d": "80ms" } as Delay}>
           <div className="px-6 pt-7 md:px-8 md:pt-9">
             <h3 className="heading-3">{booking.title}</h3>
             <p className="mt-3 text-[15px] leading-6 text-ink-muted md:text-[16px]">{booking.text}</p>
@@ -44,8 +45,8 @@ export function Features() {
             <BookingPreview alt={booking.alt} className="relative" />
             <FloatCard icon={Globe} tone="peach" title={booking.chip.title} text={booking.chip.text} tilt={-1.5} drift className="-left-1 bottom-3 hidden sm:flex md:-left-3" />
           </div>
-        </article>
-        <article className="reveal card card-hover relative flex flex-col overflow-hidden" style={{ "--d": "160ms" } as Delay}>
+        </SpotlightCard>
+        <SpotlightCard className="reveal card card-hover relative flex flex-col overflow-hidden" style={{ "--d": "160ms" } as Delay}>
           <div className="px-6 pt-7 md:px-8 md:pt-9">
             <h3 className="heading-3">{emails.title}</h3>
             <p className="mt-3 text-[15px] leading-6 text-ink-muted md:text-[16px]">{emails.text}</p>
@@ -66,7 +67,7 @@ export function Features() {
             <EmailPreview alt={emails.alt} className="relative [&_.product-window]:rounded-b-none [&_.product-window]:border-b-0" />
             <FloatCard icon={Send} tone="ice" title={emails.chip.title} text={emails.chip.text} tilt={1.5} drift className="-right-1 top-1 hidden sm:flex md:-right-3" />
           </div>
-        </article>
+        </SpotlightCard>
       </div>
     </Section>
   );

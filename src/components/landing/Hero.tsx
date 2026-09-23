@@ -1,5 +1,6 @@
 import { ArrowRight, CalendarPlus, Mail } from "lucide-react";
 import { AgendaPreview } from "@/components/previews/AgendaPreview";
+import { BlurWords } from "@/components/ui/BlurWords";
 import { Button } from "@/components/ui/Button";
 import { offer } from "@/config/offer";
 import { byMode, cta, hero } from "@/content/fr/landing";
@@ -29,13 +30,13 @@ export function Hero() {
             <span aria-hidden="true" className="size-1.5 rounded-full bg-brand" />
             {hero.eyebrow}
           </p>
-          <h1 id="hero-title" className="display enter mt-4 max-w-[12ch] md:mt-7" style={d(60)}>
-            {hero.title[0]}
+          <h1 id="hero-title" className="display mt-4 max-w-[12ch] md:mt-7">
+            <BlurWords text={hero.title[0]} delay={80} />
             <br />
-            {hero.title[1]}
+            <BlurWords text={hero.title[1]} delay={200} />
           </h1>
-          <p className="enter mt-3 max-w-[22rem] text-[15px] leading-[24px] text-ink-muted sm:max-w-[40rem] md:mt-6 md:text-[18px] md:leading-[30px]" style={d(140)}>
-            {hero.intro}
+          <p className="mt-3 max-w-[22rem] text-[15px] leading-[24px] text-ink-muted sm:max-w-[40rem] md:mt-6 md:text-[18px] md:leading-[30px]">
+            <BlurWords text={hero.intro} delay={420} stagger={22} />
           </p>
           <div className="enter mt-5 flex w-full max-w-[360px] flex-col items-center gap-2.5 sm:w-auto sm:max-w-none sm:flex-row md:mt-8" style={d(220)}>
             <CtaLink href={primary.href} placement="hero" signup={offer.launchMode === "live"} fullWidth className="sm:w-auto sm:whitespace-nowrap">

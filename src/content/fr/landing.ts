@@ -96,6 +96,25 @@ export const features = {
   ] as const,
 };
 
+export const howItWorks = {
+  eyebrow: "Comment ça marche",
+  title: "Votre organisation, en trois étapes.",
+  steps: [
+    {
+      title: "Configurez votre espace",
+      text: "Ajoutez vos prestations, vos horaires et les membres de votre équipe.",
+    },
+    {
+      title: "Partagez votre lien",
+      text: "Placez votre lien de réservation sur votre site, vos réseaux sociaux ou dans vos messages.",
+    },
+    {
+      title: "Retrouvez vos rendez-vous",
+      text: "Consultez votre agenda et laissez les emails accompagner vos clientes avant et après leur visite.",
+    },
+  ],
+};
+
 export const testimonialsSection = {
   label: "Les avis",
   title: "Ce qu’en disent les professionnels.",
