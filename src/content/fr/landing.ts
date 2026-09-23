@@ -223,6 +223,8 @@ const faqLive: FaqItem[] = [
 
 export const faq = {
   title: "Vos questions, nos réponses.",
+  /** Petit horodatage de la conversation. */
+  timestamp: { prelaunch: "Réponses mises à jour avant l’ouverture", live: "Réponses mises à jour régulièrement" } satisfies ByMode<string>,
   items: { prelaunch: faqPrelaunch, live: faqLive } satisfies ByMode<FaqItem[]>,
 };
 
