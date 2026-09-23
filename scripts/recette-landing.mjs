@@ -15,11 +15,11 @@ const ok = (name, cond, detail = "") => results.push(`${cond ? "OK " : "KO "} ${
   ok("un seul h1", (await page.locator("h1").count()) === 1);
   const headings = await page.evaluate(() => Array.from(document.querySelectorAll("h1,h2,h3")).map((h) => `${h.tagName}:${h.textContent.trim().slice(0, 40)}`));
   ok("hiérarchie des titres", headings[0].startsWith("H1") && !headings.some((h, i) => i > 0 && h.startsWith("H3") && !headings.slice(0, i).some((x) => x.startsWith("H2"))), headings.join(" › "));
-  for (const id of ["produit", "fonctionnalites", "avis", "tarif"]) {
+  for (const id of ["produit", "fonctionnalites", "tarif", "avis", "faq"]) {
     ok(`ancre #${id} présente`, (await page.locator(`#${id}`).count()) === 1);
   }
   const navHrefs = await page.locator('nav[aria-label="Navigation principale"] a').evaluateAll((els) => els.map((a) => a.getAttribute("href")));
-  ok("liens de navigation", JSON.stringify(navHrefs) === JSON.stringify(["/#produit", "/#fonctionnalites", "/#avis", "/#tarif"]), navHrefs.join(", "));
+  ok("liens de navigation", JSON.stringify(navHrefs) === JSON.stringify(["/#produit", "/#fonctionnalites", "/#tarif", "/#avis", "/#faq"]), navHrefs.join(", "));
   // Navigation ne masque pas le titre de section après clic sur une ancre
   await page.click('nav[aria-label="Navigation principale"] a[href="/#tarif"]');
   await page.waitForTimeout(900);
@@ -65,11 +65,11 @@ const ok = (name, cond, detail = "") => results.push(`${cond ? "OK " : "KO "} ${
   const agendaTop = await page.evaluate(() => Math.round(document.getElementById("produit").getBoundingClientRect().top));
   const agendaBottom = await page.evaluate(() => Math.round(document.querySelector("#produit [role=img]").getBoundingClientRect().bottom));
   ok("agenda mobile commence entre 400 et 500 px", agendaTop >= 400 && agendaTop <= 500, `${agendaTop} px, bas de l'agenda à ${agendaBottom} px`);
-  const toggle = page.locator('button[aria-controls]');
+  const toggle = page.locator('header button[aria-controls]');
   await toggle.click();
   ok("menu mobile ouvert", (await toggle.getAttribute("aria-expanded")) === "true");
   const mobileLinks = await page.locator('nav[aria-label="Navigation mobile"] a').evaluateAll((els) => els.map((a) => a.textContent.trim()));
-  ok("liens du menu mobile", mobileLinks.join("|") === "Produit|Fonctionnalités|Avis|Tarif|Me prévenir du lancement", mobileLinks.join(", "));
+  ok("liens du menu mobile", mobileLinks.join("|") === "Produit|Fonctionnalités|Tarif|Avis|FAQ|Me prévenir du lancement", mobileLinks.join(", "));
   await page.keyboard.press("Escape");
   ok("Échap ferme le menu", (await toggle.getAttribute("aria-expanded")) === "false");
   ok("focus revenu sur le bouton menu", await toggle.evaluate((el) => document.activeElement === el));
@@ -119,7 +119,7 @@ const ok = (name, cond, detail = "") => results.push(`${cond ? "OK " : "KO "} ${
   const ctx = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1280, height: 900 } });
   const page = await ctx.newPage();
   await page.goto(`${base}/`, { waitUntil: "load" });
-  const visible = await page.evaluate(() => ["#hero-title", "#produit", "#fonctionnalites-title", "#avis-title", "#tarif-title"].every((s) => { const el = document.querySelector(s); return el && getComputedStyle(el).opacity === "1" && getComputedStyle(el).visibility !== "hidden"; }));
+  const visible = await page.evaluate(() => ["#hero-title", "#produit", "#fonctionnalites-title", "#tarif-title", "#avis-title", "#faq-title"].every((s) => { const el = document.querySelector(s); return el && getComputedStyle(el).opacity === "1" && getComputedStyle(el).visibility !== "hidden"; }));
   ok("sans JS : contenu essentiel visible", visible);
   const demoVisible = await page.evaluate(() => getComputedStyle(document.querySelector(".demo-card")).opacity === "1" && getComputedStyle(document.querySelector(".demo-slot")).opacity === "1");
   ok("sans JS : agenda et carte à l'état final", demoVisible);

@@ -27,8 +27,9 @@ export const nav = {
   links: [
     { href: "/#produit", label: "Produit" },
     { href: "/#fonctionnalites", label: "Fonctionnalités" },
-    { href: "/#avis", label: "Avis" },
     { href: "/#tarif", label: "Tarif" },
+    { href: "/#avis", label: "Avis" },
+    { href: "/#faq", label: "FAQ" },
   ],
   skipToContent: "Aller au contenu",
   openMenu: "Ouvrir le menu",
@@ -241,6 +242,7 @@ const faqLive: FaqItem[] = [
 ];
 
 export const faq = {
+  label: "Questions fréquentes",
   title: "Vos questions, nos réponses.",
   /** Petit horodatage de la conversation. */
   timestamp: { prelaunch: "Réponses mises à jour avant l’ouverture", live: "Réponses mises à jour régulièrement" } satisfies ByMode<string>,
@@ -297,12 +299,12 @@ export const footer = {
   links: [
     { href: "/#produit", label: "Produit" },
     { href: "/#fonctionnalites", label: "Fonctionnalités" },
-    { href: "/#avis", label: "Avis" },
     { href: "/#tarif", label: "Tarif" },
+    { href: "/#avis", label: "Avis" },
+    { href: "/#faq", label: "FAQ" },
   ],
   contactLabel: "Contact",
   legalLinks: [
-    { href: "/preinscription#faq", label: "Questions fréquentes" },
     { href: "/mentions-legales", label: "Mentions légales" },
     { href: "/confidentialite", label: "Confidentialité" },
   ],

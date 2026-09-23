@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { Faq } from "@/components/landing/Faq";
 import { Features } from "@/components/landing/Features";
 import { Footer } from "@/components/landing/Footer";
 import { Header } from "@/components/landing/Header";
@@ -45,8 +46,9 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         <Hero />
         <Features />
         <HowItWorks />
-        <Testimonials />
         <Pricing />
+        <Testimonials />
+        <Faq />
       </main>
       <Footer />
       <RevealObserver />

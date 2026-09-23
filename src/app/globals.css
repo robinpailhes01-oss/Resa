@@ -591,6 +591,38 @@
     }
   }
 
+  /* Bandeau défilant (avis) : CSS uniquement, pause au survol. */
+  .marquee {
+    --gap: 16px;
+    display: flex;
+    gap: var(--gap);
+    overflow: hidden;
+    padding-block: 4px;
+    mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+  }
+  .marquee-track {
+    display: flex;
+    flex-shrink: 0;
+    align-items: stretch;
+    gap: var(--gap);
+    animation: marquee var(--duration, 40s) linear infinite;
+  }
+  .marquee[data-reverse="true"] .marquee-track {
+    animation-direction: reverse;
+  }
+  .marquee[data-pause="true"]:hover .marquee-track,
+  .marquee[data-pause="true"]:focus-within .marquee-track {
+    animation-play-state: paused;
+  }
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-100% - var(--gap)));
+    }
+  }
+
   /* FAQ : la réponse se déplie. */
   html.js .faq-panel {
     display: grid;
@@ -664,6 +696,17 @@
     }
     .product-perspective > .product-window {
       transform: none;
+    }
+    /* Bandeau d'avis : rangée fixe que l'on fait défiler soi-même. */
+    .marquee {
+      overflow-x: auto;
+      mask-image: none;
+    }
+    .marquee-track {
+      animation: none;
+    }
+    .marquee-track[aria-hidden="true"] {
+      display: none;
     }
   }
 
