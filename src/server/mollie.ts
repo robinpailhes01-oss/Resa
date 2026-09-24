@@ -41,6 +41,12 @@ async function call<T>(path: string, init: RequestInit = {}, fetchImpl: typeof f
   return (text ? JSON.parse(text) : {}) as T;
 }
 
+/** Moyens de paiement activés sur le profil Mollie pour un premier paiement récurrent (diagnostic après passage en live). */
+export async function listRecurringMethods(fetchImpl?: typeof fetch): Promise<Array<{ id: string; description: string }>> {
+  const data = await call<{ _embedded?: { methods?: Array<{ id: string; description: string; status?: string }> } }>("/methods?sequenceType=first&amount[value]=46.80&amount[currency]=EUR", {}, fetchImpl);
+  return (data._embedded?.methods ?? []).map((m) => ({ id: m.id, description: m.description }));
+}
+
 export const euros = (cents: number) => ({ currency: "EUR", value: (cents / 100).toFixed(2) });
 
 export interface MolliePayment {

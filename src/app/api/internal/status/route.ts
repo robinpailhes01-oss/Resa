@@ -4,7 +4,7 @@ import { isAuthorizedInternal } from "@/server/http";
 import { getEmailSender } from "@/server/email";
 import { isGoogleImportEnabled } from "@/server/google/places";
 import { isSumUpConfigured } from "@/server/sumup";
-import { isMollieConfigured, isMollieTestMode } from "@/server/mollie";
+import { isMollieConfigured, isMollieTestMode, listRecurringMethods } from "@/server/mollie";
 import { isTelegramConfigured } from "@/server/telegram";
 
 export const runtime = "nodejs";
@@ -18,6 +18,13 @@ export async function GET(request: Request) {
   } catch (error) {
     email = `invalide : ${error instanceof Error ? error.message : String(error)}`;
   }
+  // Moyens de paiement réellement activés côté Mollie (carte, SEPA…) : vide tant que le profil n'est pas validé.
+  let mollieMethods: string | string[] = "non applicable";
+  if (isMollieConfigured()) {
+    mollieMethods = await listRecurringMethods()
+      .then((methods) => (methods.length ? methods.map((m) => m.description) : ["aucun : activez la carte bancaire (et SEPA) dans Mollie → Paramètres → Moyens de paiement"]))
+      .catch((error) => `erreur : ${error instanceof Error ? error.message : String(error)}`);
+  }
   return NextResponse.json({
     status: "ok",
     launchMode: offer.launchMode,
@@ -25,6 +32,7 @@ export async function GET(request: Request) {
     email,
     sumup: isSumUpConfigured() ? "configuré" : "absent (SUMUP_API_KEY et SUMUP_MERCHANT_CODE)",
     mollie: isMollieConfigured() ? (isMollieTestMode() ? "configuré (mode test)" : "configuré (live)") : "absent (MOLLIE_API_KEY)",
+    mollieMethods,
     billing: isMollieConfigured() ? "mollie (prélèvement automatique)" : isSumUpConfigured() ? "sumup (paiement mensuel manuel)" : "désactivé",
     googlePlaces: isGoogleImportEnabled() ? "configuré" : "absent (GOOGLE_PLACES_API_KEY)",
     telegram: isTelegramConfigured() ? "configuré" : "absent (TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID)",
