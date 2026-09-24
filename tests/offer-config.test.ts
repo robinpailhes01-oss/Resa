@@ -43,4 +43,10 @@ describe("configuration commerciale", () => {
     expect(() => buildConfig({ RESO_LAUNCH_MODE: "beta" })).toThrow(/inconnu/);
     expect(() => buildConfig({ RESO_MONTHLY_PRICE_EX_VAT: "gratuit" })).toThrow(/invalide/);
   });
+
+  it("refuse une adresse de contact masquée ou invalide, accepte une adresse en clair", () => {
+    expect(() => buildConfig({ RESO_SUPPORT_EMAIL: "•••••••••••" })).toThrow(/RESO_SUPPORT_EMAIL invalide/);
+    expect(() => buildConfig({ RESO_SUPPORT_EMAIL: "contact" })).toThrow(/RESO_SUPPORT_EMAIL invalide/);
+    expect(buildConfig({ RESO_SUPPORT_EMAIL: " Contact@Reso-App.fr " }).supportEmail).toBe("contact@reso-app.fr");
+  });
 });

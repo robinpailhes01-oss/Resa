@@ -48,6 +48,16 @@ function readOptional(value: string | undefined): string | null {
   return trimmed ? trimmed : null;
 }
 
+function readEmail(value: string | undefined, name: string): string | null {
+  const raw = readOptional(value);
+  if (!raw) return null;
+  // Une valeur recopiée depuis un champ masqué (« •••• ») n'est pas une adresse : on le dit au build.
+  if (!/^[^\s@<>•*]+@[^\s@<>•*]+\.[^\s@<>•*]+$/.test(raw)) {
+    throw new Error(`${name} invalide : attendu une adresse email en clair, par exemple contact@reso-app.fr (reçu : "${raw}").`);
+  }
+  return raw.toLowerCase();
+}
+
 function readHttpsUrl(value: string | undefined, name: string): string | null {
   const raw = readOptional(value);
   if (!raw) return null;
@@ -109,7 +119,7 @@ function buildConfig(env: Env): OfferConfig {
     trialDays: readInt(env.RESO_TRIAL_DAYS, 7, { allowZero: true }),
     signupUrl: readHttpsUrl(env.RESO_SIGNUP_URL, "RESO_SIGNUP_URL"),
     loginUrl: readHttpsUrl(env.RESO_LOGIN_URL, "RESO_LOGIN_URL"),
-    supportEmail: readOptional(env.RESO_SUPPORT_EMAIL),
+    supportEmail: readEmail(env.RESO_SUPPORT_EMAIL, "RESO_SUPPORT_EMAIL"),
     legalEntity: readOptional(env.RESO_LEGAL_ENTITY) ?? "SAS Harmonie Group, 61 rue du Rouet, 13008 Marseille, France",
     legalId: readOptional(env.RESO_LEGAL_ID),
     vatNumber: readOptional(env.RESO_VAT_NUMBER),

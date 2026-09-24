@@ -319,6 +319,7 @@ export async function prospectionReplyTo(): Promise<{ address: string | undefine
   const configured = process.env.PROSPECTION_REPLY_TO?.trim();
   const contact = offer.supportEmail || undefined;
   if (!configured) return { address: contact, fallback: null };
+  if (!/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(configured)) return { address: contact, fallback: "PROSPECTION_REPLY_TO n'est pas une adresse email valide" };
   if (await domainAcceptsMail(configured)) return { address: configured, fallback: null };
   console.error("[prospection] PROSPECTION_REPLY_TO sans enregistrement MX, réponses redirigées vers", contact ?? "l'expéditeur");
   return { address: contact, fallback: `aucun MX pour ${configured.split("@")[1]}` };
