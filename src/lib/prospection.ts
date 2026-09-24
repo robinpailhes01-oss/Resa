@@ -178,3 +178,22 @@ export function formatProspectionReport(s: ProspectionSummary): string {
   ];
   return lines.join("\n");
 }
+
+/**
+ * Nom court d'un établissement pour l'objet et le corps des emails : la fiche
+ * Google porte souvent un slogan (« Salon X - Coiffeur visagiste à … »), on
+ * garde la partie avant le premier séparateur, 40 caractères au plus.
+ */
+export function shortEstablishmentName(name: string): string {
+  const base = name.trim().split(/\s+[-–—|:•]\s+|,\s+|\s+\(|\s+·\s+/)[0]?.trim() || name.trim();
+  if (base.length <= 40) return base;
+  const cut = base.slice(0, 40);
+  const atWord = cut.lastIndexOf(" ");
+  return (atWord > 15 ? cut.slice(0, atWord) : cut).replace(/[\s,;:.-]+$/, "");
+}
+
+/** Une réponse qui décline (« non merci », « pas intéressé »…) : on arrête tout contact. */
+export function looksLikeDecline(text: string): boolean {
+  const head = text.trim().slice(0, 240).toLowerCase();
+  return /\b(non merci|pas int[ée]ress|ne suis pas int|ne sommes pas int|stop|d[ée]sinscri|ne plus (me|nous) (contacter|[ée]crire|solliciter)|merci de ne plus|pas besoin|ça ne m['’]int[ée]resse pas|cela ne m['’]int[ée]resse pas)/.test(head);
+}

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { isAuthorizedInternal } from "@/server/http";
-import { ProspectionDisabledError, runProspection } from "@/server/prospection";
+import { ProspectionDisabledError, optOutProspectByEmail, runProspection } from "@/server/prospection";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -8,7 +8,11 @@ export const maxDuration = 60;
 /** Cycle de prospection (découverte Google, analyse des sites, emails). `?dry=1` : tout sauf les envois. */
 export async function GET(request: Request) {
   if (!isAuthorizedInternal(request)) return NextResponse.json({ status: "forbidden" }, { status: 403 });
-  const dryRun = new URL(request.url).searchParams.get("dry") === "1";
+  const url = new URL(request.url);
+  // Refus reçu dans la boîte de contact : `?optout=adresse` retire le prospect sans lancer le cycle.
+  const optout = url.searchParams.get("optout");
+  if (optout) return NextResponse.json({ status: "ok", ...(await optOutProspectByEmail(optout)) });
+  const dryRun = url.searchParams.get("dry") === "1";
   try {
     const summary = await runProspection({ dryRun });
     return NextResponse.json({ status: "ok", ...summary });

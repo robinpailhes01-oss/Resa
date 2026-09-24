@@ -1,7 +1,7 @@
 import "server-only";
 import { offer } from "@/config/offer";
 import { prospectionContent, type ProspectionEmailInput } from "@/content/fr/prospection";
-import { providerLabels, type BookingProvider } from "@/lib/prospection";
+import { providerLabels, shortEstablishmentName, type BookingProvider } from "@/lib/prospection";
 import { formatEuros } from "@/lib/billing";
 import type { EmailMessage } from "@/server/email/types";
 
@@ -20,7 +20,7 @@ export interface ProspectForEmail {
 export function prospectionEmailInput(p: ProspectForEmail): ProspectionEmailInput {
   const campaign = `${p.categoryKey}${p.bookingProvider ? `-${p.bookingProvider}` : ""}`;
   return {
-    establishmentName: p.name,
+    establishmentName: shortEstablishmentName(p.name),
     categoryPlural: p.categoryPlural,
     providerLabel: p.bookingProvider ? providerLabels[p.bookingProvider] : null,
     trialUrl: `${offer.siteUrl}/?utm_source=prospection&utm_medium=email&utm_campaign=${encodeURIComponent(campaign)}`,
@@ -45,11 +45,11 @@ function build(to: string, subject: string, paragraphs: string[], input: Prospec
 
 export function prospectionFirstEmail(p: ProspectForEmail, replyTo: string | undefined = offer.supportEmail ?? undefined): EmailMessage {
   const input = prospectionEmailInput(p);
-  const subject = input.providerLabel && p.bookingProvider !== "autre" ? prospectionContent.subjects.withProvider(p.name, input.providerLabel) : prospectionContent.subjects.generic(p.name);
+  const subject = input.providerLabel && p.bookingProvider !== "autre" ? prospectionContent.subjects.withProvider(input.establishmentName, input.providerLabel) : prospectionContent.subjects.generic(input.establishmentName);
   return build(p.email, subject, prospectionContent.first(input), input, replyTo);
 }
 
 export function prospectionFollowUpEmail(p: ProspectForEmail, replyTo: string | undefined = offer.supportEmail ?? undefined): EmailMessage {
   const input = prospectionEmailInput(p);
-  return build(p.email, prospectionContent.subjects.followUp(p.name), prospectionContent.followUp(input), input, replyTo);
+  return build(p.email, prospectionContent.subjects.followUp(input.establishmentName), prospectionContent.followUp(input), input, replyTo);
 }

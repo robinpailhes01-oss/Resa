@@ -10,6 +10,7 @@ import {
   formatProspectionReport,
   isBookingPlatformUrl,
   isBusinessDayParis,
+  looksLikeDecline,
   pickBestEmail,
   planQueries,
   type BookingProvider,
@@ -332,15 +333,20 @@ export async function prospectionReplyTo(): Promise<{ address: string | undefine
 export async function recordProspectReply(email: ReceivedEmail, now = new Date()): Promise<{ prospect: string | null; forwarded: boolean }> {
   const sql = getSql();
   const excerpt = email.text.slice(0, 1500);
+  const declined = looksLikeDecline(email.text);
+  const status = declined ? "desinscrit" : "repondu";
   const [prospect] = await sql<Array<{ id: string; name: string; city: string }>>`
-    update prospects set status = 'repondu', replied_at = ${now}, last_reply = ${excerpt}, updated_at = ${now}
+    update prospects set status = ${status}, replied_at = ${now}, last_reply = ${excerpt}, updated_at = ${now}
     where email = ${email.fromAddress} and status in ('a_contacter','contacte','relance','repondu') returning id, name, city`;
+  if (declined) await sql`insert into prospect_optouts (email) values (${email.fromAddress}) on conflict (email) do nothing`;
   const who = prospect ? `${prospect.name} (${prospect.city})` : email.from;
   await notifyTelegram(
-    `📩 <b>Réponse d’un prospect</b>\n${escapeHtml(who)} · ${escapeHtml(email.fromAddress)}\n<b>${escapeHtml(email.subject)}</b>\n« ${escapeHtml(excerpt.slice(0, 700))} »\n\nRépondez depuis ${escapeHtml(offer.supportEmail ?? "votre boîte de contact")} : l’email complet vous y a été transféré.`,
+    declined
+      ? `🙅 <b>Refus d’un prospect</b> (plus aucun contact)\n${escapeHtml(who)} · ${escapeHtml(email.fromAddress)}\n« ${escapeHtml(excerpt.slice(0, 300))} »`
+      : `📩 <b>Réponse d’un prospect</b>\n${escapeHtml(who)} · ${escapeHtml(email.fromAddress)}\n<b>${escapeHtml(email.subject)}</b>\n« ${escapeHtml(excerpt.slice(0, 700))} »\n\nRépondez depuis ${escapeHtml(offer.supportEmail ?? "votre boîte de contact")} : l’email complet vous y a été transféré.`,
   );
   let forwarded = false;
-  if (offer.supportEmail) {
+  if (offer.supportEmail && !declined) {
     const subject = `[Prospection] ${email.subject}`;
     const text = `Réponse de ${email.from}${prospect ? ` — prospect : ${prospect.name}, ${prospect.city}` : ""}\n\n${email.text}`;
     await getEmailSender()
@@ -358,4 +364,14 @@ export async function matchProspectSignup(email: string, now = new Date()): Prom
   const [row] = await getSql()<Array<{ name: string; city: string }>>`
     update prospects set status = 'inscrit', updated_at = ${now} where email = ${email} and status <> 'inscrit' returning name, city`;
   return row ? `${row.name} (${row.city})` : null;
+}
+
+/** Refus reçu ailleurs (boîte de contact, téléphone) : marqué à la main, plus aucun contact. */
+export async function optOutProspectByEmail(email: string, now = new Date()): Promise<{ matched: number }> {
+  const sql = getSql();
+  const address = email.trim().toLowerCase();
+  if (!/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(address)) return { matched: 0 };
+  await sql`insert into prospect_optouts (email) values (${address}) on conflict (email) do nothing`;
+  const rows = await sql`update prospects set status = 'desinscrit', updated_at = ${now} where email = ${address} and status <> 'desinscrit' returning id`;
+  return { matched: rows.length };
 }

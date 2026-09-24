@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { prospectionCategories, prospectionCities, prospectionSettings } from "@/config/prospection";
-import { detectBookingProvider, extractEmails, findContactLinks, formatProspectionReport, isBookingPlatformUrl, isBusinessDayParis, pickBestEmail, planQueries } from "@/lib/prospection";
+import { detectBookingProvider, extractEmails, findContactLinks, formatProspectionReport, isBookingPlatformUrl, isBusinessDayParis, looksLikeDecline, pickBestEmail, planQueries, shortEstablishmentName } from "@/lib/prospection";
 import { prospectionContent } from "@/content/fr/prospection";
 import { createHmac } from "node:crypto";
 import { bareAddress, readableText, verifyResendSignature } from "@/server/resend-inbound";
@@ -131,5 +131,21 @@ describe("réponses reçues via Resend", () => {
     expect(bareAddress("contact@salon-test.fr")).toBe("contact@salon-test.fr");
     expect(readableText(null, "<p>Bonjour,</p><p>Oui &amp; merci</p><style>p{}</style>")).toBe("Bonjour,\n Oui & merci");
     expect(readableText("  Texte direct ", "<p>ignoré</p>")).toBe("Texte direct");
+  });
+});
+
+describe("prospection : nom court et refus", () => {
+  it("coupe les slogans des fiches Google", () => {
+    expect(shortEstablishmentName("Parenthèse au Naturel - Institut de beauté Bio et experte en soin du visage, massage Kobido")).toBe("Parenthèse au Naturel");
+    expect(shortEstablishmentName("Nailsica - Onglerie à Nice Côte d'Azur")).toBe("Nailsica");
+    expect(shortEstablishmentName("SHE’S BEAUTY Institut de beauté privé à Toulouse Saint-Cyprien")).toBe("SHE’S BEAUTY Institut de beauté privé à");
+    expect(shortEstablishmentName("Barber Club")).toBe("Barber Club");
+    expect(shortEstablishmentName("L'Institut, Lyon 6")).toBe("L'Institut");
+  });
+
+  it("reconnaît un refus", () => {
+    expect(looksLikeDecline("Non merci\n\nParenthèse au Naturel\nInstitut…")).toBe(true);
+    expect(looksLikeDecline("Bonjour, pas intéressée pour le moment.")).toBe(true);
+    expect(looksLikeDecline("Bonjour, ça m’intéresse, pouvez-vous m’appeler ?")).toBe(false);
   });
 });

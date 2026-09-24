@@ -185,4 +185,6 @@ Pas de scraping de Planity : les données viennent de Google et des sites des é
 
 Tant que le MX du sous-domaine n’est pas en place, le site le détecte et remet automatiquement `RESO_SUPPORT_EMAIL` en adresse de réponse (aucune réponse ne rebondit) ; le contrôle `/api/internal/status` l’indique (`prospectionReplies`). Dès que le MX est actif, chaque réponse déclenche une notification Telegram « Réponse d’un prospect », marque le prospect « a répondu » (fin des relances) et l’email complet est transféré à `RESO_SUPPORT_EMAIL` avec le prospect en `Reply-To` : vous répondez depuis votre boîte. Une inscription venant d’un prospect contacté est aussi signalée (« via prospection »).
 
+Une réponse qui décline (« non merci », « pas intéressé »…) est reconnue : le prospect passe « désinscrit » et n’est plus jamais contacté. Un refus reçu dans votre boîte de contact (avant le MX, ou par téléphone) se marque à la main : `https://www.reso-app.fr/api/internal/prospection?optout=adresse@exemple.fr` (même en-tête).
+
 **Réputation email.** Les emails partent de `EMAIL_FROM`. Pour protéger les emails de rendez-vous des clients, mieux vaut à terme un sous-domaine dédié (ex. `Robin de Reso <robin@hello.reso-app.fr>`) vérifié dans Resend : il suffira alors de changer `EMAIL_FROM`… ou de garder l’adresse actuelle tant que le volume reste à 20 par jour.
