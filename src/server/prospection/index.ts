@@ -177,7 +177,7 @@ function toEmailProspect(row: ProspectRow): ProspectForEmail {
 }
 
 /** 3. Envois : premiers contacts (Planity d'abord) puis relances, jours ouvrés, dans la limite quotidienne. */
-export async function sendOutreach(now: Date, dryRun: boolean): Promise<{ sent: number; followUps: number; skipped: string | null }> {
+export async function sendOutreach(now: Date, dryRun: boolean): Promise<{ sent: number; followUps: number; sentTo: string[]; followUpTo: string[]; skipped: string | null }> {
   const sql = getSql();
   const settings = prospectionSettings();
   // Une même adresse trouvée sur plusieurs sites est celle d'une agence web, pas d'un salon : on ne l'écrit pas.
@@ -185,10 +185,12 @@ export async function sendOutreach(now: Date, dryRun: boolean): Promise<{ sent: 
     where status = 'a_contacter' and email in (select email from prospects where email is not null group by email having count(*) > 1)`;
   // Un prospect qui a créé un compte n'est plus relancé.
   await sql`update prospects set status = 'inscrit', updated_at = ${now} where status in ('a_contacter','contacte','relance') and email is not null and exists (select 1 from users u where u.email = prospects.email)`;
-  if (!isBusinessDayParis(now)) return { sent: 0, followUps: 0, skipped: "week-end : envois reportés à lundi" };
+  if (!isBusinessDayParis(now)) return { sent: 0, followUps: 0, sentTo: [], followUpTo: [], skipped: "week-end : envois reportés à lundi" };
   const sender = getEmailSender();
   const replyTo = (await prospectionReplyTo()).address;
-  const result = { sent: 0, followUps: 0, skipped: null as string | null };
+  const result = { sent: 0, followUps: 0, sentTo: [] as string[], followUpTo: [] as string[], skipped: null as string | null };
+  // Ciblage : par défaut, uniquement les établissements détectés sur Planity. Jamais d'email générique.
+  const providers = settings.providers === "all" ? null : settings.providers;
 
   // La limite est par jour calendaire (Paris), pas par exécution : un lancement
   // manuel après le cron n'envoie pas une seconde fournée.
@@ -198,10 +200,11 @@ export async function sendOutreach(now: Date, dryRun: boolean): Promise<{ sent: 
       count(*) filter (where follow_up_at >= ${dayStart})::int as follow_ups from prospects`;
   const firstQuota = Math.max(0, settings.dailyEmailLimit - already.firsts);
   const followUpQuota = Math.max(0, settings.dailyEmailLimit - already.follow_ups);
-  if (firstQuota === 0 && followUpQuota === 0) return { sent: 0, followUps: 0, skipped: "limite quotidienne déjà atteinte" };
+  if (firstQuota === 0 && followUpQuota === 0) return { ...result, skipped: "limite quotidienne déjà atteinte" };
 
   const firsts = await sql<ProspectRow[]>`
     select * from prospects where status = 'a_contacter' and email is not null
+      and (${providers === null} or booking_provider = any(${providers ?? []}))
     order by coalesce(booking_provider = 'planity', false) desc, (booking_provider is not null) desc, created_at limit ${firstQuota}`;
   for (const row of firsts) {
     if (await isOptedOut(row.email as string)) {
@@ -213,11 +216,13 @@ export async function sendOutreach(now: Date, dryRun: boolean): Promise<{ sent: 
       await sql`update prospects set status = 'contacte', first_email_at = ${now}, updated_at = ${now} where id = ${row.id}`;
     }
     result.sent += 1;
+    result.sentTo.push(`${row.name} · ${row.city}`);
   }
 
   const due = new Date(now.getTime() - settings.followUpAfterDays * 86_400_000);
   const followUps = await sql<ProspectRow[]>`
     select * from prospects where status = 'contacte' and follow_up_at is null and first_email_at <= ${due} and email is not null
+      and (${providers === null} or booking_provider = any(${providers ?? []}))
     order by first_email_at limit ${followUpQuota}`;
   for (const row of followUps) {
     if (await isOptedOut(row.email as string)) {
@@ -229,6 +234,7 @@ export async function sendOutreach(now: Date, dryRun: boolean): Promise<{ sent: 
       await sql`update prospects set status = 'relance', follow_up_at = ${now}, updated_at = ${now} where id = ${row.id}`;
     }
     result.followUps += 1;
+    result.followUpTo.push(`${row.name} · ${row.city}`);
   }
   return result;
 }
@@ -267,6 +273,8 @@ export async function runProspection(options: { now?: Date; dryRun?: boolean; fe
     emailsFound: enrichment.emailsFound,
     sent: outreach.sent,
     followUps: outreach.followUps,
+    sentTo: outreach.sentTo,
+    followUpTo: outreach.followUpTo,
     skipped: outreach.skipped,
     dryRun,
     totals: await totals(),

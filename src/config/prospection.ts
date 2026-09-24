@@ -57,12 +57,22 @@ export interface ProspectionSettings {
   followUpAfterDays: number;
   /** Sites analysés par exécution (page d'accueil + page contact). */
   enrichPerRun: number;
+  /** Outils de réservation ciblés : seuls ces établissements reçoivent un email (« all » = tous). */
+  providers: string[] | "all";
 }
 
 function readInt(value: string | undefined, fallback: number, max: number): number {
   const parsed = Number.parseInt(value ?? "", 10);
   if (!Number.isInteger(parsed) || parsed < 0) return fallback;
   return Math.min(parsed, max);
+}
+
+/** Par défaut, seuls les établissements qui utilisent Planity sont contactés. */
+function readProviders(value: string | undefined): string[] | "all" {
+  const raw = (value ?? "").trim().toLowerCase();
+  if (raw === "all" || raw === "tous") return "all";
+  const list = raw.split(/[\s,;]+/).filter(Boolean);
+  return list.length ? list : ["planity"];
 }
 
 /** Réglages lus à l'exécution (variables serveur, modifiables sans rebuild). */
@@ -72,6 +82,7 @@ export function prospectionSettings(env: Record<string, string | undefined> = pr
     dailyEmailLimit: readInt(env.PROSPECTION_DAILY_LIMIT, 20, 80),
     followUpAfterDays: readInt(env.PROSPECTION_FOLLOW_UP_DAYS, 5, 30),
     enrichPerRun: readInt(env.PROSPECTION_ENRICH_PER_RUN, 60, 120),
+    providers: readProviders(env.PROSPECTION_PROVIDERS),
   };
 }
 

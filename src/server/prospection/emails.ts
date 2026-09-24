@@ -1,5 +1,6 @@
 import "server-only";
 import { offer } from "@/config/offer";
+import { prospectionSettings } from "@/config/prospection";
 import { prospectionContent, type ProspectionEmailInput } from "@/content/fr/prospection";
 import { providerLabels, shortEstablishmentName, type BookingProvider } from "@/lib/prospection";
 import { formatEuros } from "@/lib/billing";
@@ -44,6 +45,9 @@ function build(to: string, subject: string, paragraphs: string[], input: Prospec
 }
 
 export function prospectionFirstEmail(p: ProspectForEmail, replyTo: string | undefined = offer.supportEmail ?? undefined): EmailMessage {
+  if (prospectionSettings().providers !== "all" && (!p.bookingProvider || p.bookingProvider === "autre")) {
+    throw new Error(`Email générique refusé pour ${p.name} : le ciblage n'autorise que ${prospectionSettings().providers}.`);
+  }
   const input = prospectionEmailInput(p);
   const subject = input.providerLabel && p.bookingProvider !== "autre" ? prospectionContent.subjects.withProvider(input.establishmentName, input.providerLabel) : prospectionContent.subjects.generic(input.establishmentName);
   return build(p.email, subject, prospectionContent.first(input), input, replyTo);

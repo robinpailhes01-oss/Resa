@@ -9,6 +9,7 @@ process.env.PROSPECTION_ENABLED = "1";
 process.env.PROSPECTION_SEARCHES_PER_DAY = "1";
 process.env.PROSPECTION_DAILY_LIMIT = "5";
 process.env.PROSPECTION_FOLLOW_UP_DAYS = "5";
+process.env.PROSPECTION_PROVIDERS = "all";
 
 const stamp = Date.now();
 const places = {
@@ -116,6 +117,14 @@ describe.skipIf(!url)("prospection en base", () => {
     expect(barber.status).toBe("relance");
     const [optout] = await sql`select 1 as ok from prospect_optouts where email = 'bonjour@institut-contact.example'`;
     expect(optout).toBeTruthy();
+
+    // Ciblage Planity seul : un prospect sans outil détecté n'est jamais contacté, même à contacter.
+    process.env.PROSPECTION_PROVIDERS = "planity";
+    await sql`update prospects set status = 'a_contacter', first_email_at = null where google_place_id = ${places.alreadyUser.placeId}`;
+    const targeted = await prospection.runProspection({ now: new Date("2026-10-06T06:00:00Z"), fetchImpl: fakeFetch });
+    expect(targeted.sent).toBe(0);
+    process.env.PROSPECTION_PROVIDERS = "all";
+    await sql`update prospects set status = 'inscrit' where google_place_id = ${places.alreadyUser.placeId}`;
 
     // Export CSV lisible dans un tableur.
     const csv = await prospection.prospectsCsv();

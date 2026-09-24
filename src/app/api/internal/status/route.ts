@@ -42,7 +42,7 @@ export async function GET(request: Request) {
     telegram: isTelegramConfigured() ? "configuré" : "absent (TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID)",
     cronSecret: process.env.CRON_SECRET?.trim() ? "présent" : "absent",
     prospection: isProspectionEnabled()
-      ? `active (${prospectionSettings().searchesPerDay} recherches/jour, ${prospectionSettings().dailyEmailLimit} emails/jour ouvré)`
+      ? `active (${prospectionSettings().searchesPerDay} recherches/jour, ${prospectionSettings().dailyEmailLimit} emails/jour ouvré, cible : ${prospectionSettings().providers === "all" ? "tous" : (prospectionSettings().providers as string[]).join(", ")})`
       : "désactivée (PROSPECTION_ENABLED=1 pour envoyer ; simulation possible avec /api/internal/prospection?dry=1)",
     supportEmail: offer.supportEmail ?? "absent (RESO_SUPPORT_EMAIL, puis redeploy)",
     prospectionReplyTo: replyTo.address ?? "aucune (les réponses iront à l'expéditeur EMAIL_FROM)",

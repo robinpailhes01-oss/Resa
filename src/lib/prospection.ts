@@ -159,6 +159,9 @@ export interface ProspectionSummary {
   emailsFound: number;
   sent: number;
   followUps: number;
+  /** Établissements contactés (« Nom · Ville ») et relancés, pour le récap. */
+  sentTo: string[];
+  followUpTo: string[];
   skipped: string | null;
   dryRun: boolean;
   totals: { prospects: number; toContact: number; contacted: number; signedUp: number; unsubscribed: number };
@@ -173,6 +176,8 @@ export function formatProspectionReport(s: ProspectionSummary): string {
     `🏪 Établissements vus : ${s.found} · nouveaux : <b>${s.created}</b>`,
     `🌐 Sites analysés : ${s.enriched} · emails trouvés : <b>${s.emailsFound}</b>`,
     `✉️ Emails envoyés : <b>${s.sent}</b> · relances : ${s.followUps}${s.skipped ? ` (${esc(s.skipped)})` : ""}`,
+    ...s.sentTo.map((name) => `  • ${esc(name)}`),
+    ...(s.followUpTo.length ? ["  Relances :", ...s.followUpTo.map((name) => `  ↩ ${esc(name)}`)] : []),
     "",
     `📚 Base : ${s.totals.prospects} prospects · à contacter : ${s.totals.toContact} · contactés : ${s.totals.contacted} · inscrits : <b>${s.totals.signedUp}</b> · désinscrits : ${s.totals.unsubscribed}`,
   ];

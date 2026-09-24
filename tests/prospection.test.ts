@@ -20,7 +20,9 @@ describe("prospection : rotation des recherches", () => {
   });
 
   it("réglages par défaut et plafonds", () => {
-    expect(prospectionSettings({})).toEqual({ searchesPerDay: 3, dailyEmailLimit: 20, followUpAfterDays: 5, enrichPerRun: 60 });
+    expect(prospectionSettings({})).toEqual({ searchesPerDay: 3, dailyEmailLimit: 20, followUpAfterDays: 5, enrichPerRun: 60, providers: ["planity"] });
+    expect(prospectionSettings({ PROSPECTION_PROVIDERS: "all" }).providers).toBe("all");
+    expect(prospectionSettings({ PROSPECTION_PROVIDERS: "planity, treatwell" }).providers).toEqual(["planity", "treatwell"]);
     expect(prospectionSettings({ PROSPECTION_DAILY_LIMIT: "500", PROSPECTION_SEARCHES_PER_DAY: "abc" })).toMatchObject({ dailyEmailLimit: 80, searchesPerDay: 3 });
     expect(prospectionCities.length).toBeGreaterThan(10);
   });
@@ -76,6 +78,8 @@ describe("prospection : calendrier et récap", () => {
       emailsFound: 9,
       sent: 9,
       followUps: 2,
+      sentTo: ["Barber Club · Marseille"],
+      followUpTo: ["Institut Lumière · Aix-en-Provence"],
       skipped: null,
       dryRun: false,
       totals: { prospects: 120, toContact: 4, contacted: 60, signedUp: 2, unsubscribed: 1 },
@@ -83,6 +87,8 @@ describe("prospection : calendrier et récap", () => {
     expect(text).toContain("barbier Marseille · onglerie Aix-en-Provence");
     expect(text).toContain("nouveaux : <b>31</b>");
     expect(text).toContain("Emails envoyés : <b>9</b> · relances : 2");
+    expect(text).toContain("• Barber Club · Marseille");
+    expect(text).toContain("↩ Institut Lumière · Aix-en-Provence");
     expect(text).toContain("inscrits : <b>2</b>");
   });
 
