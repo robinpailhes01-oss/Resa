@@ -14,7 +14,7 @@ import { BUSINESS_TYPES, createEstablishment, updateEstablishment } from "../est
 import { replaceOpeningHours, type WeekInput } from "../hours";
 import { getNotificationSettings, updateNotificationSettings } from "../notifications";
 import { hhmmToMinutes } from "@/lib/time";
-import { parseHoursJson, parsePhotoNames } from "@/lib/google-places";
+import { parseGoogleMeta, parseHoursJson, parsePhotoNames } from "@/lib/google-places";
 import { getSql } from "@/server/db";
 import { resolvePhotoUrls } from "@/server/google/places";
 import { addPhotos, deletePhoto } from "../photos";
@@ -56,11 +56,14 @@ export async function createEstablishmentAction(_prev: FormState, fd: FormData):
   const googlePlaceId = optStr(fd, "googlePlaceId")?.slice(0, 200) ?? null;
   const googleDescription = optStr(fd, "googleDescription")?.slice(0, 600) ?? null;
   const googlePhotos = parsePhotoNames(optStr(fd, "googlePhotos"));
+  const googleMeta = parseGoogleMeta(optStr(fd, "googleMeta"));
   try {
     const establishment = await createEstablishment(user.id, { ...parsed.data, businessType: parsed.data.businessType as (typeof BUSINESS_TYPES)[number]["value"], ownerName: user.fullName });
     if (googleHours) await replaceOpeningHours(establishment.id, null, { days: googleHours });
     if (googlePlaceId || googleDescription) {
-      await getSql()`update establishments set google_place_id = coalesce(${googlePlaceId}, google_place_id), description = coalesce(${googleDescription}, description) where id = ${establishment.id}`;
+      await getSql()`update establishments set google_place_id = coalesce(${googlePlaceId}, google_place_id), description = coalesce(${googleDescription}, description),
+        google_rating = ${googleMeta.rating}, google_rating_count = ${googleMeta.ratingCount}, google_maps_url = ${googleMeta.mapsUrl}, google_synced_at = case when ${Boolean(googlePlaceId)} then now() else google_synced_at end
+        where id = ${establishment.id}`;
     }
     if (googlePhotos.length > 0) await addPhotos(establishment.id, await resolvePhotoUrls(googlePhotos), "google");
     after(() =>

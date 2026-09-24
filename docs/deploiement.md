@@ -137,3 +137,17 @@ Vous recevez un message Telegram à chaque inscription, chaque établissement cr
 5. Test : ouvrez `https://www.reso-app.fr/api/internal/telegram-test` avec l’en-tête `Authorization: Bearer <INTERNAL_TASKS_SECRET>` (ou demandez-moi de le faire) : vous recevez « les notifications Telegram fonctionnent ».
 
 Le récap du lundi est déclenché par un cron Vercel (`vercel.json`). Pour qu’il soit autorisé, ajoutez sur Vercel la variable `CRON_SECRET` avec la même valeur que `INTERNAL_TASKS_SECRET`. Pour le recevoir tout de suite : `https://www.reso-app.fr/api/internal/weekly-report` avec le même en-tête.
+
+## 10. Abonnement payant (SumUp)
+
+Variables : `SUMUP_API_KEY` (clé secrète, SumUp → Développeurs → Clés API), `SUMUP_MERCHANT_CODE` (code marchand `MXXXXXXX`), `RESO_VAT_RATE` (20 par défaut, `0` en franchise de TVA), `RESO_LEGAL_ID` (SIREN) et `RESO_VAT_NUMBER` (facultatif). Redeploy après ajout.
+
+Fonctionnement : le pro clique « Payer » dans Abonnement, paie sur la page SumUp, revient sur le site ; Reso vérifie le paiement auprès de SumUp, active l’abonnement pour un mois, envoie un reçu par email et une notification Telegram. Cinq jours avant l’échéance, un email de renouvellement avec lien de paiement part automatiquement (cron quotidien 8 h Paris). Trois jours après l’échéance sans paiement, la page de réservation est suspendue (statut « paiement en attente ») jusqu’au règlement. La résiliation en fin de période se fait depuis l’espace pro.
+
+Le prélèvement automatique sur carte enregistrée n’est pas activé : il dépend de l’option « paiements récurrents » du compte SumUp. Tant qu’elle n’est pas disponible, chaque mois est réglé en un clic depuis l’email ou la page Abonnement.
+
+Pour lancer le cycle à la main : `https://www.reso-app.fr/api/internal/billing` avec l’en-tête `Authorization: Bearer <INTERNAL_TASKS_SECRET>`.
+
+## 11. Pages légales
+
+Mentions légales, CGV et confidentialité lisent la configuration : `RESO_LEGAL_ENTITY` (raison sociale et adresse ; par défaut SAS Harmonie Group, 61 rue du Rouet, 13008 Marseille), `RESO_LEGAL_ID` (SIREN), `RESO_VAT_NUMBER`, `RESO_PUBLICATION_DIRECTOR` (par défaut Robin Pailhes), `RESO_HOSTING_PROVIDER` (par défaut Vercel Inc.). Renseignez au minimum `RESO_LEGAL_ID`.

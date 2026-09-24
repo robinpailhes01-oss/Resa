@@ -58,6 +58,15 @@ export default function ConfidentialitePage() {
         et d’envoi d’emails, dans la limite nécessaire à ces services. Aucun fichier n’est vendu ni utilisé pour une autre activité.
       </p>
 
+      <p>Sous-traitants techniques :</p>
+      <ul>
+        <li>Vercel Inc. (États-Unis) : hébergement du site et exécution de l’application, clauses contractuelles types.</li>
+        <li>Supabase Inc. : base de données, hébergée dans l’Union européenne (Irlande).</li>
+        <li>Resend Inc. : envoi des emails transactionnels (confirmations, rappels, demandes d’avis).</li>
+        <li>SumUp : encaissement de l’abonnement des établissements ; les données de carte sont saisies chez SumUp uniquement.</li>
+        <li>Google (Places API) : uniquement lorsqu’un établissement choisit d’importer sa fiche Google ; aucune donnée de cliente n’est transmise à Google.</li>
+      </ul>
+
       <h2>Durées de conservation</h2>
       <ul>
         <li>Demande non confirmée : supprimée après {pendingDays} jours.</li>

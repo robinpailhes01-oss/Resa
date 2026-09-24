@@ -14,6 +14,8 @@ import { offer } from "@/config/offer";
 import { requireEstablishment } from "@/server/auth/guards";
 import { listPhotos } from "@/server/app/photos";
 import { PhotoList } from "@/components/app/PhotoList";
+import { GoogleSettingsImport } from "@/components/app/GoogleSettingsImport";
+import { isGoogleImportEnabled } from "@/server/google/places";
 import { updateEstablishmentAction } from "@/server/app/actions/establishment";
 import { changePasswordAction } from "@/server/auth/actions";
 import { BUSINESS_TYPES } from "@/server/app/establishments";
@@ -54,6 +56,12 @@ export default async function ParametresPage() {
           .
         </p>
       </Card>
+      {isGoogleImportEnabled() ? (
+        <GoogleSettingsImport
+          linked={e.googlePlaceId ? { rating: e.googleRating, ratingCount: e.googleRatingCount, syncedAt: null } : null}
+          defaultQuery={[e.name, e.city].filter(Boolean).join(" ")}
+        />
+      ) : null}
       <PhotoList photos={photos} />
       <Card>
         <ActionForm

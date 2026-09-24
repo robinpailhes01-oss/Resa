@@ -20,7 +20,13 @@ describe("resolveAccess", () => {
   });
 
   it("abonnement actif ou arrêté", () => {
-    expect(resolveAccess({ subscriptionStatus: "active", trialEndsAt: null }, now)).toEqual({ state: "active" });
+    expect(resolveAccess({ subscriptionStatus: "active", trialEndsAt: null }, now)).toEqual({ state: "active", paidUntil: null });
+    const paid = new Date("2026-09-30T00:00:00Z");
+    expect(resolveAccess({ subscriptionStatus: "active", trialEndsAt: null, paidUntil: paid }, now)).toMatchObject({ state: "active" });
+    const late = new Date("2026-09-20T00:00:00Z");
+    expect(resolveAccess({ subscriptionStatus: "active", trialEndsAt: null, paidUntil: late }, now).state).toBe("past_due");
+    expect(canAcceptOnlineBookings(resolveAccess({ subscriptionStatus: "active", trialEndsAt: null, paidUntil: late }, now))).toBe(false);
+    expect(resolveAccess({ subscriptionStatus: "past_due", trialEndsAt: null }, now).state).toBe("past_due");
     const cancelled = resolveAccess({ subscriptionStatus: "cancelled", trialEndsAt: new Date("2030-01-01") }, now);
     expect(cancelled.state).toBe("cancelled");
     expect(canAcceptOnlineBookings(cancelled)).toBe(false);

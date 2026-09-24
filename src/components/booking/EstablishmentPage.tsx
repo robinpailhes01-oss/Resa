@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Clock, MapPin, Phone } from "lucide-react";
+import { Clock, MapPin, Phone, Star } from "lucide-react";
+import { googleReviewsUrl } from "@/lib/google-places";
 import { formatDuration, formatPriceCents, frenchWeekdayName, minutesToHHMM } from "@/lib/time";
 import type { Establishment } from "@/server/auth/guards";
 import type { OpeningHourRow } from "@/server/app/hours";
@@ -40,6 +41,13 @@ export function EstablishmentPage({ establishment: e, services, practitioners, h
         <h1 className="text-[28px] leading-9 md:text-[36px] md:leading-[1.1]">{e.name}</h1>
         <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[15px] text-ink-muted">
           <span>{businessTypeLabel(e.businessType)}</span>
+          {e.googleRating !== null && e.googlePlaceId ? (
+            <a href={e.googleMapsUrl ?? googleReviewsUrl(e.googlePlaceId)} target="_blank" rel="noopener" className="inline-flex items-center gap-1 font-medium text-ink underline-offset-4 hover:underline" aria-label={`Note Google ${e.googleRating.toLocaleString("fr-FR")} sur 5, ${e.googleRatingCount ?? 0} avis`}>
+              <Star aria-hidden="true" className="size-4 fill-accent text-accent" />
+              {e.googleRating.toLocaleString("fr-FR")}
+              <span className="font-normal text-ink-muted">({e.googleRatingCount ?? 0} avis Google)</span>
+            </a>
+          ) : null}
           {address ? (
             <a href={mapsHref ?? undefined} target="_blank" rel="noopener" className="inline-flex items-center gap-1 underline-offset-4 hover:text-ink hover:underline">
               <MapPin aria-hidden="true" className="size-4" /> {address}

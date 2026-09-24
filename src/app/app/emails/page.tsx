@@ -76,7 +76,7 @@ export default async function EmailsPage() {
               type="url"
               placeholder="https://g.page/r/…"
               defaultValue={s.reviewUrl ?? ""}
-              help="Google, Planity, Facebook… Le bouton « Partager mon avis » y renverra."
+              help={establishment.googlePlaceId ? "Laissez vide pour envoyer vers votre fiche Google reliée (Paramètres → Ma fiche Google). Ou indiquez un autre lien : Planity, Facebook…" : "Google, Planity, Facebook… Le bouton « Partager mon avis » y renverra. Reliez votre fiche Google dans Paramètres pour l’utiliser automatiquement."}
             />
             <Toggle
               id="notifyProOnBooking"

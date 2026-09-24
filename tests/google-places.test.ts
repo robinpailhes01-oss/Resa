@@ -86,3 +86,16 @@ describe("photos et présentation", () => {
     expect(parsePhotoNames("{")).toEqual([]);
   });
 });
+
+describe("note, avis et métadonnées", () => {
+  it("lit la note, le nombre d'avis et le lien Maps", async () => {
+    const { parsePlaceCandidates, parseGoogleMeta, googleWriteReviewUrl } = await import("@/lib/google-places");
+    const [place] = parsePlaceCandidates({ places: [{ id: "p1", displayName: { text: "Salon" }, rating: 4.86, userRatingCount: 36, googleMapsUri: "https://maps.google.com/?cid=1" }] });
+    expect(place.rating).toBe(4.9);
+    expect(place.ratingCount).toBe(36);
+    expect(place.mapsUrl).toBe("https://maps.google.com/?cid=1");
+    expect(parseGoogleMeta(JSON.stringify({ rating: 4.9, ratingCount: 36, mapsUrl: "https://maps.google.com/?cid=1" }))).toEqual({ rating: 4.9, ratingCount: 36, mapsUrl: "https://maps.google.com/?cid=1" });
+    expect(parseGoogleMeta(JSON.stringify({ rating: 7, ratingCount: -1, mapsUrl: "https://evil.example" }))).toEqual({ rating: null, ratingCount: null, mapsUrl: null });
+    expect(googleWriteReviewUrl("ChIJ")).toBe("https://search.google.com/local/writereview?placeid=ChIJ");
+  });
+});

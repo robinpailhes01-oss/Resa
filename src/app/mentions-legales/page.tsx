@@ -14,7 +14,7 @@ export const metadata: Metadata = {
  * fournies, la page l'indique explicitement et n'invente rien.
  */
 export default function MentionsLegalesPage() {
-  const host = process.env.RESO_HOSTING_PROVIDER?.trim() || null;
+  const host = offer.hostingProvider;
   const publisher = offer.legalEntity;
   const ready = Boolean(publisher && host && offer.supportEmail);
 
@@ -29,9 +29,9 @@ export default function MentionsLegalesPage() {
 
       <h2>Éditeur du site</h2>
       <p>{publisher ?? "Identité de l’éditeur : à renseigner (RESO_LEGAL_ENTITY)."}</p>
-      {process.env.RESO_PUBLICATION_DIRECTOR?.trim() ? (
-        <p>Directeur ou directrice de la publication : {process.env.RESO_PUBLICATION_DIRECTOR.trim()}</p>
-      ) : null}
+      {offer.legalId ? <p>SIREN : {offer.legalId}</p> : null}
+      {offer.vatNumber ? <p>TVA intracommunautaire : {offer.vatNumber}</p> : null}
+      {offer.publicationDirector ? <p>Directeur ou directrice de la publication : {offer.publicationDirector}</p> : null}
 
       <h2>Contact</h2>
       <p>
@@ -43,7 +43,12 @@ export default function MentionsLegalesPage() {
       </p>
 
       <h2>Hébergement</h2>
-      <p>{host ?? "Hébergeur : à renseigner (RESO_HOSTING_PROVIDER)."}</p>
+      <p>{host}</p>
+      <p>
+        Base de données hébergée par Supabase Inc. dans l’Union européenne (région AWS eu-west-1, Irlande). Emails envoyés par
+        Resend Inc. Paiements de l’abonnement traités par SumUp Payments Limited et SumUp Limited (SumUp) : {offer.brandName} ne
+        stocke aucune donnée de carte bancaire.
+      </p>
 
       <h2>Propriété intellectuelle</h2>
       <p>

@@ -141,6 +141,7 @@ export function GoogleImport() {
       <input type="hidden" name="googlePlaceId" value={applied?.placeId ?? ""} />
       <input type="hidden" name="googleHours" value={applied?.hours ? JSON.stringify(applied.hours) : ""} />
       <input type="hidden" name="googleDescription" value={applied?.description ?? ""} />
+      <input type="hidden" name="googleMeta" value={applied ? JSON.stringify({ rating: applied.rating, ratingCount: applied.ratingCount, mapsUrl: applied.mapsUrl }) : ""} />
       <input type="hidden" name="googlePhotos" value={applied && applied.photoNames.length > 0 ? JSON.stringify(applied.photoNames) : ""} />
     </section>
   );

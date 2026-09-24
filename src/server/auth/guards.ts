@@ -29,6 +29,14 @@ export interface Establishment {
   subscriptionStatus: SubscriptionStatus;
   /** Fin de l'essai gratuit. */
   trialEndsAt: Date | null;
+  /** Fin de la période payée et demande de résiliation en fin de période. */
+  paidUntil: Date | null;
+  cancelAtPeriodEnd: boolean;
+  /** Fiche Google reliée (facultatif) : identifiant, note, nombre d'avis, lien Maps. */
+  googlePlaceId: string | null;
+  googleRating: number | null;
+  googleRatingCount: number | null;
+  googleMapsUrl: string | null;
 }
 
 export type EstablishmentRow = {
@@ -52,6 +60,12 @@ export type EstablishmentRow = {
   cancellation_hours: number;
   subscription_status: SubscriptionStatus;
   trial_ends_at: Date | string | null;
+  paid_until: Date | string | null;
+  cancel_at_period_end: boolean;
+  google_place_id: string | null;
+  google_rating: string | number | null;
+  google_rating_count: number | null;
+  google_maps_url: string | null;
 };
 
 export function mapEstablishment(r: EstablishmentRow): Establishment {
@@ -76,6 +90,12 @@ export function mapEstablishment(r: EstablishmentRow): Establishment {
     cancellationHours: r.cancellation_hours,
     subscriptionStatus: r.subscription_status,
     trialEndsAt: r.trial_ends_at ? new Date(r.trial_ends_at) : null,
+    paidUntil: r.paid_until ? new Date(r.paid_until) : null,
+    cancelAtPeriodEnd: Boolean(r.cancel_at_period_end),
+    googlePlaceId: r.google_place_id ?? null,
+    googleRating: r.google_rating === null || r.google_rating === undefined ? null : Number(r.google_rating),
+    googleRatingCount: r.google_rating_count ?? null,
+    googleMapsUrl: r.google_maps_url ?? null,
   };
 }
 

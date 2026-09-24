@@ -39,11 +39,15 @@ export function SignUpForm() {
         {pending ? "Création du compte…" : "Créer mon compte"}
       </Button>
       <p className="text-[13px] leading-5 text-ink-muted">
-        En créant un compte, vous acceptez que vos données soient traitées pour faire fonctionner votre espace.{" "}
+        En créant un compte, vous acceptez les{" "}
+        <Link href="/cgv" className="font-medium text-brand underline underline-offset-4">
+          conditions générales
+        </Link>{" "}
+        et le traitement de vos données pour faire fonctionner votre espace (
         <Link href="/confidentialite" className="font-medium text-brand underline underline-offset-4">
-          En savoir plus
+          politique de confidentialité
         </Link>
-        .
+        ).
       </p>
     </form>
   );

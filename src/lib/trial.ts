@@ -3,18 +3,25 @@
  * testables sans base).
  */
 
-export type SubscriptionStatus = "trial" | "active" | "cancelled";
+export type SubscriptionStatus = "trial" | "active" | "past_due" | "cancelled";
 
 export interface AccessInput {
   subscriptionStatus: SubscriptionStatus;
   trialEndsAt: Date | null;
+  /** Fin de la dernière période payée (abonnement). */
+  paidUntil?: Date | null;
 }
+
+/** Délai de tolérance après la fin de période payée avant suspension. */
+export const GRACE_DAYS = 3;
 
 export type AccessState =
   /** Essai en cours : accès complet. */
   | { state: "trial"; daysLeft: number; endsAt: Date }
   /** Abonnement actif : accès complet. */
-  | { state: "active" }
+  | { state: "active"; paidUntil: Date | null }
+  /** Paiement en retard au-delà du délai de tolérance : réservation en ligne suspendue. */
+  | { state: "past_due"; paidUntil: Date | null }
   /** Essai terminé sans abonnement : réservation en ligne suspendue. */
   | { state: "expired"; endsAt: Date | null }
   /** Abonnement arrêté : réservation en ligne suspendue. */
@@ -28,7 +35,12 @@ export function daysLeft(endsAt: Date, now: Date): number {
 }
 
 export function resolveAccess(input: AccessInput, now: Date = new Date()): AccessState {
-  if (input.subscriptionStatus === "active") return { state: "active" };
+  const paidUntil = input.paidUntil ?? null;
+  if (input.subscriptionStatus === "past_due") return { state: "past_due", paidUntil };
+  if (input.subscriptionStatus === "active") {
+    if (paidUntil && paidUntil.getTime() + GRACE_DAYS * DAY_MS <= now.getTime()) return { state: "past_due", paidUntil };
+    return { state: "active", paidUntil };
+  }
   if (input.subscriptionStatus === "cancelled") return { state: "cancelled" };
   if (input.trialEndsAt && input.trialEndsAt.getTime() > now.getTime()) {
     return { state: "trial", daysLeft: daysLeft(input.trialEndsAt, now), endsAt: input.trialEndsAt };

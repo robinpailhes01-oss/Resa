@@ -2,7 +2,6 @@ import { offer } from "@/config/offer";
 import { formatMonthlyPriceExVatCompact } from "@/lib/format";
 
 const price = formatMonthlyPriceExVatCompact(offer.monthlyPriceExVat);
-const contact = offer.supportEmail ? ` Écrivez-nous à ${offer.supportEmail}.` : " Nous vous contacterons par email.";
 
 /**
  * Bandeau d'accès de l'espace pro (essai gratuit, abonnement).
@@ -12,20 +11,25 @@ const contact = offer.supportEmail ? ` Écrivez-nous à ${offer.supportEmail}.` 
 export const accessNotice = {
   trial: (daysLeft: number, endDate: string) => ({
     title: daysLeft > 1 ? `Essai gratuit · ${daysLeft} jours restants` : "Essai gratuit · dernier jour",
-    text: `Votre essai se termine le ${endDate}. Ensuite, l’abonnement est de ${price}. Aucune carte bancaire n’est demandée pendant l’essai et rien n’est prélevé sans votre accord.${contact}`,
+    text: `Votre essai se termine le ${endDate}. Ensuite, l’abonnement est de ${price}, payable par carte depuis votre espace. Rien n’est prélevé sans votre accord.`,
   }),
   expired: {
     title: "Essai gratuit terminé",
-    text: `Votre page de réservation en ligne est suspendue et vos clientes ne peuvent plus réserver. Votre agenda et vos données restent accessibles. Pour continuer avec ${offer.brandName} (${price}), activez votre abonnement avec nous.${contact}`,
+    text: `Votre page de réservation en ligne est suspendue et vos clientes ne peuvent plus réserver. Votre agenda et vos données restent accessibles. Pour continuer avec ${offer.brandName} (${price}), souscrivez l’abonnement : paiement sécurisé par carte, réactivation immédiate.`,
   },
   cancelled: {
     title: "Abonnement arrêté",
-    text: `Votre page de réservation en ligne est suspendue. Votre agenda et vos données restent accessibles. Pour reprendre, contactez-nous.${contact}`,
+    text: `Votre page de réservation en ligne est suspendue. Votre agenda et vos données restent accessibles. Pour reprendre, contactez-nous${offer.supportEmail ? ` à ${offer.supportEmail}` : ""}.`,
   },
-  active: {
+  active: (paidUntil: string | null) => ({
     title: "Abonnement actif",
-    text: "Le paiement en ligne n’est pas encore activé : nous vous préviendrons par email avant toute mise en place de la facturation.",
-  },
+    text: paidUntil ? `Votre abonnement est à jour jusqu’au ${paidUntil}. Le renouvellement vous sera proposé quelques jours avant.` : "Votre abonnement est actif.",
+  }),
+  pastDue: (paidUntil: string | null) => ({
+    title: "Paiement en attente",
+    text: `${paidUntil ? `Votre période payée s’est terminée le ${paidUntil}. ` : ""}Votre page de réservation en ligne est suspendue jusqu’au règlement du mois en cours (${price}). Votre agenda et vos données restent accessibles.`,
+  }),
+  cta: "Gérer mon abonnement",
 };
 
 /** Bloc d'import de la fiche Google à l'onboarding. */
@@ -61,4 +65,22 @@ export const feedbackWidget = {
   again: "Envoyer un autre retour",
   close: "Fermer",
   tooShort: "Écrivez au moins quelques mots.",
+};
+
+/** Bloc Google dans les Paramètres. */
+export const googleSettings = {
+  title: "Ma fiche Google",
+  introLinked: (rating: number | null, count: number | null, syncedAt: string | null) =>
+    `Fiche reliée${rating !== null ? ` · note ${rating.toLocaleString("fr-FR")} ★ (${count ?? 0} avis)` : ""}${syncedAt ? ` · mise à jour le ${syncedAt}` : ""}. La note et le nombre d’avis Google s’affichent sur votre page de réservation, et l’email de demande d’avis renvoie vers votre fiche.`,
+  introUnlinked: "Reliez votre fiche Google pour afficher votre note et vos avis sur votre page de réservation, récupérer vos photos, votre présentation et vos horaires, et envoyer vos clientes déposer un avis Google.",
+  search: "Rechercher ma fiche",
+  refresh: "Actualiser depuis Google",
+  options: {
+    photos: "Ajouter les photos de la fiche (6 maximum au total)",
+    description: "Remplacer ma présentation par celle de Google",
+    hours: "Remplacer mes horaires par ceux de Google",
+  },
+  submit: "Relier cette fiche",
+  found: "Fiche choisie :",
+  change: "Changer",
 };

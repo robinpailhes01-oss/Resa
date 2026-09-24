@@ -1,4 +1,5 @@
 import "server-only";
+import { googleWriteReviewUrl } from "@/lib/google-places";
 import { offer } from "@/config/offer";
 import {
   formatDateTimeFr,
@@ -157,6 +158,7 @@ type JobContext = {
     city: string | null;
     timezone: string;
     bookingTerms: string | null;
+    googlePlaceId?: string | null;
   };
   booking: {
     id: string;
@@ -303,7 +305,8 @@ export function renderJobEmail(ctx: JobContext): EmailMessage | null {
         return null;
       const subject =
         settings.reviewSubject || "Comment s’est passé votre rendez-vous ?";
-      const link = settings.reviewUrl;
+      // Lien d'avis : celui choisi par le pro, sinon la fiche Google reliée.
+      const link = settings.reviewUrl ?? (e.googlePlaceId ? googleWriteReviewUrl(e.googlePlaceId) : null);
       return {
         to: client.email,
         subject,
@@ -404,6 +407,7 @@ type JobRow = {
   e_city: string | null;
   e_timezone: string;
   e_booking_terms: string | null;
+  e_google_place_id: string | null;
   owner_email: string;
   b_service_name: string | null;
   b_starts_at: Date | null;
@@ -447,7 +451,7 @@ export async function processEmailJobs(
     )
     select j.id, j.kind, j.attempts, j.establishment_id, j.booking_id, j.manage_token,
       e.name as e_name, e.slug as e_slug, e.phone as e_phone, e.public_email as e_public_email, e.address_line as e_address_line,
-      e.postal_code as e_postal_code, e.city as e_city, e.timezone as e_timezone, e.booking_terms as e_booking_terms,
+      e.postal_code as e_postal_code, e.city as e_city, e.timezone as e_timezone, e.booking_terms as e_booking_terms, e.google_place_id as e_google_place_id,
       u.email as owner_email,
       b.service_name as b_service_name, b.starts_at as b_starts_at, b.ends_at as b_ends_at, b.duration_min as b_duration_min,
       b.price_cents as b_price_cents, b.status as b_status, b.manage_token_hash as b_manage_token_hash,
@@ -489,6 +493,7 @@ export async function processEmailJobs(
           city: job.e_city,
           timezone: job.e_timezone,
           bookingTerms: job.e_booking_terms,
+          googlePlaceId: job.e_google_place_id,
         },
         booking: {
           id: job.booking_id,

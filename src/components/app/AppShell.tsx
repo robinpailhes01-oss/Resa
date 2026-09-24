@@ -10,6 +10,7 @@ import {
   UserRound,
   ExternalLink,
   LayoutDashboard,
+  CreditCard,
 } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import type { Establishment } from "@/server/auth/guards";
@@ -31,6 +32,7 @@ const items = [
   { href: "/app/prestations", label: "Prestations", icon: Sparkles },
   { href: "/app/equipe", label: "Équipe", icon: Users },
   { href: "/app/emails", label: "Emails automatiques", icon: Mail },
+  { href: "/app/abonnement", label: "Abonnement", icon: CreditCard },
   { href: "/app/parametres", label: "Paramètres", icon: Settings },
 ];
 

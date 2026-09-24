@@ -20,6 +20,11 @@ export interface GooglePlaceCandidate {
   description: string | null;
   /** Noms de ressources des photos (places/…/photos/…), résolus côté serveur. */
   photoNames: string[];
+  /** Note Google moyenne (0 à 5) et nombre d'avis, tels que publiés par Google. */
+  rating: number | null;
+  ratingCount: number | null;
+  /** Lien vers la fiche Google Maps. */
+  mapsUrl: string | null;
 }
 
 /** Champs demandés à Google (SKU « Text Search Pro »). */
@@ -34,7 +39,35 @@ export const PLACES_FIELD_MASK = [
   "places.regularOpeningHours",
   "places.editorialSummary",
   "places.photos",
+  "places.rating",
+  "places.userRatingCount",
+  "places.googleMapsUri",
 ].join(",");
+
+/** Lien Google pour laisser un avis sur la fiche. */
+export function googleWriteReviewUrl(placeId: string): string {
+  return `https://search.google.com/local/writereview?placeid=${encodeURIComponent(placeId)}`;
+}
+
+/** Lien Google vers les avis de la fiche. */
+export function googleReviewsUrl(placeId: string): string {
+  return `https://search.google.com/local/reviews?placeid=${encodeURIComponent(placeId)}`;
+}
+
+/** Métadonnées Google transmises par le formulaire (champ caché), validées. */
+export function parseGoogleMeta(raw: string | null | undefined): { rating: number | null; ratingCount: number | null; mapsUrl: string | null } {
+  const empty = { rating: null, ratingCount: null, mapsUrl: null };
+  if (!raw) return empty;
+  try {
+    const data = JSON.parse(raw) as Record<string, unknown>;
+    const rating = typeof data.rating === "number" && data.rating >= 0 && data.rating <= 5 ? Math.round(data.rating * 10) / 10 : null;
+    const ratingCount = Number.isInteger(data.ratingCount) && (data.ratingCount as number) >= 0 ? (data.ratingCount as number) : null;
+    const mapsUrl = typeof data.mapsUrl === "string" && /^https:\/\/(maps\.google\.com|www\.google\.com\/maps|maps\.app\.goo\.gl)/.test(data.mapsUrl) ? data.mapsUrl.slice(0, 500) : null;
+    return { rating, ratingCount, mapsUrl };
+  } catch {
+    return empty;
+  }
+}
 
 export const MAX_PHOTOS = 6;
 // Les noms de photos Google sont longs (jusqu'à ~1 000 caractères) : lettres, chiffres, « _ », « - », « . », « ~ », « % ».
@@ -72,6 +105,9 @@ export type GooglePlaceRaw = {
   regularOpeningHours?: { periods?: Period[] };
   editorialSummary?: { text?: string };
   photos?: Array<{ name?: string }>;
+  rating?: number;
+  userRatingCount?: number;
+  googleMapsUri?: string;
 };
 
 const TYPE_MAP: Record<string, GooglePlaceCandidate["businessType"]> = {
@@ -141,6 +177,9 @@ export function parsePlaceCandidates(payload: { places?: GooglePlaceRaw[] } | nu
         hours: mapGoogleOpeningHours(place.regularOpeningHours?.periods),
         description: place.editorialSummary?.text?.trim().slice(0, 600) || null,
         photoNames: (place.photos ?? []).map((photo) => photo.name).filter(isPhotoName).slice(0, MAX_PHOTOS),
+        rating: typeof place.rating === "number" ? Math.round(place.rating * 10) / 10 : null,
+        ratingCount: typeof place.userRatingCount === "number" ? place.userRatingCount : null,
+        mapsUrl: place.googleMapsUri?.startsWith("https://") ? place.googleMapsUri : null,
       };
     });
 }
