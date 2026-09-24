@@ -1,5 +1,6 @@
 import "server-only";
 import { randomBytes } from "node:crypto";
+import { promises as dns } from "node:dns";
 import { offer } from "@/config/offer";
 import { isProspectionEnabled, prospectionCategories, prospectionCities, prospectionSettings } from "@/config/prospection";
 import {
@@ -175,6 +176,7 @@ export async function sendOutreach(now: Date, dryRun: boolean): Promise<{ sent: 
   await sql`update prospects set status = 'inscrit', updated_at = ${now} where status in ('a_contacter','contacte','relance') and email is not null and exists (select 1 from users u where u.email = prospects.email)`;
   if (!isBusinessDayParis(now)) return { sent: 0, followUps: 0, skipped: "week-end : envois reportés à lundi" };
   const sender = getEmailSender();
+  const replyTo = (await prospectionReplyTo()).address;
   const result = { sent: 0, followUps: 0, skipped: null as string | null };
 
   const firsts = await sql<ProspectRow[]>`
@@ -186,7 +188,7 @@ export async function sendOutreach(now: Date, dryRun: boolean): Promise<{ sent: 
       continue;
     }
     if (!dryRun) {
-      await sender.send(prospectionFirstEmail(toEmailProspect(row)));
+      await sender.send(prospectionFirstEmail(toEmailProspect(row), replyTo));
       await sql`update prospects set status = 'contacte', first_email_at = ${now}, updated_at = ${now} where id = ${row.id}`;
     }
     result.sent += 1;
@@ -202,7 +204,7 @@ export async function sendOutreach(now: Date, dryRun: boolean): Promise<{ sent: 
       continue;
     }
     if (!dryRun) {
-      await sender.send(prospectionFollowUpEmail(toEmailProspect(row)));
+      await sender.send(prospectionFollowUpEmail(toEmailProspect(row), replyTo));
       await sql`update prospects set status = 'relance', follow_up_at = ${now}, updated_at = ${now} where id = ${row.id}`;
     }
     result.followUps += 1;
@@ -296,9 +298,30 @@ export async function prospectionWeeklyStats(from: Date): Promise<{ contacted: n
   return { contacted: row.contacted, followedUp: row.followed_up, signedUp: row.signed_up, total: row.total };
 }
 
-/** Adresse de réponse des emails de prospection : boîte reçue par Resend si configurée, sinon l'adresse de contact. */
-export function prospectionReplyTo(): string | undefined {
-  return process.env.PROSPECTION_REPLY_TO?.trim() || offer.supportEmail || undefined;
+/** Le domaine de l'adresse reçoit-il des emails (enregistrement MX présent) ? En cas de doute : oui. */
+export async function domainAcceptsMail(address: string): Promise<boolean> {
+  const domain = address.split("@")[1];
+  if (!domain) return false;
+  try {
+    return (await dns.resolveMx(domain)).length > 0;
+  } catch (error) {
+    const code = (error as { code?: string }).code;
+    return !(code === "ENOTFOUND" || code === "ENODATA");
+  }
+}
+
+/**
+ * Adresse de réponse des emails de prospection : boîte reçue par Resend si elle
+ * est configurée ET si son domaine a bien un MX, sinon l'adresse de contact.
+ * Évite d'envoyer des emails dont les réponses rebondiraient.
+ */
+export async function prospectionReplyTo(): Promise<{ address: string | undefined; fallback: string | null }> {
+  const configured = process.env.PROSPECTION_REPLY_TO?.trim();
+  const contact = offer.supportEmail || undefined;
+  if (!configured) return { address: contact, fallback: null };
+  if (await domainAcceptsMail(configured)) return { address: configured, fallback: null };
+  console.error("[prospection] PROSPECTION_REPLY_TO sans enregistrement MX, réponses redirigées vers", contact ?? "l'expéditeur");
+  return { address: contact, fallback: `aucun MX pour ${configured.split("@")[1]}` };
 }
 
 /**

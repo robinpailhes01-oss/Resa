@@ -8,6 +8,7 @@ import { isMollieConfigured, isMollieTestMode, listRecurringMethods } from "@/se
 import { isTelegramConfigured } from "@/server/telegram";
 import { isProspectionEnabled, prospectionSettings } from "@/config/prospection";
 import { isResendInboundConfigured } from "@/server/resend-inbound";
+import { prospectionReplyTo } from "@/server/prospection";
 
 export const runtime = "nodejs";
 
@@ -27,6 +28,7 @@ export async function GET(request: Request) {
       .then((methods) => (methods.length ? methods.map((m) => m.description) : ["aucun : activez la carte bancaire (et SEPA) dans Mollie → Paramètres → Moyens de paiement"]))
       .catch((error) => `erreur : ${error instanceof Error ? error.message : String(error)}`);
   }
+  const replyTo = await prospectionReplyTo().catch(() => ({ address: offer.supportEmail ?? undefined, fallback: "contrôle MX impossible" }));
   return NextResponse.json({
     status: "ok",
     launchMode: offer.launchMode,
@@ -42,9 +44,13 @@ export async function GET(request: Request) {
     prospection: isProspectionEnabled()
       ? `active (${prospectionSettings().searchesPerDay} recherches/jour, ${prospectionSettings().dailyEmailLimit} emails/jour ouvré)`
       : "désactivée (PROSPECTION_ENABLED=1 pour envoyer ; simulation possible avec /api/internal/prospection?dry=1)",
-    prospectionReplies: isResendInboundConfigured()
-      ? `réponses reçues par Resend sur ${process.env.PROSPECTION_REPLY_TO?.trim() || "(PROSPECTION_REPLY_TO manquante)"}`
-      : `réponses lues dans votre boîte ${offer.supportEmail ?? ""} (notification Telegram : PROSPECTION_REPLY_TO + RESEND_WEBHOOK_SECRET, voir docs partie 12)`,
+    supportEmail: offer.supportEmail ?? "absent (RESO_SUPPORT_EMAIL, puis redeploy)",
+    prospectionReplyTo: replyTo.address ?? "aucune (les réponses iront à l'expéditeur EMAIL_FROM)",
+    prospectionReplies: replyTo.fallback
+      ? `MX manquant : ${replyTo.fallback}. Ajoutez l'enregistrement MX indiqué par Resend (Emails → Receiving) ; en attendant les réponses vont à ${replyTo.address ?? "l'expéditeur"}`
+      : isResendInboundConfigured() && process.env.PROSPECTION_REPLY_TO?.trim()
+        ? `réponses reçues par Resend sur ${process.env.PROSPECTION_REPLY_TO.trim()} → Telegram + transfert`
+        : "réponses lues dans votre boîte, sans Telegram (PROSPECTION_REPLY_TO + RESEND_WEBHOOK_SECRET, docs partie 12)",
     legal: { entity: offer.legalEntity, siren: offer.legalId ?? "absent (RESO_LEGAL_ID)", vatRate: offer.vatRate, vatNumber: offer.vatNumber ?? "absent" },
   });
 }

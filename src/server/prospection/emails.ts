@@ -33,23 +33,23 @@ export function prospectionEmailInput(p: ProspectForEmail): ProspectionEmailInpu
   };
 }
 
-function build(to: string, subject: string, paragraphs: string[], input: ProspectionEmailInput): EmailMessage {
+function build(to: string, subject: string, paragraphs: string[], input: ProspectionEmailInput, replyTo: string | undefined): EmailMessage {
   const footer = prospectionContent.footer(input);
   const text = [...paragraphs, "", "—", footer].join("\n\n").replace(/\n\n\n/g, "\n\n");
   // Style volontairement sobre (email écrit à la main) : pas de bandeau, pas de bouton, pas d'image.
   const html = `<!doctype html><html lang="fr"><body style="margin:0;padding:24px 16px;background:#ffffff;font-family:Inter,Arial,sans-serif;color:#111116;font-size:15px;line-height:24px"><div style="max-width:560px;margin:0 auto">${paragraphs
     .map((p) => `<p style="margin:0 0 16px">${linkify(p).replace(/\n/g, "<br>")}</p>`)
     .join("")}<p style="margin:28px 0 0;font-size:12px;line-height:18px;color:#6f707c">${linkify(footer)}</p></div></body></html>`;
-  return { to, subject, text, html, fromName: prospectionContent.fromName, replyTo: process.env.PROSPECTION_REPLY_TO?.trim() || offer.supportEmail || undefined };
+  return { to, subject, text, html, fromName: prospectionContent.fromName, replyTo };
 }
 
-export function prospectionFirstEmail(p: ProspectForEmail): EmailMessage {
+export function prospectionFirstEmail(p: ProspectForEmail, replyTo: string | undefined = offer.supportEmail ?? undefined): EmailMessage {
   const input = prospectionEmailInput(p);
   const subject = input.providerLabel && p.bookingProvider !== "autre" ? prospectionContent.subjects.withProvider(p.name, input.providerLabel) : prospectionContent.subjects.generic(p.name);
-  return build(p.email, subject, prospectionContent.first(input), input);
+  return build(p.email, subject, prospectionContent.first(input), input, replyTo);
 }
 
-export function prospectionFollowUpEmail(p: ProspectForEmail): EmailMessage {
+export function prospectionFollowUpEmail(p: ProspectForEmail, replyTo: string | undefined = offer.supportEmail ?? undefined): EmailMessage {
   const input = prospectionEmailInput(p);
-  return build(p.email, prospectionContent.subjects.followUp(p.name), prospectionContent.followUp(input), input);
+  return build(p.email, prospectionContent.subjects.followUp(p.name), prospectionContent.followUp(input), input, replyTo);
 }
