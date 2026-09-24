@@ -5,7 +5,7 @@ import type { FormState } from "@/components/app/ActionForm";
 import { parseGoogleMeta, parseHoursJson, parsePhotoNames, type GooglePlaceCandidate } from "@/lib/google-places";
 import { requireEstablishment, requireUser } from "@/server/auth/guards";
 import { applyGooglePlace } from "../google-sync";
-import { GooglePlacesError, isGoogleImportEnabled, searchPlaces } from "@/server/google/places";
+import { GooglePlacesError, findPlaces, isGoogleImportEnabled } from "@/server/google/places";
 import { SlidingWindowRateLimiter } from "@/server/rate-limit";
 
 export type GoogleSearchResult = { results: GooglePlaceCandidate[]; error?: undefined } | { results?: undefined; error: string };
@@ -16,13 +16,16 @@ const limiter = new SlidingWindowRateLimiter(20, 15 * 60_000);
 export async function searchGooglePlacesAction(rawQuery: string): Promise<GoogleSearchResult> {
   const user = await requireUser();
   if (!isGoogleImportEnabled()) return { error: "L’import Google n’est pas activé." };
-  const query = String(rawQuery ?? "").trim().slice(0, 120);
-  if (query.length < 3) return { error: "Indiquez au moins le nom de votre établissement et sa ville." };
+  const query = String(rawQuery ?? "").trim().slice(0, 600);
+  if (query.length < 3) return { error: "Indiquez le nom de votre établissement et sa ville, ou collez le lien de votre fiche Google." };
   if (!limiter.hit(`places:${user.id}`)) return { error: "Trop de recherches. Réessayez dans quelques minutes." };
   try {
-    return { results: await searchPlaces(query) };
+    return { results: await findPlaces(query) };
   } catch (error) {
     console.error("[google] recherche de fiche", error instanceof GooglePlacesError ? error.message : error);
+    if (error instanceof GooglePlacesError && error.message.startsWith("Lien Google non reconnu")) {
+      return { error: "Ce lien n’a pas pu être lu. Tapez plutôt le nom de votre établissement et sa ville." };
+    }
     return { error: "La recherche Google n’a pas abouti. Vous pouvez remplir le formulaire à la main." };
   }
 }

@@ -1,5 +1,5 @@
 import "server-only";
-import { PLACES_FIELD_MASK, buildTextSearchBody, parsePlaceCandidates, type GooglePlaceCandidate } from "@/lib/google-places";
+import { PLACES_FIELD_MASK, buildTextSearchBody, looksLikeUrl, parseGoogleMapsUrl, parsePlaceCandidates, type GooglePlaceCandidate } from "@/lib/google-places";
 
 /** L'import Google n'est proposé que si une clé est configurée. */
 export function isGoogleImportEnabled(): boolean {
@@ -8,14 +8,67 @@ export function isGoogleImportEnabled(): boolean {
 
 export class GooglePlacesError extends Error {}
 
-/** Recherche textuelle (Places API New). Une requête = un appel facturé au SKU « Text Search Pro ». */
-export async function searchPlaces(query: string, fetchImpl: typeof fetch = fetch): Promise<GooglePlaceCandidate[]> {
+/** Suit les redirections d'un lien court Google (share.google, maps.app.goo.gl, g.page) jusqu'à l'URL Maps finale. */
+export async function resolveGoogleLink(raw: string, fetchImpl: typeof fetch = fetch): Promise<string> {
+  let url = raw.trim();
+  if (!/^https?:\/\//i.test(url)) url = `https://${url}`;
+  for (let hop = 0; hop < 6; hop += 1) {
+    const response = await fetchImpl(url, { method: "GET", redirect: "manual", headers: { "User-Agent": "Mozilla/5.0 (compatible; Reso/1.0)" }, signal: AbortSignal.timeout(8000) });
+    const location = response.headers.get("location");
+    if (response.status >= 300 && response.status < 400 && location) {
+      url = new URL(location, url).toString();
+      continue;
+    }
+    // Certaines pages intermédiaires (consentement) renvoient l'URL cible dans un paramètre « continue ».
+    const cont = new URL(url).searchParams.get("continue");
+    if (cont && /google\.[a-z.]+\/maps/.test(cont)) return cont;
+    return url;
+  }
+  return url;
+}
+
+/** Détails d'un lieu par identifiant (Place Details New). */
+export async function getPlaceById(placeId: string, fetchImpl: typeof fetch = fetch): Promise<GooglePlaceCandidate | null> {
   const key = process.env.GOOGLE_PLACES_API_KEY?.trim();
   if (!key) throw new GooglePlacesError("GOOGLE_PLACES_API_KEY manquante.");
+  const response = await fetchImpl(`https://places.googleapis.com/v1/places/${encodeURIComponent(placeId)}?languageCode=fr&regionCode=FR`, {
+    headers: { "X-Goog-Api-Key": key, "X-Goog-FieldMask": PLACES_FIELD_MASK.replace(/places\./g, "") },
+    signal: AbortSignal.timeout(8000),
+  });
+  if (response.status === 404) return null;
+  if (!response.ok) throw new GooglePlacesError(`Google Places a répondu ${response.status}`);
+  const place = (await response.json()) as Parameters<typeof parsePlaceCandidates>[0] extends { places?: infer P } ? (P extends Array<infer R> ? R : never) : never;
+  return parsePlaceCandidates({ places: [place] })[0] ?? null;
+}
+
+/**
+ * Point d'entrée : un nom + ville, ou un lien Google Maps (partage depuis
+ * l'application Google Maps). Le lien est résolu puis converti en identifiant
+ * de lieu ou en recherche ciblée sur les coordonnées.
+ */
+export async function findPlaces(query: string, fetchImpl: typeof fetch = fetch): Promise<GooglePlaceCandidate[]> {
+  if (!looksLikeUrl(query)) return searchPlaces(query, undefined, fetchImpl);
+  const resolved = await resolveGoogleLink(query, fetchImpl);
+  const parsed = parseGoogleMapsUrl(resolved);
+  console.log("[google] lien résolu", `hôte=${(() => { try { return new URL(resolved).hostname; } catch { return "?"; } })()}`, `placeId=${parsed.placeId ? "oui" : "non"}`, `nom=${parsed.name ? "oui" : "non"}`, `coords=${parsed.lat !== null ? "oui" : "non"}`);
+  if (parsed.placeId) {
+    const place = await getPlaceById(parsed.placeId, fetchImpl);
+    if (place) return [place];
+  }
+  if (parsed.name) return searchPlaces(parsed.name, parsed.lat !== null && parsed.lng !== null ? { lat: parsed.lat, lng: parsed.lng } : undefined, fetchImpl);
+  throw new GooglePlacesError("Lien Google non reconnu (aucun nom ni identifiant de lieu dans l'URL résolue).");
+}
+
+/** Recherche textuelle (Places API New). Une requête = un appel facturé au SKU « Text Search Pro ». */
+export async function searchPlaces(query: string, bias?: { lat: number; lng: number }, fetchImpl: typeof fetch = fetch): Promise<GooglePlaceCandidate[]> {
+  const key = process.env.GOOGLE_PLACES_API_KEY?.trim();
+  if (!key) throw new GooglePlacesError("GOOGLE_PLACES_API_KEY manquante.");
+  const body: Record<string, unknown> = buildTextSearchBody(query);
+  if (bias) body.locationBias = { circle: { center: { latitude: bias.lat, longitude: bias.lng }, radius: 500 } };
   const response = await fetchImpl("https://places.googleapis.com/v1/places:searchText", {
     method: "POST",
     headers: { "Content-Type": "application/json", "X-Goog-Api-Key": key, "X-Goog-FieldMask": PLACES_FIELD_MASK },
-    body: JSON.stringify(buildTextSearchBody(query)),
+    body: JSON.stringify(body),
     signal: AbortSignal.timeout(8000),
   });
   if (!response.ok) {

@@ -209,3 +209,50 @@ export function parseHoursJson(raw: string | null | undefined): Record<number, A
   }
   return Object.keys(days).length > 0 ? days : null;
 }
+
+/** La saisie ressemble-t-elle à un lien (fiche partagée depuis Google Maps) ? */
+export function looksLikeUrl(value: string): boolean {
+  return /^(https?:\/\/|share\.google\/|maps\.app\.goo\.gl\/|g\.page\/|goo\.gl\/|www\.google\.[a-z.]+\/maps)/i.test(value.trim());
+}
+
+export interface ParsedMapsUrl {
+  placeId: string | null;
+  name: string | null;
+  lat: number | null;
+  lng: number | null;
+}
+
+/**
+ * Extrait ce qui est exploitable d'une URL Google Maps déjà résolue :
+ * identifiant de lieu (query_place_id, place_id:), nom lisible (/maps/place/<nom>/)
+ * et coordonnées (@lat,lng) pour cibler la recherche.
+ */
+export function parseGoogleMapsUrl(raw: string): ParsedMapsUrl {
+  const out: ParsedMapsUrl = { placeId: null, name: null, lat: null, lng: null };
+  let url: URL;
+  try {
+    url = new URL(raw);
+  } catch {
+    return out;
+  }
+  const pid = url.searchParams.get("query_place_id") ?? url.searchParams.get("place_id") ?? url.searchParams.get("q")?.match(/^place_id:([A-Za-z0-9_-]+)$/)?.[1] ?? null;
+  if (pid && /^[A-Za-z0-9_-]{10,}$/.test(pid)) out.placeId = pid;
+  const place = url.pathname.match(/\/maps\/place\/([^/]+)/);
+  if (place) {
+    const name = decodeURIComponent(place[1].replace(/\+/g, " ")).trim();
+    if (name && !/^-?\d/.test(name)) out.name = name.slice(0, 120);
+  }
+  const query = url.searchParams.get("q") ?? url.searchParams.get("query");
+  if (!out.name && query && !/^place_id:/.test(query) && !/^-?\d+(\.\d+)?,-?\d+(\.\d+)?$/.test(query)) out.name = query.trim().slice(0, 120);
+  const at = raw.match(/@(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/);
+  const coords = at ?? query?.match(/^(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)$/) ?? null;
+  if (coords) {
+    const lat = Number(coords[1]);
+    const lng = Number(coords[2]);
+    if (Math.abs(lat) <= 90 && Math.abs(lng) <= 180) {
+      out.lat = lat;
+      out.lng = lng;
+    }
+  }
+  return out;
+}

@@ -99,3 +99,18 @@ describe("note, avis et métadonnées", () => {
     expect(googleWriteReviewUrl("ChIJ")).toBe("https://search.google.com/local/writereview?placeid=ChIJ");
   });
 });
+
+describe("liens Google Maps", () => {
+  it("reconnaît un lien et en extrait nom, coordonnées ou identifiant", async () => {
+    const { looksLikeUrl, parseGoogleMapsUrl } = await import("@/lib/google-places");
+    expect(looksLikeUrl("https://share.google/h4JIjDiENqPqrE")).toBe(true);
+    expect(looksLikeUrl("maps.app.goo.gl/abc")).toBe(true);
+    expect(looksLikeUrl("Maison Alba Montpellier")).toBe(false);
+    const a = parseGoogleMapsUrl("https://www.google.com/maps/place/Sainte-Anne+Barber/@43.6083,3.8791,17z/data=!3m1!4e3");
+    expect(a).toEqual({ placeId: null, name: "Sainte-Anne Barber", lat: 43.6083, lng: 3.8791 });
+    const b = parseGoogleMapsUrl("https://www.google.com/maps/search/?api=1&query=Maison+Alba&query_place_id=ChIJabcdefghijklmnop");
+    expect(b.placeId).toBe("ChIJabcdefghijklmnop");
+    expect(b.name).toBe("Maison Alba");
+    expect(parseGoogleMapsUrl("pas une url")).toEqual({ placeId: null, name: null, lat: null, lng: null });
+  });
+});
