@@ -80,6 +80,7 @@ describe("photos et présentation", () => {
     expect(place.description).toBe("Un salon chaleureux au centre-ville.");
     expect(place.photoNames).toEqual(["places/p1/photos/abc_DEF-123"]);
     expect(isPhotoName("places/p1/photos/x")).toBe(true);
+    expect(isPhotoName(`places/ChIJabc/photos/${"A".repeat(900)}-_.~`)).toBe(true);
     expect(isPhotoName("places/p1/photos/x/../y")).toBe(false);
     expect(parsePhotoNames(JSON.stringify(["places/a/photos/b", "nope"]))).toEqual(["places/a/photos/b"]);
     expect(parsePhotoNames("{")).toEqual([]);

@@ -31,7 +31,12 @@ export async function searchPlaces(query: string, fetchImpl: typeof fetch = fetc
     first ? `champs=${Object.keys(first).join(",")}` : "",
     first ? `photos=${Array.isArray(first.photos) ? first.photos.length : 0}` : "",
   );
-  return parsePlaceCandidates(payload as Parameters<typeof parsePlaceCandidates>[0]);
+  const candidates = parsePlaceCandidates(payload as Parameters<typeof parsePlaceCandidates>[0]);
+  if (first && Array.isArray(first.photos) && first.photos.length > 0 && candidates[0]?.photoNames.length === 0) {
+    const sample = (first.photos[0] as { name?: string }).name ?? "";
+    console.warn("[google] photos ignorées : nom inattendu", `longueur=${sample.length}`, sample.slice(0, 40));
+  }
+  return candidates;
 }
 
 /**

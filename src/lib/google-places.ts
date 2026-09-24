@@ -37,10 +37,11 @@ export const PLACES_FIELD_MASK = [
 ].join(",");
 
 export const MAX_PHOTOS = 6;
-const PHOTO_NAME = /^places\/[A-Za-z0-9_-]+\/photos\/[A-Za-z0-9_-]+$/;
+// Les noms de photos Google sont longs (jusqu'à ~1 000 caractères) : lettres, chiffres, « _ », « - », « . », « ~ », « % ».
+const PHOTO_NAME = /^places\/[A-Za-z0-9_.~%-]+\/photos\/[A-Za-z0-9_.~%-]+$/;
 
 export function isPhotoName(value: unknown): value is string {
-  return typeof value === "string" && value.length <= 400 && PHOTO_NAME.test(value);
+  return typeof value === "string" && value.length <= 2000 && PHOTO_NAME.test(value);
 }
 
 /** Liste de noms de photos transmise par le formulaire (champ caché), validée. */
