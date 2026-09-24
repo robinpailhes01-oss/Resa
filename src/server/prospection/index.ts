@@ -49,6 +49,16 @@ type ProspectRow = {
   created_at: Date;
 };
 
+/** Minuit à Paris pour le jour de `now`, en UTC. */
+function parisDayStart(now: Date): Date {
+  const parts = new Intl.DateTimeFormat("fr-FR", { timeZone: "Europe/Paris", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false }).formatToParts(now);
+  const get = (type: string) => Number(parts.find((p) => p.type === type)?.value ?? "0");
+  const minutesSinceMidnight = (get("hour") % 24) * 60 + get("minute");
+  const start = new Date(now.getTime() - minutesSinceMidnight * 60_000);
+  start.setUTCSeconds(0, 0);
+  return start;
+}
+
 const PAGE_TIMEOUT_MS = 6000;
 const PAGE_MAX_BYTES = 400_000;
 const USER_AGENT = `Mozilla/5.0 (compatible; ResoBot/1.0; +${offer.siteUrl})`;
@@ -180,9 +190,19 @@ export async function sendOutreach(now: Date, dryRun: boolean): Promise<{ sent: 
   const replyTo = (await prospectionReplyTo()).address;
   const result = { sent: 0, followUps: 0, skipped: null as string | null };
 
+  // La limite est par jour calendaire (Paris), pas par exécution : un lancement
+  // manuel après le cron n'envoie pas une seconde fournée.
+  const dayStart = parisDayStart(now);
+  const [already] = await sql<Array<{ firsts: number; follow_ups: number }>>`
+    select count(*) filter (where first_email_at >= ${dayStart})::int as firsts,
+      count(*) filter (where follow_up_at >= ${dayStart})::int as follow_ups from prospects`;
+  const firstQuota = Math.max(0, settings.dailyEmailLimit - already.firsts);
+  const followUpQuota = Math.max(0, settings.dailyEmailLimit - already.follow_ups);
+  if (firstQuota === 0 && followUpQuota === 0) return { sent: 0, followUps: 0, skipped: "limite quotidienne déjà atteinte" };
+
   const firsts = await sql<ProspectRow[]>`
     select * from prospects where status = 'a_contacter' and email is not null
-    order by coalesce(booking_provider = 'planity', false) desc, (booking_provider is not null) desc, created_at limit ${settings.dailyEmailLimit}`;
+    order by coalesce(booking_provider = 'planity', false) desc, (booking_provider is not null) desc, created_at limit ${firstQuota}`;
   for (const row of firsts) {
     if (await isOptedOut(row.email as string)) {
       await sql`update prospects set status = 'desinscrit', updated_at = ${now} where id = ${row.id}`;
@@ -198,7 +218,7 @@ export async function sendOutreach(now: Date, dryRun: boolean): Promise<{ sent: 
   const due = new Date(now.getTime() - settings.followUpAfterDays * 86_400_000);
   const followUps = await sql<ProspectRow[]>`
     select * from prospects where status = 'contacte' and follow_up_at is null and first_email_at <= ${due} and email is not null
-    order by first_email_at limit ${settings.dailyEmailLimit}`;
+    order by first_email_at limit ${followUpQuota}`;
   for (const row of followUps) {
     if (await isOptedOut(row.email as string)) {
       await sql`update prospects set status = 'desinscrit', updated_at = ${now} where id = ${row.id}`;

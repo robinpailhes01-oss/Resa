@@ -89,8 +89,14 @@ describe.skipIf(!url)("prospection en base", () => {
     expect(sender.sent[0]!.fromName).toBe("Robin de Reso");
     expect(sender.sent[1]!.subject).toBe("Réservation en ligne pour Institut Page Contact, sans commission");
 
-    // Rejouer le même jour n'envoie rien de plus.
-    expect((await prospection.runProspection({ now: monday, fetchImpl: fakeFetch })).sent).toBe(0);
+    // Rejouer le même jour n'envoie rien de plus, même si de nouveaux prospects à contacter apparaissent.
+    process.env.PROSPECTION_DAILY_LIMIT = "2";
+    await sql`update prospects set status = 'a_contacter' where google_place_id = ${places.alreadyUser.placeId}`;
+    const replay = await prospection.runProspection({ now: new Date(monday.getTime() + 3 * 3600_000), fetchImpl: fakeFetch });
+    expect(replay.sent).toBe(0);
+    expect(replay.skipped).toContain("limite quotidienne");
+    await sql`update prospects set status = 'inscrit' where google_place_id = ${places.alreadyUser.placeId}`;
+    process.env.PROSPECTION_DAILY_LIMIT = "5";
 
     // Le samedi : pas d'envoi.
     const saturday = new Date("2026-10-03T06:00:00Z");
