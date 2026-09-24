@@ -22,7 +22,16 @@ export async function searchPlaces(query: string, fetchImpl: typeof fetch = fetc
     const detail = await response.text().catch(() => "");
     throw new GooglePlacesError(`Google Places a répondu ${response.status} ${detail.slice(0, 200)}`);
   }
-  return parsePlaceCandidates(await response.json());
+  const payload = (await response.json()) as { places?: Array<Record<string, unknown>> };
+  // Journal opérationnel (sans données personnelles) : champs réellement renvoyés par Google.
+  const first = payload.places?.[0];
+  console.log(
+    "[google] recherche",
+    `résultats=${payload.places?.length ?? 0}`,
+    first ? `champs=${Object.keys(first).join(",")}` : "",
+    first ? `photos=${Array.isArray(first.photos) ? first.photos.length : 0}` : "",
+  );
+  return parsePlaceCandidates(payload as Parameters<typeof parsePlaceCandidates>[0]);
 }
 
 /**
