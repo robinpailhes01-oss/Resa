@@ -47,6 +47,7 @@ export class ResendEmailSender implements EmailSender {
 
     if (response.ok) return;
     const retryable = response.status === 429 || response.status >= 500;
-    throw new EmailProviderError(`Resend a répondu ${response.status}`, retryable);
+    const detail = (await response.text().catch(() => "")).replace(/\s+/g, " ").slice(0, 200);
+    throw new EmailProviderError(`Resend a répondu ${response.status}${detail ? ` : ${detail}` : ""}`, retryable);
   }
 }

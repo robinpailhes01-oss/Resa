@@ -431,6 +431,7 @@ export async function processEmailJobs(
   try {
     sender = getEmailSender();
   } catch (error) {
+    console.error("[emails] fournisseur non configuré", error instanceof Error ? error.message : error);
     await alertOps(
       "Fournisseur email non configuré : emails de rendez-vous en attente",
       { error: String(error) },
@@ -523,6 +524,7 @@ export async function processEmailJobs(
     } catch (error) {
       const attempts = job.attempts + 1;
       const message = error instanceof Error ? error.message : String(error);
+      console.error(`[emails] envoi ${job.kind} échoué (tentative ${attempts})`, message);
       const next =
         attempts < MAX_ATTEMPTS
           ? new Date(
