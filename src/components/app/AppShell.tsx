@@ -14,6 +14,7 @@ import {
 import { Logo } from "@/components/ui/Logo";
 import type { Establishment } from "@/server/auth/guards";
 import { AccessBanner } from "./AccessBanner";
+import { FeedbackWidget } from "./FeedbackWidget";
 import { signOut } from "@/server/auth/actions";
 import { cn } from "@/lib/cn";
 import { NavLink } from "./NavLink";
@@ -112,6 +113,7 @@ export function AppShell({
         {establishment ? <AccessBanner establishment={establishment} /> : null}
         {children}
       </main>
+      <FeedbackWidget />
     </div>
   );
 }

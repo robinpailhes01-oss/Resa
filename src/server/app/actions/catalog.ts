@@ -8,6 +8,7 @@ import { requireEstablishment } from "@/server/auth/guards";
 import { PRACTITIONER_LIMIT, countActivePractitioners, createPractitioner, deletePractitioner, updatePractitioner } from "../practitioners";
 import { createService, deleteService, updateService } from "../services";
 import { GENERIC_ERROR, bool, fieldErrors, int, priceToCents, str } from "./shared";
+import { templatesFor } from "@/content/fr/service-templates";
 
 const serviceSchema = z.object({
   name: z.string().trim().min(2, "Indiquez le nom de la prestation.").max(80),
@@ -120,3 +121,29 @@ export async function deletePractitionerAction(id: string): Promise<void> {
   redirect("/app/equipe");
 }
 
+
+/** Crée d'un coup les prestations types cochées à l'onboarding (durées et prix modifiables ensuite). */
+export async function addServiceTemplatesAction(_prev: FormState, fd: FormData): Promise<FormState> {
+  const { establishment } = await requireEstablishment();
+  const keys = new Set(fd.getAll("template").map(String));
+  const chosen = templatesFor(establishment.businessType).filter((t) => keys.has(t.key));
+  if (chosen.length === 0) return { error: "Cochez au moins une prestation." };
+  try {
+    for (const t of chosen) {
+      await createService(establishment.id, {
+        name: t.name,
+        description: t.description ?? null,
+        durationMin: t.durationMin,
+        bufferMin: 0,
+        priceCents: Math.round(t.price * 100),
+        active: true,
+        practitionerIds: [],
+      });
+    }
+  } catch (error) {
+    console.error("[app] prestations types", error instanceof Error ? error.message : error);
+    return { error: GENERIC_ERROR };
+  }
+  revalidatePath("/app/prestations");
+  redirect("/app/prestations?types=ok");
+}

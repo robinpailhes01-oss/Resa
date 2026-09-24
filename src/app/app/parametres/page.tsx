@@ -12,6 +12,8 @@ import { Card, PageHeader } from "@/components/app/PageHeader";
 import { CopyField } from "@/components/app/CopyField";
 import { offer } from "@/config/offer";
 import { requireEstablishment } from "@/server/auth/guards";
+import { listPhotos } from "@/server/app/photos";
+import { PhotoList } from "@/components/app/PhotoList";
 import { updateEstablishmentAction } from "@/server/app/actions/establishment";
 import { changePasswordAction } from "@/server/auth/actions";
 import { BUSINESS_TYPES } from "@/server/app/establishments";
@@ -25,6 +27,7 @@ const STEPS = [5, 10, 15, 20, 30, 60].map((v) => ({
 
 export default async function ParametresPage() {
   const { user, establishment: e } = await requireEstablishment();
+  const photos = await listPhotos(e.id);
   const bookingUrl = new URL(`/r/${e.slug}`, offer.siteUrl).toString();
   return (
     <div className="mx-auto max-w-2xl">
@@ -51,6 +54,7 @@ export default async function ParametresPage() {
           .
         </p>
       </Card>
+      <PhotoList photos={photos} />
       <Card>
         <ActionForm
           action={updateEstablishmentAction}

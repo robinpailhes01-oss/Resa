@@ -5,27 +5,30 @@ import type { Establishment } from "@/server/auth/guards";
 import { businessTypeLabel } from "@/server/app/establishments";
 
 /** Gabarit de la page de réservation publique : en-tête établissement, contenu, pied discret. */
-export function BookingShell({ establishment, children }: { establishment: Establishment; children: ReactNode }) {
+export function BookingShell({ establishment, children, wide = false, hideTitle = false }: { establishment: Establishment; children: ReactNode; wide?: boolean; hideTitle?: boolean }) {
   const location = [establishment.city].filter(Boolean).join(" · ");
+  const width = wide ? "max-w-5xl" : "max-w-3xl";
   return (
     <div className="min-h-screen bg-page">
       <header className="border-b border-line bg-card/80 backdrop-blur-md">
-        <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3">
+        <div className={`mx-auto flex ${width} items-center justify-between px-4 py-3`}>
           <span className="text-[13px] text-ink-muted">Votre rendez-vous chez</span>
           <Logo height={18} />
         </div>
       </header>
-      <main id="contenu" className="mx-auto max-w-3xl px-4 py-8 md:py-12">
-        <div className="mb-8">
-          <h1 className="text-[28px] leading-9 md:text-[34px] md:leading-10">{establishment.name}</h1>
-          <p className="mt-1 text-[15px] text-ink-muted">
-            {businessTypeLabel(establishment.businessType)}
-            {location ? ` · ${location}` : ""}
-          </p>
-        </div>
+      <main id="contenu" className={`mx-auto ${width} px-4 py-8 md:py-12`}>
+        {hideTitle ? null : (
+          <div className="mb-8">
+            <h1 className="text-[28px] leading-9 md:text-[34px] md:leading-10">{establishment.name}</h1>
+            <p className="mt-1 text-[15px] text-ink-muted">
+              {businessTypeLabel(establishment.businessType)}
+              {location ? ` · ${location}` : ""}
+            </p>
+          </div>
+        )}
         {children}
       </main>
-      <footer className="mx-auto max-w-3xl px-4 pb-10 text-[12px] text-ink-muted">
+      <footer className={`mx-auto ${width} px-4 pb-10 text-[12px] text-ink-muted`}>
         Réservation propulsée par {offer.brandName}. Les horaires sont affichés à l’heure de Paris.
       </footer>
     </div>

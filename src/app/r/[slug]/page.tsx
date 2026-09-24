@@ -19,7 +19,9 @@ import {
 import { publicBookAction } from "@/server/app/actions/public-booking";
 import { availableSlots } from "@/server/app/bookings";
 import { getEstablishmentBySlug } from "@/server/app/establishments";
-import { effectiveRanges } from "@/server/app/hours";
+import { effectiveRanges, listOpeningHours } from "@/server/app/hours";
+import { listPhotos } from "@/server/app/photos";
+import { EstablishmentPage } from "@/components/booking/EstablishmentPage";
 import { listPractitioners } from "@/server/app/practitioners";
 import { listServices } from "@/server/app/services";
 import { cn } from "@/lib/cn";
@@ -98,47 +100,20 @@ export default async function ReservationPage({
     return `${base}?${sp.toString()}`;
   };
 
-  // Étape 1 : prestation
+  // Étape 1 : fiche de l'établissement (photos, prestations, équipe, horaires)
   if (!service) {
+    const [hours, photos] = await Promise.all([listOpeningHours(establishment.id, null), listPhotos(establishment.id)]);
     return (
-      <BookingShell establishment={establishment}>
-        {establishment.description ? (
-          <p className="mb-6 max-w-xl text-[15px] leading-6 text-ink-muted">
-            {establishment.description}
-          </p>
-        ) : null}
-        <Steps current={1} />
-        <h2 className="mb-4 text-[22px]">Choisissez une prestation</h2>
-        {services.length === 0 ? (
-          <StatusMessage tone="pending">
-            Aucune prestation n’est encore proposée à la réservation en ligne.
-          </StatusMessage>
-        ) : (
-          <ul className="grid gap-3">
-            {services.map((s) => (
-              <li key={s.id}>
-                <Link
-                  href={`${base}?service=${s.id}`}
-                  className="flex items-center gap-4 rounded-2xl bg-card p-4 ring-1 ring-line transition-colors hover:ring-brand/50 md:p-5"
-                >
-                  <div className="min-w-0 flex-1">
-                    <div className="text-[16px] font-semibold text-ink">
-                      {s.name}
-                    </div>
-                    <div className="mt-0.5 text-[13px] text-ink-muted">
-                      {formatDuration(s.durationMin)}
-                      {s.description ? ` · ${s.description}` : ""}
-                    </div>
-                  </div>
-                  <div className="text-[16px] font-semibold text-brand">
-                    {s.priceCents > 0 ? formatPriceCents(s.priceCents) : ""}
-                  </div>
-                  <ChevronRight className="size-4 text-ink-muted" />
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
+      <BookingShell establishment={establishment} wide hideTitle>
+        <EstablishmentPage
+          establishment={establishment}
+          services={services}
+          practitioners={practitioners}
+          hours={hours}
+          photos={photos}
+          base={base}
+          todayWeekday={weekdayOfDateKey(today)}
+        />
       </BookingShell>
     );
   }

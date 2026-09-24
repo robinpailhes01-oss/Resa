@@ -45,7 +45,7 @@ Emails (nécessaires pour la vérification de compte, les confirmations, rappels
 
 | Variable | Valeur |
 |---|---|
-| `RESEND_API_KEY` | clé API créée dans Resend → API Keys (permission « Sending access », domaine `reso-app.fr`) |
+| `RESEND_API_KEY` | clé API créée dans Resend → API Keys (permission « Sending access », domaine `reso-app.fr`). **Copiez-la au moment de sa création** : ensuite Resend ne l’affiche plus que masquée (`re_••••`), et une clé masquée ne fonctionne pas. Elle commence par `re_` et ne contient que des lettres et des chiffres. |
 | `EMAIL_FROM` | `Reso <contact@reso-app.fr>` |
 
 `EMAIL_FROM` est l’expéditeur qui apparaît dans la boîte de réception de vos clients : un nom affiché puis, entre chevrons, une adresse du domaine vérifié dans Resend. Avec `contact@reso-app.fr`, les réponses arrivent dans votre boîte Hostinger. Vous pouvez aussi utiliser une adresse qui n’existe pas comme boîte (par exemple `Reso <rendez-vous@reso-app.fr>`) : Resend envoie quand même, et l’adresse de réponse reste `RESO_SUPPORT_EMAIL`.
@@ -115,6 +115,10 @@ Pour vérifier : `https://reso-app.fr` doit afficher Reso, et `https://www.reso-
 4. Vercel → Environment Variables → `GOOGLE_PLACES_API_KEY` = la clé → Redeploy.
 
 Sans cette variable, le formulaire d’onboarding reste identique à aujourd’hui.
+
+Ce que l’import récupère : nom, adresse, code postal, ville, téléphone, activité, horaires d’ouverture, texte de présentation et jusqu’à six photos (affichées sur la page de réservation, retirables dans Paramètres). Google ne fournit pas les prestations ni les prix : à la place, la page Prestations propose des prestations types selon l’activité, à cocher puis ajuster.
+
+Pour vérifier les emails après un changement de clé : appelez `https://www.reso-app.fr/api/internal/email-jobs` avec l’en-tête `Authorization: Bearer <INTERNAL_TASKS_SECRET>` ; la réponse indique les envois réussis et, en cas d’échec, la cause (`lastErrors`).
 
 ## 8. Après le rattachement du domaine
 

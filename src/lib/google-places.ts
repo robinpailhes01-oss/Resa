@@ -16,6 +16,10 @@ export interface GooglePlaceCandidate {
   businessType: "institut" | "onglerie" | "regard_cils" | "coiffure_barbier" | "spa_soins" | "autre";
   /** Horaires par jour (0 = dimanche … 6 = samedi), plages [début, fin] en minutes. */
   hours: Record<number, Array<[number, number]>> | null;
+  /** Texte de présentation Google (résumé éditorial), s'il existe. */
+  description: string | null;
+  /** Noms de ressources des photos (places/…/photos/…), résolus côté serveur. */
+  photoNames: string[];
 }
 
 /** Champs demandés à Google (SKU « Text Search Pro »). */
@@ -28,7 +32,27 @@ export const PLACES_FIELD_MASK = [
   "places.websiteUri",
   "places.primaryType",
   "places.regularOpeningHours",
+  "places.editorialSummary",
+  "places.photos",
 ].join(",");
+
+export const MAX_PHOTOS = 6;
+const PHOTO_NAME = /^places\/[A-Za-z0-9_-]+\/photos\/[A-Za-z0-9_-]+$/;
+
+export function isPhotoName(value: unknown): value is string {
+  return typeof value === "string" && value.length <= 400 && PHOTO_NAME.test(value);
+}
+
+/** Liste de noms de photos transmise par le formulaire (champ caché), validée. */
+export function parsePhotoNames(raw: string | null | undefined): string[] {
+  if (!raw) return [];
+  try {
+    const data = JSON.parse(raw);
+    return Array.isArray(data) ? data.filter(isPhotoName).slice(0, MAX_PHOTOS) : [];
+  } catch {
+    return [];
+  }
+}
 
 export function buildTextSearchBody(query: string): Record<string, unknown> {
   return { textQuery: query, languageCode: "fr", regionCode: "FR", maxResultCount: 5 };
@@ -45,6 +69,8 @@ export type GooglePlaceRaw = {
   websiteUri?: string;
   primaryType?: string;
   regularOpeningHours?: { periods?: Period[] };
+  editorialSummary?: { text?: string };
+  photos?: Array<{ name?: string }>;
 };
 
 const TYPE_MAP: Record<string, GooglePlaceCandidate["businessType"]> = {
@@ -112,6 +138,8 @@ export function parsePlaceCandidates(payload: { places?: GooglePlaceRaw[] } | nu
         website: place.websiteUri?.trim() || null,
         businessType: guessBusinessType(place.primaryType),
         hours: mapGoogleOpeningHours(place.regularOpeningHours?.periods),
+        description: place.editorialSummary?.text?.trim().slice(0, 600) || null,
+        photoNames: (place.photos ?? []).map((photo) => photo.name).filter(isPhotoName).slice(0, MAX_PHOTOS),
       };
     });
 }

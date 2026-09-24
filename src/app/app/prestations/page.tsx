@@ -8,6 +8,8 @@ import { formatDuration, formatPriceCents } from "@/lib/time";
 import { requireEstablishment } from "@/server/auth/guards";
 import { listPractitioners } from "@/server/app/practitioners";
 import { listServices } from "@/server/app/services";
+import { ServiceTemplatesForm } from "@/components/app/ServiceTemplatesForm";
+import { templatesFor } from "@/content/fr/service-templates";
 
 export const metadata: Metadata = { title: "Prestations" };
 
@@ -33,16 +35,24 @@ export default async function PrestationsPage({ searchParams }: { searchParams: 
           Votre établissement est créé. Ajoutez maintenant vos prestations, puis votre équipe et vos horaires.
         </StatusMessage>
       ) : null}
+      {params.types ? (
+        <StatusMessage tone="success" className="mb-6">
+          Prestations ajoutées. Ouvrez chacune pour ajuster la durée, le prix ou la description.
+        </StatusMessage>
+      ) : null}
       {services.length === 0 ? (
-        <EmptyState
-          title="Aucune prestation pour l’instant"
-          text="Ajoutez votre première prestation : nom, durée et prix. Elle apparaîtra aussitôt sur votre page de réservation."
-          action={
-            <Button href="/app/prestations/nouvelle">
-              <Plus aria-hidden="true" /> Ajouter une prestation
-            </Button>
-          }
-        />
+        <>
+          <ServiceTemplatesForm templates={templatesFor(establishment.businessType)} />
+          <EmptyState
+            title="Ou ajoutez une prestation à la main"
+            text="Nom, durée et prix : elle apparaîtra aussitôt sur votre page de réservation."
+            action={
+              <Button href="/app/prestations/nouvelle" variant="secondary">
+                <Plus aria-hidden="true" /> Ajouter une prestation
+              </Button>
+            }
+          />
+        </>
       ) : (
         <Card className="!p-0">
           <ul className="divide-y divide-line">

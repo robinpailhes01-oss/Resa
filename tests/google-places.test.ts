@@ -63,3 +63,25 @@ describe("parseHoursJson", () => {
     expect(parseHoursJson(JSON.stringify({ 1: [[0, 2000]] }))).toBeNull();
   });
 });
+
+describe("photos et présentation", () => {
+  it("extrait les noms de photos valides et le résumé", async () => {
+    const { parsePlaceCandidates, parsePhotoNames, isPhotoName } = await import("@/lib/google-places");
+    const [place] = parsePlaceCandidates({
+      places: [
+        {
+          id: "p1",
+          displayName: { text: "Salon" },
+          editorialSummary: { text: "  Un salon chaleureux au centre-ville.  " },
+          photos: [{ name: "places/p1/photos/abc_DEF-123" }, { name: "https://evil" }, {}],
+        },
+      ],
+    });
+    expect(place.description).toBe("Un salon chaleureux au centre-ville.");
+    expect(place.photoNames).toEqual(["places/p1/photos/abc_DEF-123"]);
+    expect(isPhotoName("places/p1/photos/x")).toBe(true);
+    expect(isPhotoName("places/p1/photos/x/../y")).toBe(false);
+    expect(parsePhotoNames(JSON.stringify(["places/a/photos/b", "nope"]))).toEqual(["places/a/photos/b"]);
+    expect(parsePhotoNames("{")).toEqual([]);
+  });
+});

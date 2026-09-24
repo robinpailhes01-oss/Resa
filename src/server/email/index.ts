@@ -17,6 +17,13 @@ export function getEmailSender(): EmailSender {
   const from = process.env.EMAIL_FROM?.trim();
   const forcedConsole = process.env.EMAIL_PROVIDER?.trim() === "console";
   if (apiKey && from && !forcedConsole) {
+    // Une clé recopiée depuis l'écran masqué de Resend contient des « • » : on le dit clairement.
+    if (!/^re_[A-Za-z0-9_-]{8,}$/.test(apiKey)) {
+      throw new Error("RESEND_API_KEY invalide : la clé doit commencer par « re_ » et ne contenir que des lettres et chiffres (recréez une clé dans Resend et copiez-la au moment de sa création).");
+    }
+    if (!/^(?:[^<>]+<)?[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+>?$/.test(from)) {
+      throw new Error("EMAIL_FROM invalide : attendu « Reso <contact@votre-domaine.fr> ».");
+    }
     sender = new ResendEmailSender({ apiKey, from });
   } else if (forcedConsole || process.env.NODE_ENV !== "production") {
     sender = new ConsoleEmailSender();

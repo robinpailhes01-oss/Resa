@@ -76,6 +76,7 @@ export function GoogleImport() {
             <Check aria-hidden="true" className="mr-1.5 inline size-4 text-success" />
             <span className="font-semibold">{googleImport.applied}</span> {applied.name}
             {applied.hours ? ` · ${googleImport.hoursImported}` : ""}
+            {applied.photoNames.length > 0 ? ` · ${applied.photoNames.length} ${googleImport.photosImported}` : ""}
           </p>
           <button type="button" onClick={clear} className="inline-flex min-h-11 shrink-0 items-center gap-1 text-[13px] font-medium text-ink-muted hover:text-ink">
             <X aria-hidden="true" className="size-4" /> {googleImport.remove}
@@ -139,6 +140,8 @@ export function GoogleImport() {
 
       <input type="hidden" name="googlePlaceId" value={applied?.placeId ?? ""} />
       <input type="hidden" name="googleHours" value={applied?.hours ? JSON.stringify(applied.hours) : ""} />
+      <input type="hidden" name="googleDescription" value={applied?.description ?? ""} />
+      <input type="hidden" name="googlePhotos" value={applied && applied.photoNames.length > 0 ? JSON.stringify(applied.photoNames) : ""} />
     </section>
   );
 }

@@ -10,8 +10,10 @@ import { BUSINESS_TYPES, createEstablishment, updateEstablishment } from "../est
 import { replaceOpeningHours, type WeekInput } from "../hours";
 import { getNotificationSettings, updateNotificationSettings } from "../notifications";
 import { hhmmToMinutes } from "@/lib/time";
-import { parseHoursJson } from "@/lib/google-places";
+import { parseHoursJson, parsePhotoNames } from "@/lib/google-places";
 import { getSql } from "@/server/db";
+import { resolvePhotoUrls } from "@/server/google/places";
+import { addPhotos, deletePhoto } from "../photos";
 import { GENERIC_ERROR, bool, fieldErrors, int, optStr, str } from "./shared";
 
 const typeValues = BUSINESS_TYPES.map((t) => t.value) as [string, ...string[]];
@@ -48,10 +50,15 @@ export async function createEstablishmentAction(_prev: FormState, fd: FormData):
   // Fiche Google importée : horaires et identifiant transmis par le formulaire (validés ici).
   const googleHours = parseHoursJson(optStr(fd, "googleHours"));
   const googlePlaceId = optStr(fd, "googlePlaceId")?.slice(0, 200) ?? null;
+  const googleDescription = optStr(fd, "googleDescription")?.slice(0, 600) ?? null;
+  const googlePhotos = parsePhotoNames(optStr(fd, "googlePhotos"));
   try {
     const establishment = await createEstablishment(user.id, { ...parsed.data, businessType: parsed.data.businessType as (typeof BUSINESS_TYPES)[number]["value"], ownerName: user.fullName });
     if (googleHours) await replaceOpeningHours(establishment.id, null, { days: googleHours });
-    if (googlePlaceId) await getSql()`update establishments set google_place_id = ${googlePlaceId} where id = ${establishment.id}`;
+    if (googlePlaceId || googleDescription) {
+      await getSql()`update establishments set google_place_id = coalesce(${googlePlaceId}, google_place_id), description = coalesce(${googleDescription}, description) where id = ${establishment.id}`;
+    }
+    if (googlePhotos.length > 0) await addPhotos(establishment.id, await resolvePhotoUrls(googlePhotos), "google");
   } catch (error) {
     console.error("[app] création établissement", error instanceof Error ? error.message : error);
     return { error: GENERIC_ERROR };
@@ -173,4 +180,19 @@ export async function updateNotificationSettingsAction(_prev: FormState, fd: For
   }
   revalidatePath("/app/emails");
   return { success: "Réglages enregistrés." };
+}
+
+export async function deletePhotoAction(_prev: FormState, fd: FormData): Promise<FormState> {
+  const { establishment } = await requireEstablishment();
+  const id = str(fd, "photoId");
+  if (!id) return { error: GENERIC_ERROR };
+  try {
+    await deletePhoto(establishment.id, id);
+  } catch (error) {
+    console.error("[app] suppression photo", error instanceof Error ? error.message : error);
+    return { error: GENERIC_ERROR };
+  }
+  revalidatePath("/app/parametres");
+  revalidatePath(`/r/${establishment.slug}`);
+  return { success: "Photo retirée." };
 }

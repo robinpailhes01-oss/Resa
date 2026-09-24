@@ -31,7 +31,7 @@ export const accessNotice = {
 /** Bloc d'import de la fiche Google à l'onboarding. */
 export const googleImport = {
   title: "Gagnez du temps : importez votre fiche Google",
-  intro: "Nom, adresse, téléphone, activité et horaires d’ouverture sont récupérés depuis votre fiche Google. Vous pourrez tout ajuster ensuite.",
+  intro: "Nom, adresse, téléphone, activité, horaires, présentation et photos sont récupérés depuis votre fiche Google. Vous pourrez tout ajuster ensuite.",
   label: "Nom de votre établissement et ville",
   placeholder: "Ex. Maison Alba Montpellier",
   button: "Rechercher",
@@ -40,5 +40,25 @@ export const googleImport = {
   empty: "Aucune fiche trouvée. Essayez avec le nom exact et la ville, ou remplissez le formulaire à la main.",
   applied: "Fiche importée :",
   hoursImported: "horaires d’ouverture récupérés",
+  photosImported: "photos",
   remove: "Retirer",
+};
+
+/** Widget de retours dans l'espace pro. */
+export const feedbackWidget = {
+  open: "Un avis ?",
+  title: "Aidez-nous à améliorer Reso",
+  intro: "Une idée, un blocage, un détail qui vous agace ? Dites-le nous, nous lisons tout.",
+  moods: [
+    { value: "happy", label: "Ça me plaît", emoji: "😊" },
+    { value: "neutral", label: "Une idée", emoji: "💡" },
+    { value: "sad", label: "Un problème", emoji: "😕" },
+  ] as const,
+  placeholder: "Votre message…",
+  send: "Envoyer",
+  sending: "Envoi…",
+  thanks: "Merci ! Votre retour est bien arrivé.",
+  again: "Envoyer un autre retour",
+  close: "Fermer",
+  tooShort: "Écrivez au moins quelques mots.",
 };

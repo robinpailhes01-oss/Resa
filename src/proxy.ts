@@ -14,7 +14,7 @@ export function proxy(request: NextRequest) {
     `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ""}`,
     // Les styles inline proviennent de React (attributs style) et de Tailwind ; aucun style tiers.
     "style-src 'self' 'unsafe-inline'",
-    "img-src 'self' data: blob:",
+    "img-src 'self' data: blob: https://lh3.googleusercontent.com https://*.googleusercontent.com",
     "font-src 'self'",
     "connect-src 'self'",
     "object-src 'none'",
