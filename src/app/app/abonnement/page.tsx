@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { CreditCard, ShieldCheck } from "lucide-react";
 import { ActionForm } from "@/components/app/ActionForm";
 import { Card, PageHeader } from "@/components/app/PageHeader";
@@ -17,12 +18,17 @@ export default async function AbonnementPage({ searchParams }: { searchParams: P
   const { establishment: e } = await requireEstablishment();
   const params = await searchParams;
   const reference = typeof params.checkout === "string" ? params.checkout : null;
-  // Retour de la page de paiement SumUp : on vérifie l'état auprès de SumUp, jamais depuis l'URL.
-  const justConfirmed = reference ? await confirmPayment({ reference }).catch(() => null) : null;
-  const fresh = justConfirmed ? await requireEstablishment().then((r) => r.establishment) : e;
+  if (reference) {
+    // Retour de la page de paiement : on vérifie l'état auprès du prestataire (jamais depuis l'URL),
+    // puis on recharge la page sans le paramètre pour afficher la situation à jour.
+    const confirmed = await confirmPayment({ reference }).catch(() => null);
+    redirect(`/app/abonnement?paiement=${encodeURIComponent(confirmed?.status ?? "inconnu")}`);
+  }
+  const outcome = typeof params.paiement === "string" ? params.paiement : null;
+  const fresh = e;
   const access = resolveAccess(fresh);
   const a = amounts();
-  const payments = await listPayments(fresh.id);
+  const payments = (await listPayments(fresh.id)).filter((p) => p.status !== "expired");
   const fmt = (d: Date | null) => (d ? formatDateKeyLong(todayDateKey(fresh.timezone, d)) : null);
   const provider = billingProvider();
   const automatic = provider === "mollie" ? await hasAutomaticRenewal(fresh.id) : false;
@@ -42,13 +48,15 @@ export default async function AbonnementPage({ searchParams }: { searchParams: P
     <div className="mx-auto max-w-3xl">
       <PageHeader title="Abonnement" intro={provider === "mollie" ? "Un seul tarif, sans engagement de durée. Prélèvement automatique chaque mois par carte ou SEPA, sécurisé par Mollie." : "Un seul tarif, sans engagement de durée. Paiement sécurisé par carte via SumUp."} />
 
-      {justConfirmed?.status === "paid" ? (
+      {outcome === "paid" ? (
         <StatusMessage tone="success" className="mb-6">
-          Paiement reçu, merci. Votre abonnement est à jour jusqu’au {fmt(fresh.paidUntil)}. Un reçu vous a été envoyé par email.
+          Paiement reçu, merci. Votre abonnement est à jour jusqu’au {fmt(fresh.paidUntil)}. Votre facture vous a été envoyée par email.
         </StatusMessage>
-      ) : reference && justConfirmed ? (
+      ) : outcome === "failed" || outcome === "expired" ? (
+        <StatusMessage tone="error" className="mb-6">Le paiement n’a pas abouti. Aucun montant n’a été prélevé : vous pouvez réessayer ci-dessous.</StatusMessage>
+      ) : outcome ? (
         <StatusMessage tone="pending" className="mb-6">
-          Le paiement n’est pas confirmé pour l’instant (statut : {justConfirmed.status}). Si vous avez bien payé, il sera pris en compte dans les minutes qui suivent.
+          Le paiement n’est pas encore confirmé. Si vous avez bien payé, il sera pris en compte dans les minutes qui suivent (un virement SEPA peut prendre quelques jours).
         </StatusMessage>
       ) : null}
 

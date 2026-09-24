@@ -142,6 +142,17 @@ async function loadEstablishment(id: string): Promise<EstablishmentBilling | nul
   return row ?? null;
 }
 
+/** Un lien de paiement en attente est-il encore ouvert chez le prestataire ? (en cas de doute : oui) */
+async function isStillOpen(row: Row): Promise<boolean> {
+  if (!row.checkout_id) return false;
+  try {
+    if (row.provider === "mollie") return (await mollie.getPayment(row.checkout_id)).status === "open";
+    return (await getCheckout(row.checkout_id)).status === "PENDING";
+  } catch {
+    return true;
+  }
+}
+
 /**
  * Prépare le paiement du mois suivant : réutilise un lien encore frais pour
  * la même période, sinon crée un paiement chez le prestataire.
@@ -153,16 +164,23 @@ export async function preparePayment(establishment: Pick<Establishment, "id" | "
   if (!provider) throw new Error("Le paiement en ligne n’est pas encore activé.");
   const sql = getSql();
   const period = nextPeriod(establishment.paidUntil, now);
-  const [existing] = await sql<Row[]>`
+  // Liens encore en attente qui couvrent la période à payer : on réutilise le plus récent
+  // s'il est toujours ouvert chez le prestataire, et on retire les autres de l'historique.
+  const pending = await sql<Row[]>`
     select * from payments where establishment_id = ${establishment.id} and status = 'pending' and hosted_url is not null and provider = ${provider}
-      and period_start >= ${new Date(period.start.getTime() - 60_000)} and created_at > ${new Date(now.getTime() - PENDING_TTL_MS)}
-    order by created_at desc limit 1`;
-  if (existing) return map(existing);
+      and period_end > ${period.start} and created_at > ${new Date(now.getTime() - PENDING_TTL_MS)}
+    order by created_at desc`;
+  const [latest, ...older] = pending;
+  if (older.length) await sql`update payments set status = 'expired' where id in ${sql(older.map((r) => r.id))}`;
+  if (latest) {
+    if (await isStillOpen(latest)) return map(latest);
+    await sql`update payments set status = 'expired' where id = ${latest.id}`;
+  }
   const a = amounts();
   const reference = paymentReference(establishment.id, period.start);
   const [row] = await sql<Row[]>`
-    insert into payments (establishment_id, provider, checkout_reference, amount_cents, vat_cents, period_start, period_end)
-    values (${establishment.id}, ${provider}, ${reference}, ${a.totalCents}, ${a.vatCents}, ${period.start}, ${period.end}) returning *`;
+    insert into payments (establishment_id, provider, checkout_reference, amount_cents, vat_cents, period_start, period_end, created_at)
+    values (${establishment.id}, ${provider}, ${reference}, ${a.totalCents}, ${a.vatCents}, ${period.start}, ${period.end}, ${now}) returning *`;
   const description = `${offer.brandName} · abonnement ${establishment.name}`;
   try {
     if (provider === "mollie") {
@@ -208,6 +226,7 @@ async function applyPaid(row: Row, now: Date, extra: { transactionCode: string |
       invoice_issued_at = ${now}, invoice_number = coalesce(invoice_number, ${invoiceNumber(0, now).replace(/\d{6}$/, "")} || lpad(nextval('invoice_number_seq')::text, 6, '0'))
     where id = ${row.id} and status <> 'paid' returning *`;
   if (!paid) return row;
+  await sql`update payments set status = 'expired' where establishment_id = ${row.establishment_id} and status = 'pending' and id <> ${row.id} and period_start < ${paid.period_end}`;
   const [est] = await sql<Array<{ name: string; owner_email: string; paid_until: Date | null }>>`
     update establishments e set subscription_status = 'active',
       paid_until = greatest(coalesce(e.paid_until, ${paid.period_start}), ${paid.period_end}),
@@ -235,19 +254,39 @@ async function ensureMollieSubscription(establishmentId: string): Promise<void> 
     const current = await mollie.getSubscription(est.mollie_customer_id, est.mollie_subscription_id).catch(() => null);
     if (current && (current.status === "active" || current.status === "pending")) return;
   }
+  const description = `${offer.brandName} · abonnement ${est.name}`;
+  const existing = await findMollieSubscription(est.mollie_customer_id, description);
+  if (existing) {
+    await getSql()`update establishments set mollie_subscription_id = ${existing.id} where id = ${est.id}`;
+    return;
+  }
   if (!(await mollie.hasValidMandate(est.mollie_customer_id, est.mollie_mandate_id))) {
     console.error("[billing] aucun mandat valide, abonnement Mollie non créé", establishmentId);
     return;
   }
-  const sub = await mollie.createSubscription({
-    customerId: est.mollie_customer_id,
-    amountCents: amounts().totalCents,
-    description: `${offer.brandName} · abonnement ${est.name}`,
-    startDate: dateKey(new Date(est.paid_until)),
-    webhookUrl: `${siteUrl()}/api/webhooks/mollie`,
-    metadata: { establishmentId: est.id },
-  });
-  await getSql()`update establishments set mollie_subscription_id = ${sub.id} where id = ${est.id}`;
+  let subscriptionId: string;
+  try {
+    const sub = await mollie.createSubscription({
+      customerId: est.mollie_customer_id,
+      amountCents: amounts().totalCents,
+      description,
+      startDate: dateKey(new Date(est.paid_until)),
+      webhookUrl: `${siteUrl()}/api/webhooks/mollie`,
+      metadata: { establishmentId: est.id },
+    });
+    subscriptionId = sub.id;
+  } catch (error) {
+    // Créé en parallèle par la notification Mollie : on le récupère au lieu d'échouer.
+    const raced = error instanceof mollie.MollieError && error.status === 422 ? await findMollieSubscription(est.mollie_customer_id, description) : null;
+    if (!raced) throw error;
+    subscriptionId = raced.id;
+  }
+  await getSql()`update establishments set mollie_subscription_id = ${subscriptionId} where id = ${est.id}`;
+}
+
+async function findMollieSubscription(customerId: string, description: string): Promise<{ id: string } | null> {
+  const subs = await mollie.listSubscriptions(customerId).catch(() => []);
+  return subs.find((s) => (s.status === "active" || s.status === "pending") && (s.description === null || s.description === description)) ?? null;
 }
 
 /** Vérifie auprès du prestataire l'état d'un paiement (par référence ou identifiant) et applique le résultat. */

@@ -125,6 +125,7 @@ export interface MollieSubscription {
   id: string;
   status: string;
   nextPaymentDate: string | null;
+  description?: string | null;
 }
 
 /** Abonnement mensuel : Mollie prélève seul à chaque échéance et prévient le webhook. */
@@ -152,6 +153,16 @@ export async function getSubscription(customerId: string, subscriptionId: string
     if (error instanceof MollieError && error.status === 404) return null;
     throw error;
   }
+}
+
+/** Abonnements d'un client (pour retrouver un abonnement déjà créé, p. ex. après une notification simultanée). */
+export async function listSubscriptions(customerId: string, fetchImpl?: typeof fetch): Promise<MollieSubscription[]> {
+  const data = await call<{ _embedded?: { subscriptions?: Array<{ id: string; status: string; nextPaymentDate?: string; description?: string }> } }>(
+    `/customers/${encodeURIComponent(customerId)}/subscriptions?limit=50`,
+    {},
+    fetchImpl,
+  );
+  return (data._embedded?.subscriptions ?? []).map((s) => ({ id: s.id, status: s.status, nextPaymentDate: s.nextPaymentDate ?? null, description: s.description ?? null }));
 }
 
 export async function cancelSubscription(customerId: string, subscriptionId: string, fetchImpl?: typeof fetch): Promise<void> {

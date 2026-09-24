@@ -18,22 +18,26 @@ export async function notifyTelegram(html: string, fetchImpl: typeof fetch = fet
   const token = process.env.TELEGRAM_BOT_TOKEN?.trim();
   const chatId = process.env.TELEGRAM_CHAT_ID?.trim();
   if (!token || !chatId) return false;
-  try {
-    const response = await fetchImpl(`https://api.telegram.org/bot${token}/sendMessage`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: chatId, text: html.slice(0, 4000), parse_mode: "HTML", disable_web_page_preview: true }),
-      signal: AbortSignal.timeout(8000),
-    });
-    if (!response.ok) {
-      console.error("[telegram] envoi refusé", response.status, (await response.text().catch(() => "")).slice(0, 200));
-      return false;
+  const body = JSON.stringify({ chat_id: chatId, text: html.slice(0, 4000), parse_mode: "HTML", disable_web_page_preview: true });
+  // Deux tentatives : une coupure réseau ou un délai dépassé ne doit pas faire perdre la notification.
+  for (let attempt = 1; attempt <= 2; attempt += 1) {
+    try {
+      const response = await fetchImpl(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body,
+        signal: AbortSignal.timeout(6000),
+      });
+      if (!response.ok) {
+        console.error("[telegram] envoi refusé", response.status, (await response.text().catch(() => "")).slice(0, 200));
+        return false;
+      }
+      return true;
+    } catch (error) {
+      console.error(`[telegram] envoi impossible (tentative ${attempt})`, error instanceof Error ? error.message : error);
     }
-    return true;
-  } catch (error) {
-    console.error("[telegram] envoi impossible", error instanceof Error ? error.message : error);
-    return false;
   }
+  return false;
 }
 
 /** Événements métier notifiés en temps réel. */

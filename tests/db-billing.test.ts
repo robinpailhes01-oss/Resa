@@ -36,10 +36,18 @@ vi.mock("@/server/mollie", () => ({
     return { id: sub.id, status: "active", nextPaymentDate: input.startDate as string };
   }),
   getSubscription: vi.fn(async (_c: string, id: string) => (mollieState.cancelled.includes(id) ? null : { id, status: "active", nextPaymentDate: null })),
+  listSubscriptions: vi.fn(async () => mollieState.subscriptions.filter((s) => !mollieState.cancelled.includes(s.id as string)).map((s) => ({ id: s.id as string, status: "active", nextPaymentDate: null, description: (s.description as string) ?? null }))),
   cancelSubscription: vi.fn(async (_c: string, id: string) => {
     mollieState.cancelled.push(id);
   }),
-  MollieError: class extends Error {},
+  MollieError: class extends Error {
+    constructor(
+      message: string,
+      public readonly status?: number,
+    ) {
+      super(message);
+    }
+  },
 }));
 
 describe.skipIf(!url)("abonnement Mollie", () => {
@@ -72,6 +80,18 @@ describe.skipIf(!url)("abonnement Mollie", () => {
     // Retour sans paiement : toujours en attente.
     expect((await billing.confirmPayment({ reference: payment.reference }, now))?.status).toBe("pending");
 
+    // Nouveau clic 10 minutes plus tard : le lien encore ouvert est réutilisé, pas de doublon.
+    const later = new Date(now.getTime() + 10 * 60_000);
+    const again = await billing.preparePayment({ id: establishmentId, name: "Institut Mollie", paidUntil: null }, later);
+    expect(again.id).toBe(payment.id);
+    // Lien expiré chez Mollie : un nouveau lien est créé, l'ancien sort de l'historique.
+    mollieState.payments.get(payment.checkoutId as string)!.status = "expired";
+    const replaced = await billing.preparePayment({ id: establishmentId, name: "Institut Mollie", paidUntil: null }, later);
+    expect(replaced.id).not.toBe(payment.id);
+    expect((await billing.listPayments(establishmentId)).map((p) => p.status).sort()).toEqual(["expired", "pending"]);
+    // Le premier lien redevient ouvert puis est payé : le lien de remplacement est retiré.
+    mollieState.payments.get(payment.checkoutId as string)!.status = "open";
+
     // Mollie confirme le paiement et le mandat.
     const raw = mollieState.payments.get(payment.checkoutId as string)!;
     raw.status = "paid";
@@ -84,9 +104,32 @@ describe.skipIf(!url)("abonnement Mollie", () => {
     expect(est.mollie_mandate_id).toBe("mdt_1");
     expect(est.mollie_subscription_id).toBe("sub_1");
     expect(mollieState.subscriptions[0]).toMatchObject({ startDate: "2026-11-01", customerId: "cst_test" });
+    expect((await billing.listPayments(establishmentId)).map((p) => p.status).sort()).toEqual(["expired", "paid"]);
     // Reconfirmer ne crée pas de doublon.
     await billing.confirmPayment({ reference: payment.reference }, now);
     expect(mollieState.subscriptions).toHaveLength(1);
+  });
+
+  it("abonnement créé en parallèle par la notification Mollie → récupéré plutôt que dupliqué", async () => {
+    const billing = await import("@/server/app/billing");
+    const mollie = await import("@/server/mollie");
+    await sql`update establishments set mollie_subscription_id = null where id = ${establishmentId}`;
+    // Le webhook a déjà créé l'abonnement : Mollie refuse le doublon (422).
+    const create = vi.mocked(mollie.createSubscription);
+    create.mockImplementationOnce(async () => {
+      throw new mollie.MollieError("A subscription with the same description already exists", 422);
+    });
+    mollieState.subscriptions.length = 0;
+    const [paid] = await sql`select checkout_reference from payments where establishment_id = ${establishmentId} and status = 'paid' limit 1`;
+    await sql`update payments set status = 'pending' where checkout_reference = ${paid.checkout_reference}`;
+    const listed = vi.mocked(mollie.listSubscriptions);
+    listed.mockResolvedValueOnce([]).mockResolvedValueOnce([{ id: "sub_webhook", status: "active", nextPaymentDate: null, description: "Reso · abonnement Institut Mollie" }]);
+    await billing.confirmPayment({ reference: paid.checkout_reference }, now);
+    const [est] = await sql`select mollie_subscription_id from establishments where id = ${establishmentId}`;
+    expect(est.mollie_subscription_id).toBe("sub_webhook");
+    // Remise en état pour les tests suivants (abonnement « sub_1 » créé au premier paiement).
+    await sql`update establishments set mollie_subscription_id = 'sub_1' where id = ${establishmentId}`;
+    mollieState.subscriptions.push({ id: "sub_1", status: "active", description: "Reso · abonnement Institut Mollie" });
   });
 
   it("prélèvement automatique reçu par webhook → période prolongée d'un mois", async () => {
@@ -96,10 +139,10 @@ describe.skipIf(!url)("abonnement Mollie", () => {
     expect(await billing.handleMolliePayment("tr_rec_1", later)).toBe("paid");
     const [est] = await sql`select paid_until from establishments where id = ${establishmentId}`;
     expect(new Date(est.paid_until).toISOString()).toBe("2026-12-01T10:00:00.000Z");
-    const rows = await sql`select status, period_start, period_end from payments where establishment_id = ${establishmentId} order by created_at`;
+    const rows = await sql`select status, period_start, period_end from payments where establishment_id = ${establishmentId} and status <> 'expired' order by created_at`;
     expect(rows).toHaveLength(2);
     expect(rows.every((r) => r.status === "paid")).toBe(true);
-    const invoices = await sql`select invoice_number, payment_method from payments where establishment_id = ${establishmentId} order by created_at`;
+    const invoices = await sql`select invoice_number, payment_method from payments where establishment_id = ${establishmentId} and status = 'paid' order by created_at`;
     expect(invoices.map((i) => i.invoice_number)).toEqual(expect.arrayContaining([expect.stringMatching(/^RESO-\d{4}-\d{6}$/)]));
     expect(new Set(invoices.map((i) => i.invoice_number)).size).toBe(2);
     expect(invoices[0].payment_method).toBe("creditcard");
@@ -108,7 +151,7 @@ describe.skipIf(!url)("abonnement Mollie", () => {
     expect(Buffer.from(pdf!.content).toString("latin1").startsWith("%PDF")).toBe(true);
     // Rejouer le même webhook n'ajoute rien.
     await billing.handleMolliePayment("tr_rec_1", later);
-    expect(await sql`select count(*)::int as n from payments where establishment_id = ${establishmentId}`).toMatchObject([{ n: 2 }]);
+    expect(await sql`select count(*)::int as n from payments where establishment_id = ${establishmentId} and status = 'paid'`).toMatchObject([{ n: 2 }]);
   });
 
   it("prélèvement échoué → paiement en échec, période inchangée ; résiliation arrête l'abonnement Mollie", async () => {
