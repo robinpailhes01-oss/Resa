@@ -34,8 +34,20 @@ export async function sendFeedbackAction(input: { mood: string; message: string;
     return { ok: false, error: "Impossible d’envoyer votre retour pour le moment." };
   }
   if (offer.supportEmail) {
-    const subject = `[${offer.brandName}] Retour ${parsed.data.mood} · ${establishment?.name ?? user.email}`;
-    const body = `${parsed.data.message}\n\n— ${user.fullName} <${user.email}>${establishment ? ` · ${establishment.name} (/r/${establishment.slug})` : ""}${parsed.data.page ? `\nPage : ${parsed.data.page}` : ""}`;
+    const moodLabel = { happy: "Ça me plaît", neutral: "Une idée", sad: "Un problème" }[parsed.data.mood];
+    const subject = `[${offer.brandName}] Nouveau retour · ${moodLabel} · ${user.fullName}${establishment ? ` (${establishment.name})` : ""}`;
+    const body = [
+      parsed.data.message,
+      "",
+      "— Qui : " + `${user.fullName} <${user.email}>`,
+      establishment ? `— Établissement : ${establishment.name} (${offer.siteUrl.replace(/\/$/, "")}/r/${establishment.slug})` : null,
+      parsed.data.page ? `— Page : ${parsed.data.page}` : null,
+      `— Type : ${moodLabel}`,
+      "",
+      "Répondez directement à cet email pour recontacter la personne.",
+    ]
+      .filter((line): line is string => line !== null)
+      .join("\n");
     await getEmailSender()
       .send({ to: offer.supportEmail, subject, text: body, html: `<pre style="font:14px/1.5 sans-serif;white-space:pre-wrap">${body.replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" })[c] ?? c)}</pre>`, replyTo: user.email })
       .catch((error) => console.error("[feedback] email support non envoyé", error instanceof Error ? error.message : error));
