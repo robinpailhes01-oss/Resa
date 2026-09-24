@@ -6,6 +6,8 @@ import { getEmailSender } from "@/server/email";
 import { getUserEstablishment, requireUser } from "@/server/auth/guards";
 import { getSql } from "@/server/db";
 import { SlidingWindowRateLimiter } from "@/server/rate-limit";
+import { after } from "next/server";
+import { notifyTelegram, telegramEvents } from "@/server/telegram";
 
 const schema = z.object({
   mood: z.enum(["happy", "neutral", "sad"]),
@@ -33,8 +35,13 @@ export async function sendFeedbackAction(input: { mood: string; message: string;
     console.error("[feedback] enregistrement", error instanceof Error ? error.message : error);
     return { ok: false, error: "Impossible d’envoyer votre retour pour le moment." };
   }
+  const moodLabel = { happy: "Ça me plaît", neutral: "Une idée", sad: "Un problème" }[parsed.data.mood];
+  after(() =>
+    notifyTelegram(
+      telegramEvents.feedback({ moodLabel, message: parsed.data.message, fullName: user.fullName, email: user.email, establishment: establishment?.name ?? null, page: parsed.data.page ?? null }),
+    ),
+  );
   if (offer.supportEmail) {
-    const moodLabel = { happy: "Ça me plaît", neutral: "Une idée", sad: "Un problème" }[parsed.data.mood];
     const subject = `[${offer.brandName}] Nouveau retour · ${moodLabel} · ${user.fullName}${establishment ? ` (${establishment.name})` : ""}`;
     const body = [
       parsed.data.message,

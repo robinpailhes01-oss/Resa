@@ -1,6 +1,8 @@
 "use server";
 
 import { headers } from "next/headers";
+import { after } from "next/server";
+import { notifyTelegram, telegramEvents } from "@/server/telegram";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { getSql } from "@/server/db";
@@ -68,6 +70,7 @@ export async function signUp(_prev: AuthState, formData: FormData): Promise<Auth
   await sendVerificationEmail(userId, email).catch((error) => {
     console.error("[auth] email de bienvenue non envoyé", error instanceof Error ? error.message : error);
   });
+  after(() => notifyTelegram(telegramEvents.signup({ fullName: parsed.data.fullName, email })));
   await createSession(userId);
   redirect("/app/bienvenue");
 }

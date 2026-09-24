@@ -50,8 +50,9 @@ export function isFormEncoded(request: Request): boolean {
 }
 
 export function isAuthorizedInternal(request: Request): boolean {
-  const secret = process.env.INTERNAL_TASKS_SECRET?.trim();
-  if (!secret) return false;
+  // INTERNAL_TASKS_SECRET (cron externe) ou CRON_SECRET (crons Vercel, en-tête ajouté automatiquement).
+  const secrets = [process.env.INTERNAL_TASKS_SECRET?.trim(), process.env.CRON_SECRET?.trim()].filter((s): s is string => Boolean(s));
+  if (secrets.length === 0) return false;
   const header = request.headers.get("authorization") ?? "";
-  return header === `Bearer ${secret}`;
+  return secrets.some((secret) => header === `Bearer ${secret}`);
 }

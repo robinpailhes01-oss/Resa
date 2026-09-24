@@ -125,3 +125,15 @@ Pour vérifier les emails après un changement de clé : appelez `https://www.re
 Vercel a choisi `www.reso-app.fr` comme adresse principale et redirige `reso-app.fr` vers elle. Pour que les liens des emails et les liens de réservation utilisent directement la bonne adresse, mettez `RESO_SITE_URL=https://www.reso-app.fr` (ou, si vous préférez l’adresse sans www : Vercel → Settings → Domains → sur `reso-app.fr`, choisissez-la comme principale et faites rediriger `www`, puis gardez `RESO_SITE_URL=https://reso-app.fr`).
 
 Une page ouverte avant un redéploiement peut afficher « This page couldn’t load » au clic suivant : c’est le navigateur qui parle encore à l’ancienne version. Un simple rechargement suffit.
+
+## 9. Notifications Telegram et récap hebdomadaire
+
+Vous recevez un message Telegram à chaque inscription, chaque établissement créé et chaque retour envoyé depuis le widget, plus un récapitulatif chaque lundi à 9 h (Paris) : nouveaux comptes, établissements, rendez-vous, abonnements actifs, essais qui se terminent, retours reçus. Les paiements seront ajoutés au branchement de Stripe.
+
+1. Dans Telegram, ouvrez **@BotFather** → `/newbot` → donnez un nom (ex. « Reso ») et un identifiant (ex. `reso_notifs_bot`). BotFather affiche le **token** (forme `123456789:AAH…`).
+2. Ouvrez votre nouveau bot dans Telegram et envoyez-lui n’importe quel message (« bonjour »).
+3. Dans votre navigateur, ouvrez `https://api.telegram.org/bot<TOKEN>/getUpdates` (remplacez `<TOKEN>`). Dans la réponse, repérez `"chat":{"id":123456789` : ce nombre est votre **chat id**.
+4. Vercel → Environment Variables → `TELEGRAM_BOT_TOKEN` et `TELEGRAM_CHAT_ID` → Redeploy.
+5. Test : ouvrez `https://www.reso-app.fr/api/internal/telegram-test` avec l’en-tête `Authorization: Bearer <INTERNAL_TASKS_SECRET>` (ou demandez-moi de le faire) : vous recevez « les notifications Telegram fonctionnent ».
+
+Le récap du lundi est déclenché par un cron Vercel (`vercel.json`). Pour qu’il soit autorisé, ajoutez sur Vercel la variable `CRON_SECRET` avec la même valeur que `INTERNAL_TASKS_SECRET`. Pour le recevoir tout de suite : `https://www.reso-app.fr/api/internal/weekly-report` avec le même en-tête.

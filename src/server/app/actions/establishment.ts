@@ -2,6 +2,10 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
+import { offer } from "@/config/offer";
+import { notifyTelegram, telegramEvents } from "@/server/telegram";
+import { businessTypeLabel } from "../establishments";
 import { z } from "zod";
 import type { FormState } from "@/components/app/ActionForm";
 import { requireEstablishment, requireUser, getUserEstablishment } from "@/server/auth/guards";
@@ -59,6 +63,11 @@ export async function createEstablishmentAction(_prev: FormState, fd: FormData):
       await getSql()`update establishments set google_place_id = coalesce(${googlePlaceId}, google_place_id), description = coalesce(${googleDescription}, description) where id = ${establishment.id}`;
     }
     if (googlePhotos.length > 0) await addPhotos(establishment.id, await resolvePhotoUrls(googlePhotos), "google");
+    after(() =>
+      notifyTelegram(
+        telegramEvents.establishment({ name: establishment.name, businessType: businessTypeLabel(establishment.businessType), city: establishment.city, slug: establishment.slug }, offer.siteUrl.replace(/\/$/, "")),
+      ),
+    );
   } catch (error) {
     console.error("[app] création établissement", error instanceof Error ? error.message : error);
     return { error: GENERIC_ERROR };
