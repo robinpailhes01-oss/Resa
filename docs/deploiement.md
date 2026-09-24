@@ -166,14 +166,14 @@ Mentions légales, CGV et confidentialité lisent la configuration : `RESO_LEGAL
 
 Chaque jour, la tâche quotidienne (`/api/internal/daily`, cron Vercel 8 h Paris) :
 
-1. **Cherche** sur Google Places quelques couples catégorie × ville (`src/config/prospection.ts` : salons de coiffure, barbiers, instituts, ongleries ; villes de Marseille à Paris, en rotation). Chaque recherche renvoie jusqu’à 20 établissements ; 4 recherches par jour restent dans le quota gratuit de l’API.
-2. **Analyse** les nouveaux établissements : si la fiche pointe directement vers Planity, Treatwell, Kiute… l’outil est noté (pas d’email possible) ; si elle pointe vers un site propre, la page d’accueil puis la page contact sont lues pour trouver un email public et repérer un module Planity ou concurrent.
+1. **Cherche** sur Google Places quelques couples catégorie × ville (`src/config/prospection.ts` : salons de coiffure, barbiers, instituts, ongleries ; villes de Marseille à Paris, en rotation). Chaque recherche renvoie jusqu’à 20 établissements ; 3 recherches par jour restent dans le quota gratuit de l’API.
+2. **Analyse** les nouveaux établissements : si la fiche pointe directement vers Planity, Treatwell, Kiute… l’outil est noté (pas d’email possible) ; si elle pointe vers un site propre, la page d’accueil puis la page contact sont lues pour trouver un email public (même domaine que le site ou messagerie grand public ; les adresses d’agences web sont écartées) et repérer un module Planity ou concurrent.
 3. **Écrit** aux établissements ayant un email, jours ouvrés seulement, 20 par jour maximum, les utilisateurs de Planity d’abord : un premier email signé Robin (objet « Une alternative à Planity pour … ? »), puis une relance unique 5 jours plus tard. Réponse directe à `RESO_SUPPORT_EMAIL`. Chaque email porte l’identité de l’éditeur, la raison du contact et un lien « Ne plus me contacter » (`/ne-plus-me-contacter`) : l’adresse rejoint alors une liste d’exclusion durable. Un prospect qui crée un compte n’est plus relancé.
 4. **Prévient** sur Telegram (recherches, nouveaux, emails trouvés, envoyés) et alimente le récap du lundi.
 
 Pas de scraping de Planity : les données viennent de Google et des sites des établissements eux-mêmes. Prospection B2B vers des adresses professionnelles publiques, avec opposition en un clic : c’est le cadre admis par la CNIL pour les professionnels.
 
-**Activation.** `PROSPECTION_ENABLED=1` sur Vercel (puis redeploy). Réglages facultatifs : `PROSPECTION_SEARCHES_PER_DAY` (4), `PROSPECTION_DAILY_LIMIT` (20), `PROSPECTION_FOLLOW_UP_DAYS` (5), `PROSPECTION_ENRICH_PER_RUN` (40). Avant d’activer, une simulation complète (recherche, analyse, aucun envoi) : `https://www.reso-app.fr/api/internal/prospection?dry=1` avec l’en-tête `Authorization: Bearer <INTERNAL_TASKS_SECRET>`.
+**Activation.** `PROSPECTION_ENABLED=1` sur Vercel (puis redeploy). Réglages facultatifs : `PROSPECTION_SEARCHES_PER_DAY` (3), `PROSPECTION_DAILY_LIMIT` (20), `PROSPECTION_FOLLOW_UP_DAYS` (5), `PROSPECTION_ENRICH_PER_RUN` (60). Avant d’activer, une simulation complète (recherche, analyse, aucun envoi) : `https://www.reso-app.fr/api/internal/prospection?dry=1` avec l’en-tête `Authorization: Bearer <INTERNAL_TASKS_SECRET>`.
 
 **Suivi.** Export tableur de tous les prospects (statut, email, téléphone, outil détecté) : `https://www.reso-app.fr/api/internal/prospection/export?token=<INTERNAL_TASKS_SECRET>` (à ouvrir dans un navigateur). Les établissements sans email mais avec téléphone y figurent : à appeler ou à contacter sur Instagram.
 

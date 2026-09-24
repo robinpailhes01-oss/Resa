@@ -147,9 +147,9 @@ export async function enrichProspects(now: Date, fetchImpl: typeof fetch = fetch
     result.enriched += 1;
     if (email) result.emailsFound += 1;
   };
-  // Quatre sites à la fois : assez rapide pour tenir dans une exécution, assez doux pour les petits hébergements.
+  // Six sites à la fois : assez rapide pour tenir dans une exécution, assez doux pour les petits hébergements.
   const queue = [...rows];
-  await Promise.all(Array.from({ length: 4 }, async () => {
+  await Promise.all(Array.from({ length: 6 }, async () => {
     for (let row = queue.shift(); row; row = queue.shift()) await worker(row);
   }));
   return result;
@@ -165,6 +165,9 @@ function toEmailProspect(row: ProspectRow): ProspectForEmail {
 export async function sendOutreach(now: Date, dryRun: boolean): Promise<{ sent: number; followUps: number; skipped: string | null }> {
   const sql = getSql();
   const settings = prospectionSettings();
+  // Une même adresse trouvée sur plusieurs sites est celle d'une agence web, pas d'un salon : on ne l'écrit pas.
+  await sql`update prospects set status = 'sans_email', email_source = 'partagee', updated_at = ${now}
+    where status = 'a_contacter' and email in (select email from prospects where email is not null group by email having count(*) > 1)`;
   // Un prospect qui a créé un compte n'est plus relancé.
   await sql`update prospects set status = 'inscrit', updated_at = ${now} where status in ('a_contacter','contacte','relance') and email is not null and exists (select 1 from users u where u.email = prospects.email)`;
   if (!isBusinessDayParis(now)) return { sent: 0, followUps: 0, skipped: "week-end : envois reportés à lundi" };

@@ -68,10 +68,10 @@ function readInt(value: string | undefined, fallback: number, max: number): numb
 /** Réglages lus à l'exécution (variables serveur, modifiables sans rebuild). */
 export function prospectionSettings(env: Record<string, string | undefined> = process.env): ProspectionSettings {
   return {
-    searchesPerDay: readInt(env.PROSPECTION_SEARCHES_PER_DAY, 4, 12),
+    searchesPerDay: readInt(env.PROSPECTION_SEARCHES_PER_DAY, 3, 12),
     dailyEmailLimit: readInt(env.PROSPECTION_DAILY_LIMIT, 20, 80),
     followUpAfterDays: readInt(env.PROSPECTION_FOLLOW_UP_DAYS, 5, 30),
-    enrichPerRun: readInt(env.PROSPECTION_ENRICH_PER_RUN, 40, 120),
+    enrichPerRun: readInt(env.PROSPECTION_ENRICH_PER_RUN, 60, 120),
   };
 }
 

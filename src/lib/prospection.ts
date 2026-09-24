@@ -95,7 +95,13 @@ export function extractEmails(html: string): string[] {
   return [...found];
 }
 
-/** Choisit l'adresse la plus pertinente : même domaine que le site d'abord, puis contact@ / bonjour@ / hello@, puis la première. */
+const WEBMAIL = /^(gmail\.com|googlemail\.com|hotmail\.(fr|com)|outlook\.(fr|com)|live\.(fr|com)|msn\.com|yahoo\.(fr|com)|orange\.fr|wanadoo\.fr|free\.fr|sfr\.fr|neuf\.fr|laposte\.net|icloud\.com|me\.com|bbox\.fr|numericable\.fr|protonmail\.com|proton\.me|aol\.com)$/i;
+
+/**
+ * Choisit l'adresse de l'établissement : même domaine que son site, ou messagerie
+ * grand public (gmail, orange…). Une adresse d'un autre domaine est presque
+ * toujours celle de l'agence qui a fait le site (« réalisé par … ») : ignorée.
+ */
 export function pickBestEmail(emails: string[], website: string | null): string | null {
   if (emails.length === 0) return null;
   let host: string | null = null;
@@ -104,15 +110,20 @@ export function pickBestEmail(emails: string[], website: string | null): string 
   } catch {
     host = null;
   }
+  const sameSite = (domain: string) => Boolean(host && (domain === host || host.endsWith(`.${domain}`) || domain.endsWith(`.${host}`)));
+  const eligible = emails.filter((email) => {
+    const domain = email.split("@")[1] ?? "";
+    return sameSite(domain) || WEBMAIL.test(domain) || !host;
+  });
   const score = (email: string): number => {
     const [local, domain] = email.split("@") as [string, string];
     let s = 0;
-    if (host && domain === host) s += 10;
+    if (sameSite(domain)) s += 10;
     if (/^(contact|bonjour|hello|salon|institut|rdv|reservation|info)$/.test(local)) s += 3;
-    if (/gmail|hotmail|outlook|yahoo|orange|free|sfr|wanadoo|laposte|icloud/.test(domain)) s += 1;
+    if (WEBMAIL.test(domain)) s += 1;
     return s;
   };
-  return [...emails].sort((a, b) => score(b) - score(a))[0] ?? null;
+  return [...eligible].sort((a, b) => score(b) - score(a))[0] ?? null;
 }
 
 /** Liens de contact d'une page d'accueil (chemins relatifs résolus), pour y chercher un email. */

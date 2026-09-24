@@ -18,8 +18,8 @@ describe("prospection : rotation des recherches", () => {
   });
 
   it("réglages par défaut et plafonds", () => {
-    expect(prospectionSettings({})).toEqual({ searchesPerDay: 4, dailyEmailLimit: 20, followUpAfterDays: 5, enrichPerRun: 40 });
-    expect(prospectionSettings({ PROSPECTION_DAILY_LIMIT: "500", PROSPECTION_SEARCHES_PER_DAY: "abc" })).toMatchObject({ dailyEmailLimit: 80, searchesPerDay: 4 });
+    expect(prospectionSettings({})).toEqual({ searchesPerDay: 3, dailyEmailLimit: 20, followUpAfterDays: 5, enrichPerRun: 60 });
+    expect(prospectionSettings({ PROSPECTION_DAILY_LIMIT: "500", PROSPECTION_SEARCHES_PER_DAY: "abc" })).toMatchObject({ dailyEmailLimit: 80, searchesPerDay: 3 });
     expect(prospectionCities.length).toBeGreaterThan(10);
   });
 });
@@ -45,6 +45,10 @@ describe("prospection : extraction d'emails", () => {
     expect(extractEmails(html).sort()).toEqual(["contact@mon-salon.fr", "hello@studio-coiffure.fr"]);
     expect(pickBestEmail(["hello@studio-coiffure.fr", "contact@mon-salon.fr"], "https://www.mon-salon.fr")).toBe("contact@mon-salon.fr");
     expect(pickBestEmail(["perso.dupont@gmail.com", "contact@autre.fr"], null)).toBe("contact@autre.fr");
+    // Adresse d'une agence web (autre domaine, pas une messagerie grand public) : ignorée ; la messagerie du salon est gardée.
+    expect(pickBestEmail(["contact@agence-web.com"], "https://www.mon-salon.fr")).toBeNull();
+    expect(pickBestEmail(["contact@agence-web.com", "monsalon@orange.fr"], "https://www.mon-salon.fr")).toBe("monsalon@orange.fr");
+    expect(pickBestEmail(["hello@mon-salon.fr"], "https://reservation.mon-salon.fr/")).toBe("hello@mon-salon.fr");
     expect(pickBestEmail([], "https://x.fr")).toBeNull();
   });
 
