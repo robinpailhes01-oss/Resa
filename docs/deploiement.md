@@ -146,6 +146,8 @@ Fonctionnement : le pro clique « Payer » dans Abonnement, paie sur la page Sum
 
 Le prélèvement automatique sur carte enregistrée n’est pas activé : il dépend de l’option « paiements récurrents » du compte SumUp. Tant qu’elle n’est pas disponible, chaque mois est réglé en un clic depuis l’email ou la page Abonnement.
 
+Après tout ajout ou modification de variable, un redéploiement est indispensable (Deployments → ⋯ → Redeploy) : les variables sont lues au déploiement, pas à la volée. Le contrôle `https://www.reso-app.fr/api/internal/status` (même en-tête) confirme ce que le site voit.
+
 Pour lancer le cycle à la main : `https://www.reso-app.fr/api/internal/billing` avec l’en-tête `Authorization: Bearer <INTERNAL_TASKS_SECRET>`.
 
 ## 11. Pages légales
