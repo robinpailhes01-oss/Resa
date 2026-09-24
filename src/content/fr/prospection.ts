@@ -30,28 +30,25 @@ export const prospectionContent = {
   subjects: {
     withProvider: (name: string, provider: string) => `Une alternative à ${provider} pour ${name} ?`,
     generic: (name: string) => `Réservation en ligne pour ${name}, sans commission`,
-    followUp: (name: string) => `Re : réservation en ligne pour ${name}`,
+    followUp: (name: string, provider: string | null) => `Re : ${provider ? `Une alternative à ${provider} pour ${name} ?` : `réservation en ligne pour ${name}`}`,
   },
   first: (i: ProspectionEmailInput): string[] => [
     "Bonjour,",
-    `Je suis ${i.senderName}, fondateur de ${i.brandName}, un outil de réservation en ligne pensé pour les ${i.categoryPlural} indépendants.`,
-    i.providerLabel
-      ? `J’ai vu que ${i.establishmentName} propose la réservation via ${i.providerLabel}. ${i.brandName} couvre le même besoin (agenda, page de réservation, confirmations et rappels par email, demandes d’avis Google) pour ${i.priceLabel} par mois, sans engagement ni commission sur vos rendez-vous.`
-      : `${i.brandName} donne à ${i.establishmentName} une page de réservation en ligne, un agenda, des confirmations et rappels par email et des demandes d’avis Google, pour ${i.priceLabel} par mois, sans engagement ni commission sur vos rendez-vous.`,
-    "Votre fiche Google s’importe en un clic (photos, horaires, adresse) : l’espace est prêt en dix minutes.",
-    i.trialDays ? `${i.trialDays} jours d’essai gratuit, sans carte bancaire : ${i.trialUrl}` : `Découvrir : ${i.trialUrl}`,
-    "Si ce n’est pas le moment, répondez simplement « non merci » et je ne vous relancerai pas.",
-    `Bonne journée,\n${i.senderName}\n${i.brandName}`,
+    `Je suis ${i.senderName.split(" ")[0]}, fondateur de ${i.brandName}. J’ai vu que ${i.establishmentName} utilise ${i.providerLabel ?? "un outil de réservation"}.`,
+    `${i.brandName} fait la même chose (agenda, réservation en ligne, rappels, avis Google) pour ${i.priceLabel} par mois, sans engagement ni commission.`,
+    i.trialDays ? `Envie de tester ? ${i.trialDays} jours gratuits, sans carte : ${i.trialUrl}` : `Envie de voir ? ${i.trialUrl}`,
+    "Si ce n’est pas le moment, un simple « non merci » suffit.",
+    `${i.senderName}\n${i.brandName}`,
   ],
   followUp: (i: ProspectionEmailInput): string[] => [
     "Bonjour,",
-    `Je me permets une courte relance : la réservation en ligne est-elle un sujet pour ${i.establishmentName} en ce moment ?`,
-    `${i.brandName}, c’est ${i.priceLabel} par mois, sans engagement, avec votre fiche Google importée en un clic.${i.trialDays ? ` L’essai de ${i.trialDays} jours est gratuit et sans carte bancaire : ${i.trialUrl}` : ""}`,
-    "Un simple « non merci » en réponse et je ne reviendrai pas vers vous.",
-    `Bonne journée,\n${i.senderName}\n${i.brandName}`,
+    `Petite relance : la réservation en ligne est-elle un sujet pour ${i.establishmentName} en ce moment ?`,
+    `${i.brandName}, c’est ${i.priceLabel} par mois, sans engagement.${i.trialDays ? ` Essai de ${i.trialDays} jours gratuit : ${i.trialUrl}` : ""}`,
+    "Un « non merci » et je ne reviens pas vers vous.",
+    `${i.senderName}\n${i.brandName}`,
   ],
-  footer: (i: ProspectionEmailInput): string =>
-    `${i.brandName} est édité par ${i.legalEntity}. Vous recevez cet email professionnel parce que ${i.establishmentName} est référencé publiquement (fiche Google, site internet). Ne plus recevoir d’emails : ${i.unsubscribeUrl}`,
+  /** Une seule ligne : le lien de désinscription, obligatoire pour la prospection par email. */
+  footer: (i: ProspectionEmailInput): string => `Ne plus recevoir d’emails : ${i.unsubscribeUrl}`,
   unsubscribePage: {
     title: "Ne plus recevoir d’emails",
     intro: "Confirmez pour que nous ne vous écrivions plus. Aucune autre information ne vous sera demandée.",

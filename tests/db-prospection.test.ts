@@ -86,7 +86,6 @@ describe.skipIf(!url)("prospection en base", () => {
     expect(sender.sent[0]!.to).toBe("contact@barber-test-planity.example");
     expect(sender.sent[0]!.subject).toBe("Une alternative à Planity pour Barber Test Planity ?");
     expect(sender.sent[0]!.text).toContain("Ne plus recevoir d’emails : ");
-    expect(sender.sent[0]!.text).toContain("SAS Harmonie Group");
     expect(sender.sent[0]!.fromName).toBe("Robin de Reso");
     expect(sender.sent[1]!.subject).toBe("Réservation en ligne pour Institut Page Contact, sans commission");
 
@@ -112,7 +111,7 @@ describe.skipIf(!url)("prospection en base", () => {
     const follow = await prospection.runProspection({ now: later, fetchImpl: fakeFetch });
     expect(follow.followUps).toBe(1);
     expect(sender.sent).toHaveLength(3);
-    expect(sender.sent[2]!.subject).toBe("Re : réservation en ligne pour Barber Test Planity");
+    expect(sender.sent[2]!.subject).toBe("Re : Une alternative à Planity pour Barber Test Planity ?");
     const [barber] = await sql<Array<{ status: string }>>`select status from prospects where google_place_id = ${places.planitySite.placeId}`;
     expect(barber.status).toBe("relance");
     const [optout] = await sql`select 1 as ok from prospect_optouts where email = 'bonjour@institut-contact.example'`;

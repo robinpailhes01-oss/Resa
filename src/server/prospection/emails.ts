@@ -26,7 +26,7 @@ export function prospectionEmailInput(p: ProspectForEmail): ProspectionEmailInpu
     providerLabel: p.bookingProvider ? providerLabels[p.bookingProvider] : null,
     trialUrl: `${offer.siteUrl}/?utm_source=prospection&utm_medium=email&utm_campaign=${encodeURIComponent(campaign)}`,
     unsubscribeUrl: `${offer.siteUrl}/ne-plus-me-contacter?token=${encodeURIComponent(p.unsubscribeToken)}`,
-    priceLabel: `${formatEuros(Math.round(offer.monthlyPriceExVat * 100))} HT`,
+    priceLabel: Number.isInteger(offer.monthlyPriceExVat) ? `${offer.monthlyPriceExVat} € HT` : `${formatEuros(Math.round(offer.monthlyPriceExVat * 100))} HT`,
     trialDays: offer.trialDays,
     senderName: prospectionContent.senderName,
     brandName: offer.brandName,
@@ -36,7 +36,7 @@ export function prospectionEmailInput(p: ProspectForEmail): ProspectionEmailInpu
 
 function build(to: string, subject: string, paragraphs: string[], input: ProspectionEmailInput, replyTo: string | undefined): EmailMessage {
   const footer = prospectionContent.footer(input);
-  const text = [...paragraphs, "", "—", footer].join("\n\n").replace(/\n\n\n/g, "\n\n");
+  const text = [...paragraphs, "", footer].join("\n\n").replace(/\n\n\n/g, "\n\n");
   // Style volontairement sobre (email écrit à la main) : pas de bandeau, pas de bouton, pas d'image.
   const html = `<!doctype html><html lang="fr"><body style="margin:0;padding:24px 16px;background:#ffffff;font-family:Inter,Arial,sans-serif;color:#111116;font-size:15px;line-height:24px"><div style="max-width:560px;margin:0 auto">${paragraphs
     .map((p) => `<p style="margin:0 0 16px">${linkify(p).replace(/\n/g, "<br>")}</p>`)
@@ -55,5 +55,5 @@ export function prospectionFirstEmail(p: ProspectForEmail, replyTo: string | und
 
 export function prospectionFollowUpEmail(p: ProspectForEmail, replyTo: string | undefined = offer.supportEmail ?? undefined): EmailMessage {
   const input = prospectionEmailInput(p);
-  return build(p.email, prospectionContent.subjects.followUp(input.establishmentName), prospectionContent.followUp(input), input, replyTo);
+  return build(p.email, prospectionContent.subjects.followUp(input.establishmentName, p.bookingProvider && p.bookingProvider !== "autre" ? input.providerLabel : null), prospectionContent.followUp(input), input, replyTo);
 }

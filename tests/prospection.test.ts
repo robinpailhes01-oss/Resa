@@ -92,28 +92,28 @@ describe("prospection : calendrier et récap", () => {
     expect(text).toContain("inscrits : <b>2</b>");
   });
 
-  it("les textes d'email restent factuels : identité, raison du contact, désinscription", () => {
+  it("les textes d'email sont courts, factuels, avec le lien de désinscription", () => {
     const input = {
       establishmentName: "Barber Club",
       categoryPlural: "barbiers",
       providerLabel: "Planity",
       trialUrl: "https://www.reso-app.fr/?utm_source=prospection",
       unsubscribeUrl: "https://www.reso-app.fr/ne-plus-me-contacter?token=abc",
-      priceLabel: "39,00 € HT",
+      priceLabel: "39 € HT",
       trialDays: 7,
       senderName: "Robin Pailhes",
       brandName: "Reso",
       legalEntity: "SAS Harmonie Group, 61 rue du Rouet, 13008 Marseille, France",
     };
     const first = prospectionContent.first(input).join("\n");
-    expect(first).toContain("réservation via Planity");
-    expect(first).toContain("39,00 € HT par mois");
-    expect(first).toContain("7 jours d’essai gratuit");
-    expect(first).not.toMatch(/SMS/i);
-    const footer = prospectionContent.footer(input);
-    expect(footer).toContain("SAS Harmonie Group");
-    expect(footer).toContain("https://www.reso-app.fr/ne-plus-me-contacter?token=abc");
+    expect(first).toContain("Barber Club utilise Planity");
+    expect(first).toContain("39 € HT par mois");
+    expect(first).toContain("7 jours gratuits");
+    expect(first.length).toBeLessThan(520);
+    expect(first).not.toMatch(/SMS|Harmonie/i);
+    expect(prospectionContent.footer(input)).toBe("Ne plus recevoir d’emails : https://www.reso-app.fr/ne-plus-me-contacter?token=abc");
     expect(prospectionContent.subjects.withProvider("Barber Club", "Planity")).toBe("Une alternative à Planity pour Barber Club ?");
+    expect(prospectionContent.subjects.followUp("Barber Club", "Planity")).toBe("Re : Une alternative à Planity pour Barber Club ?");
   });
 });
 
