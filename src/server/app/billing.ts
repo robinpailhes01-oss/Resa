@@ -246,6 +246,39 @@ async function applyPaid(row: Row, now: Date, extra: { transactionCode: string |
   return paid;
 }
 
+/**
+ * Rattrapage : un paiement encaissé sans numéro de facture (paiement antérieur à la
+ * facturation, ou incident au moment de l'encaissement) reçoit son numéro et sa facture par email.
+ */
+async function issueMissingInvoices(now: Date): Promise<number> {
+  const sql = getSql();
+  const rows = await sql<Row[]>`
+    update payments set invoice_issued_at = coalesce(paid_at, ${now}),
+      invoice_number = ${invoiceNumber(0, now).replace(/\d{6}$/, "")} || lpad(nextval('invoice_number_seq')::text, 6, '0')
+    where status = 'paid' and invoice_number is null returning *`;
+  for (const paid of rows) {
+    const invoiceRow = await loadInvoiceRow(paid.id);
+    if (!invoiceRow || !paid.invoice_number) continue;
+    const est = await loadEstablishment(paid.establishment_id);
+    if (!est) continue;
+    await getEmailSender()
+      .send(
+        receiptEmail(est.owner_email, {
+          establishment: est.name,
+          amounts: amounts(),
+          periodStart: new Date(paid.period_start),
+          periodEnd: new Date(paid.period_end),
+          reference: paid.checkout_reference,
+          transactionCode: null,
+          invoiceNumber: paid.invoice_number,
+          attachment: { filename: invoiceFilename(paid.invoice_number), content: renderInvoicePdf(invoiceData(invoiceRow)) },
+        }),
+      )
+      .catch((error) => console.error("[billing] facture de rattrapage non envoyée", error instanceof Error ? error.message : error));
+  }
+  return rows.length;
+}
+
 /** Après un premier paiement Mollie : crée l'abonnement qui prélèvera automatiquement à partir de la fin de la période payée. */
 async function ensureMollieSubscription(establishmentId: string): Promise<void> {
   const est = await loadEstablishment(establishmentId);
@@ -362,10 +395,12 @@ export async function handleMolliePayment(paymentId: string, now = new Date()): 
  * Tâche quotidienne : vérification des paiements en attente, résiliations en
  * fin de période, relances (SumUp) et suspension après le délai de tolérance.
  */
-export async function runBillingCycle(now = new Date()): Promise<{ reminders: number; pastDue: number; cancelled: number; confirmed: number }> {
+export async function runBillingCycle(now = new Date()): Promise<{ reminders: number; pastDue: number; cancelled: number; confirmed: number; invoices: number }> {
   const sql = getSql();
-  const summary = { reminders: 0, pastDue: 0, cancelled: 0, confirmed: 0 };
+  const summary = { reminders: 0, pastDue: 0, cancelled: 0, confirmed: 0, invoices: 0 };
   const provider = billingProvider();
+
+  summary.invoices = await issueMissingInvoices(now);
 
   const pending = await sql<Array<{ checkout_reference: string }>>`select checkout_reference from payments where status = 'pending' and checkout_id is not null and created_at > ${new Date(now.getTime() - 3 * 24 * 3600_000)}`;
   for (const p of pending) {

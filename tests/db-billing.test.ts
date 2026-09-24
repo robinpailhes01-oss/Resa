@@ -132,6 +132,19 @@ describe.skipIf(!url)("abonnement Mollie", () => {
     mollieState.subscriptions.push({ id: "sub_1", status: "active", description: "Reso · abonnement Institut Mollie" });
   });
 
+  it("paiement encaissé sans numéro de facture → numéroté au cycle quotidien", async () => {
+    const billing = await import("@/server/app/billing");
+    const [row] = await sql`insert into payments (establishment_id, provider, checkout_reference, amount_cents, vat_cents, period_start, period_end, status, paid_at)
+      values (${establishmentId}, 'sumup', ${`reso-ancien-${Date.now()}`}, 4680, 780, '2026-08-01', '2026-09-01', 'paid', '2026-08-01T09:00:00Z') returning id`;
+    const summary = await billing.runBillingCycle(now);
+    expect(summary.invoices).toBe(1);
+    const [issued] = await sql`select invoice_number, invoice_issued_at from payments where id = ${row.id}`;
+    expect(issued.invoice_number).toMatch(/^RESO-\d{4}-\d{6}$/);
+    expect(new Date(issued.invoice_issued_at).toISOString()).toBe("2026-08-01T09:00:00.000Z");
+    expect((await billing.runBillingCycle(now)).invoices).toBe(0);
+    await sql`delete from payments where id = ${row.id}`;
+  });
+
   it("prélèvement automatique reçu par webhook → période prolongée d'un mois", async () => {
     const billing = await import("@/server/app/billing");
     mollieState.payments.set("tr_rec_1", { id: "tr_rec_1", status: "paid", amountCents: 4680, metadata: { establishmentId }, mandateId: "mdt_1", subscriptionId: "sub_1", customerId: "cst_test" });

@@ -144,7 +144,7 @@ Le récap du lundi est déclenché par un cron Vercel (`vercel.json`). Pour qu�
 
 Dans le tableau de bord Mollie, aucun réglage de webhook n’est nécessaire : l’URL est transmise à chaque paiement et abonnement.
 
-**Factures.** À chaque encaissement, une facture numérotée (RESO-AAAA-000001, numérotation continue) est générée en PDF avec les mentions obligatoires (émetteur, SIREN, TVA, client, période, HT, TVA, TTC, date et moyen de paiement), jointe à l’email envoyé au pro et téléchargeable dans Abonnement → Historique des paiements. Chaque paiement déclenche aussi une notification Telegram.
+**Factures.** À chaque encaissement, une facture numérotée (RESO-AAAA-000001, numérotation continue) est générée en PDF avec les mentions obligatoires (émetteur, SIREN, TVA, client, période, HT, TVA, TTC, date et moyen de paiement), jointe à l’email envoyé au pro et téléchargeable dans Abonnement → Historique des paiements. Chaque paiement déclenche aussi une notification Telegram. Un paiement encaissé sans numéro (antérieur à la facturation ou incident) est numéroté au cycle quotidien (`/api/internal/billing`, champ `invoices`) et la facture est alors envoyée.
 
 **SumUp, en secours** (utilisé seulement si `MOLLIE_API_KEY` est absente) :
 
