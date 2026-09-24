@@ -6,12 +6,15 @@ import { Card, PageHeader } from "@/components/app/PageHeader";
 import { getUserEstablishment, requireUser } from "@/server/auth/guards";
 import { createEstablishmentAction } from "@/server/app/actions/establishment";
 import { BUSINESS_TYPES } from "@/server/app/establishments";
+import { GoogleImport } from "@/components/app/GoogleImport";
+import { isGoogleImportEnabled } from "@/server/google/places";
 
 export const metadata: Metadata = { title: "Bienvenue" };
 
 export default async function BienvenuePage() {
   const user = await requireUser("/app/bienvenue");
   if (await getUserEstablishment(user.id)) redirect("/app/agenda");
+  const googleEnabled = isGoogleImportEnabled();
   return (
     <div className="mx-auto max-w-2xl">
       <PageHeader
@@ -25,6 +28,7 @@ export default async function BienvenuePage() {
           pendingLabel="Création…"
         >
           <>
+            {googleEnabled ? <GoogleImport /> : null}
             <TextInput
               id="name"
               name="name"

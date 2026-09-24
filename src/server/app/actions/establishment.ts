@@ -10,6 +10,8 @@ import { BUSINESS_TYPES, createEstablishment, updateEstablishment } from "../est
 import { replaceOpeningHours, type WeekInput } from "../hours";
 import { getNotificationSettings, updateNotificationSettings } from "../notifications";
 import { hhmmToMinutes } from "@/lib/time";
+import { parseHoursJson } from "@/lib/google-places";
+import { getSql } from "@/server/db";
 import { GENERIC_ERROR, bool, fieldErrors, int, optStr, str } from "./shared";
 
 const typeValues = BUSINESS_TYPES.map((t) => t.value) as [string, ...string[]];
@@ -43,8 +45,13 @@ export async function createEstablishmentAction(_prev: FormState, fd: FormData):
     publicEmail: fd.get("publicEmail") ?? "",
   });
   if (!parsed.success) return fieldErrors(parsed.error);
+  // Fiche Google importée : horaires et identifiant transmis par le formulaire (validés ici).
+  const googleHours = parseHoursJson(optStr(fd, "googleHours"));
+  const googlePlaceId = optStr(fd, "googlePlaceId")?.slice(0, 200) ?? null;
   try {
-    await createEstablishment(user.id, { ...parsed.data, businessType: parsed.data.businessType as (typeof BUSINESS_TYPES)[number]["value"], ownerName: user.fullName });
+    const establishment = await createEstablishment(user.id, { ...parsed.data, businessType: parsed.data.businessType as (typeof BUSINESS_TYPES)[number]["value"], ownerName: user.fullName });
+    if (googleHours) await replaceOpeningHours(establishment.id, null, { days: googleHours });
+    if (googlePlaceId) await getSql()`update establishments set google_place_id = ${googlePlaceId} where id = ${establishment.id}`;
   } catch (error) {
     console.error("[app] création établissement", error instanceof Error ? error.message : error);
     return { error: GENERIC_ERROR };

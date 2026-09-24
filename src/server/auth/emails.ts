@@ -37,14 +37,19 @@ export function passwordResetEmail(to: string, url: string): EmailMessage {
 }
 
 export function verifyEmailEmail(to: string, url: string): EmailMessage {
-  const subject = `Confirmez votre adresse email ${offer.brandName}`;
+  const brand = offer.brandName;
+  const trial = offer.trialDays ? `Votre essai gratuit de ${offer.trialDays} jours a commencé, sans carte bancaire. ` : "";
+  const subject = `Bienvenue sur ${brand} : votre compte est créé`;
+  const steps = ["Créez votre établissement et vos prestations.", "Ajoutez votre équipe et vos horaires.", "Partagez votre lien de réservation à vos clientes."];
   return {
     to,
     subject,
-    text: `Bonjour,\n\nBienvenue sur ${offer.brandName}. Confirmez votre adresse email : ${url}\n\nCe lien est valable 48 heures.\n\nL’équipe ${offer.brandName}`,
+    text: `Bonjour,\n\nBienvenue sur ${brand}, votre compte est bien créé. ${trial}\n\nPour commencer :\n${steps.map((s, i) => `${i + 1}. ${s}`).join("\n")}\n\nConfirmez votre adresse email : ${url}\n\nCe lien est valable 48 heures.\n\nL’équipe ${brand}`,
     html: shell(subject, [
       p("Bonjour,"),
-      p(`Bienvenue sur ${esc(offer.brandName)}. Confirmez votre adresse email pour sécuriser votre compte.`),
+      p(`Bienvenue sur ${esc(brand)}, votre compte est bien créé. ${esc(trial)}`),
+      p(`Pour commencer : ${steps.map((s, i) => `<br>${i + 1}. ${esc(s)}`).join("")}`),
+      p("Confirmez votre adresse email pour sécuriser votre compte."),
       button(url, "Confirmer mon adresse"),
       small("Ce lien est valable 48 heures."),
     ].join("")),

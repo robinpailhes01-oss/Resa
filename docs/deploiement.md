@@ -104,3 +104,20 @@ Ne changez pas les serveurs de noms : vos emails (boîte Hostinger et Resend) d�
 4. Mettez `RESO_SITE_URL` à `https://reso-app.fr` et `RESO_INDEXABLE` à `true`, puis redéployez.
 
 Pour vérifier : `https://reso-app.fr` doit afficher Reso, et `https://www.reso-app.fr` rediriger vers `https://reso-app.fr`.
+
+## 7. Import de la fiche Google à l’inscription (facultatif)
+
+À la création de son établissement, le pro peut chercher sa fiche Google : nom, adresse, téléphone, activité et horaires d’ouverture sont préremplis. Le bloc n’apparaît que si une clé Google est configurée.
+
+1. https://console.cloud.google.com → créez un projet (ex. `reso`) et activez la facturation (obligatoire chez Google, mais les 5 000 premières recherches du mois sont gratuites ; au-delà, environ 0,03 € la recherche).
+2. **APIs et services → Bibliothèque** → activez **Places API (New)** (bien la version « New »).
+3. **Identifiants → Créer des identifiants → Clé API**. Sur la clé : **Restrictions relatives aux API → Places API (New)** uniquement. Pas de restriction de site web (la clé est utilisée par le serveur, jamais par le navigateur).
+4. Vercel → Environment Variables → `GOOGLE_PLACES_API_KEY` = la clé → Redeploy.
+
+Sans cette variable, le formulaire d’onboarding reste identique à aujourd’hui.
+
+## 8. Après le rattachement du domaine
+
+Vercel a choisi `www.reso-app.fr` comme adresse principale et redirige `reso-app.fr` vers elle. Pour que les liens des emails et les liens de réservation utilisent directement la bonne adresse, mettez `RESO_SITE_URL=https://www.reso-app.fr` (ou, si vous préférez l’adresse sans www : Vercel → Settings → Domains → sur `reso-app.fr`, choisissez-la comme principale et faites rediriger `www`, puis gardez `RESO_SITE_URL=https://reso-app.fr`).
+
+Une page ouverte avant un redéploiement peut afficher « This page couldn’t load » au clic suivant : c’est le navigateur qui parle encore à l’ancienne version. Un simple rechargement suffit.

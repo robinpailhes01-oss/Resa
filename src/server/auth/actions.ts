@@ -65,7 +65,9 @@ export async function signUp(_prev: AuthState, formData: FormData): Promise<Auth
     console.error("[auth] inscription échouée", error instanceof Error ? error.message : error);
     return { error: GENERIC_ERROR };
   }
-  await sendVerificationEmail(userId, email).catch(() => undefined);
+  await sendVerificationEmail(userId, email).catch((error) => {
+    console.error("[auth] email de bienvenue non envoyé", error instanceof Error ? error.message : error);
+  });
   await createSession(userId);
   redirect("/app/bienvenue");
 }
@@ -181,7 +183,9 @@ export async function resendVerification(): Promise<void> {
   const user = await getCurrentUser();
   if (!user || user.emailVerifiedAt) return;
   if (!getRateLimiters().auth.hit(`verify:${user.id}`)) return;
-  await sendVerificationEmail(user.id, user.email).catch(() => undefined);
+  await sendVerificationEmail(user.id, user.email).catch((error) => {
+    console.error("[auth] email de vérification non envoyé", error instanceof Error ? error.message : error);
+  });
 }
 
 /** Changement de mot de passe depuis les paramètres : mot de passe actuel requis, autres sessions révoquées. */

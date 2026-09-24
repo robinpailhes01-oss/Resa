@@ -27,3 +27,18 @@ export const accessNotice = {
     text: "Le paiement en ligne n’est pas encore activé : nous vous préviendrons par email avant toute mise en place de la facturation.",
   },
 };
+
+/** Bloc d'import de la fiche Google à l'onboarding. */
+export const googleImport = {
+  title: "Gagnez du temps : importez votre fiche Google",
+  intro: "Nom, adresse, téléphone, activité et horaires d’ouverture sont récupérés depuis votre fiche Google. Vous pourrez tout ajuster ensuite.",
+  label: "Nom de votre établissement et ville",
+  placeholder: "Ex. Maison Alba Montpellier",
+  button: "Rechercher",
+  searching: "Recherche…",
+  resultsLabel: "Fiches trouvées",
+  empty: "Aucune fiche trouvée. Essayez avec le nom exact et la ville, ou remplissez le formulaire à la main.",
+  applied: "Fiche importée :",
+  hoursImported: "horaires d’ouverture récupérés",
+  remove: "Retirer",
+};

@@ -105,6 +105,8 @@ Renseigner `DATABASE_URL` (pooler en mode transaction accepté : `prepare: false
 
 Déploiement Vercel, variables minimales : `DATABASE_URL` (Supabase → Connect → Transaction pooler, port 6543) ou, plus simple, l'intégration Supabase du marketplace Vercel qui injecte `POSTGRES_URL` (acceptée telle quelle) ; `RESO_SITE_URL` (`https://votre-domaine`) ; `INTERNAL_TASKS_SECRET` (chaîne aléatoire) ; `RESO_LAUNCH_MODE=live` pour ouvrir les inscriptions ; `RESO_SUPPORT_EMAIL` (adresse affichée pour activer l'abonnement). Sans `RESEND_API_KEY` + `EMAIL_FROM`, l'application fonctionne mais aucun email ne part (inscription et réservations restent possibles). Guide pas à pas : `docs/deploiement.md`.
 
+Import de la fiche Google : avec `GOOGLE_PLACES_API_KEY` (Places API New), l'onboarding propose de rechercher la fiche de l'établissement et préremplit nom, adresse, téléphone, activité et horaires (`src/lib/google-places.ts`, `src/server/google/places.ts`, `src/components/app/GoogleImport.tsx`). Sans clé, le bloc n'est pas affiché.
+
 Essai gratuit : chaque établissement dispose de `RESO_TRIAL_DAYS` jours (7 par défaut) à partir de sa création (`establishments.trial_ends_at`, `subscription_status`). À l'échéance, sa page de réservation en ligne est suspendue et un bandeau l'invite à activer l'abonnement ; l'activation se fait en base (`subscription_status = 'active'`) tant que le paiement en ligne n'est pas branché. Règles dans `src/lib/trial.ts`.
 
 Extensions requises : `citext` et `btree_gist` (créées par la migration ; disponibles sur Supabase, Neon et PostgreSQL standard). Le RLS est activé sur toutes les tables : l'application accède à la base avec un rôle propriétaire (ou `bypassrls`), jamais depuis le navigateur.
