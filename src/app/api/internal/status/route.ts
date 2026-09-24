@@ -6,6 +6,7 @@ import { isGoogleImportEnabled } from "@/server/google/places";
 import { isSumUpConfigured } from "@/server/sumup";
 import { isMollieConfigured, isMollieTestMode, listRecurringMethods } from "@/server/mollie";
 import { isTelegramConfigured } from "@/server/telegram";
+import { isProspectionEnabled, prospectionSettings } from "@/config/prospection";
 
 export const runtime = "nodejs";
 
@@ -37,6 +38,9 @@ export async function GET(request: Request) {
     googlePlaces: isGoogleImportEnabled() ? "configuré" : "absent (GOOGLE_PLACES_API_KEY)",
     telegram: isTelegramConfigured() ? "configuré" : "absent (TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID)",
     cronSecret: process.env.CRON_SECRET?.trim() ? "présent" : "absent",
+    prospection: isProspectionEnabled()
+      ? `active (${prospectionSettings().searchesPerDay} recherches/jour, ${prospectionSettings().dailyEmailLimit} emails/jour ouvré)`
+      : "désactivée (PROSPECTION_ENABLED=1 pour envoyer ; simulation possible avec /api/internal/prospection?dry=1)",
     legal: { entity: offer.legalEntity, siren: offer.legalId ?? "absent (RESO_LEGAL_ID)", vatRate: offer.vatRate, vatNumber: offer.vatNumber ?? "absent" },
   });
 }

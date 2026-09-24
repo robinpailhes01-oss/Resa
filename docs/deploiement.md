@@ -136,7 +136,7 @@ Vous recevez un message Telegram à chaque inscription, chaque établissement cr
 4. Vercel → Environment Variables → `TELEGRAM_BOT_TOKEN` et `TELEGRAM_CHAT_ID` → Redeploy.
 5. Test : ouvrez `https://www.reso-app.fr/api/internal/telegram-test` avec l’en-tête `Authorization: Bearer <INTERNAL_TASKS_SECRET>` (ou demandez-moi de le faire) : vous recevez « les notifications Telegram fonctionnent ».
 
-Le récap du lundi est déclenché par un cron Vercel (`vercel.json`). Pour qu’il soit autorisé, ajoutez sur Vercel la variable `CRON_SECRET` avec la même valeur que `INTERNAL_TASKS_SECRET`. Pour le recevoir tout de suite : `https://www.reso-app.fr/api/internal/weekly-report` avec le même en-tête.
+Le récap du lundi est envoyé par la tâche quotidienne (`/api/internal/daily`, cron Vercel de `vercel.json`, 8 h Paris, qui enchaîne facturation, prospection et, le lundi, ce récap). Pour qu’il soit autorisé, ajoutez sur Vercel la variable `CRON_SECRET` avec la même valeur que `INTERNAL_TASKS_SECRET`. Pour le recevoir tout de suite : `https://www.reso-app.fr/api/internal/weekly-report` avec le même en-tête.
 
 ## 10. Abonnement payant : Mollie (prélèvement automatique) ou SumUp
 
@@ -161,3 +161,20 @@ Pour lancer le cycle à la main : `https://www.reso-app.fr/api/internal/billing`
 ## 11. Pages légales
 
 Mentions légales, CGV et confidentialité lisent la configuration : `RESO_LEGAL_ENTITY` (raison sociale et adresse ; par défaut SAS Harmonie Group, 61 rue du Rouet, 13008 Marseille), `RESO_LEGAL_ID` (SIREN), `RESO_VAT_NUMBER`, `RESO_PUBLICATION_DIRECTOR` (par défaut Robin Pailhes), `RESO_HOSTING_PROVIDER` (par défaut Vercel Inc.). Renseignez au minimum `RESO_LEGAL_ID`.
+
+## 12. Prospection sortante (Planity et autres)
+
+Chaque jour, la tâche quotidienne (`/api/internal/daily`, cron Vercel 8 h Paris) :
+
+1. **Cherche** sur Google Places quelques couples catégorie × ville (`src/config/prospection.ts` : salons de coiffure, barbiers, instituts, ongleries ; villes de Marseille à Paris, en rotation). Chaque recherche renvoie jusqu’à 20 établissements ; 4 recherches par jour restent dans le quota gratuit de l’API.
+2. **Analyse** les nouveaux établissements : si la fiche pointe directement vers Planity, Treatwell, Kiute… l’outil est noté (pas d’email possible) ; si elle pointe vers un site propre, la page d’accueil puis la page contact sont lues pour trouver un email public et repérer un module Planity ou concurrent.
+3. **Écrit** aux établissements ayant un email, jours ouvrés seulement, 20 par jour maximum, les utilisateurs de Planity d’abord : un premier email signé Robin (objet « Une alternative à Planity pour … ? »), puis une relance unique 5 jours plus tard. Réponse directe à `RESO_SUPPORT_EMAIL`. Chaque email porte l’identité de l’éditeur, la raison du contact et un lien « Ne plus me contacter » (`/ne-plus-me-contacter`) : l’adresse rejoint alors une liste d’exclusion durable. Un prospect qui crée un compte n’est plus relancé.
+4. **Prévient** sur Telegram (recherches, nouveaux, emails trouvés, envoyés) et alimente le récap du lundi.
+
+Pas de scraping de Planity : les données viennent de Google et des sites des établissements eux-mêmes. Prospection B2B vers des adresses professionnelles publiques, avec opposition en un clic : c’est le cadre admis par la CNIL pour les professionnels.
+
+**Activation.** `PROSPECTION_ENABLED=1` sur Vercel (puis redeploy). Réglages facultatifs : `PROSPECTION_SEARCHES_PER_DAY` (4), `PROSPECTION_DAILY_LIMIT` (20), `PROSPECTION_FOLLOW_UP_DAYS` (5), `PROSPECTION_ENRICH_PER_RUN` (40). Avant d’activer, une simulation complète (recherche, analyse, aucun envoi) : `https://www.reso-app.fr/api/internal/prospection?dry=1` avec l’en-tête `Authorization: Bearer <INTERNAL_TASKS_SECRET>`.
+
+**Suivi.** Export tableur de tous les prospects (statut, email, téléphone, outil détecté) : `https://www.reso-app.fr/api/internal/prospection/export?token=<INTERNAL_TASKS_SECRET>` (à ouvrir dans un navigateur). Les établissements sans email mais avec téléphone y figurent : à appeler ou à contacter sur Instagram.
+
+**Réputation email.** Les emails partent de `EMAIL_FROM`. Pour protéger les emails de rendez-vous des clients, mieux vaut à terme un sous-domaine dédié (ex. `Robin de Reso <robin@hello.reso-app.fr>`) vérifié dans Resend : il suffira alors de changer `EMAIL_FROM`… ou de garder l’adresse actuelle tant que le volume reste à 20 par jour.

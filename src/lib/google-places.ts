@@ -88,8 +88,8 @@ export function parsePhotoNames(raw: string | null | undefined): string[] {
   }
 }
 
-export function buildTextSearchBody(query: string): Record<string, unknown> {
-  return { textQuery: query, languageCode: "fr", regionCode: "FR", maxResultCount: 5 };
+export function buildTextSearchBody(query: string, maxResultCount = 5): Record<string, unknown> {
+  return { textQuery: query, languageCode: "fr", regionCode: "FR", maxResultCount: Math.min(Math.max(maxResultCount, 1), 20) };
 }
 
 type Component = { longText?: string; shortText?: string; types?: string[] };

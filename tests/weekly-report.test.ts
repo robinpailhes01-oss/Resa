@@ -17,10 +17,12 @@ describe("formatWeeklyReport", () => {
       trialsEndingSoon: 2,
       trialsExpired: 0,
       totalEstablishments: 5,
+      prospection: { contacted: 40, followedUp: 12, signedUp: 3, total: 300 },
     });
     expect(text).toContain("Nouveaux comptes : <b>3</b>");
     expect(text).toContain("<b>14</b> (10 en ligne, 4 à la main) · 1 annulation");
     expect(text).toContain("2 établissements à recontacter");
     expect(text).toContain("17 septembre → 24 septembre");
+    expect(text).toContain("Prospection : 40 emails envoyés, 12 relances · inscrits via prospection : <b>3</b>");
   });
 });

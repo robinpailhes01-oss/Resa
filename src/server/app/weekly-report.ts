@@ -1,6 +1,7 @@
 import "server-only";
 import { getSql } from "@/server/db";
 import type { WeeklyStats } from "@/lib/weekly-report";
+import { prospectionWeeklyStats } from "@/server/prospection";
 
 /** Agrégats des 7 derniers jours pour le récapitulatif Telegram. */
 export async function collectWeeklyStats(now = new Date()): Promise<WeeklyStats> {
@@ -48,5 +49,6 @@ export async function collectWeeklyStats(now = new Date()): Promise<WeeklyStats>
     trialsEndingSoon: row.trials_ending_soon,
     trialsExpired: row.trials_expired,
     totalEstablishments: row.total_establishments,
+    prospection: await prospectionWeeklyStats(from).catch(() => undefined),
   };
 }

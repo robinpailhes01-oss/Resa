@@ -60,10 +60,10 @@ export async function findPlaces(query: string, fetchImpl: typeof fetch = fetch)
 }
 
 /** Recherche textuelle (Places API New). Une requête = un appel facturé au SKU « Text Search Pro ». */
-export async function searchPlaces(query: string, bias?: { lat: number; lng: number }, fetchImpl: typeof fetch = fetch): Promise<GooglePlaceCandidate[]> {
+export async function searchPlaces(query: string, bias?: { lat: number; lng: number }, fetchImpl: typeof fetch = fetch, maxResults = 5): Promise<GooglePlaceCandidate[]> {
   const key = process.env.GOOGLE_PLACES_API_KEY?.trim();
   if (!key) throw new GooglePlacesError("GOOGLE_PLACES_API_KEY manquante.");
-  const body: Record<string, unknown> = buildTextSearchBody(query);
+  const body: Record<string, unknown> = buildTextSearchBody(query, maxResults);
   if (bias) body.locationBias = { circle: { center: { latitude: bias.lat, longitude: bias.lng }, radius: 500 } };
   const response = await fetchImpl("https://places.googleapis.com/v1/places:searchText", {
     method: "POST",

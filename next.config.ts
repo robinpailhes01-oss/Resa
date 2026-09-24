@@ -34,7 +34,7 @@ const nextConfig: NextConfig = {
       { source: "/(.*)", headers: securityHeaders },
       // Pages contenant un jeton : jamais de referrer sortant, jamais en cache.
       {
-        source: "/(confirmer-inscription|desinscription)",
+        source: "/(confirmer-inscription|desinscription|ne-plus-me-contacter)",
         headers: [
           { key: "Referrer-Policy", value: "no-referrer" },
           { key: "Cache-Control", value: "no-store" },

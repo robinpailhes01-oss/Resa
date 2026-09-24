@@ -132,3 +132,7 @@ Voir `docs/recette.md` pour l'état des critères F01 à F15 de la landing et le
 ## Décisions à obtenir avant publication publique
 
 Domaine et marque vérifiés · identité légale, hébergeur et contact · prix et conditions confirmés · infrastructure base + email choisie · durées de conservation validées · relecture des contenus.
+
+## Prospection sortante
+
+Recherche quotidienne d’établissements (Google Places), détection de l’outil de réservation (Planity…), email B2B avec désinscription en un clic, relance unique, récap Telegram. Détails et activation : `docs/deploiement.md`, partie 12.

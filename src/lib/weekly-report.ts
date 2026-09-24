@@ -14,6 +14,8 @@ export interface WeeklyStats {
   trialsEndingSoon: number;
   trialsExpired: number;
   totalEstablishments: number;
+  /** Prospection sortante (absent si la table n'existe pas encore). */
+  prospection?: { contacted: number; followedUp: number; signedUp: number; total: number };
 }
 
 const escape = (v: string) => v.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c] ?? c);
@@ -35,6 +37,7 @@ export function formatWeeklyReport(s: WeeklyStats): string {
     `⏳ Essais en cours : ${s.trialsActive} · se terminent sous 7 jours : <b>${s.trialsEndingSoon}</b> · terminés sans abonnement : ${s.trialsExpired}`,
     `💬 Retours reçus : ${s.feedbackCount}`,
   ];
+  if (s.prospection) lines.push(`🎯 Prospection : ${plural(s.prospection.contacted, "email envoyé", "emails envoyés")}, ${plural(s.prospection.followedUp, "relance")} · inscrits via prospection : <b>${s.prospection.signedUp}</b> · base : ${s.prospection.total}`);
   if (s.trialsEndingSoon > 0) lines.push("", `👉 ${plural(s.trialsEndingSoon, "établissement")} à recontacter avant la fin de l’essai.`);
   return lines.join("\n");
 }
