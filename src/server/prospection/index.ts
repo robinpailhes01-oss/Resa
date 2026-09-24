@@ -17,7 +17,8 @@ import {
 import { getSql } from "@/server/db";
 import { getEmailSender } from "@/server/email";
 import { isGoogleImportEnabled, searchPlaces } from "@/server/google/places";
-import { notifyTelegram } from "@/server/telegram";
+import { escapeHtml, notifyTelegram } from "@/server/telegram";
+import type { ReceivedEmail } from "@/server/resend-inbound";
 import { prospectionFirstEmail, prospectionFollowUpEmail, type ProspectForEmail } from "./emails";
 
 type ProspectRow = {
@@ -37,6 +38,8 @@ type ProspectRow = {
   email: string | null;
   email_source: string | null;
   status: string;
+  replied_at: Date | null;
+  last_reply: string | null;
   unsubscribe_token: string;
   enriched_at: Date | null;
   first_email_at: Date | null;
@@ -291,4 +294,44 @@ export async function prospectionWeeklyStats(from: Date): Promise<{ contacted: n
       count(*)::int as total
     from prospects`;
   return { contacted: row.contacted, followedUp: row.followed_up, signedUp: row.signed_up, total: row.total };
+}
+
+/** Adresse de réponse des emails de prospection : boîte reçue par Resend si configurée, sinon l'adresse de contact. */
+export function prospectionReplyTo(): string | undefined {
+  return process.env.PROSPECTION_REPLY_TO?.trim() || offer.supportEmail || undefined;
+}
+
+/**
+ * Réponse reçue d'un prospect : statut « a répondu » (plus de relance), notification
+ * Telegram avec l'extrait, et transfert à l'adresse de contact pour y répondre.
+ */
+export async function recordProspectReply(email: ReceivedEmail, now = new Date()): Promise<{ prospect: string | null; forwarded: boolean }> {
+  const sql = getSql();
+  const excerpt = email.text.slice(0, 1500);
+  const [prospect] = await sql<Array<{ id: string; name: string; city: string }>>`
+    update prospects set status = 'repondu', replied_at = ${now}, last_reply = ${excerpt}, updated_at = ${now}
+    where email = ${email.fromAddress} and status in ('a_contacter','contacte','relance','repondu') returning id, name, city`;
+  const who = prospect ? `${prospect.name} (${prospect.city})` : email.from;
+  await notifyTelegram(
+    `📩 <b>Réponse d’un prospect</b>\n${escapeHtml(who)} · ${escapeHtml(email.fromAddress)}\n<b>${escapeHtml(email.subject)}</b>\n« ${escapeHtml(excerpt.slice(0, 700))} »\n\nRépondez depuis ${escapeHtml(offer.supportEmail ?? "votre boîte de contact")} : l’email complet vous y a été transféré.`,
+  );
+  let forwarded = false;
+  if (offer.supportEmail) {
+    const subject = `[Prospection] ${email.subject}`;
+    const text = `Réponse de ${email.from}${prospect ? ` — prospect : ${prospect.name}, ${prospect.city}` : ""}\n\n${email.text}`;
+    await getEmailSender()
+      .send({ to: offer.supportEmail, subject, text, html: `<pre style="font-family:inherit;white-space:pre-wrap">${escapeHtml(text)}</pre>`, replyTo: email.fromAddress, fromName: "Reso · prospection" })
+      .then(() => {
+        forwarded = true;
+      })
+      .catch((error) => console.error("[prospection] transfert de la réponse impossible", error instanceof Error ? error.message : error));
+  }
+  return { prospect: prospect?.name ?? null, forwarded };
+}
+
+/** À l'inscription : si l'adresse est celle d'un prospect, il passe « inscrit » ; renvoie son nom pour la notification. */
+export async function matchProspectSignup(email: string, now = new Date()): Promise<string | null> {
+  const [row] = await getSql()<Array<{ name: string; city: string }>>`
+    update prospects set status = 'inscrit', updated_at = ${now} where email = ${email} and status <> 'inscrit' returning name, city`;
+  return row ? `${row.name} (${row.city})` : null;
 }

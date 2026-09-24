@@ -116,6 +116,17 @@ describe.skipIf(!url)("prospection en base", () => {
     expect(csv.startsWith("﻿\"Nom\";")).toBe(true);
     expect(csv).toContain('"Barber Test Planity";"barbier";"Marseille"');
 
+    // Réponse du barbier reçue via Resend : statut « a répondu », transfert à l'adresse de contact.
+    const reply = await prospection.recordProspectReply({ id: "em_1", from: "Barber <contact@barber-test-planity.example>", fromAddress: "contact@barber-test-planity.example", to: ["robin@reply.example"], subject: "Re : Une alternative", text: "Oui, intéressé, rappelez-moi." }, later);
+    expect(reply.prospect).toBe("Barber Test Planity");
+    const [replied] = await sql<Array<{ status: string; last_reply: string }>>`select status, last_reply from prospects where google_place_id = ${places.planitySite.placeId}`;
+    expect(replied).toMatchObject({ status: "repondu", last_reply: "Oui, intéressé, rappelez-moi." });
+    const forwarded = sender.sent.find((m) => m.subject === "[Prospection] Re : Une alternative");
+    expect(forwarded?.replyTo).toBe("contact@barber-test-planity.example");
+    // Inscription d'un prospect : marqué inscrit, nom renvoyé pour la notification.
+    expect(await prospection.matchProspectSignup("contact@barber-test-planity.example")).toBe("Barber Test Planity (Marseille)");
+    expect(await prospection.matchProspectSignup("inconnu@nulle-part.example")).toBeNull();
+
     // Récap hebdo : 2 emails, 1 relance sur la période.
     const stats = await prospection.prospectionWeeklyStats(new Date("2026-09-27T00:00:00Z"));
     expect(stats).toMatchObject({ contacted: 2, followedUp: 1 });

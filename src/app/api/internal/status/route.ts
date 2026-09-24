@@ -7,6 +7,7 @@ import { isSumUpConfigured } from "@/server/sumup";
 import { isMollieConfigured, isMollieTestMode, listRecurringMethods } from "@/server/mollie";
 import { isTelegramConfigured } from "@/server/telegram";
 import { isProspectionEnabled, prospectionSettings } from "@/config/prospection";
+import { isResendInboundConfigured } from "@/server/resend-inbound";
 
 export const runtime = "nodejs";
 
@@ -41,6 +42,9 @@ export async function GET(request: Request) {
     prospection: isProspectionEnabled()
       ? `active (${prospectionSettings().searchesPerDay} recherches/jour, ${prospectionSettings().dailyEmailLimit} emails/jour ouvré)`
       : "désactivée (PROSPECTION_ENABLED=1 pour envoyer ; simulation possible avec /api/internal/prospection?dry=1)",
+    prospectionReplies: isResendInboundConfigured()
+      ? `réponses reçues par Resend sur ${process.env.PROSPECTION_REPLY_TO?.trim() || "(PROSPECTION_REPLY_TO manquante)"}`
+      : `réponses lues dans votre boîte ${offer.supportEmail ?? ""} (notification Telegram : PROSPECTION_REPLY_TO + RESEND_WEBHOOK_SECRET, voir docs partie 12)`,
     legal: { entity: offer.legalEntity, siren: offer.legalId ?? "absent (RESO_LEGAL_ID)", vatRate: offer.vatRate, vatNumber: offer.vatNumber ?? "absent" },
   });
 }

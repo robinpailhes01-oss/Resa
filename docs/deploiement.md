@@ -177,4 +177,12 @@ Pas de scraping de Planity : les données viennent de Google et des sites des é
 
 **Suivi.** Export tableur de tous les prospects (statut, email, téléphone, outil détecté) : `https://www.reso-app.fr/api/internal/prospection/export?token=<INTERNAL_TASKS_SECRET>` (à ouvrir dans un navigateur). Les établissements sans email mais avec téléphone y figurent : à appeler ou à contacter sur Instagram.
 
+**Être prévenu des réponses (Telegram).** Les prospects répondent à l’adresse `Reply-To` des emails. Par défaut c’est `RESO_SUPPORT_EMAIL` : les réponses arrivent dans votre boîte habituelle, sans notification. Pour recevoir chaque réponse sur Telegram (avec l’extrait) et la voir transférée dans votre boîte :
+
+1. Dans Resend → Domains, ajoutez un sous-domaine dédié aux réponses, par exemple `reply.reso-app.fr`, activez la **réception** (« Receiving ») et créez chez votre registrar l’enregistrement **MX** que Resend indique pour ce sous-domaine (rien ne change pour `contact@reso-app.fr`).
+2. Dans Resend → Webhooks, ajoutez `https://www.reso-app.fr/api/webhooks/resend` avec l’événement `email.received`, puis copiez le **signing secret** (`whsec_…`).
+3. Sur Vercel : `PROSPECTION_REPLY_TO=robin@reply.reso-app.fr` (n’importe quelle adresse du sous-domaine) et `RESEND_WEBHOOK_SECRET=whsec_…`, puis redeploy.
+
+Dès lors, chaque réponse déclenche une notification Telegram « Réponse d’un prospect », marque le prospect « a répondu » (fin des relances) et l’email complet est transféré à `RESO_SUPPORT_EMAIL` avec le prospect en `Reply-To` : vous répondez depuis votre boîte. Une inscription venant d’un prospect contacté est aussi signalée (« via prospection »).
+
 **Réputation email.** Les emails partent de `EMAIL_FROM`. Pour protéger les emails de rendez-vous des clients, mieux vaut à terme un sous-domaine dédié (ex. `Robin de Reso <robin@hello.reso-app.fr>`) vérifié dans Resend : il suffira alors de changer `EMAIL_FROM`… ou de garder l’adresse actuelle tant que le volume reste à 20 par jour.

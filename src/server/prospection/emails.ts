@@ -40,7 +40,7 @@ function build(to: string, subject: string, paragraphs: string[], input: Prospec
   const html = `<!doctype html><html lang="fr"><body style="margin:0;padding:24px 16px;background:#ffffff;font-family:Inter,Arial,sans-serif;color:#111116;font-size:15px;line-height:24px"><div style="max-width:560px;margin:0 auto">${paragraphs
     .map((p) => `<p style="margin:0 0 16px">${linkify(p).replace(/\n/g, "<br>")}</p>`)
     .join("")}<p style="margin:28px 0 0;font-size:12px;line-height:18px;color:#6f707c">${linkify(footer)}</p></div></body></html>`;
-  return { to, subject, text, html, fromName: prospectionContent.fromName, replyTo: offer.supportEmail ?? undefined };
+  return { to, subject, text, html, fromName: prospectionContent.fromName, replyTo: process.env.PROSPECTION_REPLY_TO?.trim() || offer.supportEmail || undefined };
 }
 
 export function prospectionFirstEmail(p: ProspectForEmail): EmailMessage {

@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 import { prospectionCategories, prospectionCities, prospectionSettings } from "@/config/prospection";
 import { detectBookingProvider, extractEmails, findContactLinks, formatProspectionReport, isBookingPlatformUrl, isBusinessDayParis, pickBestEmail, planQueries } from "@/lib/prospection";
 import { prospectionContent } from "@/content/fr/prospection";
+import { createHmac } from "node:crypto";
+import { bareAddress, readableText, verifyResendSignature } from "@/server/resend-inbound";
 
 describe("prospection : rotation des recherches", () => {
   it("avance chaque jour et couvre toutes les combinaisons avant de recommencer", () => {
@@ -106,5 +108,28 @@ describe("prospection : calendrier et récap", () => {
     expect(footer).toContain("SAS Harmonie Group");
     expect(footer).toContain("https://www.reso-app.fr/ne-plus-me-contacter?token=abc");
     expect(prospectionContent.subjects.withProvider("Barber Club", "Planity")).toBe("Une alternative à Planity pour Barber Club ?");
+  });
+});
+
+describe("réponses reçues via Resend", () => {
+  it("vérifie la signature Svix et rejette les corps altérés ou anciens", () => {
+    const secret = `whsec_${Buffer.from("secret-de-test-0123456789").toString("base64")}`;
+    const body = JSON.stringify({ type: "email.received", data: { email_id: "abc" } });
+    const now = 1_790_000_000_000;
+    const timestamp = String(Math.floor(now / 1000));
+    const sig = createHmac("sha256", Buffer.from("secret-de-test-0123456789")).update(`msg_1.${timestamp}.${body}`).digest("base64");
+    const headers = { id: "msg_1", timestamp, signature: `v1,${sig}` };
+    expect(verifyResendSignature(body, headers, secret, now)).toBe(true);
+    expect(verifyResendSignature(body, { ...headers, signature: `v1,${sig} v1,autre` }, secret, now)).toBe(true);
+    expect(verifyResendSignature(body + " ", headers, secret, now)).toBe(false);
+    expect(verifyResendSignature(body, headers, secret, now + 10 * 60_000)).toBe(false);
+    expect(verifyResendSignature(body, { ...headers, signature: null }, secret, now)).toBe(false);
+  });
+
+  it("extrait l'adresse et un texte lisible", () => {
+    expect(bareAddress("Salon Test <Contact@Salon-Test.fr>")).toBe("contact@salon-test.fr");
+    expect(bareAddress("contact@salon-test.fr")).toBe("contact@salon-test.fr");
+    expect(readableText(null, "<p>Bonjour,</p><p>Oui &amp; merci</p><style>p{}</style>")).toBe("Bonjour,\n Oui & merci");
+    expect(readableText("  Texte direct ", "<p>ignoré</p>")).toBe("Texte direct");
   });
 });
