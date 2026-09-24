@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { isAuthorizedInternal } from "@/server/http";
-import { runBillingCycle } from "@/server/app/billing";
+import { recentPayments, runBillingCycle } from "@/server/app/billing";
 
 export const runtime = "nodejs";
 
@@ -9,7 +9,8 @@ export async function GET(request: Request) {
   if (!isAuthorizedInternal(request)) return NextResponse.json({ status: "forbidden" }, { status: 403 });
   try {
     const summary = await runBillingCycle();
-    return NextResponse.json({ status: "ok", ...summary });
+    const payments = await recentPayments(10);
+    return NextResponse.json({ status: "ok", ...summary, payments });
   } catch (error) {
     console.error("[billing] cycle", error instanceof Error ? error.message : error);
     return NextResponse.json({ status: "error" }, { status: 500 });

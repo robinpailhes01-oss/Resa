@@ -121,7 +121,8 @@ export async function confirmPayment(lookup: { reference?: string; checkoutId?: 
       await getEmailSender()
         .send(receiptEmail(est.owner_email, { establishment: est.name, amounts: a, periodStart: new Date(paid.period_start), periodEnd: new Date(paid.period_end), reference: paid.checkout_reference, transactionCode: state.transactionCode }))
         .catch((error) => console.error("[billing] reçu non envoyé", error instanceof Error ? error.message : error));
-      void notifyTelegram(telegramEvents.payment({ establishment: est.name, amountLabel: formatEuros(a.totalCents) }));
+      // Attendu explicitement : en serverless, un envoi non attendu est interrompu à la fin de la requête.
+      await notifyTelegram(telegramEvents.payment({ establishment: est.name, amountLabel: formatEuros(a.totalCents) }));
     }
     return map(paid);
   }
@@ -187,4 +188,12 @@ export async function runBillingCycle(now = new Date()): Promise<{ reminders: nu
 
 export async function setCancelAtPeriodEnd(establishmentId: string, value: boolean): Promise<void> {
   await getSql()`update establishments set cancel_at_period_end = ${value} where id = ${establishmentId}`;
+}
+
+/** Diagnostic : derniers paiements (sans données personnelles). */
+export async function recentPayments(limit = 10): Promise<Array<{ establishment: string; status: string; amountCents: number; createdAt: Date; paidAt: Date | null; reference: string; subscriptionStatus: string; paidUntil: Date | null }>> {
+  const rows = await getSql()<Array<{ establishment: string; status: string; amount_cents: number; created_at: Date; paid_at: Date | null; checkout_reference: string; subscription_status: string; paid_until: Date | null }>>`
+    select e.name as establishment, p.status, p.amount_cents, p.created_at, p.paid_at, p.checkout_reference, e.subscription_status, e.paid_until
+    from payments p join establishments e on e.id = p.establishment_id order by p.created_at desc limit ${limit}`;
+  return rows.map((r) => ({ establishment: r.establishment, status: r.status, amountCents: r.amount_cents, createdAt: r.created_at, paidAt: r.paid_at, reference: r.checkout_reference, subscriptionStatus: r.subscription_status, paidUntil: r.paid_until }));
 }
