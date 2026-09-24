@@ -109,6 +109,8 @@ Import de la fiche Google : avec `GOOGLE_PLACES_API_KEY` (Places API New), l'onb
 
 Page de réservation publique (`/r/[slug]`) : fiche complète (photos, prestations avec bouton Choisir, équipe, présentation, horaires, adresse et carte) puis parcours en trois étapes. Retours produit : widget « Un avis ? » dans l'espace pro (`src/components/app/FeedbackWidget.tsx`), enregistrés dans `feedback` et transmis à `RESO_SUPPORT_EMAIL`. Prestations types par activité : `src/content/fr/service-templates.ts`.
 
+Abonnement : Mollie en priorité (`MOLLIE_API_KEY`, premier paiement puis abonnement mensuel prélevé automatiquement, webhook `/api/webhooks/mollie`), SumUp en secours (`SUMUP_API_KEY`, `SUMUP_MERCHANT_CODE`, paiement mensuel en un clic). Factures PDF numérotées (`src/lib/invoice.ts`, `src/lib/pdf.ts`), jointes à l'email et servies par `/app/abonnement/factures/[id]`. Cycle quotidien `/api/internal/billing` (cron Vercel).
+
 Essai gratuit : chaque établissement dispose de `RESO_TRIAL_DAYS` jours (7 par défaut) à partir de sa création (`establishments.trial_ends_at`, `subscription_status`). À l'échéance, sa page de réservation en ligne est suspendue et un bandeau l'invite à activer l'abonnement ; l'activation se fait en base (`subscription_status = 'active'`) tant que le paiement en ligne n'est pas branché. Règles dans `src/lib/trial.ts`.
 
 Extensions requises : `citext` et `btree_gist` (créées par la migration ; disponibles sur Supabase, Neon et PostgreSQL standard). Le RLS est activé sur toutes les tables : l'application accède à la base avec un rôle propriétaire (ou `bypassrls`), jamais depuis le navigateur.

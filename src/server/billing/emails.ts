@@ -11,8 +11,8 @@ const button = (href: string, label: string) =>
 
 const dateFr = (d: Date) => new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "long", year: "numeric", timeZone: "Europe/Paris" }).format(d);
 
-export function receiptEmail(to: string, input: { establishment: string; amounts: SubscriptionAmounts; periodStart: Date; periodEnd: Date; reference: string; transactionCode: string | null }): EmailMessage {
-  const subject = `Reçu ${offer.brandName} · ${formatEuros(input.amounts.totalCents)} · ${input.establishment}`;
+export function receiptEmail(to: string, input: { establishment: string; amounts: SubscriptionAmounts; periodStart: Date; periodEnd: Date; reference: string; transactionCode: string | null; invoiceNumber?: string | null; attachment?: { filename: string; content: Uint8Array } }): EmailMessage {
+  const subject = input.invoiceNumber ? `Facture ${input.invoiceNumber} · ${offer.brandName} · ${formatEuros(input.amounts.totalCents)}` : `Reçu ${offer.brandName} · ${formatEuros(input.amounts.totalCents)} · ${input.establishment}`;
   const lines = [
     `Abonnement ${offer.brandName} pour ${input.establishment}`,
     `Période : du ${dateFr(input.periodStart)} au ${dateFr(input.periodEnd)}`,
@@ -22,12 +22,14 @@ export function receiptEmail(to: string, input: { establishment: string; amounts
     `Référence : ${input.reference}${input.transactionCode ? ` · transaction SumUp ${input.transactionCode}` : ""}`,
     `Émetteur : ${offer.legalEntity ?? offer.brandName}${offer.legalId ? ` · SIREN ${offer.legalId}` : ""}${offer.vatNumber ? ` · TVA ${offer.vatNumber}` : ""}`,
   ];
+  if (input.invoiceNumber) lines.unshift(`Facture n° ${input.invoiceNumber} (en pièce jointe, aussi disponible dans votre espace, rubrique Abonnement)`);
   return {
     to,
     subject,
     text: `Merci pour votre paiement.\n\n${lines.join("\n")}\n\nL’équipe ${offer.brandName}`,
-    html: shell("Merci pour votre paiement", [p("Votre abonnement est à jour. Voici votre reçu :"), ...lines.map((l) => p(esc(l)))].join("")),
+    html: shell("Merci pour votre paiement", [p("Votre abonnement est à jour. Votre facture est en pièce jointe :"), ...lines.map((l) => p(esc(l)))].join("")),
     replyTo: offer.supportEmail ?? undefined,
+    attachments: input.attachment ? [{ filename: input.attachment.filename, content: input.attachment.content, contentType: "application/pdf" }] : undefined,
   };
 }
 

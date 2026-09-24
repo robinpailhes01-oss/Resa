@@ -138,7 +138,15 @@ Vous recevez un message Telegram à chaque inscription, chaque établissement cr
 
 Le récap du lundi est déclenché par un cron Vercel (`vercel.json`). Pour qu’il soit autorisé, ajoutez sur Vercel la variable `CRON_SECRET` avec la même valeur que `INTERNAL_TASKS_SECRET`. Pour le recevoir tout de suite : `https://www.reso-app.fr/api/internal/weekly-report` avec le même en-tête.
 
-## 10. Abonnement payant (SumUp)
+## 10. Abonnement payant : Mollie (prélèvement automatique) ou SumUp
+
+**Mollie, recommandé.** Variable : `MOLLIE_API_KEY` (Mollie → Développeurs → Clés API ; clé `test_…` pour valider avec de fausses cartes, `live_…` une fois la société vérifiée). Le pro clique « Payer », règle le premier mois sur la page Mollie (carte ou SEPA) ; son moyen de paiement est enregistré chez Mollie et un abonnement mensuel est créé : Mollie prélève seul à chaque échéance et prévient le site (`/api/webhooks/mollie`), qui prolonge la période payée, envoie le reçu et la notification Telegram. Échec de prélèvement : 3 jours de tolérance puis page de réservation suspendue, avec email invitant à régler à nouveau (ce qui enregistre un nouveau moyen de paiement). Résiliation en fin de période : le prélèvement est arrêté chez Mollie, l’accès court jusqu’à la fin du mois payé.
+
+Dans le tableau de bord Mollie, aucun réglage de webhook n’est nécessaire : l’URL est transmise à chaque paiement et abonnement.
+
+**Factures.** À chaque encaissement, une facture numérotée (RESO-AAAA-000001, numérotation continue) est générée en PDF avec les mentions obligatoires (émetteur, SIREN, TVA, client, période, HT, TVA, TTC, date et moyen de paiement), jointe à l’email envoyé au pro et téléchargeable dans Abonnement → Historique des paiements. Chaque paiement déclenche aussi une notification Telegram.
+
+**SumUp, en secours** (utilisé seulement si `MOLLIE_API_KEY` est absente) :
 
 Variables : `SUMUP_API_KEY` (clé secrète, SumUp → Développeurs → Clés API), `SUMUP_MERCHANT_CODE` (code marchand `MXXXXXXX`), `RESO_VAT_RATE` (20 par défaut, `0` en franchise de TVA), `RESO_LEGAL_ID` (SIREN) et `RESO_VAT_NUMBER` (facultatif). Redeploy après ajout.
 

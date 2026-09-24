@@ -42,6 +42,7 @@ export class ResendEmailSender implements EmailSender {
         html: message.html,
         text: message.text,
         reply_to: message.replyTo,
+        attachments: message.attachments?.map((a) => ({ filename: a.filename, content: Buffer.from(a.content).toString("base64"), content_type: a.contentType })),
       }),
     });
 

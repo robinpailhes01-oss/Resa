@@ -8,9 +8,8 @@ import { formatEuros } from "@/lib/billing";
 import { formatDateKeyLong, todayDateKey } from "@/lib/time";
 import { resolveAccess } from "@/lib/trial";
 import { requireEstablishment } from "@/server/auth/guards";
-import { amounts, confirmPayment, listPayments } from "@/server/app/billing";
+import { amounts, billingProvider, confirmPayment, hasAutomaticRenewal, listPayments } from "@/server/app/billing";
 import { cancelSubscriptionAction, startPaymentAction } from "@/server/app/actions/billing";
-import { isSumUpConfigured } from "@/server/sumup";
 
 export const metadata: Metadata = { title: "Abonnement" };
 
@@ -25,7 +24,8 @@ export default async function AbonnementPage({ searchParams }: { searchParams: P
   const a = amounts();
   const payments = await listPayments(fresh.id);
   const fmt = (d: Date | null) => (d ? formatDateKeyLong(todayDateKey(fresh.timezone, d)) : null);
-  const sumup = isSumUpConfigured();
+  const provider = billingProvider();
+  const automatic = provider === "mollie" ? await hasAutomaticRenewal(fresh.id) : false;
 
   const statusLine =
     access.state === "trial"
@@ -40,7 +40,7 @@ export default async function AbonnementPage({ searchParams }: { searchParams: P
 
   return (
     <div className="mx-auto max-w-3xl">
-      <PageHeader title="Abonnement" intro="Un seul tarif, sans engagement de durée. Paiement sécurisé par carte via SumUp." />
+      <PageHeader title="Abonnement" intro={provider === "mollie" ? "Un seul tarif, sans engagement de durée. Prélèvement automatique chaque mois par carte ou SEPA, sécurisé par Mollie." : "Un seul tarif, sans engagement de durée. Paiement sécurisé par carte via SumUp."} />
 
       {justConfirmed?.status === "paid" ? (
         <StatusMessage tone="success" className="mb-6">
@@ -57,7 +57,11 @@ export default async function AbonnementPage({ searchParams }: { searchParams: P
           <div>
             <p className="eyebrow">Votre situation</p>
             <p className="mt-2 text-[17px] font-semibold text-ink">{statusLine}</p>
-            {fresh.cancelAtPeriodEnd ? <p className="mt-1 text-[14px] text-ink-muted">Résiliation demandée : l’abonnement s’arrêtera à la fin de la période payée.</p> : null}
+            {fresh.cancelAtPeriodEnd ? (
+              <p className="mt-1 text-[14px] text-ink-muted">Résiliation demandée : l’abonnement s’arrêtera à la fin de la période payée.</p>
+            ) : automatic && access.state === "active" ? (
+              <p className="mt-1 text-[14px] text-ink-muted">Prélèvement automatique programmé le {fmt(fresh.paidUntil)} sur votre moyen de paiement enregistré.</p>
+            ) : null}
             <dl className="mt-5 grid max-w-sm grid-cols-[1fr_auto] gap-y-1.5 text-[14px]">
               <dt className="text-ink-muted">Abonnement mensuel HT</dt>
               <dd className="text-right tabular-nums text-ink">{formatEuros(a.exVatCents)}</dd>
@@ -77,12 +81,21 @@ export default async function AbonnementPage({ searchParams }: { searchParams: P
             </dl>
           </div>
           <div className="w-full max-w-xs">
-            {sumup ? (
-              access.state === "cancelled" || fresh.cancelAtPeriodEnd ? null : (
+            {provider ? (
+              access.state === "cancelled" || fresh.cancelAtPeriodEnd || (automatic && access.state === "active") ? (
+                automatic && access.state === "active" ? (
+                  <p className="flex items-start gap-2 rounded-xl bg-success-tint px-4 py-3 text-[13px] leading-5 text-ink">
+                    <ShieldCheck aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-success" />
+                    Rien à faire : le renouvellement est automatique. Pour changer de carte, résiliez puis réactivez avec le nouveau moyen de paiement.
+                  </p>
+                ) : null
+              ) : (
                 <ActionForm action={startPaymentAction} submitLabel={access.state === "active" ? `Payer le mois suivant · ${formatEuros(a.totalCents)}` : `Payer ${formatEuros(a.totalCents)} et activer`} pendingLabel="Ouverture du paiement…" className="flex flex-col gap-3">
                   <p className="flex items-start gap-2 text-[13px] leading-5 text-ink-muted">
                     <ShieldCheck aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-success" />
-                    Vous serez redirigé vers la page de paiement sécurisée SumUp. {offer.brandName} ne voit jamais votre carte.
+                    {provider === "mollie"
+                      ? `Vous serez redirigé vers la page de paiement sécurisée Mollie (carte ou SEPA). Le moyen de paiement est enregistré chez Mollie pour les mois suivants ; ${offer.brandName} n’y a jamais accès.`
+                      : `Vous serez redirigé vers la page de paiement sécurisée SumUp. ${offer.brandName} ne voit jamais votre carte.`}
                   </p>
                 </ActionForm>
               )
@@ -114,6 +127,11 @@ export default async function AbonnementPage({ searchParams }: { searchParams: P
                   {p.status === "pending" && p.hostedUrl ? (
                     <a href={p.hostedUrl} className="font-medium text-brand underline-offset-4 hover:underline">
                       Payer
+                    </a>
+                  ) : null}
+                  {p.status === "paid" && p.invoiceNumber ? (
+                    <a href={`/app/abonnement/factures/${p.id}`} target="_blank" rel="noopener" className="font-medium text-brand underline-offset-4 hover:underline">
+                      Facture {p.invoiceNumber}
                     </a>
                   ) : null}
                 </span>

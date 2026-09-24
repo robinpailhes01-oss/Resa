@@ -6,6 +6,8 @@ export interface EmailMessage {
   replyTo?: string;
   /** Nom affiché de l'expéditeur (l'adresse reste celle d'EMAIL_FROM). */
   fromName?: string;
+  /** Pièces jointes (factures PDF). */
+  attachments?: Array<{ filename: string; content: Uint8Array; contentType: string }>;
 }
 
 export interface EmailSender {
