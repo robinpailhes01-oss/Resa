@@ -1,0 +1,14 @@
+{
+  "name": "agenda-mobile",
+  "viewport": "mobile",
+  "steps": [
+    { "login": { "email": "demo+video@example.com", "password": "reso-demo-video-2026" } },
+    { "goto": "/app/agenda?date=2026-09-28" },
+    { "scroll": 330, "duration": 10 },
+    { "wait": 800 },
+    { "shot": "lundi" },
+    { "scroll": 420, "duration": 2400 },
+    { "wait": 1000 },
+    { "shot": "apres-midi" }
+  ]
+}

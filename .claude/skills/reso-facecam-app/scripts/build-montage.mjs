@@ -116,8 +116,13 @@ const fail = (msg) => {
   console.error(`✖ ${msg}`);
   process.exit(1);
 };
+// Échappement HTML + typographie française (espace insécable avant ? ! : ; pour éviter
+// un « ? » seul en début de ligne).
 const esc = (s) =>
-  String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  String(s)
+    .replace(/ ([?!:;»])/g, "\u00a0$1")
+    .replace(/« /g, "«\u00a0")
+    .replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
 const montagePath = join(PROJECT, "montage.json");
 if (!existsSync(montagePath)) fail(`montage.json introuvable dans ${PROJECT}`);
@@ -147,6 +152,7 @@ const FACE_DUR = q(M.face.duration ?? probeDuration(faceFile));
 if (!Number.isFinite(FACE_DUR) || FACE_DUR <= 0) fail("Durée de la vidéo face caméra illisible (ffprobe ?). Renseignez face.duration.");
 const FOCUS_Y = M.face.focusY ?? 32; // % vertical où se trouve le visage (bulle, split)
 const BUBBLE_CROP = M.face.bubbleCrop ?? 0.62; // part de la largeur gardée dans la bulle
+const SPLIT_FOCUS_Y = M.face.splitFocusY ?? FOCUS_Y; // cadrage vertical propre à l'écran partagé
 
 // La face caméra occupe toujours le canevas entier ; chaque layout la place par
 // transform (x, y, scale) + clip-path, que GSAP interpole au sous-pixel (le lint
@@ -156,7 +162,8 @@ function faceXform(B) {
   const cw = full ? W : B.r ? W * BUBBLE_CROP : W;
   const ch = (cw * B.h) / B.w;
   const cx = W / 2;
-  const cy = Math.min(Math.max((FOCUS_Y / 100) * H, ch / 2), H - ch / 2);
+  const focus = !full && !B.r ? SPLIT_FOCUS_Y : FOCUS_Y;
+  const cy = Math.min(Math.max((focus / 100) * H, ch / 2), H - ch / 2);
   const sc = B.w / cw;
   const top = cy - ch / 2;
   const left = cx - cw / 2;
@@ -449,7 +456,7 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
 .shot .kb img, .shot .kb video { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
 .shot-phone .shot-in { border-radius: 64px; background: ${C.ink}; padding: 14px;
   box-shadow: 0 2px 6px rgba(17,17,22,.06), 0 40px 90px -30px rgba(60,40,140,.45), 0 90px 160px -60px rgba(60,40,140,.35); }
-.shot-phone .screen { inset: 14px; border-radius: 50px; }
+.shot-phone .screen { inset: 14px; border-radius: 50px; padding-top: 52px; }
 .shot-phone .notch { position: absolute; z-index: 2; top: 30px; left: 50%; width: 120px; height: 34px; margin-left: -60px; border-radius: 20px; background: ${C.ink}; }
 .shot-window .shot-in { border-radius: 24px; background: ${C.card}; border: 1px solid ${C.line}; overflow: hidden;
   box-shadow: 0 1px 2px rgba(17,17,22,.04), 0 24px 60px -24px rgba(60,40,140,.3), 0 60px 120px -50px rgba(60,40,140,.25); }

@@ -44,13 +44,29 @@ const tmpVideo = join(OUT, `.rec-${NAME}`);
 rmSync(tmpVideo, { recursive: true, force: true });
 
 // Contexte photo : netteté maximale pour les images fixes.
-const photoCtx = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, deviceScaleFactor: 3, isMobile: vp.isMobile, hasTouch: vp.hasTouch, locale: "fr-FR", reducedMotion: "no-preference" });
+// Connexion unique (l'app limite les tentatives) : la session est partagée par les deux contextes.
+let storageState;
+const loginStep = (S.steps ?? []).find((st) => st.login);
+if (loginStep) {
+  const lctx = await browser.newContext({ locale: "fr-FR" });
+  const lp = await lctx.newPage();
+  const base = BASE.replace(/\/$/, "");
+  await lp.goto(`${base}/connexion`);
+  await lp.fill("#email", loginStep.login.email);
+  await lp.fill("#password", loginStep.login.password);
+  await lp.click('button[type="submit"]');
+  await lp.waitForURL(/\/app/, { timeout: 30000 });
+  storageState = await lctx.storageState();
+  await lctx.close();
+}
+const photoCtx = await browser.newContext({ storageState, viewport: { width: vp.width, height: vp.height }, deviceScaleFactor: 3, isMobile: vp.isMobile, hasTouch: vp.hasTouch, locale: "fr-FR", reducedMotion: "no-preference" });
 // Contexte vidéo. La vidéo native de Playwright et le screencast Chrome n'enregistrent qu'en
 // pixels CSS (390 px de large) : trop flou pour un Reel. On filme donc « au ralenti » :
 // animations CSS ralenties ×SLOW (CDP Animation.setPlaybackRate), défilements et frappes
 // étirés d'autant, captures d'écran nettes en boucle, puis horodatage ramené au temps réel.
 const SLOW = S.slow ?? 5;
 const videoCtx = await browser.newContext({
+  storageState,
   viewport: { width: vp.width, height: vp.height },
   deviceScaleFactor: SCALE,
   isMobile: vp.isMobile,
@@ -129,11 +145,7 @@ async function run(page, { record }) {
   page.on("pageerror", (e) => console.log(`[pageerror] ${e.message}`));
   for (const step of S.steps ?? []) {
     if (step.login) {
-      await page.goto(url("/connexion"));
-      await page.fill("#email", step.login.email);
-      await page.fill("#password", step.login.password);
-      await page.click('button[type="submit"]');
-      await page.waitForURL(/\/app/, { timeout: 20000 });
+      // déjà connecté (connexion unique avant les contextes)
     } else if (step.goto) {
       await page.goto(url(step.goto), { waitUntil: "networkidle" });
       await page.evaluate(() => document.fonts.ready);

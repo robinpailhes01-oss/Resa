@@ -91,6 +91,7 @@ Partir de `templates/montage.example.json`. Pour placer les coupes, lire la tran
     "src": "media/face.mp4",
     "focusY": 32,              // % de hauteur où est le visage (cadre de la bulle et du split)
     "bubbleCrop": 0.62,        // part de la largeur gardée dans la bulle (plus petit = visage plus gros)
+    "splitFocusY": 36,         // cadrage vertical en écran partagé (défaut = focusY) : visage + bouche visibles
     "cutout": "media/face-cutout.webm"   // optionnel, pour le layout cutout
   },
   "transcript": "transcript.json",
