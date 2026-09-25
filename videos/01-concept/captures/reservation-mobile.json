@@ -1,0 +1,22 @@
+{
+  "name": "reservation-mobile",
+  "viewport": "mobile",
+  "steps": [
+    { "goto": "/r/maison-alba" },
+    { "wait": 1200 },
+    { "shot": "prestations" },
+    { "click": "a[href*='service=']" },
+    { "wait": 1000 },
+    { "shot": "praticien" },
+    { "click": "a[href*='praticien=']", "optional": true },
+    { "wait": 1000 },
+    { "shot": "creneaux" },
+    { "click": "a[href*='heure=']" },
+    { "wait": 900 },
+    { "type": ["input[name='firstName']", "Julie"] },
+    { "type": ["input[name='lastName']", "Martin"] },
+    { "type": ["input[name='email']", "julie.martin@example.com"] },
+    { "wait": 600 },
+    { "shot": "coordonnees" }
+  ]
+}

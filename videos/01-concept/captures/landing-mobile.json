@@ -1,0 +1,16 @@
+{
+  "name": "landing-mobile",
+  "viewport": "mobile",
+  "steps": [
+    { "goto": "/" },
+    { "wait": 2600 },
+    { "shot": "hero" },
+    { "scroll": 700, "duration": 1600 },
+    { "reveal": true },
+    { "wait": 900 },
+    { "shot": "agenda" },
+    { "scroll": 900, "duration": 1800 },
+    { "wait": 900 },
+    { "shot": "fonctionnalites" }
+  ]
+}

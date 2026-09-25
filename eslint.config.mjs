@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Skills Claude (scripts vendored HyperFrames et outils vidéo) et projets vidéo.
+    ".claude/**",
+    "videos/**",
   ]),
 ]);
 

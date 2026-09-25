@@ -1,0 +1,13 @@
+{
+  "name": "agenda-desktop",
+  "viewport": "desktop",
+  "steps": [
+    { "login": { "email": "demo+video@example.com", "password": "A-REMPLACER" } },
+    { "goto": "/app/agenda" },
+    { "wait": 1500 },
+    { "shot": "jour" },
+    { "scroll": 400, "duration": 1400 },
+    { "wait": 1200 },
+    { "shot": "apres-midi" }
+  ]
+}

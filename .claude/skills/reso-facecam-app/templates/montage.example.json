@@ -1,0 +1,45 @@
+{
+  "id": "exemple",
+  "title": "Reso — exemple de montage face caméra + app",
+  "fps": 30,
+  "face": {
+    "src": "media/face.mp4",
+    "focusY": 32
+  },
+  "transcript": "transcript.json",
+  "captions": {
+    "maxWords": 4,
+    "emphasis": ["agenda", "24h/24", "automatiquement"],
+    "replace": { "réso": "Reso", "rezo": "Reso" },
+    "drop": ["euh", "heu", "hum", "bah", "ben"]
+  },
+  "music": null,
+  "segments": [
+    { "start": 0, "layout": "face", "title": "Vous passez vos soirées à répondre aux messages ?" },
+    { "start": 2.4, "layout": "face", "zoom": 1.12 },
+    {
+      "start": 3.6,
+      "layout": "app",
+      "app": { "src": "media/app/agenda.mp4", "frame": "phone", "from": 0 },
+      "chips": [{ "at": 0.8, "icon": "calendar", "title": "Nouvelle réservation", "text": "Il y a 2 minutes" }]
+    },
+    {
+      "start": 7.2,
+      "layout": "split",
+      "app": { "src": "media/app/reservation.png", "frame": "phone" }
+    },
+    {
+      "start": 9.6,
+      "layout": "card",
+      "card": { "kicker": "Emails automatiques", "text": "Confirmation, rappel, avis.", "sub": "Envoyés tout seuls, au bon moment." },
+      "chips": [{ "at": 0.9, "icon": "mail", "title": "Rappel envoyé", "text": "Julie · demain 09:00", "tint": 3 }]
+    },
+    { "start": 12, "layout": "face", "zoom": 1.08 }
+  ],
+  "endCard": {
+    "duration": 2.5,
+    "line": "Votre agenda. L’esprit libre.",
+    "cta": "Me prévenir du lancement",
+    "url": "reso-app.fr"
+  }
+}

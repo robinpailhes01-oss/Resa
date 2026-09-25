@@ -47,3 +47,13 @@ tests/screenshots/
 
 # Modèle de variables sans secrets
 !.env.example
+
+# Vidéos : seuls les scripts, plans de montage, transcriptions et scénarios sont versionnés
+/videos/*/media/
+/videos/*/brand/
+/videos/*/renders/
+/videos/*/snapshots/
+/videos/*/index.html
+*.mp4
+*.mov
+*.webm
