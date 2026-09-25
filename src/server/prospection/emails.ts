@@ -19,12 +19,12 @@ export interface ProspectForEmail {
 }
 
 export function prospectionEmailInput(p: ProspectForEmail): ProspectionEmailInput {
-  const campaign = `${p.categoryKey}${p.bookingProvider ? `-${p.bookingProvider}` : ""}`;
   return {
     establishmentName: shortEstablishmentName(p.name),
     categoryPlural: p.categoryPlural,
     providerLabel: p.bookingProvider ? providerLabels[p.bookingProvider] : null,
-    trialUrl: `${offer.siteUrl}/?utm_source=prospection&utm_medium=email&utm_campaign=${encodeURIComponent(campaign)}`,
+    // Lien nu, lisible : le nom de domaine seul (le suivi de campagne reste disponible via `campaign` si besoin).
+    trialUrl: offer.siteUrl,
     unsubscribeUrl: `${offer.siteUrl}/ne-plus-me-contacter?token=${encodeURIComponent(p.unsubscribeToken)}`,
     priceLabel: Number.isInteger(offer.monthlyPriceExVat) ? `${offer.monthlyPriceExVat} € HT` : `${formatEuros(Math.round(offer.monthlyPriceExVat * 100))} HT`,
     trialDays: offer.trialDays,
