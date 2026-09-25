@@ -23,7 +23,7 @@ export function prospectionEmailInput(p: ProspectForEmail): ProspectionEmailInpu
     establishmentName: shortEstablishmentName(p.name),
     categoryPlural: p.categoryPlural,
     providerLabel: p.bookingProvider ? providerLabels[p.bookingProvider] : null,
-    // Lien nu, lisible : le nom de domaine seul (le suivi de campagne reste disponible via `campaign` si besoin).
+    // Lien nu, lisible : le nom de domaine seul.
     trialUrl: offer.siteUrl,
     unsubscribeUrl: `${offer.siteUrl}/ne-plus-me-contacter?token=${encodeURIComponent(p.unsubscribeToken)}`,
     priceLabel: Number.isInteger(offer.monthlyPriceExVat) ? `${offer.monthlyPriceExVat} € HT` : `${formatEuros(Math.round(offer.monthlyPriceExVat * 100))} HT`,
