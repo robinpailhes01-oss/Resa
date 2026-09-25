@@ -1,0 +1,26 @@
+{
+  "source": "media/raw.mp4",
+  "note": "Blocs gardés (temps dans raw.mp4, repérés par énergie audio + transcription bloc par bloc). Reprises écartées : 2e « Côté clients » gardée (plus posée), « sans engagement, sans commission » incomplet, reprises du prix (86–104 s), « tu vas pouvoir », bafouillage « le lien d'en-de-ton ».",
+  "keep": [
+    [0.05, 3.25, "Si tu es coiffeur, barbier, esthéticienne ou prothésiste ongulaire,"],
+    [3.65, 4.85, "tu payes peut-être déjà"],
+    [5.40, 6.95, "pour gérer tes rendez-vous en ligne."],
+    [8.45, 9.25, "Mais franchement,"],
+    [10.90, 13.20, "est-ce que tu as vraiment besoin de payer aussi cher ?"],
+    [14.55, 19.25, "Avec Reso, tes clients peuvent réserver en ligne 24h/24 et toi, tu gères tout au même endroit."],
+    [20.80, 24.78, "Pour commencer, c'est très simple : l'inscription prend seulement quelques secondes, tu ajoutes le lien"],
+    [26.55, 33.50, "de ton établissement sur Google et Reso récupère automatiquement ton adresse, tes horaires et tes photos. Donc pas besoin de tout renseigner à la main."],
+    [38.95, 40.80, "Côté clients, c'est tout aussi simple."],
+    [41.80, 46.25, "Il choisit sa prestation, sélectionne le créneau qui lui convient et réserve en quelques clics."],
+    [46.70, 52.25, "La confirmation est automatique, un rappel est envoyé avant le rendez-vous. De ton côté, tout apparaît directement dans ton agenda."],
+    [55.35, 57.15, "Et surtout, il y a un vrai plus :"],
+    [58.60, 61.05, "tes avis servent directement à ton établissement."],
+    [63.65, 72.05, "Après son rendez-vous, ton client peut laisser un avis directement sur Google. Résultat : tu renforces ta visibilité et ta réputation en ligne, sans construire uniquement celle d'une plateforme."],
+    [73.55, 75.55, "Et tout ça pour 39 € par mois,"],
+    [79.30, 81.55, "sans engagement, sans commission sur tes rendez-vous."],
+    [104.30, 106.90, "Et tu peux même tester l'application gratuitement pendant 7 jours."],
+    [111.90, 114.60, "Alors, pourquoi payer plus cher pour quelque chose de plus compliqué ?"],
+    [115.95, 116.55, "Passe à Reso !"],
+    [121.00, 122.35, "Tu peux retrouver le lien dans la bio."]
+  ]
+}

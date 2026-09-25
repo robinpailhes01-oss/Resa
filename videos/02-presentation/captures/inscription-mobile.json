@@ -1,0 +1,16 @@
+{
+  "name": "inscription-mobile",
+  "viewport": "mobile",
+  "trimStart": 0.3,
+  "steps": [
+    { "goto": "/inscription" },
+    { "wait": 700 },
+    { "type": ["#fullName", "Camille Durand"], "delay": 55 },
+    { "type": ["#email", "camille@maison-alba.fr"], "delay": 45 },
+    { "type": ["#password", "motdepasse"], "delay": 45 },
+    { "wait": 400 },
+    { "hover": "button[type='submit']" },
+    { "wait": 800 },
+    { "shot": "formulaire" }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "agenda-desktop",
+  "viewport": "desktop",
+  "videoScale": 2,
+  "steps": [
+    { "login": { "email": "demo+video@example.com", "password": "reso-demo-video-2026" } },
+    { "goto": "/app/agenda?date=2026-09-28" },
+    { "wait": 1200 },
+    { "shot": "lundi" },
+    { "scroll": 300, "duration": 2000 },
+    { "wait": 1200 },
+    { "shot": "apres-midi" }
+  ]
+}

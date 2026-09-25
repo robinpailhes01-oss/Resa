@@ -1,0 +1,96 @@
+{
+  "id": "02-presentation",
+  "title": "Reso — présentation par Ludivine",
+  "fps": 30,
+  "face": { "src": "media/face.mp4", "focusY": 28, "bubbleCrop": 0.6 },
+  "transcript": "transcript.json",
+  "captions": {
+    "maxWords": 4,
+    "maxChars": 24,
+    "emphasis": ["Reso", "Reso,", "24h/24", "automatiquement", "Google", "Google,", "agenda.", "avis", "gratuitement"],
+    "replace": { "réseau": "Reso" },
+    "drop": ["euh", "heu", "hum", "ben", "bah"]
+  },
+  "segments": [
+    { "start": 0, "layout": "face", "title": "Tu paies trop cher tes rendez-vous en ligne ?", "titleDuration": 3.3 },
+    { "start": 3.39, "layout": "face", "zoom": 1.1 },
+    { "start": 4.81, "layout": "face", "zoom": 1.0 },
+    { "start": 6.58, "layout": "face", "zoom": 1.16 },
+    { "start": 7.6, "layout": "face", "zoom": 1.04, "title": "Vraiment besoin de payer aussi cher ?", "titleDuration": 2.4 },
+    {
+      "start": 10.12, "layout": "app",
+      "app": { "src": "media/app/page-publique-mobile.mp4", "frame": "phone", "from": 0.2 },
+      "chips": [{ "at": 1.4, "icon": "clock", "title": "Réservation en ligne", "text": "24h/24, 7j/7" }]
+    },
+    {
+      "start": 13.58, "layout": "split",
+      "app": { "src": "media/app/agenda-desktop.mp4", "frame": "window", "aspect": 1.6, "from": 1.0 }
+    },
+    {
+      "start": 15.04, "layout": "card", "captions": false,
+      "card": { "kicker": "1 · L’inscription", "text": "Quelques secondes.", "sub": "Pour commencer, c’est très simple." }
+    },
+    {
+      "start": 16.4, "layout": "app",
+      "app": { "src": "media/app/inscription-mobile.mp4", "frame": "phone", "from": 0.6 }
+    },
+    { "start": 19.24, "layout": "face", "zoom": 1.08, "title": "Ajoute le lien de ta fiche Google" },
+    {
+      "start": 21.48, "layout": "split",
+      "app": { "src": "media/app/page-publique-mobile.mp4", "frame": "phone", "from": 0.4 },
+      "chips": [
+        { "at": 0.9, "duration": 3.9, "icon": "check", "title": "Adresse", "text": "récupérée", "tint": 2, "pos": { "x": 600, "y": 420 } },
+        { "at": 1.75, "duration": 3.05, "icon": "clock", "title": "Horaires", "text": "récupérés", "tint": 0, "pos": { "x": 600, "y": 580 } },
+        { "at": 2.5, "duration": 2.3, "icon": "star", "title": "Photos", "text": "récupérées", "tint": 1, "pos": { "x": 600, "y": 740 } }
+      ]
+    },
+    { "start": 26.41, "layout": "face", "zoom": 1.0, "title": "2 · Côté clients" },
+    {
+      "start": 28.48, "layout": "app",
+      "app": { "src": "media/app/reservation-mobile.mp4", "frame": "phone", "from": 0.3 }
+    },
+    {
+      "start": 33.15, "layout": "card", "captions": false,
+      "card": { "kicker": "Emails automatiques", "text": "Confirmation. Rappel.", "sub": "Envoyés tout seuls, avant le rendez-vous." },
+      "chips": [
+        { "at": 0.4, "duration": 3.1, "icon": "mail", "title": "Confirmation envoyée", "text": "Julie Martin", "tint": 3, "pos": { "x": 90, "y": 260 } },
+        { "at": 1.7, "duration": 1.8, "icon": "bell", "title": "Rappel envoyé", "text": "la veille du rendez-vous", "tint": 1, "pos": { "x": 420, "y": 1180 } }
+      ]
+    },
+    {
+      "start": 36.71, "layout": "app",
+      "app": { "src": "media/app/agenda-desktop.mp4", "frame": "window", "aspect": 1.6, "from": 0.4 },
+      "chips": [{ "at": 0.5, "icon": "calendar", "title": "Nouvelle réservation", "text": "Julie Martin · 09:00" }]
+    },
+    { "start": 38.92, "layout": "face", "zoom": 1.12, "title": "3 · Le vrai plus : tes avis" },
+    {
+      "start": 40.94, "layout": "split",
+      "app": { "src": "media/app/emails-desktop.mp4", "frame": "window", "aspect": 1.6, "from": 0.5 },
+      "chips": [{ "at": 0.6, "icon": "star", "title": "Demande d’avis", "text": "après chaque rendez-vous", "tint": 1 }]
+    },
+    {
+      "start": 43.61, "layout": "face", "zoom": 1.0,
+      "chips": [{ "at": 1.9, "duration": 1.5, "icon": "star", "title": "Nouvel avis Google", "text": "sur ta fiche", "tint": 1 }]
+    },
+    {
+      "start": 47.03, "layout": "card", "captions": false,
+      "card": { "kicker": "Tes avis, chez toi", "text": "Ta réputation. Pas celle d’une plateforme.", "sub": "Les avis vont sur ta fiche Google." }
+    },
+    {
+      "start": 52.23, "layout": "card", "captions": false,
+      "card": { "kicker": "4 · Une seule offre", "text": "39 € HT / mois", "sub": "Sans engagement · sans commission sur tes rendez-vous" }
+    },
+    {
+      "start": 56.92, "layout": "face", "zoom": 1.08,
+      "chips": [{ "at": 0.6, "duration": 2.2, "icon": "check", "title": "7 jours d’essai", "text": "gratuit", "tint": 2 }]
+    },
+    { "start": 59.74, "layout": "face", "zoom": 1.16, "title": "Pourquoi payer plus cher ?" },
+    { "start": 62.66, "layout": "face", "zoom": 1.0, "title": "Le lien est dans la bio" }
+  ],
+  "endCard": {
+    "duration": 2.5,
+    "line": "Votre agenda. L’esprit libre.",
+    "cta": "Essayer gratuitement",
+    "url": "Lien en bio"
+  }
+}

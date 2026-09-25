@@ -90,15 +90,17 @@ function startCapture(page) {
 }
 
 // Masque l'indicateur de développement Next.js (pastille « N ») dès le chargement.
+const HIDE = (S.hide ?? []).map((sel) => `${sel}{display:none!important}`).join("");
 for (const ctx of [photoCtx, videoCtx])
-  await ctx.addInitScript(() => {
-    const css = "nextjs-portal{display:none!important}";
+  await ctx.addInitScript((hide) => {
+    // Masqués à l'écran : pastille de dev Next.js, bouton de retour « Un avis ? » de l'app.
+    const css = "nextjs-portal,div.fixed.bottom-4.right-4.z-40{display:none!important}" + hide;
     document.addEventListener("DOMContentLoaded", () => {
       const st = document.createElement("style");
       st.textContent = css;
       document.head.appendChild(st);
     });
-  });
+  }, HIDE);
 
 const url = (p) => (/^https?:/.test(p) ? p : BASE.replace(/\/$/, "") + p);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -142,7 +144,10 @@ async function run(page, { record }) {
       const target = page.locator(step.click).first();
       // « optional » : étape sautée si l'élément n'existe pas (ex. un seul praticien).
       if (step.optional && !(await target.count())) continue;
+      const before = page.url();
       await target.click();
+      // Les liens Next.js naviguent côté client : on attend le changement d'URL s'il a lieu.
+      await page.waitForURL((u) => u.toString() !== before, { timeout: 4000 }).catch(() => {});
       await page.waitForLoadState("networkidle").catch(() => {});
     } else if (step.hover) {
       await page.locator(step.hover).first().hover();
