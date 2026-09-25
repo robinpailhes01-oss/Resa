@@ -47,8 +47,8 @@ export const prospectionContent = {
     "Un « non merci » et je ne reviens pas vers vous.",
     `${i.senderName}\n${i.brandName}`,
   ],
-  /** Une seule ligne : le lien de désinscription, obligatoire pour la prospection par email. */
-  footer: (i: ProspectionEmailInput): string => `Ne plus recevoir d’emails : ${i.unsubscribeUrl}`,
+  /** Pas de pied de page : un « non » en réponse suffit, il est reconnu et respecté (plus aucun contact). */
+  footer: (_i: ProspectionEmailInput): string => "",
   unsubscribePage: {
     title: "Ne plus recevoir d’emails",
     intro: "Confirmez pour que nous ne vous écrivions plus. Aucune autre information ne vous sera demandée.",

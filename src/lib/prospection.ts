@@ -200,5 +200,6 @@ export function shortEstablishmentName(name: string): string {
 /** Une réponse qui décline (« non merci », « pas intéressé »…) : on arrête tout contact. */
 export function looksLikeDecline(text: string): boolean {
   const head = text.trim().slice(0, 240).toLowerCase();
+  if (/^non\b/.test(head)) return true;
   return /\b(non merci|pas int[ée]ress|ne suis pas int|ne sommes pas int|stop|d[ée]sinscri|ne plus (me|nous) (contacter|[ée]crire|solliciter)|merci de ne plus|pas besoin|ça ne m['’]int[ée]resse pas|cela ne m['’]int[ée]resse pas)/.test(head);
 }

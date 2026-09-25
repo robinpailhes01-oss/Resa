@@ -111,7 +111,7 @@ describe("prospection : calendrier et récap", () => {
     expect(first).toContain("7 jours gratuits");
     expect(first.length).toBeLessThan(520);
     expect(first).not.toMatch(/SMS|Harmonie/i);
-    expect(prospectionContent.footer(input)).toBe("Ne plus recevoir d’emails : https://www.reso-app.fr/ne-plus-me-contacter?token=abc");
+    expect(prospectionContent.footer(input)).toBe("");
     expect(prospectionContent.subjects.withProvider("Barber Club", "Planity")).toBe("Une alternative à Planity pour Barber Club ?");
     expect(prospectionContent.subjects.followUp("Barber Club", "Planity")).toBe("Re : Une alternative à Planity pour Barber Club ?");
   });
@@ -152,6 +152,7 @@ describe("prospection : nom court et refus", () => {
   it("reconnaît un refus", () => {
     expect(looksLikeDecline("Non merci\n\nParenthèse au Naturel\nInstitut…")).toBe(true);
     expect(looksLikeDecline("Bonjour, pas intéressée pour le moment.")).toBe(true);
+    expect(looksLikeDecline("Non.")).toBe(true);
     expect(looksLikeDecline("Bonjour, ça m’intéresse, pouvez-vous m’appeler ?")).toBe(false);
   });
 });

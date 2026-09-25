@@ -85,7 +85,6 @@ describe.skipIf(!url)("prospection en base", () => {
     expect(sender.sent).toHaveLength(2);
     expect(sender.sent[0]!.to).toBe("contact@barber-test-planity.example");
     expect(sender.sent[0]!.subject).toBe("Une alternative à Planity pour Barber Test Planity ?");
-    expect(sender.sent[0]!.text).toContain("Ne plus recevoir d’emails : ");
     expect(sender.sent[0]!.fromName).toBe("Robin de Reso");
     expect(sender.sent[1]!.subject).toBe("Réservation en ligne pour Institut Page Contact, sans commission");
 
