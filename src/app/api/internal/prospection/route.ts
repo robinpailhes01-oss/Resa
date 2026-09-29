@@ -18,6 +18,14 @@ export async function GET(request: Request) {
   // Une fois les réponses marquées : `?allow_follow_ups=1` autorise la relance des autres prospects contactés.
   if (url.searchParams.get("allow_follow_ups") === "1") return NextResponse.json({ status: "ok", ...(await allowPendingFollowUps()) });
   const dryRun = url.searchParams.get("dry") === "1";
+  // Garde-fou : le cycle (recherches, emails, relances) ne part que sur demande explicite.
+  // Le cron quotidien passe par /api/internal/daily. Un appel sans `run=1` ni `dry=1` ne fait rien.
+  if (!dryRun && url.searchParams.get("run") !== "1") {
+    return NextResponse.json({
+      status: "noop",
+      usage: "?dry=1 (simulation, aucun email) · ?run=1 (cycle réel) · ?replied=adresse · ?optout=adresse · ?allow_follow_ups=1",
+    });
+  }
   try {
     const summary = await runProspection({ dryRun });
     return NextResponse.json({ status: "ok", ...summary });

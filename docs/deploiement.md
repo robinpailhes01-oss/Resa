@@ -173,7 +173,7 @@ Chaque jour, la tâche quotidienne (`/api/internal/daily`, cron Vercel 8 h Paris
 
 Pas de scraping de Planity : les données viennent de Google et des sites des établissements eux-mêmes. Prospection B2B vers des adresses professionnelles publiques, avec opposition en un clic : c’est le cadre admis par la CNIL pour les professionnels.
 
-**Activation.** `PROSPECTION_ENABLED=1` sur Vercel (puis redeploy). Réglages facultatifs : `PROSPECTION_SEARCHES_PER_DAY` (3), `PROSPECTION_DAILY_LIMIT` (20), `PROSPECTION_FOLLOW_UP_DAYS` (5), `PROSPECTION_ENRICH_PER_RUN` (60). Avant d’activer, une simulation complète (recherche, analyse, aucun envoi) : `https://www.reso-app.fr/api/internal/prospection?dry=1` avec l’en-tête `Authorization: Bearer <INTERNAL_TASKS_SECRET>`.
+**Activation.** `PROSPECTION_ENABLED=1` sur Vercel (puis redeploy). Réglages facultatifs : `PROSPECTION_SEARCHES_PER_DAY` (3), `PROSPECTION_DAILY_LIMIT` (20), `PROSPECTION_FOLLOW_UP_DAYS` (5), `PROSPECTION_ENRICH_PER_RUN` (60). Avant d’activer, une simulation complète (recherche, analyse, aucun envoi) : `https://www.reso-app.fr/api/internal/prospection?dry=1` avec l’en-tête `Authorization: Bearer <INTERNAL_TASKS_SECRET>`. Un cycle réel lancé à la main exige `?run=1` : sans paramètre reconnu, la route ne fait rien.
 
 **Suivi.** Export tableur de tous les prospects (statut, email, téléphone, outil détecté) : `https://www.reso-app.fr/api/internal/prospection/export?token=<INTERNAL_TASKS_SECRET>` (à ouvrir dans un navigateur). Les établissements sans email mais avec téléphone y figurent : à appeler ou à contacter sur Instagram.
 
