@@ -85,6 +85,8 @@ Partir de `templates/montage.example.json`. Pour placer les coupes, lire la tran
 ```jsonc
 {
   "id": "01-concept",
+  "theme": "poudre",           // identité (défaut poudre ; "lavande" = ancienne charte)
+  "frame": 26,                 // cadre crème en px (thème poudre ; 0 = sans)
   "title": "Reso — le concept",
   "fps": 30,
   "face": {
@@ -120,6 +122,8 @@ Partir de `templates/montage.example.json`. Pour placer les coupes, lire la tran
 
 Référence des champs :
 
+- Cartes (`card`) : `kicker` (étiquette, ex. « [01] — l'inscription »), `text` (titre, apparaît mot par mot), `sub`, `script` (annotation manuscrite soulignée, thème poudre). Titres : `title`, `titleKicker` (petite étiquette mono au-dessus, ex. « [02] »).
+- Carte de fin : `endCard.image` (ex. `media/fin-ciseaux.png`, visuel de marque plein cadre) + `cta` + `url`, ou sans image : logo + `line`.
 - Segment : `start` (s, dans `face.mp4`), `layout`, puis selon le cas `app`, `card`, `title` (+ `titleDuration`), `chips`, `zoom` (face), `captions: false` (masque les sous-titres du segment, par ex. sur une carte qui dit déjà la phrase). Un segment dure jusqu'au `start` suivant ; le dernier jusqu'à la fin de la voix.
 - `app` : `src` (mp4/webm ou png/jpg/webp ; une image reçoit un zoom lent sauf `kenBurns: false`), `frame` (`phone` | `window` | `full`), `aspect` (largeur/hauteur de la capture : 390/844 par défaut en phone, 1,6 en window), `from` (s d'entrée dans la capture), `position` (`object-position`, défaut haut de l'écran), `zoom`, `box` ({x,y,w,h} pour forcer l'emplacement).
 - `chips` : `at` (s depuis le début du segment), `duration` (2,4 s), `icon` (`calendar`, `mail`, `check`, `bell`, `link`, `star`, `clock`, `message`, `phone`), `title`, `text`, `tint` (0–3), `pos` ({x,y}).
@@ -134,6 +138,7 @@ Référence des champs :
 S=.claude/skills/reso-facecam-app/scripts
 node $S/build-montage.mjs videos/01-concept --plan   # découpage + sous-titres, sans rien écrire
 node $S/build-montage.mjs videos/01-concept          # → index.html + brand/
+node $S/build-montage.mjs videos/01-concept --until 20   # extrait des 20 premières secondes (fondu de sortie, sans carte de fin)
 npx hyperframes lint videos/01-concept               # 0 erreur exigée
 npx hyperframes snapshot videos/01-concept --at 1,4,8,12,16,20   # un instant par segment
 ```

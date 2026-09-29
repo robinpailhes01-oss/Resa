@@ -5,6 +5,30 @@ description: Charte vidéo de Reso — couleurs, police Manrope, logo, style des
 
 # Charte vidéo Reso
 
+> **Identité actuelle : « nature morte poudrée » (29 septembre 2026).** Tirée des visuels Instagram et de la refonte du site (commit `1cd276b`) : mur bleu poudré, socle pierre crème, bleu nuit pour le texte, touche lavande, cadre crème et grain « tirage ». Le générateur `/reso-facecam-app` l'applique par défaut (`"theme": "poudre"`). L'ancienne identité lavande (plus bas) reste disponible avec `"theme": "lavande"`.
+
+## Identité poudrée (par défaut)
+
+| Rôle | Valeur |
+| --- | --- |
+| Cadre, fonds clairs, texte sur bleu | crème `#FBF6EA` (surfaces `#FFFDF8`) |
+| Mur (fonds de scène, cartes texte) | bleu poudré `#6B8299` |
+| Socle (bas de scène) | pierre `#E6DCCB` → `#D8CCB6` |
+| Texte, sous-titres, téléphone | bleu nuit `#1F2733` ; secondaire `#5F6672` |
+| Liens, icônes | bleu poudré profond `#4A6179` |
+| Accent (mot en cours, soulignés) | lavande `#B6A6D8` (lisible sur bleu nuit : `#C9BDEB`) — jamais en texte courant sur crème |
+
+- **Polices** (`assets/fonts/`) : **Outfit** pour les titres et sous-titres (minuscules, proche du logotype), **Manrope** pour le texte, **Caveat** pour les annotations manuscrites (« très simple », soulignées d'un trait), **JetBrains Mono** pour les étiquettes indexées « [01] — l'inscription ».
+- **Logotype** : `assets/logo-poudre.svg` (bleu nuit) et `assets/logo-poudre-creme.svg` (crème), « reso® » en minuscules, sans symbole.
+- **Images de marque** (`assets/images/`) : `fin-ciseaux.png` (reso® / Beauty business simplified, utilisée en carte de fin), `nature-morte-telephone.png` (combiné décroché), `outils.webp`, `ciseaux.webp`, `nature-morte.webp`.
+- **Écriture** : titres en minuscules, phrases courtes, ponctuation française ; étiquettes indexées [01], [02]… pour structurer les vidéos ; une annotation manuscrite au plus par carte.
+- **Matière** : cadre crème de 26 px autour de l'image, grain léger animé, face caméra légèrement réchauffée (sépia 12 %), ombres douces bleu nuit, coins peu arrondis (6–16 px) sauf les boutons (capsules).
+- **Sous-titres** : bandeau bleu nuit à 92 %, texte crème en Outfit 500, mot en cours en lavande claire, mots clés soulignés lavande.
+- **App à l'écran** : toujours filmer la version refondue de l'app (crème / bleu nuit), jamais l'ancienne interface lavande.
+
+## Ancienne identité « lavande » (`"theme": "lavande"`)
+
+
 Les vidéos prolongent la landing (`docs/DESIGN.md`) : lumineuses, sobres, centrées sur le produit, avec des dégradés doux lavande / pêche / bleu glacé. Le violet est un accent, jamais un aplat de fond.
 
 ## Fichiers

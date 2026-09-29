@@ -5,8 +5,10 @@
 // Sortie : <projet>/index.html + <projet>/brand/ (police, logo, GSAP) — prêt pour
 //          `npx hyperframes lint|check|snapshot|preview|render <projet>`.
 //
-// Usage : node build-montage.mjs videos/<slug> [--plan]
-//   --plan  affiche le découpage (segments, groupes de sous-titres) sans écrire de fichier.
+// Usage : node build-montage.mjs videos/<slug> [--plan] [--until <s>] [--out <fichier.html>]
+//   --plan       affiche le découpage (segments, groupes de sous-titres) sans écrire de fichier.
+//   --until <s>  extrait : coupe la composition à <s> secondes (sans carte de fin), fondu de sortie.
+//   --out <f>    nom du fichier généré (défaut index.html), ex. extrait-20s.html.
 //
 // Le format de montage.json est documenté dans ../SKILL.md et ../templates/montage.example.json.
 
@@ -18,8 +20,40 @@ import { execFileSync } from "node:child_process";
 const HERE = dirname(fileURLToPath(import.meta.url));
 const CHARTE = resolve(HERE, "../../reso-video-charte/assets");
 
-// ─── Charte (docs/DESIGN.md) ────────────────────────────────────────────────
-const C = {
+// ─── Chartes ────────────────────────────────────────────────────────────────
+// « poudre » : identité « nature morte poudrée » (mur bleu poudré, pierre crème, bleu nuit,
+// touche lavande ; Outfit / Manrope / Caveat / JetBrains Mono), thème par défaut.
+// « lavande » : première identité (SaaS lumineux, dégradés lavande/pêche, Manrope).
+const PALETTES = {};
+PALETTES.poudre = {
+  page: "#FBF6EA",
+  card: "#FFFDF8",
+  ink: "#1F2733",
+  muted: "#5F6672",
+  brand: "#4A6179",
+  brandDeep: "#3A4D61",
+  powder: "#6B8299",
+  powderDeep: "#566E86",
+  soft: "#DCE4EC",
+  softTint: "#EEF2F5",
+  ice: "#E3EAF0",
+  stone: "#E6DCCB",
+  stoneDeep: "#D8CCB6",
+  taupe: "#CEBBAB",
+  accent: "#B6A6D8",
+  accentTint: "#EFE9F7",
+  lilac: "#6E5C8F",
+  peach: "#CEBBAB",
+  peachTint: "#F3ECE1",
+  mint: "#9DBBA8",
+  mintTint: "#DCEFE3",
+  line: "#E7DFD0",
+  capBg: "rgba(31, 39, 51, 0.92)",
+  capText: "#FBF6EA",
+  capActive: "#C9BDEB",
+  capEm: "#FBF6EA",
+};
+PALETTES.lavande = {
   page: "#FAFAFC",
   card: "#FFFFFF",
   ink: "#111116",
@@ -34,6 +68,10 @@ const C = {
   mint: "#7FD0A4",
   mintTint: "#DDF5E8",
   line: "#E8E8EE",
+  capBg: "rgba(255, 255, 255, 0.95)",
+  capText: "#111116",
+  capActive: "#6C4FF8",
+  capEm: "#4F36DB",
 };
 
 // ─── Géométrie 9:16 (1080×1920) ─────────────────────────────────────────────
@@ -95,17 +133,17 @@ const ICONS = {
   message: '<path d="M20.5 12a8.5 8.5 0 0 1-12.4 7.5L3.5 20.5l1-4.4A8.5 8.5 0 1 1 20.5 12z"/>',
   phone: '<path d="M5 3.5h3.5l1.8 4.5-2.3 1.4a11 11 0 0 0 6.6 6.6l1.4-2.3 4.5 1.8V19a2 2 0 0 1-2 2A17 17 0 0 1 3 5.5a2 2 0 0 1 2-2z"/>',
 };
-const ICON_TINT = [
-  [C.softTint, C.brand],
-  [C.peachTint, "#C0673A"],
-  [C.mintTint, "#1F7A4D"],
-  [C.ice, "#2F5FB3"],
-];
 
 // ─── Utilitaires ────────────────────────────────────────────────────────────
 const args = process.argv.slice(2);
 const planOnly = args.includes("--plan");
-const projectArg = args.find((a) => !a.startsWith("--"));
+const argVal = (name) => {
+  const i = args.indexOf(`--${name}`);
+  return i >= 0 ? args[i + 1] : undefined;
+};
+const UNTIL = argVal("until") !== undefined ? Number(argVal("until")) : null;
+const OUT_FILE = argVal("out") ?? "index.html";
+const projectArg = args.find((a, i) => !a.startsWith("--") && !["--until", "--out"].includes(args[i - 1]));
 if (!projectArg) {
   console.error("Usage : node build-montage.mjs videos/<slug> [--plan]");
   process.exit(1);
@@ -127,6 +165,23 @@ const esc = (s) =>
 const montagePath = join(PROJECT, "montage.json");
 if (!existsSync(montagePath)) fail(`montage.json introuvable dans ${PROJECT}`);
 const M = readJson(montagePath);
+const THEME = M.theme ?? "poudre";
+if (!PALETTES[THEME]) fail(`Thème inconnu « ${THEME} » (attendus : ${Object.keys(PALETTES).join(", ")})`);
+const C = PALETTES[THEME];
+const POUDRE = THEME === "poudre";
+const ICON_TINT = POUDRE
+  ? [
+      [C.soft, C.brand],
+      [C.stone, "#7A6450"],
+      [C.accentTint, C.lilac],
+      [C.mintTint, "#1F7A4D"],
+    ]
+  : [
+      [C.softTint, C.brand],
+      [C.peachTint, "#C0673A"],
+      [C.mintTint, "#1F7A4D"],
+      [C.ice, "#2F5FB3"],
+    ];
 const FPS = M.fps ?? 30;
 const q = (t) => Math.round(t * FPS) / FPS; // quantifie sur la grille d'images
 const f = (t) => q(t).toFixed(4);
@@ -148,7 +203,8 @@ function probeDuration(file) {
 if (!M.face?.src) fail("montage.face.src est obligatoire (vidéo face caméra, déjà dérushée).");
 const faceFile = join(PROJECT, M.face.src);
 if (!existsSync(faceFile)) fail(`Vidéo face caméra introuvable : ${M.face.src}`);
-const FACE_DUR = q(M.face.duration ?? probeDuration(faceFile));
+const FACE_FULL = q(M.face.duration ?? probeDuration(faceFile));
+const FACE_DUR = UNTIL ? Math.min(q(UNTIL), FACE_FULL) : FACE_FULL;
 if (!Number.isFinite(FACE_DUR) || FACE_DUR <= 0) fail("Durée de la vidéo face caméra illisible (ffprobe ?). Renseignez face.duration.");
 const FOCUS_Y = M.face.focusY ?? 32; // % vertical où se trouve le visage (bulle, split)
 const BUBBLE_CROP = M.face.bubbleCrop ?? 0.62; // part de la largeur gardée dans la bulle
@@ -175,7 +231,7 @@ function faceXform(B) {
     clipPath: `inset(${r2(top)}px ${r2(W - left - cw)}px ${r2(H - top - ch)}px ${r2(left)}px round ${r2(B.r / sc)}px)`,
   };
 }
-const END = M.endCard ?? null;
+const END = UNTIL ? null : (M.endCard ?? null);
 const END_DUR = END ? q(END.duration ?? 2.5) : 0;
 const TOTAL = q(FACE_DUR + END_DUR);
 
@@ -194,7 +250,10 @@ if (M.captions?.enabled !== false) {
 }
 
 // Segments : chaque segment dure jusqu'au début du suivant (le dernier jusqu'à la fin de la voix).
-const segs = (M.segments ?? []).map((s) => ({ ...s })).sort((a, b) => a.start - b.start);
+const segs = (M.segments ?? [])
+  .map((s) => ({ ...s }))
+  .filter((s) => s.start < FACE_DUR)
+  .sort((a, b) => a.start - b.start);
 if (!segs.length) fail("montage.segments est vide.");
 if (segs[0].start > 0) segs.unshift({ start: 0, layout: "face" });
 segs.forEach((s, i) => {
@@ -276,8 +335,13 @@ if (planOnly) {
 // ─── Assets ─────────────────────────────────────────────────────────────────
 const BRAND_DIR = join(PROJECT, "brand");
 mkdirSync(BRAND_DIR, { recursive: true });
-copyFileSync(join(CHARTE, "fonts/manrope.woff2"), join(BRAND_DIR, "manrope.woff2"));
-copyFileSync(join(CHARTE, "logo.svg"), join(BRAND_DIR, "logo.svg"));
+for (const font of ["manrope", "outfit", "caveat", "jetbrainsmono"])
+  copyFileSync(join(CHARTE, `fonts/${font}.woff2`), join(BRAND_DIR, `${font}.woff2`));
+copyFileSync(join(CHARTE, POUDRE ? "logo-poudre.svg" : "logo.svg"), join(BRAND_DIR, "logo.svg"));
+copyFileSync(join(CHARTE, "logo-poudre-creme.svg"), join(BRAND_DIR, "logo-creme.svg"));
+if (END?.image) {
+  if (!existsSync(join(PROJECT, END.image))) fail(`Image de fin introuvable : ${END.image}`);
+}
 copyFileSync(join(HERE, "gsap.min.js"), join(BRAND_DIR, "gsap.min.js"));
 
 // ─── HTML ───────────────────────────────────────────────────────────────────
@@ -330,8 +394,12 @@ segs.forEach((s, i) => {
     .map((w, k) => `<span class="cw" id="card-${i}-w${k}">${esc(w)}</span>`)
     .join(" ");
   html.push(
-    `<div class="card-slide clip" id="card-${i}" data-start="${T(s.start)}" data-duration="${T(s.end - s.start)}" data-track-index="3"><div class="card-in">${s.card.kicker ? `<div class="kicker">${esc(s.card.kicker)}</div>` : ""}<div class="card-text">${wordsHtml}</div>${s.card.sub ? `<div class="card-sub" id="card-${i}-sub">${esc(s.card.sub)}</div>` : ""}</div></div>`,
+    `<div class="card-slide clip" id="card-${i}" data-start="${T(s.start)}" data-duration="${T(s.end - s.start)}" data-track-index="3"><div class="card-in">${s.card.kicker ? `<div class="kicker">${esc(s.card.kicker)}</div>` : ""}<div class="card-text">${wordsHtml}</div>${s.card.sub ? `<div class="card-sub" id="card-${i}-sub">${esc(s.card.sub)}</div>` : ""}</div>${s.card.script ? `<div class="script" id="card-${i}-script">${esc(s.card.script)}<svg viewBox="0 0 300 24" preserveAspectRatio="none"><path id="card-${i}-swoosh" d="M4 16 C 80 6, 180 4, 296 12" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></div>` : ""}</div>`,
   );
+  if (s.card.script) {
+    js.push(`tl.fromTo("#card-${i}-script", { opacity: 0, rotation: -8, y: 10 }, { opacity: 1, rotation: -6, y: 0, duration: 0.5, ease: "power2.out" }, ${T(s.start + 0.7)});`);
+    js.push(`(function(){const el=document.getElementById("card-${i}-swoosh");if(el){const L=el.getTotalLength();tl.set(el,{strokeDasharray:L,strokeDashoffset:L},${T(s.start + 0.9)});tl.to(el,{strokeDashoffset:0,duration:0.5,ease:"power2.inOut"},${T(s.start + 0.9)});}})();`);
+  }
   js.push(
     `tl.fromTo("#card-${i} .cw", { opacity: 0, y: 12, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.5, ease: "power2.out", stagger: 0.06 }, ${T(s.start + 0.1)});`,
   );
@@ -359,7 +427,7 @@ segs.forEach((s, i) => {
   if (s.title) {
     const dur = q(Math.min(s.titleDuration ?? s.end - s.start, s.end - s.start));
     html.push(
-      `<div class="topline clip" id="title-${i}" data-start="${T(s.start)}" data-duration="${T(dur)}" data-track-index="5">${esc(s.title)}</div>`,
+      `<div class="topline clip" id="title-${i}" data-start="${T(s.start)}" data-duration="${T(dur)}" data-track-index="5">${s.titleKicker ? `<span class="tk">${esc(s.titleKicker)}</span>` : ""}${esc(s.title)}</div>`,
     );
     js.push(`tl.fromTo("#title-${i}", { opacity: 0, y: -24 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, ${T(s.start)});`);
   }
@@ -383,12 +451,20 @@ segs.forEach((s, i) => {
 // Carte de fin.
 if (END) {
   html.push(
-    `<div class="end clip" id="end" data-start="${T(FACE_DUR)}" data-duration="${T(END_DUR)}" data-track-index="7"><div class="end-in"><img id="end-logo" src="brand/logo.svg" alt="Reso" />${END.line ? `<div class="end-line" id="end-line">${esc(END.line)}</div>` : ""}${END.cta ? `<div class="end-cta" id="end-cta">${esc(END.cta)}</div>` : ""}${END.url ? `<div class="end-url" id="end-url">${esc(END.url)}</div>` : ""}</div></div>`,
+    `<div class="end clip${END.image ? " end-photo" : ""}" id="end" data-start="${T(FACE_DUR)}" data-duration="${T(END_DUR)}" data-track-index="7">${END.image ? `<img class="end-bg" src="${esc(END.image)}" alt="" />` : ""}<div class="end-in">${END.image ? `<div id="end-logo"></div>` : `<img id="end-logo" src="brand/logo.svg" alt="Reso" />`}${END.line ? `<div class="end-line" id="end-line">${esc(END.line)}</div>` : ""}${END.cta ? `<div class="end-cta" id="end-cta">${esc(END.cta)}</div>` : ""}${END.url ? `<div class="end-url" id="end-url">${esc(END.url)}</div>` : ""}</div></div>`,
   );
   js.push(`tl.fromTo("#end-logo", { opacity: 0, y: 20, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "power3.out" }, ${T(FACE_DUR + 0.1)});`);
   ["end-line", "end-cta", "end-url"].forEach((id, k) => {
     js.push(`if (document.getElementById("${id}")) tl.fromTo("#${id}", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, ${T(FACE_DUR + 0.35 + k * 0.15)});`);
   });
+}
+
+// Cadre crème et grain (thème poudre) : l'aspect « tirage » des visuels de marque.
+if (POUDRE) {
+  html.push(`<div id="grain"></div>`);
+  html.push(`<div id="frame"></div>`);
+  // Grain qui « vit » : position décalée par paliers (déterministe, 12 fois par seconde).
+  js.push(`tl.fromTo("#grain", { backgroundPosition: "0px 0px" }, { backgroundPosition: "${Math.round(TOTAL * 12) * 37}px ${Math.round(TOTAL * 12) * 53}px", duration: ${T(TOTAL)}, ease: "steps(${Math.round(TOTAL * 12)})" }, 0);`);
 }
 
 // Sous-titres.
@@ -402,9 +478,9 @@ capGroups.forEach((g, i) => {
   );
   js.push(`tl.fromTo("#cap-${i}", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, ${T(g.start)});`);
   g.words.forEach((w, k) => {
-    js.push(`tl.set("#c${i}w${k}", { color: "${C.brand}" }, ${T(Math.max(w.start, g.start))});`);
+    js.push(`tl.set("#c${i}w${k}", { color: "${C.capActive}" }, ${T(Math.max(w.start, g.start))});`);
     const off = g.words[k + 1]?.start ?? g.end;
-    if (k + 1 < g.words.length) js.push(`tl.set("#c${i}w${k}", { color: "${w.emph ? C.brandDeep : C.ink}" }, ${T(off)});`);
+    if (k + 1 < g.words.length) js.push(`tl.set("#c${i}w${k}", { color: "${w.emph ? C.capEm : C.capText}" }, ${T(off)});`);
   });
 });
 html.push(`</div>`);
@@ -426,6 +502,12 @@ segs.forEach((s, i) => {
   js.push(`tl.to("#captions", { y: ${L.cap}, duration: ${dur}, ease: "power3.inOut" }, ${T(t)});`);
 });
 
+// Extrait : fondu de sortie (image vers le crème, son via data-automation non requis : court fondu visuel).
+if (UNTIL) {
+  html.push(`<div id="fade-out"></div>`);
+  js.push(`tl.fromTo("#fade-out", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.in" }, ${T(FACE_DUR - 0.6)});`);
+}
+
 // Audio : voix (piste son de la face caméra) + musique facultative.
 const audio = [
   `<audio id="voice" src="${esc(M.face.src)}" data-start="0" data-duration="${T(FACE_DUR)}" data-track-index="10" data-volume="1"></audio>`,
@@ -437,8 +519,53 @@ if (M.music?.src) {
   );
 }
 
+// Surcharges du thème poudre (identité « nature morte poudrée »).
+const GRAIN = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="3" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .12  0 0 0 0 .1  0 0 0 0 .08  0 0 0 .55 0"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>');
+const FRAME = M.frame ?? 26; // épaisseur du cadre crème (0 = sans cadre)
+const CSS_POUDRE = `
+html, body, #root { background: ${C.page}; font-family: "Manrope", "Outfit", system-ui, sans-serif; }
+#stage-bg { background:
+    radial-gradient(ellipse 120% 60% at 22% 18%, rgba(255,255,255,.16), transparent 60%),
+    linear-gradient(180deg, ${C.powder} 0%, #7389A0 58%, ${C.powder} 70.4%, ${C.stone} 70.5%, ${C.stoneDeep} 100%); }
+#face { filter: sepia(.12) saturate(.9) contrast(.97) brightness(1.02); }
+.shot-phone .shot-in { background: ${C.ink}; box-shadow: 0 2px 6px rgba(31,39,51,.12), 0 50px 80px -34px rgba(31,39,51,.6), 0 30px 40px -30px rgba(40,34,24,.45); }
+.shot-phone .notch { background: ${C.ink}; }
+.shot .screen { background: ${C.page}; }
+.shot-window .shot-in { border-radius: 14px; background: ${C.card}; border-color: ${C.line}; box-shadow: 0 50px 80px -34px rgba(31,39,51,.55); }
+.shot-window .win-bar { background: ${C.page}; border-color: ${C.line}; }
+#bubble-ring { background: ${C.page}; box-shadow: 0 30px 60px -24px rgba(31,39,51,.55); }
+.card-slide { background: transparent; padding: 0 96px 560px; }
+.topline, .cap, .card-text { text-wrap: balance; }
+.card-in { gap: 30px; }
+.kicker { font-family: "JetBrains Mono", monospace; font-size: 30px; font-weight: 500; letter-spacing: .06em; color: ${C.page}; opacity: .82; background: none; border: 0; box-shadow: none; padding: 0; text-transform: lowercase; }
+.card-text { font-family: "Outfit", sans-serif; font-size: 132px; line-height: .96; font-weight: 500; letter-spacing: -0.035em; color: ${C.page}; }
+.card-sub { font-family: "Manrope", sans-serif; font-size: 40px; font-weight: 500; color: ${C.page}; opacity: .85; letter-spacing: .01em; }
+.script { display: block; position: absolute; right: 96px; top: 470px; font-family: "Caveat", cursive; font-size: 64px; font-weight: 600; color: ${C.page}; transform-origin: 100% 50%; text-align: center; }
+.script svg { display: block; width: 100%; height: 24px; margin-top: -6px; }
+.topline { top: 200px; font-family: "Outfit", sans-serif; font-size: 52px; font-weight: 500; letter-spacing: -0.015em; line-height: 1.1; color: ${C.ink}; background: ${C.page}; border-radius: 6px; padding: 26px 38px 28px; box-shadow: 0 24px 50px -24px rgba(31,39,51,.55); }
+.tk { font-family: "JetBrains Mono", monospace; color: ${C.brand}; }
+.chip-in { background: ${C.page}; border-color: ${C.line}; border-radius: 16px; box-shadow: 0 24px 44px -20px rgba(31,39,51,.5); }
+.chip-ico { border-radius: 12px; }
+.chip-t { font-family: "Outfit", sans-serif; font-weight: 500; font-size: 36px; color: ${C.ink}; letter-spacing: -0.01em; }
+.chip-s { color: ${C.muted}; }
+.cap { font-family: "Outfit", sans-serif; font-weight: 500; font-size: 58px; letter-spacing: -0.01em; color: ${C.capText}; background: ${C.capBg}; border-radius: 10px; padding: 14px 30px 18px; box-shadow: 0 20px 40px -18px rgba(31,39,51,.6); }
+.cap .w.em { color: ${C.capEm}; background: none; padding: 0; text-decoration: underline; text-decoration-color: ${C.accent}; text-decoration-thickness: 5px; text-underline-offset: 10px; }
+.end { background: ${C.powder}; }
+.end-photo .end-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.end-photo .end-in { position: relative; padding: 780px 0 0; gap: 26px; }
+.end-photo #end-logo { width: 0; height: 0; }
+.end-line { font-family: "Outfit", sans-serif; font-weight: 400; font-size: 44px; color: ${C.page}; letter-spacing: 0; }
+.end-cta { font-family: "Outfit", sans-serif; font-weight: 500; font-size: 40px; color: ${C.ink}; background: ${C.page}; border-radius: 999px; padding: 26px 56px; box-shadow: 0 24px 50px -22px rgba(31,39,51,.6); }
+.end-url { font-family: "JetBrains Mono", monospace; font-size: 28px; letter-spacing: .12em; color: ${C.page}; text-transform: uppercase; }
+#grain { position: absolute; inset: 0; background-image: url("${GRAIN}"); background-size: 240px 240px; opacity: .16; mix-blend-mode: multiply; pointer-events: none; }
+#frame { position: absolute; inset: 0; border: ${FRAME}px solid ${C.page}; pointer-events: none; box-shadow: inset 0 0 0 1px rgba(40,34,24,.08); }
+`;
+
 const css = `
 @font-face { font-family: "Manrope"; src: url("brand/manrope.woff2") format("woff2"); font-weight: 200 800; font-display: block; }
+@font-face { font-family: "Outfit"; src: url("brand/outfit.woff2") format("woff2"); font-weight: 100 900; font-display: block; }
+@font-face { font-family: "Caveat"; src: url("brand/caveat.woff2") format("woff2"); font-weight: 400 700; font-display: block; }
+@font-face { font-family: "JetBrains Mono"; src: url("brand/jetbrainsmono.woff2") format("woff2"); font-weight: 100 800; font-display: block; }
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: ${C.page}; font-family: "Manrope", system-ui, sans-serif; color: ${C.ink}; }
 #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: ${C.page}; }
@@ -490,10 +617,14 @@ html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
 .end-cta { font-size: 40px; font-weight: 700; color: ${C.card}; background: ${C.ink}; border-radius: 22px; padding: 28px 52px; box-shadow: 0 24px 50px -20px rgba(17,17,22,.5); }
 .end-url { font-size: 36px; font-weight: 600; color: ${C.muted}; }
 #captions { position: absolute; left: 0; top: 0; width: ${W}px; height: 0; }
+#fade-out { position: absolute; inset: 0; background: ${C.page}; opacity: 0; pointer-events: none; }
 .cap { position: absolute; left: 70px; right: 70px; top: -50px; margin: 0 auto; width: fit-content; max-width: 940px; font-size: 60px; line-height: 1.12; font-weight: 800; letter-spacing: -0.02em; text-align: center; color: ${C.ink};
   background: rgba(255,255,255,.95); border-radius: 26px; padding: 16px 30px 18px; box-shadow: 0 2px 6px rgba(17,17,22,.08), 0 20px 44px -16px rgba(17,17,22,.35); }
 .cap .w { display: inline; }
 .cap .w.em { color: ${C.brandDeep}; background: ${C.soft}; border-radius: 12px; padding: 0 8px; }
+.tk { display: block; font-size: 22px; font-weight: 500; letter-spacing: .08em; margin-bottom: 8px; }
+.script { display: none; }
+${POUDRE ? CSS_POUDRE : ""}
 `;
 
 const out = `<!doctype html>
@@ -519,5 +650,5 @@ const out = `<!doctype html>
   </body>
 </html>
 `;
-writeFileSync(join(PROJECT, "index.html"), out);
-console.log(`✔ ${join(projectArg, "index.html")} — ${segs.length} segments, ${capGroups.length} sous-titres, ${TOTAL}s @ ${FPS} i/s`);
+writeFileSync(join(PROJECT, OUT_FILE), out);
+console.log(`✔ ${join(projectArg, OUT_FILE)} — ${segs.length} segments, ${capGroups.length} sous-titres, ${TOTAL}s @ ${FPS} i/s`);

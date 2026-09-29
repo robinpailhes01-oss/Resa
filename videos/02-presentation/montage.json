@@ -38,7 +38,7 @@
     {
       "start": 0,
       "layout": "face",
-      "title": "Tu paies trop cher tes rendez-vous en ligne ?",
+      "title": "tu paies trop cher tes rendez-vous en ligne ?",
       "titleDuration": 3.3
     },
     {
@@ -60,14 +60,14 @@
       "start": 7.6,
       "layout": "face",
       "zoom": 1.04,
-      "title": "Vraiment besoin de payer aussi cher ?",
+      "title": "vraiment besoin de payer aussi cher ?",
       "titleDuration": 2.4
     },
     {
       "start": 10.12,
       "layout": "app",
       "app": {
-        "src": "media/app/page-publique-mobile.mp4",
+        "src": "media/app-v2/page-publique-mobile.mp4",
         "frame": "phone",
         "from": 0.2
       },
@@ -84,7 +84,7 @@
       "start": 13.58,
       "layout": "split",
       "app": {
-        "src": "media/app/agenda-mobile.mp4",
+        "src": "media/app-v2/agenda-mobile.mp4",
         "frame": "phone",
         "from": 0.9
       }
@@ -94,16 +94,16 @@
       "layout": "card",
       "captions": false,
       "card": {
-        "kicker": "1 · L’inscription",
-        "text": "Quelques secondes.",
-        "sub": "Pour commencer, c’est très simple."
+        "kicker": "[01] — l’inscription",
+        "text": "quelques secondes.",
+        "script": "très simple"
       }
     },
     {
       "start": 16.4,
       "layout": "app",
       "app": {
-        "src": "media/app/inscription-rapide.mp4",
+        "src": "media/app-v2/inscription-rapide.mp4",
         "frame": "phone",
         "from": 0
       }
@@ -112,13 +112,14 @@
       "start": 19.24,
       "layout": "face",
       "zoom": 1.08,
-      "title": "Ajoute le lien de ta fiche Google"
+      "title": "ajoute le lien de ta fiche google",
+      "titleKicker": "[01]"
     },
     {
       "start": 21.48,
       "layout": "split",
       "app": {
-        "src": "media/app/page-publique-mobile.mp4",
+        "src": "media/app-v2/page-publique-mobile.mp4",
         "frame": "phone",
         "from": 2.0
       },
@@ -165,13 +166,14 @@
       "start": 26.41,
       "layout": "face",
       "zoom": 1.0,
-      "title": "2 · Côté clients"
+      "title": "côté clients",
+      "titleKicker": "[02]"
     },
     {
       "start": 28.48,
       "layout": "app",
       "app": {
-        "src": "media/app/reservation-rapide.mp4",
+        "src": "media/app-v2/reservation-rapide.mp4",
         "frame": "phone",
         "from": 0
       }
@@ -181,8 +183,8 @@
       "layout": "card",
       "captions": false,
       "card": {
-        "kicker": "Emails automatiques",
-        "text": "Confirmation. Rappel.",
+        "kicker": "emails automatiques",
+        "text": "confirmation. rappel.",
         "sub": "Envoyés tout seuls, avant le rendez-vous."
       },
       "chips": [
@@ -216,7 +218,7 @@
       "start": 36.71,
       "layout": "app",
       "app": {
-        "src": "media/app/agenda-mobile.mp4",
+        "src": "media/app-v2/agenda-mobile.mp4",
         "frame": "phone",
         "from": 0.6
       },
@@ -233,13 +235,14 @@
       "start": 38.92,
       "layout": "face",
       "zoom": 1.12,
-      "title": "3 · Le vrai plus : tes avis"
+      "title": "le vrai plus : tes avis",
+      "titleKicker": "[03]"
     },
     {
       "start": 40.94,
       "layout": "split",
       "app": {
-        "src": "media/app/emails-mobile.mp4",
+        "src": "media/app-v2/emails-mobile.mp4",
         "frame": "phone",
         "from": 0.6
       },
@@ -273,9 +276,9 @@
       "layout": "card",
       "captions": false,
       "card": {
-        "kicker": "Tes avis, chez toi",
-        "text": "Ta réputation. Pas celle d’une plateforme.",
-        "sub": "Les avis vont sur ta fiche Google."
+        "kicker": "[03] — tes avis, chez toi",
+        "text": "ta réputation. pas celle d’une plateforme.",
+        "script": "sur ta fiche google"
       }
     },
     {
@@ -283,9 +286,10 @@
       "layout": "card",
       "captions": false,
       "card": {
-        "kicker": "4 · Une seule offre",
+        "kicker": "[04] — une seule offre",
         "text": "39 € HT / mois",
-        "sub": "Sans engagement · sans commission sur tes rendez-vous"
+        "sub": "Sans engagement · sans commission sur tes rendez-vous",
+        "script": "7 jours offerts"
       }
     },
     {
@@ -307,19 +311,20 @@
       "start": 59.74,
       "layout": "face",
       "zoom": 1.16,
-      "title": "Pourquoi payer plus cher ?"
+      "title": "pourquoi payer plus cher ?"
     },
     {
       "start": 62.66,
       "layout": "face",
       "zoom": 1.0,
-      "title": "Le lien est dans la bio"
+      "title": "le lien est dans la bio"
     }
   ],
   "endCard": {
     "duration": 2.5,
-    "line": "Votre agenda. L’esprit libre.",
+    "image": "media/fin-ciseaux.png",
     "cta": "Essayer gratuitement",
-    "url": "Lien en bio"
-  }
+    "url": "lien en bio"
+  },
+  "theme": "poudre"
 }

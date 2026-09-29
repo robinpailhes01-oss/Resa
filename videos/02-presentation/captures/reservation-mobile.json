@@ -10,7 +10,7 @@
     { "shot": "praticienne" },
     { "click": "a[href*='praticien=']:last-of-type" },
     { "wait": 500 },
-    { "click": "a[aria-disabled='false'][href*='date=2026-09-29']" },
+    { "click": "a[aria-disabled='false'][href*='date=2026-10-02']" },
     { "wait": 800 },
     { "shot": "creneaux" },
     { "click": "a[href*='heure=']" },
