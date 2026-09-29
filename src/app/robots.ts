@@ -11,7 +11,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/api/", "/confirmer-inscription", "/desinscription"],
+      disallow: ["/api/", "/admin/", "/confirmer-inscription", "/desinscription"],
     },
     sitemap: `${offer.siteUrl.replace(/\/$/, "")}/sitemap.xml`,
   };

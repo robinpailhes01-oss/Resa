@@ -435,3 +435,63 @@ export async function followUpsAwaitingCheck(): Promise<number> {
   const [row] = await getSql()<Array<{ n: number }>>`select count(*)::int as n from prospects where status = 'contacte' and not follow_up_allowed and follow_up_at is null`;
   return row.n;
 }
+
+export interface ContactedProspect {
+  id: string;
+  name: string;
+  city: string;
+  email: string | null;
+  bookingProvider: string | null;
+  status: string;
+  firstEmailAt: Date | null;
+  followUpAt: Date | null;
+  followUpAllowed: boolean;
+  repliedAt: Date | null;
+  lastReply: string | null;
+}
+
+/** Prospects déjà contactés, du plus récent au plus ancien (page de suivi). */
+export async function listContactedProspects(): Promise<ContactedProspect[]> {
+  const rows = await getSql()<Array<ProspectRow & { follow_up_allowed: boolean }>>`
+    select * from prospects where first_email_at is not null order by first_email_at desc, name limit 500`;
+  return rows.map((r) => ({
+    id: r.id,
+    name: r.name,
+    city: r.city,
+    email: r.email,
+    bookingProvider: r.booking_provider,
+    status: r.status,
+    firstEmailAt: r.first_email_at,
+    followUpAt: r.follow_up_at,
+    followUpAllowed: r.follow_up_allowed,
+    repliedAt: r.replied_at,
+    lastReply: r.last_reply,
+  }));
+}
+
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/** Marquage manuel depuis la page de suivi : a répondu, pas intéressé (liste d'exclusion), ou annulation. */
+export async function setProspectOutcome(id: string, outcome: "replied" | "declined" | "undo", now = new Date()): Promise<boolean> {
+  if (!UUID_RE.test(id)) return false;
+  const sql = getSql();
+  if (outcome === "replied") {
+    const rows = await sql`update prospects set status = 'repondu', replied_at = coalesce(replied_at, ${now}), updated_at = ${now}
+      where id = ${id} and status in ('contacte','relance','repondu','desinscrit') returning id`;
+    return rows.length > 0;
+  }
+  if (outcome === "declined") {
+    const [row] = await sql<Array<{ email: string | null }>>`update prospects set status = 'desinscrit', updated_at = ${now}
+      where id = ${id} and status in ('contacte','relance','repondu','desinscrit') returning email`;
+    if (!row) return false;
+    if (row.email) await sql`insert into prospect_optouts (email) values (${row.email}) on conflict (email) do nothing`;
+    return true;
+  }
+  // Annulation d'un marquage par erreur : retour « contacté » (ou « relancé »), retrait de la liste d'exclusion.
+  const [row] = await sql<Array<{ email: string | null }>>`update prospects
+    set status = case when follow_up_at is null then 'contacte' else 'relance' end, replied_at = null, updated_at = ${now}
+    where id = ${id} and status in ('repondu','desinscrit') returning email`;
+  if (!row) return false;
+  if (row.email) await sql`delete from prospect_optouts where email = ${row.email}`;
+  return true;
+}
