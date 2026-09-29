@@ -37,7 +37,7 @@ export function renderInvoicePdf(inv: InvoiceData): Uint8Array {
   const lines: PdfLine[] = [];
   const ink: [number, number, number] = [0.07, 0.07, 0.09];
   const muted: [number, number, number] = [0.44, 0.44, 0.49];
-  const brand: [number, number, number] = [0.42, 0.31, 0.97];
+  const brand: [number, number, number] = [0.29, 0.38, 0.47]; // bleu poudré profond #4a6179
 
   texts.push({ text: inv.seller.brand.toLowerCase(), x: L, y: 785, size: 26, bold: true, color: brand });
   texts.push({ text: "FACTURE", x: R, y: 790, size: 20, bold: true, right: true });

@@ -40,21 +40,21 @@ export function confirmationEmail(to: string, confirmUrl: string): EmailMessage 
 <meta name="color-scheme" content="light">
 <title>${escapeHtml(subject)}</title>
 </head>
-<body style="margin:0;padding:0;background:#faf7f2;font-family:Manrope,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:#27242a;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#faf7f2;">
+<body style="margin:0;padding:0;background:#fbf6ea;font-family:Manrope,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:#1f2733;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#fbf6ea;">
 <tr><td align="center" style="padding:32px 16px;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#ffffff;border-radius:16px;">
-<tr><td style="padding:32px 28px 8px 28px;font-size:24px;font-weight:700;color:#493344;">${escapeHtml(brand.toLowerCase())}</td></tr>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#fffdf8;border-radius:16px;">
+<tr><td style="padding:32px 28px 8px 28px;font-size:24px;font-weight:700;color:#4a6179;">${escapeHtml(brand.toLowerCase())}</td></tr>
 <tr><td style="padding:8px 28px 0 28px;font-size:16px;line-height:25px;">Bonjour,</td></tr>
 <tr><td style="padding:16px 28px 0 28px;font-size:16px;line-height:25px;">Vous avez demandé à être informé de l’ouverture de ${escapeHtml(brand)}. Confirmez votre adresse email pour recevoir cette notification.</td></tr>
 <tr><td style="padding:24px 28px;">
-<a href="${safeUrl}" style="display:inline-block;background:#493344;color:#ffffff;text-decoration:none;font-weight:600;font-size:16px;line-height:24px;padding:12px 24px;border-radius:10px;">Confirmer mon inscription</a>
+<a href="${safeUrl}" style="display:inline-block;background:#4a6179;color:#fffdf8;text-decoration:none;font-weight:600;font-size:16px;line-height:24px;padding:12px 24px;border-radius:10px;">Confirmer mon inscription</a>
 </td></tr>
-<tr><td style="padding:0 28px 0 28px;font-size:14px;line-height:21px;color:#655b66;">Ce lien est valable pendant 48 heures. Si vous n’êtes pas à l’origine de cette demande, vous pouvez ignorer cet email.</td></tr>
+<tr><td style="padding:0 28px 0 28px;font-size:14px;line-height:21px;color:#5f6672;">Ce lien est valable pendant 48 heures. Si vous n’êtes pas à l’origine de cette demande, vous pouvez ignorer cet email.</td></tr>
 <tr><td style="padding:24px 28px 32px 28px;font-size:16px;line-height:25px;">À bientôt,<br>L’équipe ${escapeHtml(brand)}</td></tr>
 </table>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;">
-<tr><td style="padding:16px 8px;font-size:12px;line-height:18px;color:#655b66;">Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :<br><a href="${safeUrl}" style="color:#493344;word-break:break-all;">${safeUrl}</a></td></tr>
+<tr><td style="padding:16px 8px;font-size:12px;line-height:18px;color:#5f6672;">Si le bouton ne fonctionne pas, copiez ce lien dans votre navigateur :<br><a href="${safeUrl}" style="color:#4a6179;word-break:break-all;">${safeUrl}</a></td></tr>
 </table>
 </td></tr>
 </table>

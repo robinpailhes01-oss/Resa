@@ -1,9 +1,10 @@
 @import "tailwindcss";
 
 /*
- * Tokens visuels Reso — direction « SaaS premium » (septembre 2026).
+ * Tokens visuels Reso — identité « nature morte poudrée » (septembre 2026).
+ * Tirée des visuels Instagram : mur bleu poudré, pierre crème, chrome, touche lavande.
  * Une seule source pour les couleurs, la typographie, les rayons et les ombres.
- * Le violet est réservé aux accents : sélection, petite icône, lien, détail d'agenda.
+ * Les noms restent sémantiques (brand, soft, accent…) : l'application se re-thème seule.
  */
 @theme {
   --color-*: initial;
@@ -12,39 +13,47 @@
   --color-white: #ffffff;
   --color-black: #000000;
 
-  --color-page: #fafafc; /* fond général */
-  --color-card: #ffffff; /* surfaces */
-  --color-ink: #111116; /* noir : titres, boutons principaux */
-  --color-ink-hover: #26262e;
-  --color-ink-muted: #6f707c; /* gris texte, AA sur blanc et sur #fafafc */
-  --color-line: #e8e8ee; /* bordures */
-  --color-control: #8d8d99; /* bordures des champs */
+  --color-page: #fbf6ea; /* crème du cadre des visuels */
+  --color-card: #fffdf8; /* ivoire : surfaces */
+  --color-ink: #1f2733; /* bleu nuit : titres, boutons principaux (13,9:1 sur crème) */
+  --color-ink-hover: #2f3a48;
+  --color-ink-muted: #5f6672; /* texte secondaire, 5,4:1 sur crème */
+  --color-line: #e7dfd0; /* pierre claire : bordures */
+  --color-control: #8e8778; /* bordures des champs */
 
-  --color-brand: #6c4ff8; /* violet principal */
-  --color-brand-deep: #4f36db; /* violet profond */
-  --color-brand-hover: #5a3ee6;
-  --color-soft: #e9e3ff; /* lavande */
-  --color-soft-tint: #f3f0ff; /* lavande très claire */
-  --color-ice: #ddebff; /* bleu glacé */
-  --color-accent: #f4b28f; /* pêche, barres et pastilles */
-  --color-accent-tint: #ffe8da; /* pêche très clair */
-  --color-success: #1f7a4d; /* texte succès, AA */
-  --color-success-tint: #ddf5e8; /* vert menthe très clair */
-  --color-mint: #7fd0a4; /* barre des rendez-vous menthe */
+  --color-brand: #4a6179; /* bleu poudré profond : liens, icônes, sélection (5,9:1 sur crème) */
+  --color-brand-deep: #3a4d61;
+  --color-brand-hover: #3f5469;
+  --color-powder: #6b8299; /* le mur des visuels : grands aplats, texte crème en grand corps uniquement */
+  --color-powder-deep: #566e86; /* aplats portant du texte courant crème (4,9:1) */
+  --color-soft: #dce4ec; /* bleu poudré clair */
+  --color-soft-tint: #eef2f5; /* bleu poudré très clair */
+  --color-ice: #e3eaf0;
+  --color-stone: #e6dccb; /* pierre des socles */
+  --color-taupe: #cebbab;
+  --color-accent: #b6a6d8; /* lavande du vernis : barres et pastilles, jamais en texte */
+  --color-accent-tint: #efe9f7;
+  --color-lilac-ink: #6e5c8f; /* lavande lisible (5,4:1 sur crème) */
+  --color-success: #1f7a4d;
+  --color-success-tint: #dcefe3;
+  --color-mint: #9dbba8; /* sauge : barre des rendez-vous */
   --color-error: #b3261e;
-  --color-error-tint: #fdecec;
+  --color-error-tint: #fbe9e6;
 
   --font-sans: var(--font-manrope), system-ui, sans-serif;
+  --font-display: var(--font-outfit), var(--font-manrope), system-ui, sans-serif;
+  --font-script: var(--font-caveat), "Bradley Hand", cursive;
+  --font-mono: var(--font-jetbrains), ui-monospace, "SFMono-Regular", monospace;
 
-  --radius-button: 14px;
-  --radius-field: 10px;
-  --radius-card: 24px;
-  --radius-section: 32px;
+  --radius-button: 999px;
+  --radius-field: 12px;
+  --radius-card: 20px;
+  --radius-section: 28px;
 
-  --shadow-card: 0 1px 2px rgba(17, 17, 22, 0.04), 0 6px 20px -10px rgba(17, 17, 22, 0.08);
-  --shadow-lift: 0 2px 4px rgba(17, 17, 22, 0.04), 0 18px 40px -18px rgba(60, 40, 140, 0.16);
-  --shadow-window: 0 1px 2px rgba(17, 17, 22, 0.04), 0 24px 60px -24px rgba(60, 40, 140, 0.22), 0 60px 120px -50px rgba(60, 40, 140, 0.18);
-  --shadow-float: 0 2px 6px rgba(17, 17, 22, 0.05), 0 18px 40px -16px rgba(60, 40, 140, 0.24);
+  --shadow-card: 0 1px 2px rgba(40, 34, 24, 0.05), 0 8px 24px -14px rgba(40, 34, 24, 0.12);
+  --shadow-lift: 0 2px 4px rgba(40, 34, 24, 0.05), 0 20px 40px -20px rgba(58, 77, 97, 0.28);
+  --shadow-window: 0 1px 2px rgba(40, 34, 24, 0.05), 0 28px 60px -28px rgba(58, 77, 97, 0.35), 0 60px 120px -60px rgba(40, 34, 24, 0.22);
+  --shadow-float: 0 2px 6px rgba(40, 34, 24, 0.06), 0 18px 40px -18px rgba(58, 77, 97, 0.32);
 
   --text-body: 1.0625rem; /* 17px */
   --text-body--line-height: 1.75rem; /* 28px */
@@ -95,8 +104,9 @@
   h3,
   h4 {
     color: var(--color-ink);
-    font-weight: 700;
-    letter-spacing: -0.03em;
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.025em;
     text-wrap: balance;
   }
 
@@ -160,106 +170,130 @@
     max-width: 65ch;
   }
 
-  /* Titres de la landing : serrés, précis, tailles contenues. */
+  /* Titres : géométriques, en minuscules sur la landing comme sur les visuels. */
   .display {
-    font-size: clamp(2.625rem, 3.4vw + 1.5rem, 4.75rem);
-    line-height: 0.98;
-    letter-spacing: -0.04em;
-    font-weight: 700;
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 4.6vw + 1.2rem, 5.75rem);
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+    font-weight: 500;
   }
   .heading-2 {
-    font-size: clamp(1.75rem, 1.4vw + 1.2rem, 2.625rem);
-    line-height: 1.1;
-    letter-spacing: -0.03em;
-    font-weight: 700;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 2.2vw + 1.2rem, 3.25rem);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    font-weight: 500;
   }
   .heading-3 {
+    font-family: var(--font-display);
     font-size: clamp(1.25rem, 0.6vw + 1rem, 1.5rem);
-    line-height: 1.25;
+    line-height: 1.2;
     letter-spacing: -0.02em;
-    font-weight: 700;
+    font-weight: 500;
   }
+  /* Sous-titre en capitales très espacées (« BEAUTY BUSINESS SIMPLIFIED »). */
   .eyebrow {
+    font-family: var(--font-sans);
     font-size: 0.75rem;
     line-height: 1rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
+    font-weight: 500;
+    letter-spacing: 0.28em;
     text-transform: uppercase;
     color: var(--color-ink-muted);
   }
+  /* Étiquette d'index des visuels : [001]. */
+  .index-tag {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    color: var(--color-ink-muted);
+  }
+  /* Annotation manuscrite (« pour les pros beauté »). */
+  .script {
+    font-family: var(--font-script);
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1;
+  }
+  /* Filet court sous le logotype, comme sur le visuel de marque. */
+  .rule-short {
+    display: block;
+    width: 56px;
+    height: 1.5px;
+    background: currentColor;
+    opacity: 0.8;
+  }
 
-  /* Dégradé mesh du hero : lavande à gauche, pêche à droite, bleu glacé en bas,
-     centre blanc pour la lecture ; fondu vers le fond de page pour que l'agenda
-     semble sortir de la couleur. */
-  .hero-mesh {
+  /* Cadre crème autour des aplats bleu poudré : le passe-partout des visuels. */
+  .powder-panel {
+    background: linear-gradient(100deg, #5f7383 0%, #6a8094 45%, #71869d 100%);
+    color: var(--color-page);
+  }
+  .powder-panel h1,
+  .powder-panel h2,
+  .powder-panel h3 {
+    color: var(--color-page);
+  }
+  /* Image posée dans l'aplat : son bord haut se fond dans le mur. */
+  .blend-top {
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 14%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 14%);
+  }
+  .grain::before {
+    content: "";
     position: absolute;
     inset: 0;
-    z-index: -2;
     pointer-events: none;
-    background:
-      linear-gradient(to bottom, rgba(250, 250, 252, 0) 0%, rgba(250, 250, 252, 0) 62%, #fafafc 100%),
-      radial-gradient(circle at 16% 24%, rgba(108, 79, 248, 0.2), transparent 34%),
-      radial-gradient(circle at 84% 26%, rgba(255, 190, 150, 0.24), transparent 32%),
-      radial-gradient(circle at 55% 82%, rgba(130, 170, 255, 0.2), transparent 40%),
-      radial-gradient(circle at 8% 78%, rgba(221, 235, 255, 0.9), transparent 36%),
-      #fafafc;
-  }
-  /* Deux halos doux (sans filtre de flou : de simples dégradés, économes). */
-  .hero-halo {
-    position: absolute;
-    z-index: -1;
-    pointer-events: none;
-    border-radius: 999px;
-  }
-  .hero-halo-left {
-    left: -8%;
-    top: 28%;
-    width: 42vw;
-    height: 42vw;
-    max-width: 640px;
-    max-height: 640px;
-    background: radial-gradient(circle, rgba(233, 227, 255, 0.95) 0%, rgba(233, 227, 255, 0) 65%);
-  }
-  .hero-halo-right {
-    right: -10%;
-    top: 22%;
-    width: 44vw;
-    height: 44vw;
-    max-width: 680px;
-    max-height: 680px;
-    background: radial-gradient(circle, rgba(255, 232, 218, 0.95) 0%, rgba(255, 232, 218, 0) 65%);
+    opacity: 0.07;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: multiply;
   }
 
-  /* Fonds doux des blocs produit et du tarif. */
+  /* Moment signature : le socle de l'agenda s'élargit en entrant dans l'écran
+     (animation liée au défilement, sans JavaScript ; statique ailleurs). */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .widen-on-scroll {
+        animation: widen-in linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 90%;
+      }
+    }
+  }
+  @keyframes widen-in {
+    from {
+      clip-path: inset(6% 9% 0 9% round 28px);
+      opacity: 0.6;
+    }
+    to {
+      clip-path: inset(0 0 0 0 round 28px);
+      opacity: 1;
+    }
+  }
+
+  /* Aplats doux de la palette (blocs produit, tarif). */
   .panel-lavender {
-    background:
-      radial-gradient(circle at 90% 10%, rgba(221, 235, 255, 0.9), transparent 45%),
-      linear-gradient(135deg, #f5f2ff 0%, #eef2ff 100%);
+    background: linear-gradient(160deg, #eef2f5 0%, #e6dccb 100%);
   }
   .panel-pricing {
-    background:
-      radial-gradient(circle at 12% 20%, rgba(233, 227, 255, 0.95), transparent 42%),
-      radial-gradient(circle at 88% 15%, rgba(255, 232, 218, 0.9), transparent 40%),
-      radial-gradient(circle at 60% 100%, rgba(221, 235, 255, 0.9), transparent 45%),
-      #ffffff;
+    background: var(--color-card);
   }
   .panel-dark {
-    background:
-      radial-gradient(circle at 85% 20%, rgba(130, 170, 255, 0.35), transparent 45%),
-      radial-gradient(circle at 10% 90%, rgba(255, 190, 150, 0.18), transparent 40%),
-      linear-gradient(135deg, #4f36db 0%, #3d3fcf 55%, #3556c9 100%);
+    background: linear-gradient(100deg, #4f6479 0%, #566e86 50%, #62798f 100%);
   }
   .halo-peach {
-    background: radial-gradient(ellipse at 50% 60%, rgba(255, 232, 218, 0.95) 0%, rgba(233, 227, 255, 0.6) 45%, transparent 75%);
+    background: radial-gradient(ellipse at 50% 60%, rgba(230, 220, 203, 0.95) 0%, rgba(239, 233, 247, 0.6) 45%, transparent 75%);
   }
   .halo-ice {
-    background: radial-gradient(ellipse at 50% 60%, rgba(221, 235, 255, 0.95) 0%, rgba(233, 227, 255, 0.6) 45%, transparent 75%);
+    background: radial-gradient(ellipse at 50% 60%, rgba(220, 228, 236, 0.95) 0%, rgba(230, 220, 203, 0.5) 45%, transparent 75%);
   }
 
   /* Fenêtre blanche de l'aperçu : bordure fine, ombre profonde mais douce. */
   .product-window {
     background: var(--color-card);
-    border: 1px solid rgba(17, 17, 22, 0.08);
+    border: 1px solid rgba(31, 39, 51, 0.08);
     border-radius: 20px;
     box-shadow: var(--shadow-window);
   }
@@ -281,7 +315,7 @@
   /* Cartes : bordure fine, léger soulèvement au survol (3 px maximum). */
   .card {
     background: var(--color-card);
-    border: 1px solid rgba(17, 17, 22, 0.07);
+    border: 1px solid rgba(31, 39, 51, 0.07);
     border-radius: 24px;
     box-shadow: var(--shadow-card);
   }
@@ -293,7 +327,7 @@
   /* Petite carte flottante posée devant une interface : légère rotation, dérive très lente. */
   .float-card {
     background: var(--color-card);
-    border: 1px solid rgba(17, 17, 22, 0.08);
+    border: 1px solid rgba(31, 39, 51, 0.08);
     box-shadow: var(--shadow-float);
   }
   html.js .float-card[data-float] {
@@ -351,13 +385,13 @@
   }
   .nav-root.is-floating .nav-shell {
     max-width: 960px;
-    background: rgba(255, 255, 255, 0.78);
-    border-color: rgba(17, 17, 22, 0.08);
+    background: rgba(251, 246, 234, 0.82);
+    border-color: rgba(31, 39, 51, 0.08);
     -webkit-backdrop-filter: saturate(160%) blur(16px);
     backdrop-filter: saturate(160%) blur(16px);
     box-shadow:
       0 1px 0 rgba(255, 255, 255, 0.6) inset,
-      0 14px 40px -20px rgba(17, 17, 22, 0.35);
+      0 14px 40px -20px rgba(31, 39, 51, 0.3);
   }
   .nav-root.is-compact .nav-shell {
     max-width: 640px;
@@ -461,7 +495,7 @@
     z-index: 0;
     pointer-events: none;
     opacity: 0;
-    background: radial-gradient(360px circle at var(--sx, 50%) var(--sy, 50%), rgba(108, 79, 248, 0.14), transparent 70%);
+    background: radial-gradient(360px circle at var(--sx, 50%) var(--sy, 50%), rgba(74, 97, 121, 0.12), transparent 70%);
     transition: opacity 400ms ease;
   }
   @media (hover: hover) and (pointer: fine) {
@@ -660,7 +694,7 @@
     position: absolute;
     width: var(--beam-size, 90px);
     aspect-ratio: 1;
-    background: linear-gradient(to right, transparent, var(--color-brand), var(--color-brand));
+    background: linear-gradient(to right, transparent, #c9d3dd, var(--color-powder));
     offset-path: rect(0 auto auto 0 round var(--beam-radius, 32px));
     animation: beam var(--beam-duration, 7s) linear infinite;
   }

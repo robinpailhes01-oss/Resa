@@ -68,24 +68,24 @@ export function PricingSwitch({ profiles, selectorLabel, badge, price, priceUnit
         })}
       </div>
 
-      <div id="tarif-card" className="relative w-full max-w-[880px] rounded-[32px] bg-soft-tint p-1">
-        <BorderBeam radius={32} />
+      <div id="tarif-card" className="relative w-full max-w-[880px] rounded-[28px] bg-stone p-1">
+        <BorderBeam radius={28} />
         <div
           key={current.value}
           id={`${baseId}-panel`}
           role="tabpanel"
           aria-labelledby={`${baseId}-tab-${current.value}`}
-          className="tab-panel-in grid grid-cols-1 items-start gap-8 rounded-[28px] bg-card p-6 shadow-card md:grid-cols-[1.2fr_auto_1fr] md:gap-10 md:p-9"
+          className="tab-panel-in grid grid-cols-1 items-start gap-8 rounded-[24px] bg-card p-6 shadow-card md:grid-cols-[1.2fr_auto_1fr] md:gap-10 md:p-9"
         >
           <div className="flex flex-col gap-6 md:order-3">
             <div className="flex flex-col gap-2">
-              <span className="inline-flex w-fit items-center rounded-full bg-brand px-3 py-1 text-[12px] font-semibold text-white">{badge}</span>
-              <h3 className="mt-2 text-[20px] font-semibold tracking-[-0.01em] text-ink">{current.name}</h3>
+              <span className="script w-fit -rotate-3 text-[24px] text-lilac-ink">{badge}</span>
+              <h3 className="heading-3 mt-1">{current.name}</h3>
               <p className="text-[14.5px] leading-6 text-ink-muted">{current.description}</p>
             </div>
             <div className="flex flex-col gap-1">
               <p className="text-ink">
-                <span className="text-[52px] font-bold leading-none tracking-[-0.04em] tabular-nums md:text-[60px]">{price}</span>
+                <span className="font-display text-[56px] font-medium leading-none tracking-[-0.045em] tabular-nums md:text-[68px]">{price}</span>
                 <span className="ml-2 text-[17px] font-medium text-ink-muted">{priceUnit}</span>
               </p>
               <p className="text-[13.5px] text-ink-muted">{priceCaption ?? billing}</p>
@@ -102,7 +102,7 @@ export function PricingSwitch({ profiles, selectorLabel, badge, price, priceUnit
           <ul className="flex flex-col gap-3 md:order-1 md:pt-1">
             {current.features.map((feature) => (
               <li key={feature} className="flex items-start gap-3 text-[15px] leading-6 text-ink">
-                <span className="mt-1 inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-brand text-white">
+                <span className="mt-1 inline-flex size-5 shrink-0 items-center justify-center rounded-full bg-soft text-brand">
                   <Check className="size-3" strokeWidth={3} aria-hidden="true" />
                 </span>
                 {feature}

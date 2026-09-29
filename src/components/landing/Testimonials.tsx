@@ -1,4 +1,4 @@
-import { Section } from "@/components/ui/Section";
+import { Section, SectionKicker } from "@/components/ui/Section";
 import { TestimonialMarquee } from "@/components/ui/testimonial-marquee";
 import { offer } from "@/config/offer";
 import { byMode, cta, testimonialsSection } from "@/content/fr/landing";
@@ -22,7 +22,7 @@ export function Testimonials() {
       {hasTestimonials ? (
         <>
           <div className="reveal reveal-blur mx-auto flex max-w-2xl flex-col items-center gap-3 text-center">
-            <p className="eyebrow">{testimonialsSection.label}</p>
+            <SectionKicker index={testimonialsSection.index} eyebrow={testimonialsSection.label} />
             <h2 id="avis-title" className="heading-2">
               {testimonialsSection.title}
             </h2>

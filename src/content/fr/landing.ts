@@ -53,17 +53,28 @@ export const cta = {
   secondary: { label: `Découvrir ${brand}`, href: "/#produit" },
 };
 
+/** Signature de marque (visuel logo Instagram). */
+export const brandLine = {
+  tagline: "Beauty business simplified",
+  note: "pour les pros beauté",
+};
+
 export const hero = {
-  eyebrow: "Pensé pour les professionnels de la beauté",
-  /** Deux lignes, sur tous les écrans. */
-  title: ["Votre agenda.", "L’esprit libre."],
-  intro: "Réservations en ligne, agenda partagé et emails automatiques. Tout ce qu’il faut pour organiser votre activité, dans une seule offre.",
+  /** Étiquette d'index, reprise des visuels (« [001] »). */
+  index: "[001]",
+  note: brandLine.note,
+  /** Deux lignes, en minuscules comme sur les visuels. */
+  title: ["vos rendez-vous,", "sans décrocher."],
+  trades: ["coiffure", "barber", "esthétique", "onglerie"],
+  intro: "Vos clientes réservent en ligne, jour et nuit. Rappel par email avant le rendez-vous, demande d’avis Google après la visite. Vous, vous restez avec la personne dans votre fauteuil.",
   /** Ligne de réassurance sous les boutons. */
   reassurance: {
     prelaunch: [priceCompact, "Un établissement", capitalize(practitioners)],
     live: offer.trialDays ? [trialLabel, "Sans carte bancaire", `${priceCompact} ensuite`] : [priceCompact, "Un établissement", capitalize(practitioners)],
   } satisfies ByMode<string[]>,
   reassuranceCaption: { prelaunch: "Tarif prévu au lancement", live: null } satisfies ByMode<string | null>,
+  imageAlt: "Nature morte sur un socle crème : flacon, peigne, brosses, ciseaux, coton et vernis lavande sur un plateau chromé ; au premier plan, un combiné de téléphone décroché.",
+  secondary: { label: "Voir l’agenda", href: "/#produit" },
   previewCaption: {
     prelaunch: "Aperçu illustratif du produit en préparation, données fictives.",
     live: "Aperçu avec des données fictives.",
@@ -75,8 +86,18 @@ export const hero = {
   previewAlt: `Aperçu illustratif de l’agenda ${brand} : la journée de Camille chez Maison Alba, un établissement fictif.`,
 };
 
+/** Bloc « l'agenda » sous le hero. */
+export const productShowcase = {
+  index: "[002]",
+  eyebrow: "L’agenda",
+  title: "Toute la journée du salon, sur un seul écran.",
+  text: "Chaque praticien a sa colonne. Les réservations en ligne arrivent d’elles-mêmes, celles prises au téléphone s’ajoutent en deux gestes.",
+};
+
 export const features = {
+  index: "[003]",
   eyebrow: { prelaunch: "Ce que prépare Reso", live: "Fonctionnalités" } satisfies ByMode<string>,
+  title: "Le téléphone sonne moins. L’agenda se remplit quand même.",
   main: {
     title: "Votre journée, en un regard.",
     text: "Retrouvez vos rendez-vous, vos praticiens et les informations utiles dans un agenda clair, pensé pour votre quotidien.",
@@ -101,15 +122,23 @@ export const features = {
       steps: ["Confirmation", "Rappel", "Demande d’avis"],
     },
   ] as const,
+  /** Bandeau image : les avis Google. */
+  reviews: {
+    title: "Des avis Google, sans avoir à les demander.",
+    text: "Après chaque visite, votre cliente reçoit un lien direct vers votre fiche Google. Votre note se construit rendez-vous après rendez-vous.",
+    alt: "Plateau chromé avec peigne, brosses, ciseaux, coton et vernis lavande, sur un socle crème devant un mur bleu poudré.",
+  },
 };
 
 export const howItWorks = {
+  index: "[004]",
   eyebrow: "Comment ça marche",
-  title: "Votre organisation, en trois étapes.",
+  title: "Dix minutes pour démarrer.",
+  stepLabel: "étape",
   steps: [
     {
-      title: "Configurez votre espace",
-      text: "Ajoutez vos prestations, vos horaires et les membres de votre équipe.",
+      title: "Importez votre fiche Google",
+      text: "Photos, adresse et horaires arrivent en un clic. Ajoutez vos prestations et votre équipe.",
     },
     {
       title: "Partagez votre lien",
@@ -123,6 +152,7 @@ export const howItWorks = {
 };
 
 export const testimonialsSection = {
+  index: "[006]",
   label: "Les avis",
   title: "Ce qu’en disent les professionnels.",
   /** Bloc affiché tant qu'aucun témoignage réel n'est publié (src/content/fr/testimonials.ts). */
@@ -143,6 +173,7 @@ export interface PricingProfile {
 }
 
 export const pricing = {
+  index: "[005]",
   label: "Une offre simple",
   title: ["Tout l’essentiel.", "Un prix clair."],
   intro: "Un seul tarif, quel que soit votre profil. Choisissez le vôtre pour voir ce que Reso vous apporte au quotidien.",
@@ -301,6 +332,7 @@ const faqLive: FaqItem[] = [
 ];
 
 export const faq = {
+  index: "[007]",
   label: "Questions fréquentes",
   title: "Vos questions, nos réponses.",
   /** Petit horodatage de la conversation. */
@@ -354,7 +386,12 @@ export const waitlist = {
 
 export const footer = {
   brand,
-  tagline: "Les rendez-vous qui font rayonner votre métier.",
+  tagline: brandLine.tagline,
+  closing: {
+    title: "Raccrochez. Vos clientes réservent en ligne.",
+    text: offer.trialDays ? `${trialLabel}, sans carte bancaire. Ensuite ${priceCompact}, sans engagement.` : `${priceCompact}, sans engagement.`,
+    imageAlt: "Ciseaux chromés et serviette éponge sur un socle crème, devant un mur bleu poudré.",
+  },
   links: [
     { href: "/#produit", label: "Produit" },
     { href: "/#fonctionnalites", label: "Fonctionnalités" },

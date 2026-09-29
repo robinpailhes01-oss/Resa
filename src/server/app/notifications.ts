@@ -191,22 +191,22 @@ function esc(v: string): string {
 
 function shell(title: string, salon: string, rows: string[]): string {
   return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${esc(title)}</title></head>
-<body style="margin:0;padding:0;background:#faf7f2;font-family:Manrope,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:#27242a;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#faf7f2;"><tr><td align="center" style="padding:32px 16px;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#ffffff;border-radius:16px;">
-<tr><td style="padding:28px 28px 4px 28px;font-size:20px;font-weight:700;color:#493344;">${esc(salon)}</td></tr>
+<body style="margin:0;padding:0;background:#fbf6ea;font-family:Manrope,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:#1f2733;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#fbf6ea;"><tr><td align="center" style="padding:32px 16px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#fffdf8;border-radius:16px;">
+<tr><td style="padding:28px 28px 4px 28px;font-size:20px;font-weight:700;color:#4a6179;">${esc(salon)}</td></tr>
 ${rows.join("")}
-<tr><td style="padding:20px 28px 28px 28px;font-size:12px;line-height:18px;color:#655b66;border-top:1px solid #eee;">Email envoyé par ${esc(offer.brandName)} pour ${esc(salon)}.</td></tr>
+<tr><td style="padding:20px 28px 28px 28px;font-size:12px;line-height:18px;color:#5f6672;border-top:1px solid #eee;">Email envoyé par ${esc(offer.brandName)} pour ${esc(salon)}.</td></tr>
 </table></td></tr></table></body></html>`;
 }
 const p = (t: string) =>
   `<tr><td style="padding:12px 28px 0 28px;font-size:16px;line-height:25px;">${t}</td></tr>`;
 const detail = (label: string, value: string) =>
-  `<tr><td style="padding:6px 28px 0 28px;font-size:15px;line-height:22px;"><span style="color:#655b66;">${esc(label)} :</span> <strong>${esc(value)}</strong></td></tr>`;
+  `<tr><td style="padding:6px 28px 0 28px;font-size:15px;line-height:22px;"><span style="color:#5f6672;">${esc(label)} :</span> <strong>${esc(value)}</strong></td></tr>`;
 const note = (html: string) =>
-  `<tr><td style="padding:16px 28px 0 28px;"><div style="background:#faf7f2;border-radius:12px;padding:12px 16px;font-size:13px;line-height:20px;color:#655b66;">${html}</div></td></tr>`;
+  `<tr><td style="padding:16px 28px 0 28px;"><div style="background:#fbf6ea;border-radius:12px;padding:12px 16px;font-size:13px;line-height:20px;color:#5f6672;">${html}</div></td></tr>`;
 const button = (href: string, label: string) =>
-  `<tr><td style="padding:22px 28px 8px 28px;"><a href="${esc(href)}" style="display:inline-block;background:#493344;color:#ffffff;text-decoration:none;font-weight:600;font-size:16px;line-height:24px;padding:12px 24px;border-radius:12px;">${esc(label)}</a></td></tr>`;
+  `<tr><td style="padding:22px 28px 8px 28px;"><a href="${esc(href)}" style="display:inline-block;background:#4a6179;color:#fffdf8;text-decoration:none;font-weight:600;font-size:16px;line-height:24px;padding:12px 24px;border-radius:12px;">${esc(label)}</a></td></tr>`;
 
 function addressLine(e: JobContext["establishment"]): string | null {
   const parts = [

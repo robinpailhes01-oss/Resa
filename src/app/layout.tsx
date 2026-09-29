@@ -14,6 +14,36 @@ const manrope = localFont({
   adjustFontFallback: "Arial",
 });
 
+/* Titres : géométrique, proche du logotype « reso ». */
+const outfit = localFont({
+  src: "../assets/fonts/outfit-latin-wght-normal.woff2",
+  weight: "300 700",
+  display: "swap",
+  variable: "--font-outfit",
+  fallback: ["system-ui", "sans-serif"],
+  adjustFontFallback: "Arial",
+});
+
+/* Annotations manuscrites (« pour les pros beauté »), en petite quantité. */
+const caveat = localFont({
+  src: "../assets/fonts/caveat-latin-wght-normal.woff2",
+  weight: "400 700",
+  display: "swap",
+  variable: "--font-caveat",
+  fallback: ["cursive"],
+  preload: false,
+});
+
+/* Étiquettes d'index [001] et petites données. */
+const jetbrains = localFont({
+  src: "../assets/fonts/jetbrainsmono-latin-wght-normal.woff2",
+  weight: "400 500",
+  display: "swap",
+  variable: "--font-jetbrains",
+  fallback: ["ui-monospace", "monospace"],
+  preload: false,
+});
+
 const isProduction = process.env.NODE_ENV === "production" && process.env.RESO_INDEXABLE === "true";
 
 export const metadata: Metadata = {
@@ -42,7 +72,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ffffff",
+  themeColor: "#fbf6ea",
   width: "device-width",
   initialScale: 1,
 };
@@ -51,7 +81,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   const nonce = (await headers()).get("x-nonce") ?? undefined;
 
   return (
-    <html lang="fr" className={`${manrope.variable} h-full`}>
+    <html lang="fr" className={`${manrope.variable} ${outfit.variable} ${caveat.variable} ${jetbrains.variable} h-full`}>
       <head>
         {/* Signale la présence de JavaScript avant le premier rendu (onglets, FAQ, apparitions). */}
         <script nonce={nonce} dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />

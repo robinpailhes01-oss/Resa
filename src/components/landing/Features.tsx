@@ -1,41 +1,26 @@
-import { BarChart3, CalendarCheck, Globe, MessageSquareHeart, Send } from "lucide-react";
-import { AgendaPreview } from "@/components/previews/AgendaPreview";
+import Image from "next/image";
+import { CalendarCheck, Globe, MessageSquareHeart, Send } from "lucide-react";
 import { BookingPreview } from "@/components/previews/BookingPreview";
 import { EmailPreview } from "@/components/previews/EmailPreview";
-import { Section } from "@/components/ui/Section";
+import { Section, SectionHeading } from "@/components/ui/Section";
 import { byMode, features } from "@/content/fr/landing";
 import { FloatCard } from "./FloatCard";
-import { SpotlightCard } from "@/components/ui/SpotlightCard";
 
 type Delay = { "--d": string } & React.CSSProperties;
 const stepIcons = [CalendarCheck, Send, MessageSquareHeart];
 
 /**
- * Composition éditoriale : un grand bloc produit sur fond lavande, l'aperçu
- * dépassant de son conteneur, puis deux cartes avec halos et interfaces.
+ * Deux preuves produit (réservation, emails) sur des socles ivoire, puis un
+ * bandeau nature morte pour les avis Google.
  */
 export function Features() {
   const [booking, emails] = features.cards;
   return (
-    <Section id="fonctionnalites" labelledBy="fonctionnalites-title" className="!pt-8 md:!pt-12">
-      <article className="reveal panel-lavender relative overflow-hidden rounded-[28px] md:rounded-[32px]">
-        <div className="grid gap-8 px-6 pt-8 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:items-center md:gap-12 md:px-12 md:pt-14">
-          <div className="max-w-md pb-2 md:pb-14">
-            <p className="eyebrow">{byMode(features.eyebrow)}</p>
-            <h2 id="fonctionnalites-title" className="heading-2 mt-3">
-              {features.main.title}
-            </h2>
-            <p className="mt-4 text-[16px] leading-7 text-ink-muted md:text-[17px]">{features.main.text}</p>
-          </div>
-          <div className="relative -mb-10 -mr-6 md:-mb-16 md:-mr-4 lg:-mr-2">
-            <AgendaPreview alt={features.main.alt} variant="day" className="[&_.product-window]:rounded-b-none [&_.product-window]:border-b-0" />
-            <FloatCard icon={BarChart3} tone="brand" title={features.main.chip.title} text={features.main.chip.text} tilt={1} drift className="-right-1 top-[36%] hidden sm:flex md:-right-4" />
-          </div>
-        </div>
-      </article>
+    <Section id="fonctionnalites" labelledBy="fonctionnalites-title" className="!pt-10 md:!pt-16">
+      <SectionHeading id="fonctionnalites-title" index={features.index} eyebrow={byMode(features.eyebrow)} title={features.title} />
 
-      <div className="mt-6 grid gap-6 md:grid-cols-2">
-        <SpotlightCard className="reveal card card-hover relative flex flex-col overflow-hidden" style={{ "--d": "80ms" } as Delay}>
+      <div className="mt-10 grid gap-5 md:mt-14 md:grid-cols-2 md:gap-6">
+        <article className="reveal card relative flex flex-col overflow-hidden" style={{ "--d": "60ms" } as Delay}>
           <div className="px-6 pt-7 md:px-8 md:pt-9">
             <h3 className="heading-3">{booking.title}</h3>
             <p className="mt-3 text-[15px] leading-6 text-ink-muted md:text-[16px]">{booking.text}</p>
@@ -45,12 +30,12 @@ export function Features() {
             <BookingPreview alt={booking.alt} className="relative" />
             <FloatCard icon={Globe} tone="peach" title={booking.chip.title} text={booking.chip.text} tilt={-1.5} drift className="-left-1 bottom-3 hidden sm:flex md:-left-3" />
           </div>
-        </SpotlightCard>
-        <SpotlightCard className="reveal card card-hover relative flex flex-col overflow-hidden" style={{ "--d": "160ms" } as Delay}>
+        </article>
+        <article className="reveal card relative flex flex-col overflow-hidden" style={{ "--d": "140ms" } as Delay}>
           <div className="px-6 pt-7 md:px-8 md:pt-9">
             <h3 className="heading-3">{emails.title}</h3>
             <p className="mt-3 text-[15px] leading-6 text-ink-muted md:text-[16px]">{emails.text}</p>
-            <ul className="mt-4 flex flex-wrap gap-2">
+            <ol className="mt-4 flex flex-wrap gap-2">
               {emails.steps.map((step, i) => {
                 const Icon = stepIcons[i];
                 return (
@@ -60,15 +45,25 @@ export function Features() {
                   </li>
                 );
               })}
-            </ul>
+            </ol>
           </div>
           <div className="relative mt-auto px-6 pt-8 md:px-8 md:pt-10">
             <div aria-hidden="true" className="halo-ice absolute inset-x-0 bottom-0 top-6 -z-0" />
             <EmailPreview alt={emails.alt} className="relative [&_.product-window]:rounded-b-none [&_.product-window]:border-b-0" />
             <FloatCard icon={Send} tone="ice" title={emails.chip.title} text={emails.chip.text} tilt={1.5} drift className="-right-1 top-1 hidden sm:flex md:-right-3" />
           </div>
-        </SpotlightCard>
+        </article>
       </div>
+
+      <article className="reveal panel-dark text-page grain relative mt-5 grid overflow-hidden rounded-[22px] md:mt-6 md:grid-cols-12 md:rounded-[28px]">
+        <div className="relative z-10 flex flex-col justify-center px-6 py-9 md:col-span-5 md:px-10 md:py-12">
+          <h3 className="heading-3 !text-[26px] !text-page md:!text-[32px]">{features.reviews.title}</h3>
+          <p className="mt-4 text-[15px] leading-6 text-page md:text-[16px] md:leading-7">{features.reviews.text}</p>
+        </div>
+        <div className="relative md:col-span-7">
+          <Image src="/brand/outils.webp" alt={features.reviews.alt} width={920} height={490} sizes="(min-width: 768px) 60vw, 100vw" className="h-full w-full object-cover" />
+        </div>
+      </article>
     </Section>
   );
 }

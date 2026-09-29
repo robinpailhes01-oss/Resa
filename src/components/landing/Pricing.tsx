@@ -1,7 +1,7 @@
 import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { PricingSwitch } from "@/components/ui/pricing-switch";
-import { Section } from "@/components/ui/Section";
+import { Section, SectionKicker } from "@/components/ui/Section";
 import { byMode, cta, pricing } from "@/content/fr/landing";
 import { PricingViewTracker } from "./PricingViewTracker";
 
@@ -12,7 +12,7 @@ export function Pricing() {
   return (
     <Section id="tarif" labelledBy="tarif-title" className="!pt-8 md:!pt-12">
       <div className="reveal reveal-blur mx-auto flex max-w-2xl flex-col items-center gap-4 text-center">
-        <p className="inline-flex items-center rounded-full bg-soft-tint px-3.5 py-1.5 text-[12px] font-semibold uppercase tracking-[0.12em] text-brand">{pricing.label}</p>
+        <SectionKicker index={pricing.index} eyebrow={pricing.label} />
         <h2 id="tarif-title" className="heading-2">
           {pricing.title[0]}
           <br />

@@ -25,18 +25,48 @@ export function Section({ id, labelledBy, className, children, tone = "page" }: 
 
 type SectionHeadingProps = {
   id: string;
+  /** Étiquette d'index des visuels de marque (« [002] »). */
+  index?: string;
   eyebrow?: string | null;
   title: string;
   intro?: string;
-  align?: "center" | "left";
+  align?: "center" | "left" | "split";
   className?: string;
 };
 
-/** Titre de section : petit label, titre serré, une ligne d'intro. */
-export function SectionHeading({ id, eyebrow, title, intro, align = "center", className }: SectionHeadingProps) {
+/** Ligne d'étiquette : index mono, filet, capitales espacées. */
+export function SectionKicker({ index, eyebrow, className }: { index?: string; eyebrow?: string | null; className?: string }) {
+  if (!index && !eyebrow) return null;
+  return (
+    <p className={cn("flex items-center gap-3", className)}>
+      {index ? <span className="index-tag">{index}</span> : null}
+      {index && eyebrow ? <span aria-hidden="true" className="h-px w-8 bg-current opacity-30" /> : null}
+      {eyebrow ? <span className="eyebrow">{eyebrow}</span> : null}
+    </p>
+  );
+}
+
+/**
+ * Titre de section. « split » : étiquette à gauche, titre et intro à droite,
+ * composition éditoriale des visuels de marque.
+ */
+export function SectionHeading({ id, index, eyebrow, title, intro, align = "split", className }: SectionHeadingProps) {
+  if (align === "split") {
+    return (
+      <div className={cn("reveal reveal-blur grid gap-4 md:grid-cols-12 md:gap-8", className)}>
+        <SectionKicker index={index} eyebrow={eyebrow} className="self-start md:col-span-4 md:pt-4" />
+        <div className="md:col-span-8">
+          <h2 id={id} className="heading-2 max-w-[18ch]">
+            {title}
+          </h2>
+          {intro ? <p className="mt-4 max-w-xl text-[16px] leading-7 text-ink-muted md:text-[17px]">{intro}</p> : null}
+        </div>
+      </div>
+    );
+  }
   return (
     <div className={cn("reveal reveal-blur flex max-w-2xl flex-col gap-3", align === "center" ? "mx-auto items-center text-center" : "items-start text-left", className)}>
-      {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
+      <SectionKicker index={index} eyebrow={eyebrow} />
       <h2 id={id} className="heading-2">
         {title}
       </h2>

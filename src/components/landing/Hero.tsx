@@ -1,85 +1,80 @@
-import { ArrowRight, CalendarPlus, Mail } from "lucide-react";
-import { AgendaPreview } from "@/components/previews/AgendaPreview";
-import { BlurWords } from "@/components/ui/BlurWords";
+import Image from "next/image";
+import { ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { offer } from "@/config/offer";
 import { byMode, cta, hero } from "@/content/fr/landing";
 import { CtaLink } from "./CtaLink";
-import { FloatCard } from "./FloatCard";
 
 type Delay = { "--d": string } & React.CSSProperties;
 const d = (ms: number): Delay => ({ "--d": `${ms}ms` });
 
 /**
- * Premier écran : dégradé mesh doux, centre blanc, produit visible immédiatement.
- * La fenêtre de l'agenda chevauche le bas du hero et repose sur le fond de page.
+ * Premier écran, composé comme les visuels de marque : un aplat bleu poudré dans
+ * un passe-partout crème, le titre en minuscules, une annotation manuscrite et
+ * la nature morte au combiné décroché, qui porte la promesse.
  */
 export function Hero() {
   const primary = byMode(cta.primary);
   const caption = byMode(hero.reassuranceCaption);
 
   return (
-    <section id="hero" aria-labelledby="hero-title" className="relative isolate overflow-x-clip pt-6 md:pt-14">
-      <div aria-hidden="true" className="hero-mesh" />
-      <div aria-hidden="true" className="hero-halo hero-halo-left" />
-      <div aria-hidden="true" className="hero-halo hero-halo-right" />
+    <section id="hero" aria-labelledby="hero-title" className="pt-2 md:pt-4">
+      <div className="container-page !px-3 sm:!px-5 md:!px-8">
+        <div className="powder-panel grain relative isolate overflow-hidden rounded-[22px] md:rounded-[28px]">
+          {/* Voile plus sombre derrière le texte : lisibilité du crème sans changer la couleur du mur. */}
+          <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[62%] bg-[radial-gradient(ellipse_at_50%_30%,rgba(38,52,66,0.32),transparent_70%)]" />
 
-      <div className="container-page">
-        <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
-          <p className="enter inline-flex items-center gap-2 rounded-full border border-line bg-card/90 px-3 py-1 text-[12px] font-medium text-ink-muted shadow-card md:text-[13px]" style={d(0)}>
-            <span aria-hidden="true" className="size-1.5 rounded-full bg-brand" />
-            {hero.eyebrow}
-          </p>
-          <h1 id="hero-title" className="display mt-4 max-w-[12ch] md:mt-7">
-            <BlurWords text={hero.title[0]} delay={80} />
-            <br />
-            <BlurWords text={hero.title[1]} delay={200} />
-          </h1>
-          <p className="mt-3 max-w-[22rem] text-[15px] leading-[24px] text-ink-muted sm:max-w-[40rem] md:mt-6 md:text-[18px] md:leading-[30px]">
-            <BlurWords text={hero.intro} delay={420} stagger={22} />
-          </p>
-          <div className="enter mt-5 flex w-full max-w-[360px] flex-col items-center gap-2.5 sm:w-auto sm:max-w-none sm:flex-row md:mt-8" style={d(220)}>
-            <CtaLink href={primary.href} placement="hero" signup={offer.launchMode === "live"} fullWidth className="sm:w-auto sm:whitespace-nowrap">
-              {primary.label}
-            </CtaLink>
-            <Button href={cta.secondary.href} variant="secondary" fullWidth className="sm:w-auto sm:whitespace-nowrap">
-              {cta.secondary.label}
-              <ArrowRight aria-hidden="true" />
-            </Button>
+          <div className="relative flex items-start justify-between px-5 pt-5 md:px-10 md:pt-8">
+            <span className="index-tag enter !text-page/80" style={d(0)}>
+              {hero.index}
+            </span>
+            <p className="script enter -rotate-6 text-right text-[22px] text-page md:text-[30px]" style={d(120)}>
+              {hero.note}
+              <svg aria-hidden="true" viewBox="0 0 120 10" className="ml-auto mt-1 block h-2 w-24 md:w-32" fill="none">
+                <path d="M2 7c30-5 70-6 116-3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            </p>
           </div>
-          <p className="enter mt-3 text-[13px] text-ink-muted md:mt-5 md:text-[14px]" style={d(300)}>
-            {byMode(hero.reassurance).join(" · ")}
-            {caption ? <span className="hidden sm:inline"> · {caption}</span> : null}
-          </p>
-        </div>
 
-        {/* Aperçu de l'agenda : fenêtre blanche qui sort du dégradé, deux cartes flottantes. */}
-        <figure id="produit" className="enter relative mx-auto mt-6 max-w-[1120px] md:mt-12" style={d(360)}>
-          <div className="demo-stage relative">
-            <div className="product-perspective">
-              <AgendaPreview alt={hero.previewAlt} />
+          <div className="relative mx-auto flex max-w-4xl flex-col items-center px-5 pt-4 text-center md:pt-2">
+            <h1 id="hero-title" className="display enter" style={d(60)}>
+              {hero.title[0]}
+              <br />
+              {hero.title[1]}
+            </h1>
+            <p className="enter mt-4 text-[13px] tracking-[0.14em] text-page/90 md:mt-6 md:text-[15px]" style={d(160)}>
+              {hero.trades.join(" · ")}
+            </p>
+            <p className="enter mt-5 max-w-[34rem] text-[15px] leading-6 text-page md:mt-7 md:text-[17px] md:leading-7" style={d(220)}>
+              {hero.intro}
+            </p>
+            <div className="enter mt-6 flex w-full max-w-[360px] flex-col items-center gap-2.5 sm:w-auto sm:max-w-none sm:flex-row md:mt-8" style={d(280)}>
+              <CtaLink href={primary.href} placement="hero" signup={offer.launchMode === "live"} variant="inverse" fullWidth className="sm:w-auto sm:whitespace-nowrap">
+                {primary.label}
+              </CtaLink>
+              <Button href={hero.secondary.href} variant="ghost" fullWidth className="!text-page hover:!bg-page/10 sm:w-auto sm:whitespace-nowrap">
+                {hero.secondary.label}
+                <ArrowDown aria-hidden="true" />
+              </Button>
             </div>
-            <FloatCard
-              icon={CalendarPlus}
-              tone="mint"
-              title={hero.floatingPill.title}
-              text={hero.floatingPill.text}
-              tilt={-1.5}
-              drift
-              className="-left-2 top-[50%] hidden sm:flex lg:-left-8 lg:top-[40%]"
-            />
-            <FloatCard
-              icon={Mail}
-              tone="brand"
-              title={hero.floatingCard.title}
-              text={hero.floatingCard.text}
-              tilt={1.5}
-              demo
-              className="-right-2 top-[66%] sm:-right-4 sm:top-auto sm:bottom-[9%] lg:-right-8 lg:bottom-auto lg:top-[40%]"
+            <p className="enter mt-3 text-[13px] text-page/90 md:mt-4 md:text-[14px]" style={d(320)}>
+              {byMode(hero.reassurance).join(" · ")}
+              {caption ? <span className="hidden sm:inline"> · {caption}</span> : null}
+            </p>
+          </div>
+
+          <div className="relative mt-4 md:-mt-10">
+            <Image
+              src="/brand/nature-morte.webp"
+              alt={hero.imageAlt}
+              width={1155}
+              height={832}
+              priority
+              sizes="(min-width: 1280px) 1200px, 100vw"
+              className="blend-top h-auto w-full"
             />
           </div>
-          <figcaption className="mx-auto mt-5 text-center text-[12px] text-ink-muted md:mt-7 md:text-[13px]">{byMode(hero.previewCaption)}</figcaption>
-        </figure>
+        </div>
       </div>
     </section>
   );

@@ -6,6 +6,7 @@ import { Header } from "@/components/landing/Header";
 import { Hero } from "@/components/landing/Hero";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import { Pricing } from "@/components/landing/Pricing";
+import { ProductShowcase } from "@/components/landing/ProductShowcase";
 import { Testimonials } from "@/components/landing/Testimonials";
 import { RevealObserver } from "@/components/landing/Reveal";
 import { offer } from "@/config/offer";
@@ -44,13 +45,14 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
       <Header />
       <main id="contenu" className="flex-1">
         <Hero />
+        <ProductShowcase />
         <Features />
         <HowItWorks />
         <Pricing />
         <Testimonials />
         <Faq />
       </main>
-      <Footer />
+      <Footer closing />
       <RevealObserver />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
     </>
