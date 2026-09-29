@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { allowPendingFollowUps, setProspectOutcome, unsubscribeProspect } from "@/server/prospection";
-import { isProspectionAdminToken } from "@/server/prospection/admin";
+import { requireAdmin } from "@/server/prospection/admin";
 
 /** Désinscription d'un prospect (formulaire de la page /ne-plus-me-contacter). */
 export async function unsubscribeProspectAction(formData: FormData): Promise<void> {
@@ -19,8 +19,7 @@ export async function unsubscribeProspectAction(formData: FormData): Promise<voi
 
 /** Actions de la page de suivi (/admin/prospection) : marquer une réponse, un refus, annuler, autoriser les relances. */
 export async function prospectionAdminAction(formData: FormData): Promise<void> {
-  const token = String(formData.get("token") ?? "");
-  if (!isProspectionAdminToken(token)) redirect("/");
+  await requireAdmin("/admin/prospection");
   const op = String(formData.get("op") ?? "");
   const id = String(formData.get("id") ?? "");
   let done = "";
@@ -34,5 +33,5 @@ export async function prospectionAdminAction(formData: FormData): Promise<void> 
   } catch (error) {
     console.error("[prospection] action de suivi échouée", error instanceof Error ? error.message : error);
   }
-  redirect(`/admin/prospection?token=${encodeURIComponent(token)}${done ? `&ok=${done}` : ""}${id ? `#p-${id}` : ""}`);
+  redirect(`/admin/prospection${done ? `?ok=${done}` : ""}${id ? `#p-${id}` : ""}`);
 }

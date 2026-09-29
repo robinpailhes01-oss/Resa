@@ -175,6 +175,8 @@ Pas de scraping de Planity : les données viennent de Google et des sites des é
 
 **Activation.** `PROSPECTION_ENABLED=1` sur Vercel (puis redeploy). Réglages facultatifs : `PROSPECTION_SEARCHES_PER_DAY` (3), `PROSPECTION_DAILY_LIMIT` (20), `PROSPECTION_FOLLOW_UP_DAYS` (5), `PROSPECTION_ENRICH_PER_RUN` (60). Avant d’activer, une simulation complète (recherche, analyse, aucun envoi) : `https://www.reso-app.fr/api/internal/prospection?dry=1` avec l’en-tête `Authorization: Bearer <INTERNAL_TASKS_SECRET>`. Un cycle réel lancé à la main exige `?run=1` : sans paramètre reconnu, la route ne fait rien.
 
+**Page de suivi.** `https://www.reso-app.fr/admin/prospection` : réservée aux comptes administrateurs connectés (adresse vérifiée ; par défaut le compte du fondateur, `RESO_ADMIN_EMAILS` pour changer la liste). Tout autre visiteur, même connecté, obtient une page introuvable. Boutons « A répondu », « Pas intéressé », « Annuler » et « Autoriser la relance des autres ».
+
 **Suivi.** Export tableur de tous les prospects (statut, email, téléphone, outil détecté) : `https://www.reso-app.fr/api/internal/prospection/export?token=<INTERNAL_TASKS_SECRET>` (à ouvrir dans un navigateur). Les établissements sans email mais avec téléphone y figurent : à appeler ou à contacter sur Instagram.
 
 **Relances.** Une relance ne part que si les réponses au premier email sont visibles par le site (adresse `PROSPECTION_REPLY_TO` reçue par Resend, MX en place). Sinon, les réponses arrivent dans la boîte de contact : les relances restent bloquées (signalé dans le récap Telegram). Pour les débloquer, marquez d’abord chaque personne qui a répondu (`?replied=adresse`, ou `?optout=adresse` pour un refus), puis `?allow_follow_ups=1` sur `/api/internal/prospection` (même en-tête).

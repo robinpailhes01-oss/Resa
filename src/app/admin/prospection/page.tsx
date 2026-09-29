@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import { SimplePage } from "@/components/pages/SimplePage";
 import { StatusMessage } from "@/components/ui/StatusMessage";
 import { prospectionContent } from "@/content/fr/prospection";
 import { providerLabels, shortEstablishmentName, type BookingProvider } from "@/lib/prospection";
 import { followUpsAwaitingCheck, listContactedProspects, type ContactedProspect } from "@/server/prospection";
 import { prospectionAdminAction } from "@/server/prospection/actions";
-import { isProspectionAdminToken } from "@/server/prospection/admin";
+import { requireAdmin } from "@/server/prospection/admin";
 
 export const metadata: Metadata = {
   title: "Suivi de la prospection",
@@ -17,7 +16,7 @@ export const dynamic = "force-dynamic";
 const t = prospectionContent.admin;
 const day = (d: Date | null) => (d ? new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "short", timeZone: "Europe/Paris" }).format(d) : "");
 
-function Row({ p, token }: { p: ContactedProspect; token: string }) {
+function Row({ p }: { p: ContactedProspect }) {
   const provider = p.bookingProvider ? (providerLabels[p.bookingProvider as BookingProvider] ?? p.bookingProvider) : null;
   const open = p.status === "contacte" || p.status === "relance";
   const marked = p.status === "repondu" || p.status === "desinscrit";
@@ -31,7 +30,6 @@ function Row({ p, token }: { p: ContactedProspect; token: string }) {
         : null;
   const button = (op: string, label: string, tone: string) => (
     <form action={prospectionAdminAction}>
-      <input type="hidden" name="token" value={token} />
       <input type="hidden" name="id" value={p.id} />
       <input type="hidden" name="op" value={op} />
       <button type="submit" className={`min-h-11 rounded-full px-4 text-[14px] font-semibold ${tone}`}>
@@ -62,7 +60,7 @@ function Row({ p, token }: { p: ContactedProspect; token: string }) {
   );
 }
 
-function Group({ title, items, token }: { title: string; items: ContactedProspect[]; token: string }) {
+function Group({ title, items }: { title: string; items: ContactedProspect[] }) {
   return (
     <section className="mt-10">
       <h2>
@@ -73,7 +71,7 @@ function Group({ title, items, token }: { title: string; items: ContactedProspec
       ) : (
         <ul className="divide-y divide-line">
           {items.map((p) => (
-            <Row key={p.id} p={p} token={token} />
+            <Row key={p.id} p={p} />
           ))}
         </ul>
       )}
@@ -81,11 +79,10 @@ function Group({ title, items, token }: { title: string; items: ContactedProspec
   );
 }
 
-/** Page de suivi de la prospection, protégée par le secret interne passé dans l'URL. */
+/** Page de suivi de la prospection : réservée aux comptes administrateurs connectés. */
 export default async function ProspectionAdminPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const params = await searchParams;
-  const token = typeof params.token === "string" ? params.token : "";
-  if (!isProspectionAdminToken(token)) notFound();
+  await requireAdmin("/admin/prospection");
   const ok = typeof params.ok === "string" ? params.ok : "";
   const [prospects, awaiting] = await Promise.all([listContactedProspects(), followUpsAwaitingCheck()]);
   const by = (statuses: string[]) => prospects.filter((p) => statuses.includes(p.status));
@@ -99,7 +96,6 @@ export default async function ProspectionAdminPage({ searchParams }: { searchPar
         <p className="text-ink-muted">{t.allowHelp(awaiting)}</p>
         {awaiting > 0 ? (
           <form action={prospectionAdminAction} className="mt-4">
-            <input type="hidden" name="token" value={token} />
             <input type="hidden" name="op" value="allow" />
             <button type="submit" className="min-h-11 rounded-full bg-ink px-5 text-[15px] font-semibold text-white">
               {t.allowButton}
@@ -108,11 +104,11 @@ export default async function ProspectionAdminPage({ searchParams }: { searchPar
         ) : null}
       </section>
 
-      <Group title={t.awaiting} items={by(["contacte"])} token={token} />
-      <Group title={t.replied} items={by(["repondu"])} token={token} />
-      <Group title={t.followedUp} items={by(["relance"])} token={token} />
-      <Group title={t.declined} items={by(["desinscrit"])} token={token} />
-      <Group title={t.signedUp} items={by(["inscrit"])} token={token} />
+      <Group title={t.awaiting} items={by(["contacte"])} />
+      <Group title={t.replied} items={by(["repondu"])} />
+      <Group title={t.followedUp} items={by(["relance"])} />
+      <Group title={t.declined} items={by(["desinscrit"])} />
+      <Group title={t.signedUp} items={by(["inscrit"])} />
     </SimplePage>
   );
 }

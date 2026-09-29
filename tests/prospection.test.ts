@@ -156,3 +156,11 @@ describe("prospection : nom court et refus", () => {
     expect(looksLikeDecline("Bonjour, ça m’intéresse, pouvez-vous m’appeler ?")).toBe(false);
   });
 });
+
+describe("accès administrateur", () => {
+  it("liste par défaut et remplacement par RESO_ADMIN_EMAILS", async () => {
+    const { adminEmails } = await import("@/config/admin");
+    expect(adminEmails({})).toEqual(["robin.pailhes01@gmail.com"]);
+    expect(adminEmails({ RESO_ADMIN_EMAILS: " Contact@Reso-App.fr, autre@exemple.fr " })).toEqual(["contact@reso-app.fr", "autre@exemple.fr"]);
+  });
+});
