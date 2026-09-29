@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { isAuthorizedInternal } from "@/server/http";
-import { ProspectionDisabledError, optOutProspectByEmail, runProspection } from "@/server/prospection";
+import { ProspectionDisabledError, allowPendingFollowUps, markProspectReplied, optOutProspectByEmail, runProspection } from "@/server/prospection";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -12,6 +12,11 @@ export async function GET(request: Request) {
   // Refus reçu dans la boîte de contact : `?optout=adresse` retire le prospect sans lancer le cycle.
   const optout = url.searchParams.get("optout");
   if (optout) return NextResponse.json({ status: "ok", ...(await optOutProspectByEmail(optout)) });
+  // Réponse reçue dans la boîte de contact : `?replied=adresse` (plus de relance pour ce prospect).
+  const replied = url.searchParams.get("replied");
+  if (replied) return NextResponse.json({ status: "ok", ...(await markProspectReplied(replied)) });
+  // Une fois les réponses marquées : `?allow_follow_ups=1` autorise la relance des autres prospects contactés.
+  if (url.searchParams.get("allow_follow_ups") === "1") return NextResponse.json({ status: "ok", ...(await allowPendingFollowUps()) });
   const dryRun = url.searchParams.get("dry") === "1";
   try {
     const summary = await runProspection({ dryRun });

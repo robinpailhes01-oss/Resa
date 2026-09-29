@@ -162,6 +162,8 @@ export interface ProspectionSummary {
   /** Établissements contactés (« Nom · Ville ») et relancés, pour le récap. */
   sentTo: string[];
   followUpTo: string[];
+  /** Relances en attente : réponses non visibles par le site, à vérifier dans la boîte de contact. */
+  followUpsBlocked?: number;
   skipped: string | null;
   dryRun: boolean;
   totals: { prospects: number; toContact: number; contacted: number; signedUp: number; unsubscribed: number };
@@ -178,6 +180,7 @@ export function formatProspectionReport(s: ProspectionSummary): string {
     `✉️ Emails envoyés : <b>${s.sent}</b> · relances : ${s.followUps}${s.skipped ? ` (${esc(s.skipped)})` : ""}`,
     ...s.sentTo.map((name) => `  • ${esc(name)}`),
     ...(s.followUpTo.length ? ["  Relances :", ...s.followUpTo.map((name) => `  ↩ ${esc(name)}`)] : []),
+    ...(s.followUpsBlocked ? [`⏸ Relances bloquées : ${s.followUpsBlocked} (réponses arrivées dans la boîte de contact, à vérifier avant de relancer)`] : []),
     "",
     `📚 Base : ${s.totals.prospects} prospects · à contacter : ${s.totals.toContact} · contactés : ${s.totals.contacted} · inscrits : <b>${s.totals.signedUp}</b> · désinscrits : ${s.totals.unsubscribed}`,
   ];

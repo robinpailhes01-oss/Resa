@@ -177,6 +177,8 @@ Pas de scraping de Planity : les données viennent de Google et des sites des é
 
 **Suivi.** Export tableur de tous les prospects (statut, email, téléphone, outil détecté) : `https://www.reso-app.fr/api/internal/prospection/export?token=<INTERNAL_TASKS_SECRET>` (à ouvrir dans un navigateur). Les établissements sans email mais avec téléphone y figurent : à appeler ou à contacter sur Instagram.
 
+**Relances.** Une relance ne part que si les réponses au premier email sont visibles par le site (adresse `PROSPECTION_REPLY_TO` reçue par Resend, MX en place). Sinon, les réponses arrivent dans la boîte de contact : les relances restent bloquées (signalé dans le récap Telegram). Pour les débloquer, marquez d’abord chaque personne qui a répondu (`?replied=adresse`, ou `?optout=adresse` pour un refus), puis `?allow_follow_ups=1` sur `/api/internal/prospection` (même en-tête).
+
 **Être prévenu des réponses (Telegram).** Les prospects répondent à l’adresse `Reply-To` des emails. Par défaut c’est `RESO_SUPPORT_EMAIL` : les réponses arrivent dans votre boîte habituelle, sans notification. Pour recevoir chaque réponse sur Telegram (avec l’extrait) et la voir transférée dans votre boîte :
 
 1. Dans Resend → Domains, ajoutez un sous-domaine dédié aux réponses, par exemple `reply.reso-app.fr`, activez la **réception** (« Receiving ») et créez chez votre registrar l’enregistrement **MX** que Resend indique pour ce sous-domaine (rien ne change pour `contact@reso-app.fr`).

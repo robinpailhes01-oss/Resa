@@ -3,6 +3,11 @@ import postgres from "postgres";
 import { ConsoleEmailSender } from "@/server/email/console-sender";
 import { setEmailSenderForTests } from "@/server/email";
 
+// Adresse de contact définie avant le chargement de la configuration (transfert des réponses).
+vi.hoisted(() => {
+  process.env.RESO_SUPPORT_EMAIL = "contact@reso-test.example";
+});
+
 const url = process.env.TEST_DATABASE_URL;
 process.env.DATABASE_URL = url ?? "";
 process.env.PROSPECTION_ENABLED = "1";
@@ -106,7 +111,12 @@ describe.skipIf(!url)("prospection en base", () => {
     expect(await prospection.peekProspectToken(institut.unsubscribe_token)).toBe(true);
     expect(await prospection.unsubscribeProspect(institut.unsubscribe_token)).toBe(true);
     expect(await prospection.unsubscribeProspect("0000")).toBe(false);
+    // Réponses non visibles par le site (pas d'adresse Resend) : aucune relance tant qu'elles ne sont pas vérifiées.
     const later = new Date("2026-10-05T06:00:00Z"); // lundi suivant, 7 jours après
+    const blocked = await prospection.runProspection({ now: new Date("2026-10-05T05:00:00Z"), dryRun: true, fetchImpl: fakeFetch });
+    expect(blocked.followUps).toBe(0);
+    expect(blocked.followUpsBlocked).toBeGreaterThan(0);
+    expect(await prospection.allowPendingFollowUps()).toMatchObject({ allowed: 1 });
     const follow = await prospection.runProspection({ now: later, fetchImpl: fakeFetch });
     expect(follow.followUps).toBe(1);
     expect(sender.sent).toHaveLength(3);
