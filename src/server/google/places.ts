@@ -8,23 +8,45 @@ export function isGoogleImportEnabled(): boolean {
 
 export class GooglePlacesError extends Error {}
 
+// Liste exacte : ni sous-domaines arbitraires, ni adresses IP, ni domaines ressemblants.
+const GOOGLE_LINK_HOSTS = new Set([
+  "share.google", "maps.app.goo.gl", "g.page", "goo.gl",
+  "google.com", "www.google.com", "maps.google.com", "consent.google.com",
+  "google.fr", "www.google.fr", "maps.google.fr", "consent.google.fr",
+]);
+
+function checkedGoogleUrl(raw: string, base?: URL): URL {
+  let url: URL;
+  try {
+    url = new URL(raw, base);
+  } catch {
+    throw new GooglePlacesError("Lien Google non reconnu (URL invalide).");
+  }
+  if (url.protocol !== "https:" || url.port || url.username || url.password || !GOOGLE_LINK_HOSTS.has(url.hostname)) {
+    throw new GooglePlacesError("Lien Google non reconnu (destination non autorisée).");
+  }
+  return url;
+}
+
 /** Suit les redirections d'un lien court Google (share.google, maps.app.goo.gl, g.page) jusqu'à l'URL Maps finale. */
 export async function resolveGoogleLink(raw: string, fetchImpl: typeof fetch = fetch): Promise<string> {
-  let url = raw.trim();
-  if (!/^https?:\/\//i.test(url)) url = `https://${url}`;
+  const input = raw.trim();
+  let url = checkedGoogleUrl(/^https?:\/\//i.test(input) ? input : `https://${input}`);
   for (let hop = 0; hop < 6; hop += 1) {
-    const response = await fetchImpl(url, { method: "GET", redirect: "manual", headers: { "User-Agent": "Mozilla/5.0 (compatible; Reso/1.0)" }, signal: AbortSignal.timeout(8000) });
+    const response = await fetchImpl(url.toString(), { method: "GET", redirect: "manual", headers: { "User-Agent": "Mozilla/5.0 (compatible; Reso/1.0)" }, signal: AbortSignal.timeout(8000) });
+    // Seuls les en-têtes sont utiles ; ne pas conserver le corps d'une page intermédiaire.
+    await response.body?.cancel();
     const location = response.headers.get("location");
     if (response.status >= 300 && response.status < 400 && location) {
-      url = new URL(location, url).toString();
+      url = checkedGoogleUrl(location, url);
       continue;
     }
     // Certaines pages intermédiaires (consentement) renvoient l'URL cible dans un paramètre « continue ».
-    const cont = new URL(url).searchParams.get("continue");
-    if (cont && /google\.[a-z.]+\/maps/.test(cont)) return cont;
-    return url;
+    const cont = url.searchParams.get("continue");
+    if (cont) return checkedGoogleUrl(cont, url).toString();
+    return url.toString();
   }
-  return url;
+  throw new GooglePlacesError("Lien Google non reconnu (trop de redirections).");
 }
 
 /** Détails d'un lieu par identifiant (Place Details New). */

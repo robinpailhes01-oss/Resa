@@ -56,18 +56,16 @@ export interface ClientInput {
   notes?: string | null;
 }
 
-/** Retrouve un client par email (si fourni), sinon le crée. Met à jour le téléphone s'il manquait. */
+/**
+ * Retrouve un client du salon par email (si fourni), sinon le crée.
+ * Une réservation ne prouve pas la possession de l'email : ne jamais modifier
+ * une fiche existante ici, même pour compléter un champ vide. Le professionnel
+ * peut corriger les coordonnées depuis la fiche client via updateClient.
+ */
 export async function upsertClient(establishmentId: string, input: ClientInput, tx: Db = getSql()): Promise<Client> {
   if (input.email) {
     const existing = await tx<Row[]>`select * from clients where establishment_id = ${establishmentId} and email = ${input.email}`;
-    if (existing[0]) {
-      const c = existing[0];
-      const [updated] = await tx<Row[]>`
-        update clients set phone = coalesce(${input.phone}, phone),
-          first_name = case when first_name = '' then ${input.firstName} else first_name end
-        where id = ${c.id} returning *`;
-      return map(updated);
-    }
+    if (existing[0]) return map(existing[0]);
   }
   const [row] = await tx<Row[]>`
     insert into clients (establishment_id, first_name, last_name, email, phone, notes)
