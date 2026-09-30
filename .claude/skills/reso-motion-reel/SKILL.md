@@ -52,3 +52,14 @@ Règles de contenu : pas de faux avis ni de chiffres inventés dans les notifica
 - Rappels : « Rappel envoyé » ×5 → « zéro lapin. enfin presque. »
 - Avis : « Demande d'avis envoyée » ×4 → « vos avis, sur votre fiche google. »
 - Série numérotée [001], [002]… dans l'étiquette pour relier les épisodes.
+
+## Format « pub » 4K — `scripts/build-pub.mjs`
+
+Film de 15 s en 2160×3840 (grille de dessin 1080×1920 agrandie ×2 : textes et vecteurs nets en 4K). Référence : `videos/04-pub-4k/` (`pub.json`, découpage et prompts dans `plans.md`).
+
+1. **Animatique** avec les visuels fixes de la charte (`"src": "brand:nature-morte.webp"`) pour valider rythme, typographie et son.
+2. **Plans finaux** générés (Higgsfield, Kling 3.0 mode `4k`, 9:16, image de départ = visuel de marque) ou tournés, déposés dans `media/`, puis `"src": "media/plan-a.mp4", "from": 0.4` dans `pub.json`.
+
+`pub.json` : `size` ([2160, 3840]), `bpm`, `shots[]` (`src`, `start`, `dur`, `focus` [x %, y %], `zoom` [début, fin], `pan` [x début, x fin], `focusPull` [flou px départ, arrivée, durée], `fadeIn`), un plan `{"type": "phone"}` (téléphone 3D posé sur le décor `bg`, agenda qui se remplit ; ou, avec `src` vidéo à caméra fixe, agenda incrusté dans `screen.quad` = 4 coins de l'écran en px de la grille 1080×1920, `screen.at`, `screen.radius`), `headlines[]` (`at`, `until`, `lines`, `lineDelays`, `top`), `sting` (`at`, `dur`, `cta`), `music` (piste sous licence, sinon kit synthétisé).
+
+Rendu 4K : long (≈ 10 min pour 15 s sans GPU) ; toujours relire une planche contact avant. Puis `loudnorm=I=-15` sur le son (pas de voix).
