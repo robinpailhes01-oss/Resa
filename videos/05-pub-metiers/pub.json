@@ -1,26 +1,132 @@
 {
-  "title": "Reso — pub 15 s « pendant que vous travaillez » (animatique)",
-  "size": [2160, 3840],
+  "title": "Reso — pub 15 s « pendant que vous travaillez »",
+  "size": [
+    2160,
+    3840
+  ],
   "fps": 30,
   "bpm": 76,
   "shots": [
-    { "src": "brand:ciseaux.webp", "start": 0, "dur": 3.6, "focus": [70, 58], "zoom": [1.18, 1.06], "pan": [0, -24], "focusPull": [12, 0, 1.2], "fadeIn": 0.5, "label": "[A] barbier — dégradé à la tondeuse, gros plan" },
-    { "src": "brand:outils.webp", "start": 3.6, "dur": 3.4, "focus": [86, 62], "zoom": [1.22, 1.1], "label": "[B] prothésiste ongulaire — vernis lavande, macro" },
-    { "src": "brand:nature-morte.webp", "start": 7.0, "dur": 3.2, "focus": [30, 55], "zoom": [1.1, 1.2], "label": "[C] esthéticienne — soin du visage, téléphone retourné qui s'allume" },
-    { "src": "brand:nature-morte.webp", "start": 10.2, "dur": 2.4, "focus": [20, 80], "zoom": [1.3, 1.4], "label": "[D] ralenti — la pro sourit, reprend son geste" }
+    {
+      "src": "media/plan-a.mp4",
+      "start": 0,
+      "dur": 3.6,
+      "focus": [
+        45,
+        55
+      ],
+      "zoom": [
+        1.0,
+        1.08
+      ],
+      "fadeIn": 0.4,
+      "from": 0.3
+    },
+    {
+      "src": "media/plan-b.mp4",
+      "start": 3.6,
+      "dur": 3.4,
+      "focus": [
+        60,
+        60
+      ],
+      "zoom": [
+        1.0,
+        1.08
+      ],
+      "from": 0.3
+    },
+    {
+      "src": "media/plan-c.mp4",
+      "start": 7.0,
+      "dur": 3.2,
+      "focus": [
+        50,
+        55
+      ],
+      "zoom": [
+        1.0,
+        1.06
+      ],
+      "from": 0.3
+    },
+    {
+      "src": "media/plan-d.mp4",
+      "start": 10.2,
+      "dur": 2.4,
+      "focus": [
+        62,
+        45
+      ],
+      "zoom": [
+        1.0,
+        1.1
+      ],
+      "from": 0.3
+    }
   ],
   "notifications": [
-    { "at": 1.2, "title": "Nouvelle réservation", "text": "Karim Benali · Dégradé & barbe · jeu. 10:00" },
-    { "at": 2.7, "title": "Nouvelle réservation", "text": "Thomas Petit · Coupe homme · ven. 14:30" },
-    { "at": 4.3, "title": "Nouvelle réservation", "text": "Chloé Bernard · Pose semi-permanent · sam. 11:15" },
-    { "at": 5.5, "title": "Rappel par email envoyé", "text": "Inès Moreau · demain 16:00" },
-    { "at": 7.6, "title": "Nouvelle réservation", "text": "Sarah Roux · Soin du visage · mar. 09:30" },
-    { "at": 8.5, "title": "Demande d'avis envoyée", "text": "Léa Garnier · après son rendez-vous" },
-    { "at": 9.2, "title": "Nouvelle réservation", "text": "Emma Lefèvre · Coupe & brushing · mer. 17:45" }
+    {
+      "at": 1.2,
+      "title": "Nouvelle réservation",
+      "text": "Karim Benali · Dégradé & barbe · jeu. 10:00"
+    },
+    {
+      "at": 2.7,
+      "title": "Nouvelle réservation",
+      "text": "Thomas Petit · Coupe homme · ven. 14:30"
+    },
+    {
+      "at": 4.3,
+      "title": "Nouvelle réservation",
+      "text": "Chloé Bernard · Pose semi-permanent · sam. 11:15"
+    },
+    {
+      "at": 5.5,
+      "title": "Rappel par email envoyé",
+      "text": "Inès Moreau · demain 16:00"
+    },
+    {
+      "at": 7.6,
+      "title": "Nouvelle réservation",
+      "text": "Sarah Roux · Soin du visage · mar. 09:30"
+    },
+    {
+      "at": 8.5,
+      "title": "Demande d'avis envoyée",
+      "text": "Léa Garnier · après son rendez-vous"
+    },
+    {
+      "at": 9.2,
+      "title": "Nouvelle réservation",
+      "text": "Emma Lefèvre · Coupe & brushing · mer. 17:45"
+    }
   ],
-  "notificationStack": { "top": 150, "max": 3, "clearAt": 10.2 },
+  "notificationStack": {
+    "top": 150,
+    "max": 3,
+    "clearAt": 10.2
+  },
   "headlines": [
-    { "at": 10.3, "until": 12.6, "lines": ["vous travaillez.", "reso s'occupe", "du reste."], "lineDelays": [0, 0.8, 1.0], "top": 1020 }
+    {
+      "at": 10.3,
+      "until": 12.6,
+      "lines": [
+        "vous travaillez.",
+        "reso s'occupe",
+        "du reste."
+      ],
+      "lineDelays": [
+        0,
+        0.8,
+        1.0
+      ],
+      "top": 1020
+    }
   ],
-  "sting": { "at": 12.6, "dur": 2.4, "cta": "essayer gratuitement · lien en bio" }
+  "sting": {
+    "at": 12.6,
+    "dur": 2.4,
+    "cta": "essayer gratuitement · lien en bio"
+  }
 }
