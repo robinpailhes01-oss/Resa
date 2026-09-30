@@ -1,0 +1,18 @@
+{
+  "title": "Reso — vos rendez-vous, sans décrocher",
+  "background": { "src": "nature-morte.webp", "focusX": 12, "focusY": 60, "blur": 2 },
+  "notificationsStart": 1.1,
+  "notifications": [
+    { "title": "Nouvelle réservation", "text": "Julie Martin · Coupe & brushing · jeudi 09:00" },
+    { "title": "Nouvelle réservation", "text": "Chloé Bernard · Soin du visage · jeudi 11:00" },
+    { "title": "Rappel envoyé", "text": "Inès Moreau · demain 13:45" },
+    { "title": "Nouvelle réservation", "text": "Sarah Roux · Coloration · samedi 10:30" },
+    { "title": "Demande d’avis envoyée", "text": "Manon Fournier · après son rendez-vous" }
+  ],
+  "holdAfterNotifications": 1.2,
+  "headlines": [
+    { "kicker": "[002] — pendant que vous coiffez", "lines": ["vos rendez-vous,", "sans décrocher."], "duration": 3.6 },
+    { "kicker": "[002] — reso", "lines": ["7 jours pour", "essayer."], "script": "sans carte bancaire", "duration": 3.2 }
+  ],
+  "cta": "essayer gratuitement · lien en bio"
+}
