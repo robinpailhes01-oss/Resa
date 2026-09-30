@@ -143,7 +143,28 @@ shots.forEach((s, i) => {
   }
   if (s.focusPull) js.push(`tl.fromTo("#${id}-cam", { filter: "blur(${s.focusPull[0]}px)" }, { filter: "blur(${s.focusPull[1] ?? 0}px)", duration: ${s.focusPull[2] ?? 1.2}, ease: "power2.out" }, ${T(s.start)});`);
   if (s.fadeIn) js.push(`tl.fromTo("#${id}-cam", { opacity: 0 }, { opacity: 1, duration: ${s.fadeIn}, ease: "power1.out" }, ${T(s.start)});`);
+  // Animatique : étiquette du plan à venir (ex. « [A] barbier — dégradé, gros plan »).
+  if (s.label) html.push(`<div class="slate clip" data-start="${T(s.start)}" data-duration="${T(s.dur)}" data-track-index="2">${esc(s.label)}</div>`);
 });
+
+// Notifications Reso par-dessus les plans (le métier continue dessous) : elles tombent du haut
+// comme sur un écran verrouillé, la plus récente en haut ; au-delà de `max`, la plus ancienne s'efface.
+const NOTIFS = P.notifications ?? [];
+const NS = P.notificationStack ?? {};
+const NH = 150, NG = 18, NTOP = NS.top ?? 150, NMAX = NS.max ?? 3;
+if (NOTIFS.length) {
+  html.push(`<div id="stack">${NOTIFS.map((n, k) => `<div class="nt" id="nt-${k}"><div class="nt-ico"><img src="brand/logo-creme.svg" alt="" /></div><div class="nt-body"><div class="nt-top"><b>${esc(n.title)}</b><span>${esc(n.when ?? "maintenant")}</span></div><div class="nt-text">${esc(n.text)}</div></div></div>`).join("")}</div>`);
+  NOTIFS.forEach((n, k) => {
+    js.push(`tl.fromTo("#nt-${k}", { opacity: 0, y: ${NTOP - 90}, scale: 0.94, filter: "blur(8px)" }, { opacity: 1, y: ${NTOP}, scale: 1, filter: "blur(0px)", duration: 0.55, ease: "back.out(1.4)" }, ${T(n.at)});`);
+    for (let j = Math.max(0, k - NMAX + 1); j < k; j++) js.push(`tl.to("#nt-${j}", { y: ${NTOP + (k - j) * (NH + NG)}, duration: 0.5, ease: "power3.out" }, ${T(n.at)});`);
+    if (k >= NMAX) js.push(`tl.to("#nt-${k - NMAX}", { opacity: 0, y: ${NTOP + NMAX * (NH + NG)}, scale: 0.94, filter: "blur(6px)", duration: 0.3, ease: "power2.in" }, ${T(n.at)});`);
+    sfx.push(["ding", n.at + 0.02, NS.dingVolume ?? 0.3]);
+  });
+  // Balayage vers le haut avant la phrase de marque.
+  const clear = NS.clearAt ?? P.headlines?.[0]?.at ?? sting.at;
+  NOTIFS.forEach((_, k) => js.push(`tl.to("#nt-${k}", { y: "-=420", opacity: 0, filter: "blur(6px)", duration: 0.5, ease: "power3.in" }, ${T(clear + (NOTIFS.length - 1 - k) * 0.04)});`));
+  sfx.push(["whoosh", clear, 0.4]);
+}
 
 // Phrase(s) de marque, montée depuis un masque, sur un voile doux.
 (P.headlines ?? []).forEach((h, k) => {
@@ -209,6 +230,18 @@ html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background:
 .ag-b1 { border-left-color: ${C.mint}; background: #F3F1EA; }
 .ag-b b { font-size: 24px; font-weight: 500; }
 .ag-b span { font-family: "Manrope", sans-serif; font-size: 17px; color: ${C.muted}; }
+.slate { position: absolute; left: 60px; bottom: 60px; font-family: "JetBrains Mono", monospace; font-size: 22px; color: ${C.page}; background: rgba(31,39,51,.55); padding: 10px 16px; border-radius: 8px; letter-spacing: .04em; }
+#stack { position: absolute; left: 0; top: 0; width: ${W}px; height: ${H}px; }
+.nt { position: absolute; left: 70px; top: 0; width: 940px; height: ${NH}px; display: flex; gap: 24px; align-items: center; padding: 22px 28px; border-radius: 34px; opacity: 0;
+  background: rgba(251,246,234,.8); -webkit-backdrop-filter: blur(24px) saturate(1.2); backdrop-filter: blur(24px) saturate(1.2);
+  box-shadow: 0 1px 0 rgba(255,255,255,.6) inset, 0 26px 50px -24px rgba(31,39,51,.55); }
+.nt-ico { width: 82px; height: 82px; border-radius: 20px; background: ${C.ink}; display: flex; align-items: center; justify-content: center; flex: none; }
+.nt-ico img { width: 64px; height: auto; }
+.nt-body { flex: 1; min-width: 0; }
+.nt-top { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+.nt-top b { font-family: "Outfit", sans-serif; font-weight: 600; font-size: 33px; color: ${C.ink}; letter-spacing: -0.01em; }
+.nt-top span { font-size: 24px; color: ${C.muted}; white-space: nowrap; }
+.nt-text { font-size: 29px; line-height: 1.25; color: #3A4250; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .hl { position: absolute; left: 90px; right: 90px; }
 .hl-shade { position: absolute; left: -200px; right: -200px; top: -260px; bottom: -260px; background: radial-gradient(ellipse at 40% 50%, rgba(31,39,51,.42), rgba(31,39,51,0) 65%); opacity: 0; }
 .hl-l { position: relative; font-family: "Outfit", sans-serif; font-weight: 500; font-size: 128px; line-height: 1.02; letter-spacing: -0.04em; color: ${C.page}; text-shadow: 0 10px 40px rgba(31,39,51,.3); }

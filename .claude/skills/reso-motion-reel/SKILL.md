@@ -62,4 +62,6 @@ Film de 15 s en 2160×3840 (grille de dessin 1080×1920 agrandie ×2 : textes et
 
 `pub.json` : `size` ([2160, 3840]), `bpm`, `shots[]` (`src`, `start`, `dur`, `focus` [x %, y %], `zoom` [début, fin], `pan` [x début, x fin], `focusPull` [flou px départ, arrivée, durée], `fadeIn`), un plan `{"type": "phone"}` (téléphone 3D posé sur le décor `bg`, agenda qui se remplit ; ou, avec `src` vidéo à caméra fixe, agenda incrusté dans `screen.quad` = 4 coins de l'écran en px de la grille 1080×1920, `screen.at`, `screen.radius`), `headlines[]` (`at`, `until`, `lines`, `lineDelays`, `top`), `sting` (`at`, `dur`, `cta`), `music` (piste sous licence, sinon kit synthétisé).
 
+Notifications par-dessus des plans « métier » (référence : `videos/05-pub-metiers/`, un pro au travail pendant que les réservations tombent) : `notifications[]` (`at`, `title`, `text`, `when?`), qui tombent du haut, la plus récente en haut, chacune avec un ding ; `notificationStack` (`top` px, défaut 150 ; `max` visibles, défaut 3 ; `clearAt`, balayage vers le haut, par défaut à la première phrase). Laisser le tiers haut des plans générés calme (mur flou). Sur un plan d'animatique, `label` affiche l'étiquette du plan à venir.
+
 Rendu 4K : long (≈ 10 min pour 15 s sans GPU) ; toujours relire une planche contact avant. Puis `loudnorm=I=-15` sur le son (pas de voix).
