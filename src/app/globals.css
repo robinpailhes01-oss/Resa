@@ -385,17 +385,21 @@
   }
   .nav-root.is-floating .nav-shell {
     max-width: 960px;
-    background: rgba(251, 246, 234, 0.82);
-    border-color: rgba(31, 39, 51, 0.08);
+    background: rgba(255, 253, 248, 0.95);
+    border-color: rgba(31, 39, 51, 0.14);
     -webkit-backdrop-filter: saturate(160%) blur(16px);
     backdrop-filter: saturate(160%) blur(16px);
     box-shadow:
       0 1px 0 rgba(255, 255, 255, 0.6) inset,
-      0 14px 40px -20px rgba(31, 39, 51, 0.3);
+      0 2px 6px rgba(31, 39, 51, 0.08),
+      0 14px 40px -16px rgba(31, 39, 51, 0.35);
   }
-  .nav-root.is-compact .nav-shell {
-    max-width: 640px;
-    height: 50px;
+  /* La barre se réduit au défilement seulement sur grand écran : sur tablette, les liens restent visibles. */
+  @media (min-width: 1024px) {
+    .nav-root.is-compact .nav-shell {
+      max-width: 640px;
+      height: 50px;
+    }
   }
   .nav-links {
     max-width: 640px;
@@ -406,11 +410,13 @@
       opacity 250ms ease,
       transform 300ms ease;
   }
-  .nav-root.is-compact .nav-links {
-    max-width: 0;
-    opacity: 0;
-    transform: translateY(-6px);
-    pointer-events: none;
+  @media (min-width: 1024px) {
+    .nav-root.is-compact .nav-links {
+      max-width: 0;
+      opacity: 0;
+      transform: translateY(-6px);
+      pointer-events: none;
+    }
   }
   .nav-link {
     position: relative;

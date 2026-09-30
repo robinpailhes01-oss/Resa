@@ -86,7 +86,7 @@ export function Header() {
           </Link>
 
           <nav aria-label="Navigation principale" className="nav-links hidden md:block">
-            <ul className="flex items-center gap-7">
+            <ul className="flex items-center gap-4 lg:gap-7">
               {nav.links.map((link) => (
                 <li key={link.href}>
                   <a href={link.href} aria-current={active === link.href ? "location" : undefined} className="nav-link inline-flex min-h-11 items-center text-[14px] font-medium text-ink-muted transition-colors hover:text-ink">
