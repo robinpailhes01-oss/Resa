@@ -7,6 +7,7 @@ import type { Establishment } from "@/server/auth/guards";
 import { getSql, type Db } from "@/server/db";
 import { absoluteUrl } from "@/server/email";
 import * as connect from "@/server/mollie-connect";
+import { MollieError } from "@/server/mollie";
 import { open, seal } from "@/server/secret-box";
 import { generateToken, hashToken } from "@/server/waitlist/tokens";
 import { scheduleBookingEmails } from "./notifications";
@@ -261,7 +262,7 @@ export async function startBookingPayment(params: {
     const { token, row: connection } = await accessToken(e.id);
     if (!connection.profile_id) throw new ConnectError("Aucun profil de paiement Mollie.");
     const label = due.kind === "full" ? "Paiement" : "Acompte";
-    const payment = await connect.createConnectPayment(token, {
+    const input = {
       profileId: connection.profile_id,
       testmode: row.testmode,
       amountCents: due.amountCents,
@@ -269,8 +270,17 @@ export async function startBookingPayment(params: {
       redirectUrl: absoluteUrl(`/rdv/${params.manageToken}?paiement=retour`),
       webhookUrl: absoluteUrl("/api/webhooks/mollie-connect"),
       metadata: { bookingPaymentId: row.id, bookingId: params.bookingId },
-      applicationFeeCents: fee,
-    });
+    };
+    let payment: connect.ConnectPayment;
+    try {
+      payment = await connect.createConnectPayment(token, { ...input, applicationFeeCents: fee });
+    } catch (error) {
+      // Compte Mollie de Reso relié comme établissement (tests internes) : Mollie refuse
+      // une commission sur son propre compte ; le paiement est alors créé sans commission.
+      if (!fee || !isOwnAccountFeeError(error)) throw error;
+      payment = await connect.createConnectPayment(token, input);
+      await sql`update booking_payments set application_fee_cents = 0 where id = ${row.id}`;
+    }
     if (!payment.checkoutUrl) throw new ConnectError("Mollie n’a pas renvoyé de page de paiement.");
     await sql`update booking_payments set mollie_payment_id = ${payment.id}, checkout_url = ${payment.checkoutUrl}, updated_at = now() where id = ${row.id}`;
     return payment.checkoutUrl;
@@ -282,6 +292,9 @@ export async function startBookingPayment(params: {
     throw error;
   }
 }
+
+const isOwnAccountFeeError = (error: unknown) =>
+  error instanceof MollieError && error.status === 422 && /own account/i.test(error.message);
 
 /** Libère le créneau d'un rendez-vous resté impayé. */
 async function releaseBooking(tx: Db, bookingId: string): Promise<void> {

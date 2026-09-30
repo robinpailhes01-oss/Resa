@@ -158,6 +158,22 @@ describe.skipIf(!url)("acompte à la réservation (Mollie Connect)", () => {
     expect(refunded.status).toBe("refunded");
   });
 
+  it("compte Mollie de Reso relié : Mollie refuse la commission, paiement créé sans", async () => {
+    const payments = await import("@/server/app/booking-payments");
+    const connectMock = await import("@/server/mollie-connect");
+    const { MollieError } = await import("@/server/mollie");
+    vi.mocked(connectMock.createConnectPayment).mockRejectedValueOnce(
+      new MollieError('Mollie a répondu 422 : {"detail":"Application fees can not be created for your own account"}', 422),
+    );
+    const e = await establishment();
+    const { booking, manageToken } = await book("2031-05-07T08:00:00Z");
+    const url = await payments.startBookingPayment({ establishment: e, bookingId: booking.id, serviceName: "Soin", startsAt: booking.startsAt, manageToken, due: { kind: "deposit", amountCents: 700, remainingCents: 2800 } });
+    expect(url).toContain("mollie.com/checkout");
+    expect(mollie.created.at(-1)?.applicationFeeCents).toBeUndefined();
+    const [row] = await sql`select application_fee_cents, status from booking_payments where booking_id = ${booking.id}`;
+    expect(row).toMatchObject({ application_fee_cents: 0, status: "open" });
+  });
+
   it("paiement abandonné : créneau libéré", async () => {
     const payments = await import("@/server/app/booking-payments");
     const e = await establishment();
