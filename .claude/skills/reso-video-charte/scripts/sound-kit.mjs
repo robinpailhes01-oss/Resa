@@ -7,6 +7,8 @@
 //   whoosh.wav  souffle de transition
 //   paper.wav   froissement de papier (titre qui entre)
 //   type.wav    8 frappes de machine à écrire (étiquettes [01])
+//   ring.wav    sonnerie de téléphone générique (interruption, pubs « avec / sans »)
+//   buzz.wav    vibration de téléphone sur un comptoir
 //
 // Usage : node sound-kit.mjs <dossier> [--bed <secondes>] [--bpm 78]
 // Les fichiers sont normalisés avec ffmpeg (musique à −24 LUFS, jouée à 50 % sous la voix, bruitages crête −6 dBFS) :
@@ -265,4 +267,33 @@ const R = rng(42);
   }
   finalize("type", bandpass(x, () => 2400, 0.9), "volume=0.7");
 }
-console.log(`✔ kit sonore dans ${OUT} : bed.wav (${BED}s, ${BPM} bpm), logo, tick, ding, whoosh, paper, type`);
+{
+  // Sonnerie de téléphone générique (trille à deux tons, deux salves) — l'interruption.
+  const d = 1.6;
+  const x = new Float32Array(Math.floor(d * SR));
+  for (const t0 of [0, 0.8]) {
+    const i0 = Math.floor(t0 * SR);
+    for (let k = 0; k < 0.55 * SR && i0 + k < x.length; k++) {
+      const t = k / SR;
+      const f = Math.floor(t * 24) % 2 ? 1320 : 1660;
+      const env = Math.min(1, t / 0.01) * Math.min(1, (0.55 - t) / 0.03);
+      x[i0 + k] += 0.35 * env * (Math.sin(TAU * f * t) + 0.25 * Math.sin(TAU * 2 * f * t));
+    }
+  }
+  finalize("ring", bandpass(x, () => 1500, 0.7), "volume=0.6");
+}
+{
+  // Vibration de téléphone sur le comptoir (deux impulsions).
+  const d = 0.9;
+  const x = new Float32Array(Math.floor(d * SR));
+  for (const t0 of [0, 0.48]) {
+    const i0 = Math.floor(t0 * SR);
+    for (let k = 0; k < 0.34 * SR && i0 + k < x.length; k++) {
+      const t = k / SR;
+      const env = Math.min(1, t / 0.02) * Math.min(1, (0.34 - t) / 0.04);
+      x[i0 + k] += 0.6 * env * (Math.sign(Math.sin(TAU * 172 * t)) * 0.5 + 0.3 * (R() * 2 - 1));
+    }
+  }
+  finalize("buzz", lowpass(x, 900), "volume=0.7");
+}
+console.log(`✔ kit sonore dans ${OUT} : bed.wav (${BED}s, ${BPM} bpm), logo, tick, ding, whoosh, paper, type, ring, buzz`);

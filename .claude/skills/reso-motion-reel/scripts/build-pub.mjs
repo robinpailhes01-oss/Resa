@@ -128,6 +128,58 @@ shots.forEach((s, i) => {
     });
     return;
   }
+  if (s.type === "split") {
+    // Écran partagé « sans / avec » : deux vidéos (caméra fixe) côte à côte, chacune recadrée au centre,
+    // interruptions à gauche, notifications Reso à droite ; puis la moitié droite s'ouvre plein cadre.
+    // cropX : centre (px de la grille, 0–1080) de la bande de 540 px montrée dans chaque moitié.
+    const sides = [["L", s.left], ["R", s.right]];
+    const base = { L: 270 - (s.left.cropX ?? 540), R: 810 - (s.right.cropX ?? 540) };
+    const parts = sides.map(([k, v]) => {
+      const src = media(v.src);
+      const [vx, vy] = v.focus ?? [50, 50];
+      return `<div class="half half-${k}" id="${id}-${k}"><div class="cam" id="${id}-${k}c" style="transform-origin:${vx}% ${vy}%"><video class="fill clip" id="${id}-${k}v" src="${src}" data-start="${T(s.start)}" data-duration="${T(s.dur)}" data-media-start="${(v.from ?? 0).toFixed(3)}" data-track-index="${k === "L" ? 1 : 2}" muted playsinline style="object-position:${vx}% ${vy}%;${v.filter ? `filter:${v.filter}` : ""}"></video></div><div class="half-lbl half-lbl-${k}" id="${id}-${k}l">${esc(v.label ?? (k === "L" ? "sans reso" : "avec reso"))}</div></div>`;
+    });
+    const EH = 116, EG = 12, ETOP = s.eventsTop ?? 250, EMAX = s.eventsMax ?? 3;
+    const ICON = {
+      call: '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>',
+      message: '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2z"/></svg>',
+    };
+    const evHtml = [];
+    const evJs = (list, side, cls, sound) => (list ?? []).forEach((e, n) => {
+      const eid = `${id}-e${side}${n}`;
+      const at = s.start + e.at;
+      const icon = side === "R" ? '<img src="brand/logo-creme.svg" alt="" />' : ICON[e.kind === "message" ? "message" : "call"];
+      evHtml.push(`<div class="ev ${cls}" id="${eid}" style="left:${side === "L" ? 24 : 564}px"><div class="ev-ico">${icon}</div><div class="ev-body"><div class="ev-top"><b>${esc(e.title)}</b><span>${esc(e.when ?? "maintenant")}</span></div><div class="ev-text">${esc(e.text)}</div></div></div>`);
+      js.push(`tl.fromTo("#${eid}", { opacity: 0, y: ${ETOP - 70}, scale: 0.94, filter: "blur(6px)" }, { opacity: 1, y: ${ETOP}, scale: 1, filter: "blur(0px)", duration: 0.5, ease: "back.out(1.4)" }, ${T(at)});`);
+      for (let j = Math.max(0, n - EMAX + 1); j < n; j++) js.push(`tl.to("#${id}-e${side}${j}", { y: ${ETOP + (n - j) * (EH + EG)}, duration: 0.45, ease: "power3.out" }, ${T(at)});`);
+      if (n >= EMAX) js.push(`tl.to("#${id}-e${side}${n - EMAX}", { opacity: 0, duration: 0.3 }, ${T(at)});`);
+      // interruption : la carte tremble comme un téléphone qui vibre
+      if (side === "L" && e.kind !== "message") js.push(`tl.fromTo("#${eid}", { x: -6 }, { x: 6, duration: 0.05, repeat: 9, yoyo: true, ease: "none", clearProps: "x" }, ${T(at + 0.5)});`);
+      sfx.push([sound(e), at + 0.02, side === "L" ? 0.4 : 0.3]);
+    });
+    evJs(s.leftEvents, "L", "ev-l", (e) => (e.kind === "call" ? "ring" : "buzz"));
+    evJs(s.rightEvents, "R", "ev-r", () => "ding");
+    html.push(`<div class="shot" id="${id}">${parts.join("")}<div class="split-shade" id="${id}-sh"></div><div class="split-div" id="${id}-d"></div>${evHtml.join("")}</div>`);
+    js.push(`tl.set("#${id}", { opacity: 1 }, ${T(s.start)});`);
+    js.push(`tl.set("#${id}", { opacity: 0 }, ${T(end)});`);
+    // entrée : les deux moitiés glissent depuis les bords, le trait se dessine
+    js.push(`tl.fromTo("#${id}-Lc", { x: ${base.L - 630} }, { x: ${base.L}, duration: 0.7, ease: "power4.out" }, ${T(s.start)});`);
+    js.push(`tl.fromTo("#${id}-Rc", { x: ${base.R + 630} }, { x: ${base.R}, duration: 0.7, ease: "power4.out" }, ${T(s.start)});`);
+    js.push(`tl.fromTo("#${id}-d", { scaleY: 0 }, { scaleY: 1, duration: 0.6, ease: "power3.inOut" }, ${T(s.start + 0.15)});`);
+    js.push(`tl.fromTo("#${id} .half-lbl", { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out", stagger: 0.1 }, ${T(s.start + 0.45)});`);
+    sfx.push(["whoosh", s.start, 0.45]);
+    // ouverture : la moitié « avec » prend tout le cadre
+    if (s.expandAt != null) {
+      const ex = s.start + s.expandAt;
+      js.push(`tl.to("#${id}-L", { clipPath: "inset(0% 100% 0% 0%)", duration: 0.9, ease: "power3.inOut" }, ${T(ex)});`);
+      js.push(`tl.to("#${id}-Lc", { x: ${base.L - 430}, duration: 0.9, ease: "power3.inOut" }, ${T(ex)});`);
+      js.push(`tl.to("#${id}-R", { clipPath: "inset(0% 0% 0% 0%)", duration: 0.9, ease: "power3.inOut" }, ${T(ex)});`);
+      js.push(`tl.to("#${id}-Rc", { x: 0, duration: 0.9, ease: "power3.inOut" }, ${T(ex)});`);
+      js.push(`tl.to(["#${id}-d", "#${id} .half-lbl", "#${id} .ev", "#${id}-sh"], { opacity: 0, duration: 0.4, ease: "power2.out" }, ${T(ex)});`);
+      sfx.push(["whoosh", ex, 0.4]);
+    }
+    return;
+  }
   const src = media(s.src);
   const el = isVideo(src)
     ? `<video class="fill clip" id="${id}-v" src="${src}" data-start="${T(s.start)}" data-duration="${T(s.dur)}" data-media-start="${(s.from ?? 0).toFixed(3)}" data-track-index="1" muted playsinline style="object-position:${fx}% ${fy}%"></video>`
@@ -195,7 +247,9 @@ const steps = Math.round(TOTAL * 12);
 js.push(`tl.fromTo("#grain", { backgroundPosition: "0px 0px" }, { backgroundPosition: "${steps * 37}px ${steps * 53}px", duration: ${T(TOTAL)}, ease: "steps(${steps})" }, 0);`);
 
 // Audio.
-const LEN = { tick: 0.08, ding: 1.2, whoosh: 0.55, paper: 0.4, type: 0.5, logo: 2.6 };
+const LEN = { tick: 0.08, ding: 1.2, whoosh: 0.55, paper: 0.4, type: 0.5, logo: 2.6, ring: 1.6, buzz: 0.9 };
+// Bruitages supplémentaires du pub.json : [["ring", 0.9, 0.4], …]
+for (const x of P.sfx ?? []) sfx.push(x);
 const auto = { version: 1, lanes: [{ target: "volume", points: [{ t: 0, v: 0 }, { t: 1.2, v: 0.9 }, { t: S0, v: 0.9 }, { t: S0 + 0.4, v: 1 }, { t: TOTAL - 0.8, v: 1 }, { t: TOTAL, v: 0 }].map((p) => ({ t: Number(p.t.toFixed(3)), v: p.v })) }] };
 const audio = [`<audio id="music" src="${P.music ?? "brand/son/bed.wav"}" data-start="0" data-duration="${T(TOTAL)}" data-track-index="10" data-volume="1" data-automation='${JSON.stringify(auto)}'></audio>`];
 sfx.filter(([, at]) => at < TOTAL - 0.05).forEach(([n, at, v], k) => audio.push(`<audio id="sfx-${k}" src="brand/son/${n}.wav" data-start="${T(at)}" data-duration="${T(Math.min(LEN[n], TOTAL - at))}" data-track-index="${11 + (k % 4)}" data-volume="${v}"></audio>`));
@@ -230,6 +284,27 @@ html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background:
 .ag-b1 { border-left-color: ${C.mint}; background: #F3F1EA; }
 .ag-b b { font-size: 24px; font-weight: 500; }
 .ag-b span { font-family: "Manrope", sans-serif; font-size: 17px; color: ${C.muted}; }
+.half { position: absolute; inset: 0; overflow: hidden; }
+.half-L { clip-path: inset(0% 50% 0% 0%); }
+.half-R { clip-path: inset(0% 0% 0% 50%); }
+.half-lbl { position: absolute; top: 150px; font-family: "JetBrains Mono", monospace; font-size: 25px; letter-spacing: .22em; text-transform: uppercase; padding: 12px 20px; border-radius: 999px; opacity: 0; }
+.half-lbl-L { left: 24px; color: ${C.page}; background: rgba(31,39,51,.62); }
+.half-lbl-R { left: 564px; color: ${C.ink}; background: rgba(251,246,234,.9); }
+.split-shade { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(31,39,51,.34) 0%, rgba(31,39,51,0) 32%); }
+.split-div { position: absolute; left: 538px; top: 0; width: 4px; height: 100%; background: ${C.page}; transform-origin: 50% 0; box-shadow: 0 0 24px rgba(31,39,51,.35); }
+.ev { position: absolute; top: 0; width: 492px; height: 116px; display: flex; gap: 16px; align-items: center; padding: 14px 18px; border-radius: 26px; opacity: 0; -webkit-backdrop-filter: blur(22px) saturate(1.2); backdrop-filter: blur(22px) saturate(1.2); box-shadow: 0 22px 44px -22px rgba(31,39,51,.6); }
+.ev-l { background: rgba(31,39,51,.74); color: ${C.page}; }
+.ev-r { background: rgba(251,246,234,.84); color: ${C.ink}; }
+.ev-ico { width: 64px; height: 64px; border-radius: 16px; flex: none; display: flex; align-items: center; justify-content: center; }
+.ev-l .ev-ico { background: rgba(251,246,234,.14); color: ${C.page}; border-radius: 50%; }
+.ev-l .ev-ico svg { width: 32px; height: 32px; }
+.ev-r .ev-ico { background: ${C.ink}; }
+.ev-r .ev-ico img { width: 50px; height: auto; }
+.ev-body { flex: 1; min-width: 0; }
+.ev-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.ev-top b { font-family: "Outfit", sans-serif; font-weight: 600; font-size: 25px; letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ev-top span { font-size: 18px; opacity: .65; white-space: nowrap; }
+.ev-text { font-size: 21px; line-height: 1.25; margin-top: 3px; opacity: .85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .slate { position: absolute; left: 60px; bottom: 60px; font-family: "JetBrains Mono", monospace; font-size: 22px; color: ${C.page}; background: rgba(31,39,51,.55); padding: 10px 16px; border-radius: 8px; letter-spacing: .04em; }
 #stack { position: absolute; left: 0; top: 0; width: ${W}px; height: ${H}px; }
 .nt { position: absolute; left: 70px; top: 0; width: 940px; height: ${NH}px; display: flex; gap: 24px; align-items: center; padding: 22px 28px; border-radius: 34px; opacity: 0;
