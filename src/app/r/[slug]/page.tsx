@@ -23,6 +23,7 @@ import { bookingPaymentCopy } from "@/content/fr/app";
 import { getEstablishmentBySlug } from "@/server/app/establishments";
 import { effectiveRanges, listOpeningHours } from "@/server/app/hours";
 import { listPhotos } from "@/server/app/photos";
+import { listReviews } from "@/server/app/reviews";
 import { EstablishmentPage } from "@/components/booking/EstablishmentPage";
 import { listPractitioners } from "@/server/app/practitioners";
 import { listServices } from "@/server/app/services";
@@ -104,10 +105,11 @@ export default async function ReservationPage({
 
   // Étape 1 : fiche de l'établissement (photos, prestations, équipe, horaires)
   if (!service) {
-    const [hours, photos, paymentLabel] = await Promise.all([
+    const [hours, photos, paymentLabel, reviews] = await Promise.all([
       listOpeningHours(establishment.id, null),
       listPhotos(establishment.id),
       publicPaymentLabel(establishment, formatPriceCents),
+      listReviews(establishment.id, { visibleOnly: true }),
     ]);
     return (
       <BookingShell establishment={establishment} wide hideTitle>
@@ -120,6 +122,7 @@ export default async function ReservationPage({
           base={base}
           todayWeekday={weekdayOfDateKey(today)}
           paymentLabel={paymentLabel}
+          reviews={reviews}
         />
       </BookingShell>
     );

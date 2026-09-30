@@ -12,8 +12,6 @@ import { Card, PageHeader } from "@/components/app/PageHeader";
 import { CopyField } from "@/components/app/CopyField";
 import { offer } from "@/config/offer";
 import { requireEstablishment } from "@/server/auth/guards";
-import { listPhotos } from "@/server/app/photos";
-import { PhotoList } from "@/components/app/PhotoList";
 import { GoogleSettingsImport } from "@/components/app/GoogleSettingsImport";
 import { isGoogleImportEnabled } from "@/server/google/places";
 import { updateEstablishmentAction } from "@/server/app/actions/establishment";
@@ -29,7 +27,6 @@ const STEPS = [5, 10, 15, 20, 30, 60].map((v) => ({
 
 export default async function ParametresPage() {
   const { user, establishment: e } = await requireEstablishment();
-  const photos = await listPhotos(e.id);
   const bookingUrl = new URL(`/r/${e.slug}`, offer.siteUrl).toString();
   return (
     <div className="mx-auto max-w-2xl">
@@ -62,7 +59,16 @@ export default async function ParametresPage() {
           defaultQuery={[e.name, e.city].filter(Boolean).join(" ")}
         />
       ) : null}
-      <PhotoList photos={photos} />
+      <Card className="mb-6">
+        <h2 className="text-[18px]">Photos, présentation et avis</h2>
+        <p className="mt-1 text-[14px] text-ink-muted">
+          Tout ce qui s’affiche sur votre page de réservation se modifie dans{" "}
+          <Link href="/app/ma-page" className="font-medium text-brand underline underline-offset-4">
+            Ma page
+          </Link>
+          .
+        </p>
+      </Card>
       <Card>
         <ActionForm
           action={updateEstablishmentAction}

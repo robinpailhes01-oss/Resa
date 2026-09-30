@@ -24,6 +24,9 @@ import { listOpeningHours } from "@/server/app/hours";
 import { listPractitioners } from "@/server/app/practitioners";
 import { listServices } from "@/server/app/services";
 import { getDashboardStats } from "@/server/app/stats";
+import { listPhotos } from "@/server/app/photos";
+import { listReviews } from "@/server/app/reviews";
+import { pageEditor } from "@/content/fr/app";
 
 export const metadata: Metadata = { title: "Tableau de bord" };
 
@@ -55,14 +58,17 @@ export default async function DashboardPage({
   const today = todayDateKey(tz);
   const now = new Date();
 
-  const [stats, todayBookings, services, hours, practitioners] =
+  const [stats, todayBookings, services, hours, practitioners, photos, reviews] =
     await Promise.all([
       getDashboardStats(establishment.id, tz, periodKey, now),
       listBookingsForDay(establishment.id, today, tz),
       listServices(establishment.id),
       listOpeningHours(establishment.id, null),
       listPractitioners(establishment.id),
+      listPhotos(establishment.id),
+      listReviews(establishment.id),
     ]);
+  const shownReviews = reviews.filter((r) => !r.hidden).length;
   const c = stats.current;
   const activeToday = todayBookings.filter(
     (b) =>
@@ -132,6 +138,42 @@ export default async function DashboardPage({
         </div>
       </section>
       <OnboardingChecklist steps={steps} slug={establishment.slug} />
+
+      <Card className="mb-8">
+        <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+          <div className="flex min-w-0 items-center gap-4">
+            <div aria-hidden="true" className="hidden shrink-0 grid-cols-2 gap-1 overflow-hidden rounded-2xl sm:grid">
+              {[0, 1, 2, 3].map((i) =>
+                photos[i] ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img key={i} src={photos[i].url} alt="" loading="lazy" className="size-12 object-cover" />
+                ) : (
+                  <span key={i} className="size-12 bg-soft-tint" />
+                ),
+              )}
+            </div>
+            <div className="min-w-0">
+              <h2 className="heading-3">{pageEditor.dashboard.title}</h2>
+              <p className="mt-1 text-[14px] text-ink-muted">{pageEditor.dashboard.text}</p>
+              <ul className="mt-3 flex flex-wrap gap-2 text-[12px] font-medium">
+                {[
+                  { label: pageEditor.dashboard.photos(photos.length), ok: photos.length > 0 },
+                  { label: pageEditor.dashboard.services(services.length), ok: services.length > 0 },
+                  { label: pageEditor.dashboard.reviews(shownReviews), ok: shownReviews > 0 },
+                  { label: pageEditor.dashboard.about(Boolean(establishment.description)), ok: Boolean(establishment.description) },
+                ].map((chip) => (
+                  <li key={chip.label} className={cn("rounded-full px-2.5 py-1", chip.ok ? "bg-success-tint text-success" : "bg-page text-ink-muted ring-1 ring-line")}>
+                    {chip.label}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <Button href="/app/ma-page" size="compact" className="shrink-0 self-start md:self-center">
+            {pageEditor.dashboard.edit} <ArrowRight aria-hidden="true" />
+          </Button>
+        </div>
+      </Card>
 
       <Card className="mb-8">
         <div className="flex flex-wrap items-baseline justify-between gap-2">

@@ -10,6 +10,8 @@ import type { Service } from "@/server/app/services";
 import { businessTypeLabel } from "@/server/app/establishments";
 import { StatusMessage } from "@/components/ui/StatusMessage";
 import { cn } from "@/lib/cn";
+import { publicReviewsCopy } from "@/content/fr/app";
+import { ReviewCard, Stars, type ReviewCardData } from "./ReviewCard";
 
 type Props = {
   establishment: Establishment;
@@ -21,16 +23,36 @@ type Props = {
   todayWeekday: number;
   /** Règle d'encaissement affichée (« Acompte de 30 % à la réservation ») ; null = paiement sur place. */
   paymentLabel?: string | null;
+  /** Avis Google affichés (non masqués par l'établissement). */
+  reviews?: Array<ReviewCardData & { id: string }>;
 };
 
 const DAY_ORDER = [1, 2, 3, 4, 5, 6, 0];
+
+/** Galerie sans trou quel que soit le nombre de photos (1 à 5) : grande photo de couverture, les autres autour. */
+const GALLERY_GRID: Record<number, string> = {
+  1: "grid-cols-1",
+  2: "grid-cols-2",
+  3: "grid-cols-2 md:grid-cols-3 md:grid-rows-2",
+  4: "grid-cols-2 md:grid-cols-4 md:grid-rows-2",
+  5: "grid-cols-2 md:grid-cols-4 md:grid-rows-2",
+};
+
+function galleryCell(count: number, index: number): string {
+  if (count === 1) return "aspect-[16/9] max-h-[420px]";
+  if (count === 2) return "aspect-[4/3]";
+  if (index === 0) return "col-span-2 row-span-2 aspect-[4/3] md:aspect-auto";
+  // 4 photos : la deuxième occupe toute la largeur restante de la première rangée.
+  if (count === 4 && index === 1) return "col-span-2 aspect-[8/3] md:aspect-auto";
+  return "aspect-[4/3]";
+}
 
 function fullAddress(e: Establishment): string {
   return [e.addressLine, [e.postalCode, e.city].filter(Boolean).join(" ")].filter(Boolean).join(", ");
 }
 
 /** Fiche publique de l'établissement : photos, prestations, équipe, infos pratiques, horaires. */
-export function EstablishmentPage({ establishment: e, services, practitioners, hours, photos, base, todayWeekday, paymentLabel = null }: Props) {
+export function EstablishmentPage({ establishment: e, services, practitioners, hours, photos, base, todayWeekday, paymentLabel = null, reviews = [] }: Props) {
   const address = fullAddress(e);
   const mapsHref = address ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${e.name} ${address}`)}` : null;
   const byDay = new Map<number, OpeningHourRow[]>();
@@ -64,7 +86,7 @@ export function EstablishmentPage({ establishment: e, services, practitioners, h
       </header>
 
       {gallery.length > 0 ? (
-        <section aria-label="Photos de l’établissement" className={cn("grid gap-2 overflow-hidden rounded-[24px]", gallery.length === 1 ? "grid-cols-1" : "grid-cols-2 md:grid-cols-4 md:grid-rows-2")}>
+        <section aria-label="Photos de l’établissement" className={cn("grid gap-2 overflow-hidden rounded-[24px]", GALLERY_GRID[gallery.length])}>
           {gallery.map((photo, index) => (
             // Photos hébergées par Google : balise img simple (pas de transformation côté serveur).
             // eslint-disable-next-line @next/next/no-img-element
@@ -73,7 +95,7 @@ export function EstablishmentPage({ establishment: e, services, practitioners, h
               src={photo.url}
               alt=""
               loading={index === 0 ? "eager" : "lazy"}
-              className={cn("h-full w-full object-cover", index === 0 ? "col-span-2 row-span-2 aspect-[4/3] md:aspect-auto" : "aspect-[4/3]", gallery.length === 1 && "max-h-[420px]")}
+              className={cn("h-full w-full object-cover", galleryCell(gallery.length, index))}
             />
           ))}
         </section>
@@ -110,6 +132,37 @@ export function EstablishmentPage({ establishment: e, services, practitioners, h
               </ul>
             )}
           </section>
+
+          {reviews.length > 0 ? (
+            <section aria-labelledby="avis-title">
+              <div className="flex flex-wrap items-end justify-between gap-3">
+                <div>
+                  <h2 id="avis-title" className="text-[22px]">
+                    {publicReviewsCopy.title}
+                  </h2>
+                  {e.googleRating !== null ? (
+                    <p className="mt-1 flex items-center gap-2 text-[14px] text-ink">
+                      <Stars rating={e.googleRating} />
+                      <span className="font-semibold">{e.googleRating.toLocaleString("fr-FR")}</span>
+                      <span className="text-ink-muted">{publicReviewsCopy.basedOn(e.googleRatingCount ?? reviews.length)}</span>
+                    </p>
+                  ) : null}
+                </div>
+                {e.googlePlaceId ? (
+                  <a href={googleReviewsUrl(e.googlePlaceId)} target="_blank" rel="noopener" className="text-[14px] font-medium text-brand underline-offset-4 hover:underline">
+                    {publicReviewsCopy.seeAll}
+                  </a>
+                ) : null}
+              </div>
+              <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+                {reviews.map((r) => (
+                  <li key={r.id}>
+                    <ReviewCard review={r} />
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
 
           {practitioners.length > 0 ? (
             <section aria-labelledby="equipe-title">

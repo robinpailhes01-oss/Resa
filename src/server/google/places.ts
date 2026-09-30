@@ -1,5 +1,5 @@
 import "server-only";
-import { PLACES_FIELD_MASK, buildTextSearchBody, looksLikeUrl, parseGoogleMapsUrl, parsePlaceCandidates, type GooglePlaceCandidate } from "@/lib/google-places";
+import { PLACES_FIELD_MASK, buildTextSearchBody, looksLikeUrl, parseGoogleMapsUrl, parsePlaceCandidates, parsePlaceReviews, type GooglePlaceCandidate, type GoogleReview } from "@/lib/google-places";
 
 /** L'import Google n'est proposé que si une clé est configurée. */
 export function isGoogleImportEnabled(): boolean {
@@ -39,6 +39,28 @@ export async function getPlaceById(placeId: string, fetchImpl: typeof fetch = fe
   if (!response.ok) throw new GooglePlacesError(`Google Places a répondu ${response.status}`);
   const place = (await response.json()) as Parameters<typeof parsePlaceCandidates>[0] extends { places?: infer P } ? (P extends Array<infer R> ? R : never) : never;
   return parsePlaceCandidates({ places: [place] })[0] ?? null;
+}
+
+/** Avis publiés sur la fiche (5 au plus, sélection de Google), avec la note et le nombre d'avis à jour. */
+export async function getPlaceReviews(
+  placeId: string,
+  fetchImpl: typeof fetch = fetch,
+): Promise<{ reviews: GoogleReview[]; rating: number | null; ratingCount: number | null; mapsUrl: string | null } | null> {
+  const key = process.env.GOOGLE_PLACES_API_KEY?.trim();
+  if (!key) throw new GooglePlacesError("GOOGLE_PLACES_API_KEY manquante.");
+  const response = await fetchImpl(`https://places.googleapis.com/v1/places/${encodeURIComponent(placeId)}?languageCode=fr&regionCode=FR`, {
+    headers: { "X-Goog-Api-Key": key, "X-Goog-FieldMask": "reviews,rating,userRatingCount,googleMapsUri" },
+    signal: AbortSignal.timeout(8000),
+  });
+  if (response.status === 404) return null;
+  if (!response.ok) throw new GooglePlacesError(`Google Places a répondu ${response.status}`);
+  const data = (await response.json()) as { reviews?: Parameters<typeof parsePlaceReviews>[0]["reviews"]; rating?: number; userRatingCount?: number; googleMapsUri?: string };
+  return {
+    reviews: parsePlaceReviews(data),
+    rating: typeof data.rating === "number" ? data.rating : null,
+    ratingCount: typeof data.userRatingCount === "number" ? data.userRatingCount : null,
+    mapsUrl: data.googleMapsUri ?? null,
+  };
 }
 
 /**

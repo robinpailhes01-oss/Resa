@@ -5,6 +5,7 @@ import type { FormState } from "@/components/app/ActionForm";
 import { parseGoogleMeta, parseHoursJson, parsePhotoNames, type GooglePlaceCandidate } from "@/lib/google-places";
 import { requireEstablishment, requireUser } from "@/server/auth/guards";
 import { applyGooglePlace } from "../google-sync";
+import { syncGoogleReviews } from "../reviews";
 import { GooglePlacesError, findPlaces, isGoogleImportEnabled } from "@/server/google/places";
 import { SlidingWindowRateLimiter } from "@/server/rate-limit";
 
@@ -70,7 +71,12 @@ export async function importGooglePlaceAction(_prev: FormState, fd: FormData): P
       description: fd.get("withDescription") === "on",
       hours: fd.get("withHours") === "on",
     });
+    // Avis de la fiche : importés dans la foulée ; un échec ne bloque pas la liaison.
+    await syncGoogleReviews(establishment.id, candidate.placeId).catch((error) =>
+      console.error("[google] avis", error instanceof Error ? error.message : error),
+    );
     revalidatePath("/app/parametres");
+    revalidatePath("/app/ma-page");
     revalidatePath(`/r/${establishment.slug}`);
     const parts = ["Fiche Google reliée"];
     if (candidate.rating !== null) parts.push(`note ${candidate.rating.toLocaleString("fr-FR")} (${candidate.ratingCount ?? 0} avis)`);

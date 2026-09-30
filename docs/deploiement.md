@@ -206,3 +206,11 @@ Chaque établissement relie **son propre compte Mollie** depuis son espace (menu
 **Remboursements.** Automatiques quand l’établissement annule un rendez-vous ou quand le client annule en ligne dans le délai autorisé. Une absence (« client absent ») ne rembourse rien. Si Mollie refuse le remboursement (solde insuffisant), le paiement apparaît « À rembourser depuis Mollie » dans la page Paiements et une alerte est envoyée.
 
 **Sécurité.** Les jetons Mollie sont chiffrés en base (AES-256-GCM). Seul le propriétaire du compte Reso peut relier ou déconnecter le compte Mollie. La déconnexion révoque l’accès chez Mollie et coupe la demande de paiement.
+
+## 14. Page de réservation : photos et avis (menu « Ma page »)
+
+Chaque établissement modifie sa page publique depuis **Ma page** : présentation, photos, prestations et avis. Un encart du tableau de bord y mène.
+
+**Photos.** Envoyées depuis le téléphone ou l’ordinateur (12 au plus). Le navigateur les redimensionne (1 600 px) et les compresse en JPEG avant l’envoi ; elles sont stockées dans la base et servies par `/photos/<id>` avec un cache long. Le type réel du fichier est vérifié (JPEG, PNG ou WebP uniquement). La première photo sert de couverture.
+
+**Avis.** Uniquement des avis Google authentiques, importés tels quels (auteur, note, texte, date) : jamais de saisie manuelle. Import automatique quand la fiche Google est reliée (inscription ou Paramètres), puis bouton « Actualiser mes avis Google ». Google transmet au plus 5 avis par fiche. L’établissement peut masquer un avis ; le choix est conservé à chaque actualisation. La page publique affiche jusqu’à 6 avis avec texte, la note moyenne et un lien vers tous les avis Google. Chaque actualisation est un appel Place Details (champ `reviews`, facturé par Google au tarif « Enterprise + Atmosphere »), déclenché uniquement à la demande.

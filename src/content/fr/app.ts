@@ -195,3 +195,83 @@ export const bookingPaymentCopy = {
   lateRefunded: "Le paiement est arrivé après la libération du créneau : il vous est remboursé automatiquement.",
   onSite: "paiement sur place",
 };
+
+/** Page « Ma page » : tout ce que voient les clients sur la page de réservation. */
+export const pageEditor = {
+  nav: "Ma page",
+  title: "Ma page de réservation",
+  intro: "Ce que voient vos clients avant de réserver : présentation, photos, prestations et avis.",
+  view: "Voir ma page",
+  about: {
+    title: "Présentation",
+    help: "Quelques lignes sur votre établissement, votre savoir-faire, votre ambiance.",
+    label: "Texte de présentation",
+    placeholder: "Ex. Institut de beauté au cœur de Montpellier : soins du visage, épilation et beauté des mains, dans un cadre calme et chaleureux.",
+    save: "Enregistrer",
+    saved: "Présentation enregistrée.",
+    tooLong: "600 caractères maximum.",
+  },
+  photos: {
+    title: "Photos",
+    help: (max: number) => `Votre salon, vos réalisations, votre équipe. La première photo sert de couverture. Jusqu’à ${max} photos.`,
+    add: "Ajouter des photos",
+    adding: (done: number, total: number) => `Envoi ${done}/${total}…`,
+    empty: "Aucune photo pour l’instant. Les pages avec photos inspirent davantage confiance.",
+    cover: "Couverture",
+    makeCover: "Mettre en couverture",
+    remove: "Retirer",
+    removeConfirm: "Retirer cette photo de votre page ?",
+    fromGoogle: "Google",
+    done: (n: number) => (n > 1 ? `${n} photos ajoutées.` : "Photo ajoutée."),
+    errors: {
+      missing: "Aucune photo reçue.",
+      tooBig: "Cette photo est trop lourde, même après compression.",
+      format: "Format non pris en charge : utilisez une photo JPEG, PNG ou WebP.",
+      limit: "Vous avez atteint le nombre maximum de photos. Retirez-en une pour en ajouter une autre.",
+      read: "Cette photo n’a pas pu être lue. Essayez avec une autre.",
+    },
+  },
+  services: {
+    title: "Prestations",
+    help: "Ce que vos clients peuvent réserver en ligne.",
+    add: "Ajouter une prestation",
+    manage: "Gérer les prestations",
+    empty: "Aucune prestation : vos clients ne peuvent pas encore réserver.",
+    hiddenTag: "Masquée",
+  },
+  reviews: {
+    title: "Avis clients",
+    help: "Les avis de votre fiche Google, affichés tels quels sur votre page. Masquez ceux que vous ne souhaitez pas mettre en avant.",
+    sync: "Actualiser mes avis Google",
+    syncing: "Récupération…",
+    synced: (n: number) => (n > 0 ? `${n} avis récupéré${n > 1 ? "s" : ""} depuis Google.` : "Aucun avis avec texte sur votre fiche Google pour l’instant."),
+    syncError: "Google n’a pas pu être joint. Réessayez dans quelques instants.",
+    noListing: "Reliez d’abord votre fiche Google dans les Paramètres.",
+    linkListing: "Relier ma fiche Google",
+    empty: "Aucun avis importé pour l’instant.",
+    googleNote: "Google transmet jusqu’à 5 avis, choisis par Google parmi les plus pertinents.",
+    shown: "Affiché",
+    hidden: "Masqué",
+    hide: "Masquer",
+    show: "Afficher",
+    askMore: "Plus d’avis ? Activez la demande d’avis automatique dans « Emails automatiques ».",
+  },
+  dashboard: {
+    title: "Votre page de réservation",
+    text: "Photos, présentation, prestations et avis : soignez ce que vos clients voient en premier.",
+    edit: "Modifier ma page",
+    photos: (n: number) => `${n} photo${n > 1 ? "s" : ""}`,
+    services: (n: number) => `${n} prestation${n > 1 ? "s" : ""}`,
+    reviews: (n: number) => `${n} avis`,
+    about: (ok: boolean) => (ok ? "Présentation rédigée" : "Présentation à rédiger"),
+  },
+};
+
+/** Section « Avis » de la page de réservation publique. */
+export const publicReviewsCopy = {
+  title: "Avis clients",
+  basedOn: (count: number) => `sur ${count} avis Google`,
+  source: "Avis publié sur Google",
+  seeAll: "Voir tous les avis sur Google",
+  stars: (n: number) => `${n} étoile${n > 1 ? "s" : ""} sur 5`,
+};
