@@ -1,0 +1,32 @@
+{
+  "name": "onboarding-mobile",
+  "viewport": "mobile",
+  "stills": false,
+  "trimStart": 0.3,
+  "steps": [
+    { "goto": "/inscription" },
+    { "wait": 600 },
+    { "type": ["#fullName", "Camille Durand"], "delay": 45 },
+    { "type": ["#email", "atelier.lune+video@example.com"], "delay": 30 },
+    { "type": ["#password", "motdepasse-video"], "delay": 30 },
+    { "wait": 300 },
+    { "click": "button[type='submit']" },
+    { "wait": 1200 },
+    { "type": ["#name", "Atelier Lune"], "delay": 45 },
+    { "type": ["#city", "Lyon"], "delay": 40 },
+    { "type": ["#postalCode", "69002"], "delay": 40 },
+    { "type": ["#addressLine", "8 rue Mercière"], "delay": 35 },
+    { "type": ["#phone", "04 78 00 00 00"], "delay": 30 },
+    { "wait": 300 },
+    { "click": "form:has(#businessType) button[type='submit']" },
+    { "wait": 1400 },
+    { "scroll": 420, "duration": 1400 },
+    { "wait": 500 },
+    { "click": "input[name='template'] >> nth=3" },
+    { "wait": 350 },
+    { "click": "input[name='template'] >> nth=4" },
+    { "wait": 600 },
+    { "click": "button:has-text('Ajouter les prestations cochées')" },
+    { "wait": 1600 }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "page-publique-mobile",
+  "viewport": "mobile",
+  "trimStart": 0.3,
+  "steps": [
+    { "goto": "/r/maison-alba" },
+    { "wait": 1000 },
+    { "shot": "haut" },
+    { "scroll": 760, "duration": 2600 },
+    { "wait": 900 },
+    { "shot": "horaires" },
+    { "scroll": 420, "duration": 1500 },
+    { "wait": 800 },
+    { "shot": "adresse" }
+  ]
+}
