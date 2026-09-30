@@ -123,6 +123,13 @@ Partir de `templates/montage.example.json`. Pour placer les coupes, lire la tran
 Référence des champs :
 
 - Cartes (`card`) : `kicker` (étiquette, ex. « [01] — l'inscription »), `text` (titre, apparaît mot par mot), `sub`, `script` (annotation manuscrite soulignée, thème poudre). Titres : `title`, `titleKicker` (petite étiquette mono au-dessus, ex. « [02] »).
+- **Kit de mouvement** (thème poudre, actif par défaut ; `"motion": false` pour le couper, `"sound": false` pour couper musique et bruitages) :
+  - titres et cartes révélés mot par mot depuis un masque, étiquettes « [01] » tapées à la machine à écrire ;
+  - transition « tirage » (panneau crème frappé du logo) à l'entrée des cartes, de la carte de fin et au retour sur la face caméra ; forcer avec `"transition": "print"` ou `"morph"` sur un segment ;
+  - téléphone posé en perspective sur le socle (ombre de contact), puis lente avancée de caméra ;
+  - `"app": { "src": "html:agenda" }` : agenda recréé en HTML dont les rendez-vous se posent un à un (`bookings`, `date`, `practitioner`, `firstAt`, `every`) ;
+  - signature animée reso® + logo sonore : automatique après un extrait `--until` (`stingCta`, `stingUrl`), ou en fin de vidéo avec `"endCard": { "style": "sting", "cta": …, "url": … }` ;
+  - son : musique d'ambiance et bruitages synthétisés par `reso-video-charte/scripts/sound-kit.mjs` (placeholder libre de droits ; pour publier, préférer une piste sous licence via `"music": { "src": … }`).
 - Carte de fin : `endCard.image` (ex. `media/fin-ciseaux.png`, visuel de marque plein cadre) + `cta` + `url`, ou sans image : logo + `line`.
 - Segment : `start` (s, dans `face.mp4`), `layout`, puis selon le cas `app`, `card`, `title` (+ `titleDuration`), `chips`, `zoom` (face), `captions: false` (masque les sous-titres du segment, par ex. sur une carte qui dit déjà la phrase). Un segment dure jusqu'au `start` suivant ; le dernier jusqu'à la fin de la voix.
 - `app` : `src` (mp4/webm ou png/jpg/webp ; une image reçoit un zoom lent sauf `kenBurns: false`), `frame` (`phone` | `window` | `full`), `aspect` (largeur/hauteur de la capture : 390/844 par défaut en phone, 1,6 en window), `from` (s d'entrée dans la capture), `position` (`object-position`, défaut haut de l'écran), `zoom`, `box` ({x,y,w,h} pour forcer l'emplacement).

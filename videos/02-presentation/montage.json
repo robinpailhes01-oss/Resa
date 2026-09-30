@@ -82,11 +82,13 @@
     },
     {
       "start": 13.58,
-      "layout": "split",
+      "layout": "app",
       "app": {
-        "src": "media/app-v2/agenda-mobile.mp4",
+        "src": "html:agenda",
         "frame": "phone",
-        "from": 0.9
+        "date": "jeudi 1 octobre",
+        "firstAt": 0.15,
+        "every": 0.22
       }
     },
     {
@@ -326,5 +328,7 @@
     "cta": "Essayer gratuitement",
     "url": "lien en bio"
   },
-  "theme": "poudre"
+  "theme": "poudre",
+  "stingCta": "essayer gratuitement",
+  "stingUrl": "lien en bio"
 }

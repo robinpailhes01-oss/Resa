@@ -169,6 +169,14 @@ const THEME = M.theme ?? "poudre";
 if (!PALETTES[THEME]) fail(`Thème inconnu « ${THEME} » (attendus : ${Object.keys(PALETTES).join(", ")})`);
 const C = PALETTES[THEME];
 const POUDRE = THEME === "poudre";
+// Kit de mouvement (thème poudre) : révélations masquées, machine à écrire, transition « tirage »,
+// téléphone en 3D sur le socle, signature animée, bruitages et musique synthétisés.
+const MOTION = POUDRE && M.motion !== false;
+const SOUND = MOTION && M.sound !== false;
+const SFX = []; // { name, t, vol }
+const sfx = (name, t, vol = 0.5) => {
+  if (SOUND && t >= 0) SFX.push({ name, t, vol });
+};
 const ICON_TINT = POUDRE
   ? [
       [C.soft, C.brand],
@@ -232,7 +240,9 @@ function faceXform(B) {
   };
 }
 const END = UNTIL ? null : (M.endCard ?? null);
-const END_DUR = END ? q(END.duration ?? 2.5) : 0;
+// Signature animée (logo + logo sonore) : après la voix sur un extrait, ou en fin si endCard.style = "sting".
+const STING = MOTION && (UNTIL || END?.style === "sting") ? { dur: M.stingDuration ?? 2.2, cta: END?.cta ?? M.stingCta ?? null, url: END?.url ?? M.stingUrl ?? null } : null;
+const END_DUR = STING ? q(STING.dur) : END ? q(END.duration ?? 2.5) : 0;
 const TOTAL = q(FACE_DUR + END_DUR);
 
 const transcriptPath = join(PROJECT, M.transcript ?? "transcript.json");
@@ -263,11 +273,11 @@ segs.forEach((s, i) => {
   s.end = q(i + 1 < segs.length ? segs[i + 1].start : FACE_DUR);
   if (s.end <= s.start) fail(`Segment ${i} (${s.layout}) de durée nulle : vérifiez les « start ».`);
   if (["app", "app-only", "split", "cutout"].includes(s.layout) && !s.app?.src) fail(`Segment ${i} (${s.layout}) : app.src manquant.`);
-  if (s.app?.src && !existsSync(join(PROJECT, s.app.src))) fail(`Capture introuvable : ${s.app.src}`);
+  if (s.app?.src && !s.app.src.startsWith("html:") && !existsSync(join(PROJECT, s.app.src))) fail(`Capture introuvable : ${s.app.src}`);
   if (s.layout === "cutout" && !M.face.cutout) fail("Layout « cutout » : renseignez face.cutout (npx hyperframes remove-background).");
   if (s.layout === "card" && !s.card?.text) fail(`Segment ${i} (card) : card.text manquant.`);
 });
-if (END) segs.push({ start: FACE_DUR, end: TOTAL, layout: "end", captions: false });
+if (END || STING) segs.push({ start: FACE_DUR, end: TOTAL, layout: "end", captions: false });
 
 // ─── Sous-titres ────────────────────────────────────────────────────────────
 const cap = M.captions ?? {};
@@ -339,12 +349,42 @@ for (const font of ["manrope", "outfit", "caveat", "jetbrainsmono"])
   copyFileSync(join(CHARTE, `fonts/${font}.woff2`), join(BRAND_DIR, `${font}.woff2`));
 copyFileSync(join(CHARTE, POUDRE ? "logo-poudre.svg" : "logo.svg"), join(BRAND_DIR, "logo.svg"));
 copyFileSync(join(CHARTE, "logo-poudre-creme.svg"), join(BRAND_DIR, "logo-creme.svg"));
+if (STING) copyFileSync(join(CHARTE, "images/coin-ciseaux.png"), join(BRAND_DIR, "coin-ciseaux.png"));
+if (SOUND) {
+  const kitDir = join(BRAND_DIR, "son");
+  execFileSync("node", [join(CHARTE, "../scripts/sound-kit.mjs"), kitDir, "--bed", String(Math.ceil(TOTAL) + 1)], { stdio: "ignore" });
+}
 if (END?.image) {
   if (!existsSync(join(PROJECT, END.image))) fail(`Image de fin introuvable : ${END.image}`);
 }
 copyFileSync(join(HERE, "gsap.min.js"), join(BRAND_DIR, "gsap.min.js"));
 
 // ─── HTML ───────────────────────────────────────────────────────────────────
+// Mots dans un masque (révélation par le bas) et lettres « tapées ».
+const masked = (text, cls = "") => esc(text).split(" ").map((w) => `<span class="m"><span class="mi${cls ? " " + cls : ""}">${w}</span></span>`).join(" ");
+const typed = (text) => [...esc(text)].map((c) => (c === " " ? " " : `<span class="ch">${c}</span>`)).join("");
+function typeIn(sel, text, t0, step = 0.028) {
+  const n = [...text].filter((c) => c !== " ").length;
+  js.push(`document.querySelectorAll("${sel} .ch").forEach(function(el,k){ tl.set(el, { opacity: 1 }, ${T(t0)} + k * ${step}); });`);
+  sfx("type", t0, 0.35);
+  return t0 + n * step;
+}
+// Agenda recréé en HTML (plus net et animable qu'une capture) : les rendez-vous se posent un à un.
+const DEFAULT_BOOKINGS = [
+  ["09:00", "10:00", "Coupe & brushing", "Julie Martin"],
+  ["11:00", "12:00", "Soin du visage", "Chloé Bernard"],
+  ["13:45", "14:45", "Coupe & brushing", "Inès Moreau"],
+  ["16:30", "17:30", "Soin du visage", "Sarah Roux"],
+];
+function agendaHtml(i, app) {
+  const from = 9, to = 18, rowH = app.rowH ?? 92;
+  const toY = (hm) => { const [h, m] = hm.split(":").map(Number); return (h - from + m / 60) * rowH; };
+  const hours = Array.from({ length: to - from + 1 }, (_, k) => `<div class="ag-row" style="top:${k * rowH}px"><span>${String(from + k).padStart(2, "0")}:00</span></div>`).join("");
+  const blocks = (app.bookings ?? DEFAULT_BOOKINGS).map(([a, b, what, who], k) =>
+    `<div class="ag-b ag-b${k % 2}" id="ag-${i}-${k}" style="top:${toY(a) + 3}px;height:${toY(b) - toY(a) - 6}px"><b>${esc(what)}</b><span>${esc(a)} – ${esc(b)} · ${esc(who)}</span></div>`).join("");
+  return `<div class="ag"><div class="ag-h"><div class="ag-t">Agenda</div><div class="ag-d">${esc(app.date ?? "jeudi 1 octobre")}</div><div class="ag-p">${esc(app.practitioner ?? "Camille Durand")}</div></div><div class="ag-g" style="height:${(to - from) * rowH}px">${hours}${blocks}</div></div>`;
+}
+
 const px = (b) => `left:${b.x}px;top:${b.y}px;width:${b.w}px;height:${b.h}px;`;
 const isImg = (src) => /\.(png|jpe?g|webp|avif)$/i.test(src);
 const html = [];
@@ -360,7 +400,9 @@ segs.forEach((s, i) => {
   const aspect = s.app.aspect ?? (frame === "window" ? 16 / 10 : 390 / 844);
   const box = s.app.box ?? shotBox(s.layout, frame, aspect);
   const dur = q(s.end - s.start);
-  const media = isImg(s.app.src)
+  const media = s.app.src.startsWith("html:")
+    ? agendaHtml(i, s.app)
+    : isImg(s.app.src)
     ? `<img id="shot-${i}-media" class="clip" src="${esc(s.app.src)}" alt="" style="object-position:${esc(s.app.position ?? "50% 0%")}" data-start="${T(s.start)}" data-duration="${T(dur)}" data-track-index="2" />`
     : `<video id="shot-${i}-media" class="clip" src="${esc(s.app.src)}" data-start="${T(s.start)}" data-duration="${T(dur)}" data-media-start="${(s.app.from ?? 0).toFixed(3)}" data-track-index="2" style="object-position:${esc(s.app.position ?? "50% 0%")}" muted playsinline></video>`;
   const chrome =
@@ -370,13 +412,27 @@ segs.forEach((s, i) => {
         ? `<div class="notch"></div>`
         : "";
   html.push(
-    `<div class="shot shot-${frame}" id="shot-${i}" style="${px(box)}"><div class="shot-in" id="shot-${i}-in"${box.rot ? ` data-rot="${box.rot}"` : ""}>${chrome}<div class="screen"><div class="kb" id="shot-${i}-kb">${media}</div></div></div></div>`,
+    `<div class="shot shot-${frame}" id="shot-${i}" style="${px(box)}">${MOTION && frame === "phone" ? `<div class="contact" id="shot-${i}-contact"></div>` : ""}<div class="shot-in" id="shot-${i}-in"${box.rot ? ` data-rot="${box.rot}"` : ""}>${chrome}<div class="screen"><div class="kb" id="shot-${i}-kb">${media}</div></div></div></div>`,
   );
   const inT = s.start;
   js.push(`tl.set("#shot-${i}", { opacity: 1 }, ${T(inT)});`);
-  js.push(
-    `tl.fromTo("#shot-${i}-in", { y: 70, scale: 0.94, rotation: ${box.rot ?? 0} }, { y: 0, scale: 1, rotation: ${box.rot ?? 0}, duration: 0.55, ease: "power3.out" }, ${T(inT)});`,
-  );
+  if (MOTION && frame === "phone") {
+    // Le téléphone se pose sur le socle en perspective, puis la caméra avance lentement.
+    js.push(`tl.fromTo("#shot-${i}-in", { y: 240, rotationX: 22, rotationY: -18, rotation: ${box.rot ?? 0}, scale: 0.9, transformPerspective: 1800 }, { y: 0, rotationX: 5, rotationY: -8, rotation: ${box.rot ?? 0}, scale: 1, transformPerspective: 1800, duration: 0.95, ease: "power4.out" }, ${T(inT)});`);
+    js.push(`tl.to("#shot-${i}-in", { rotationX: 2, rotationY: -2, scale: 1.035, duration: ${T(Math.max(dur - 0.95, 0.2))}, ease: "sine.inOut" }, ${T(inT + 0.95)});`);
+    js.push(`tl.fromTo("#shot-${i}-contact", { opacity: 0, scaleX: 0.6 }, { opacity: 1, scaleX: 1, duration: 0.9, ease: "power3.out" }, ${T(inT + 0.1)});`);
+    if (s.app.src.startsWith("html:"))
+      (s.app.bookings ?? DEFAULT_BOOKINGS).forEach((_, k) => {
+        const at = inT + (s.app.firstAt ?? 0.3) + k * (s.app.every ?? 0.24);
+        if (at < s.end - 0.2) {
+          js.push(`tl.fromTo("#ag-${i}-${k}", { opacity: 0, y: -36, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "back.out(1.4)" }, ${T(at)});`);
+          sfx("tick", at + 0.12, 0.45);
+        } else js.push(`tl.set("#ag-${i}-${k}", { opacity: 1 }, ${T(inT)});`);
+      });
+  } else
+    js.push(
+      `tl.fromTo("#shot-${i}-in", { y: 70, scale: 0.94, rotation: ${box.rot ?? 0} }, { y: 0, scale: 1, rotation: ${box.rot ?? 0}, duration: 0.55, ease: "power3.out" }, ${T(inT)});`,
+    );
   if (isImg(s.app.src) && s.app.kenBurns !== false)
     js.push(`tl.fromTo("#shot-${i}-kb", { scale: 1 }, { scale: 1.06, duration: ${T(dur)}, ease: "none" }, ${T(inT)});`);
   if (s.app.zoom)
@@ -389,20 +445,26 @@ segs.forEach((s, i) => {
 // Cartes texte (layout card).
 segs.forEach((s, i) => {
   if (s.layout !== "card") return;
-  const wordsHtml = s.card.text
-    .split(/\s+/)
-    .map((w, k) => `<span class="cw" id="card-${i}-w${k}">${esc(w)}</span>`)
-    .join(" ");
+  const wordsHtml = MOTION
+    ? masked(s.card.text, "cw")
+    : s.card.text
+        .split(/\s+/)
+        .map((w, k) => `<span class="cw" id="card-${i}-w${k}">${esc(w)}</span>`)
+        .join(" ");
   html.push(
-    `<div class="card-slide clip" id="card-${i}" data-start="${T(s.start)}" data-duration="${T(s.end - s.start)}" data-track-index="3"><div class="card-in">${s.card.kicker ? `<div class="kicker">${esc(s.card.kicker)}</div>` : ""}<div class="card-text">${wordsHtml}</div>${s.card.sub ? `<div class="card-sub" id="card-${i}-sub">${esc(s.card.sub)}</div>` : ""}</div>${s.card.script ? `<div class="script" id="card-${i}-script">${esc(s.card.script)}<svg viewBox="0 0 300 24" preserveAspectRatio="none"><path id="card-${i}-swoosh" d="M4 16 C 80 6, 180 4, 296 12" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></div>` : ""}</div>`,
+    `<div class="card-slide clip" id="card-${i}" data-start="${T(s.start)}" data-duration="${T(s.end - s.start)}" data-track-index="3"><div class="card-in">${s.card.kicker ? `<div class="kicker" id="card-${i}-k">${MOTION ? typed(s.card.kicker) : esc(s.card.kicker)}</div>` : ""}<div class="card-text">${wordsHtml}</div>${s.card.sub ? `<div class="card-sub" id="card-${i}-sub">${esc(s.card.sub)}</div>` : ""}</div>${s.card.script ? `<div class="script" id="card-${i}-script">${esc(s.card.script)}<svg viewBox="0 0 300 24" preserveAspectRatio="none"><path id="card-${i}-swoosh" d="M4 16 C 80 6, 180 4, 296 12" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg></div>` : ""}</div>`,
   );
   if (s.card.script) {
     js.push(`tl.fromTo("#card-${i}-script", { opacity: 0, rotation: -8, y: 10 }, { opacity: 1, rotation: -6, y: 0, duration: 0.5, ease: "power2.out" }, ${T(s.start + 0.7)});`);
     js.push(`(function(){const el=document.getElementById("card-${i}-swoosh");if(el){const L=el.getTotalLength();tl.set(el,{strokeDasharray:L,strokeDashoffset:L},${T(s.start + 0.9)});tl.to(el,{strokeDashoffset:0,duration:0.5,ease:"power2.inOut"},${T(s.start + 0.9)});}})();`);
   }
-  js.push(
-    `tl.fromTo("#card-${i} .cw", { opacity: 0, y: 12, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.5, ease: "power2.out", stagger: 0.06 }, ${T(s.start + 0.1)});`,
-  );
+  if (MOTION) {
+    if (s.card.kicker) typeIn(`#card-${i}-k`, s.card.kicker, s.start + 0.15);
+    js.push(`tl.fromTo("#card-${i} .mi", { yPercent: 115 }, { yPercent: 0, duration: 0.85, ease: "power4.out", stagger: 0.07 }, ${T(s.start + 0.3)});`);
+  } else
+    js.push(
+      `tl.fromTo("#card-${i} .cw", { opacity: 0, y: 12, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.5, ease: "power2.out", stagger: 0.06 }, ${T(s.start + 0.1)});`,
+    );
   if (s.card.sub)
     js.push(`tl.fromTo("#card-${i}-sub", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, ${T(s.start + 0.5)});`);
 });
@@ -427,9 +489,15 @@ segs.forEach((s, i) => {
   if (s.title) {
     const dur = q(Math.min(s.titleDuration ?? s.end - s.start, s.end - s.start));
     html.push(
-      `<div class="topline clip" id="title-${i}" data-start="${T(s.start)}" data-duration="${T(dur)}" data-track-index="5">${s.titleKicker ? `<span class="tk">${esc(s.titleKicker)}</span>` : ""}${esc(s.title)}</div>`,
+      `<div class="topline clip" id="title-${i}" data-start="${T(s.start)}" data-duration="${T(dur)}" data-track-index="5">${s.titleKicker ? `<span class="tk" id="title-${i}-k">${MOTION ? typed(s.titleKicker) : esc(s.titleKicker)}</span>` : ""}${MOTION ? masked(s.title) : esc(s.title)}</div>`,
     );
-    js.push(`tl.fromTo("#title-${i}", { opacity: 0, y: -24 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, ${T(s.start)});`);
+    if (MOTION) {
+      // L'étiquette se déplie comme un tirage, puis les mots montent de leur masque.
+      js.push(`tl.fromTo("#title-${i}", { clipPath: "inset(0% 0% 100% 0%)", y: -10 }, { clipPath: "inset(0% 0% 0% 0%)", y: 0, duration: 0.5, ease: "power3.out" }, ${T(s.start + 0.02)});`);
+      js.push(`tl.fromTo("#title-${i} .mi", { yPercent: 115 }, { yPercent: 0, duration: 0.7, ease: "power4.out", stagger: 0.04 }, ${T(s.start + 0.12)});`);
+      if (s.titleKicker) typeIn(`#title-${i}-k`, s.titleKicker, s.start + 0.1);
+      sfx("paper", s.start, 0.3);
+    } else js.push(`tl.fromTo("#title-${i}", { opacity: 0, y: -24 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, ${T(s.start)});`);
   }
   (s.chips ?? []).forEach((c, k) => {
     const at = q(s.start + (c.at ?? 0.6));
@@ -442,14 +510,17 @@ segs.forEach((s, i) => {
       `<div class="chip clip" id="${id}" data-start="${T(at)}" data-duration="${T(dur)}" data-track-index="6" style="left:${pos.x}px;top:${pos.y}px;"><div class="chip-in" id="${id}-in"><div class="chip-ico" style="background:${bg};color:${fg}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS[c.icon ?? "calendar"] ?? ICONS.calendar}</svg></div><div><div class="chip-t">${esc(c.title)}</div>${c.text ? `<div class="chip-s">${esc(c.text)}</div>` : ""}</div></div></div>`,
     );
     js.push(
-      `tl.fromTo("#${id}-in", { opacity: 0, y: 24, scale: 0.92, rotation: -2 }, { opacity: 1, y: 0, scale: 1, rotation: -1.5, duration: 0.5, ease: "back.out(1.6)" }, ${T(at)});`,
+      MOTION
+        ? `tl.fromTo("#${id}-in", { opacity: 0, y: 40, rotation: -4 }, { opacity: 1, y: 0, rotation: -1.5, duration: 0.7, ease: "power4.out" }, ${T(at)});`
+        : `tl.fromTo("#${id}-in", { opacity: 0, y: 24, scale: 0.92, rotation: -2 }, { opacity: 1, y: 0, scale: 1, rotation: -1.5, duration: 0.5, ease: "back.out(1.6)" }, ${T(at)});`,
     );
+    sfx(c.icon === "calendar" || c.icon === "bell" ? "ding" : "tick", at + 0.05, c.icon === "calendar" || c.icon === "bell" ? 0.3 : 0.4);
     js.push(`tl.to("#${id}-in", { y: -6, duration: ${T(Math.max(dur - 0.8, 0.2))}, ease: "sine.inOut" }, ${T(at + 0.5)});`);
   });
 });
 
-// Carte de fin.
-if (END) {
+// Carte de fin (remplacée par la signature animée si endCard.style = "sting").
+if (END && !STING) {
   html.push(
     `<div class="end clip${END.image ? " end-photo" : ""}" id="end" data-start="${T(FACE_DUR)}" data-duration="${T(END_DUR)}" data-track-index="7">${END.image ? `<img class="end-bg" src="${esc(END.image)}" alt="" />` : ""}<div class="end-in">${END.image ? `<div id="end-logo"></div>` : `<img id="end-logo" src="brand/logo.svg" alt="Reso" />`}${END.line ? `<div class="end-line" id="end-line">${esc(END.line)}</div>` : ""}${END.cta ? `<div class="end-cta" id="end-cta">${esc(END.cta)}</div>` : ""}${END.url ? `<div class="end-url" id="end-url">${esc(END.url)}</div>` : ""}</div></div>`,
   );
@@ -465,6 +536,40 @@ if (POUDRE) {
   html.push(`<div id="frame"></div>`);
   // Grain qui « vit » : position décalée par paliers (déterministe, 12 fois par seconde).
   js.push(`tl.fromTo("#grain", { backgroundPosition: "0px 0px" }, { backgroundPosition: "${Math.round(TOTAL * 12) * 37}px ${Math.round(TOTAL * 12) * 53}px", duration: ${T(TOTAL)}, ease: "steps(${Math.round(TOTAL * 12)})" }, 0);`);
+}
+
+// Signature animée : mot-symbole qui se dévoile, trait, « beauty business simplified », logo sonore.
+if (STING) {
+  const t0 = FACE_DUR;
+  html.push(
+    `<div class="sting clip" id="sting" data-start="${T(t0)}" data-duration="${T(STING.dur)}" data-track-index="7"><img class="sting-coin" id="sting-coin" src="brand/coin-ciseaux.png" alt="" /><div class="sting-in"><img id="sting-logo" src="brand/logo-creme.svg" alt="reso" /><div id="sting-line"></div><div id="sting-tag">BEAUTY BUSINESS SIMPLIFIED</div>${STING.cta ? `<div id="sting-cta">${esc(STING.cta)}${STING.url ? ` · ${esc(STING.url)}` : ""}</div>` : ""}</div></div>`,
+  );
+  js.push(`tl.fromTo("#sting-logo", { clipPath: "inset(0% 100% 0% 0%)", y: 12 }, { clipPath: "inset(0% 0% 0% 0%)", y: 0, duration: 0.9, ease: "power3.inOut" }, ${T(t0 + 0.1)});`);
+  js.push(`tl.fromTo("#sting-line", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power3.out" }, ${T(t0 + 0.7)});`);
+  js.push(`tl.fromTo("#sting-tag", { opacity: 0, scaleX: 1.22 }, { opacity: 1, scaleX: 1, duration: 1.1, ease: "power3.out" }, ${T(t0 + 0.8)});`);
+  js.push(`tl.fromTo("#sting-coin", { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 1.2, ease: "power3.out" }, ${T(t0 + 0.2)});`);
+  js.push(`if (document.getElementById("sting-cta")) tl.fromTo("#sting-cta", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, ${T(t0 + 1.2)});`);
+  sfx("logo", t0 + 0.08, 0.8);
+}
+
+// Transition « tirage » : un panneau crème frappé du logo couvre l'image pendant le changement.
+const PRINT = new Set();
+if (MOTION) {
+  html.push(`<div id="print"><img src="brand/logo.svg" alt="" /></div>`);
+  segs.forEach((s, i) => {
+    if (i === 0) return;
+    const prev = segs[i - 1].layout;
+    const cur = s.layout;
+    const wipe = s.transition === "print" || (s.transition !== "morph" && (cur === "card" || cur === "end" || (cur === "face" && prev !== "face")));
+    if (!wipe) return;
+    PRINT.add(i);
+    const t = s.start;
+    js.push(`tl.fromTo("#print", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.26, ease: "power2.in", immediateRender: false }, ${T(t - 0.26)});`);
+    js.push(`tl.fromTo("#print", { clipPath: "inset(0% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 100% 0%)", duration: 0.36, ease: "power3.out", immediateRender: false }, ${T(t + 0.06)});`);
+    js.push(`tl.fromTo("#print img", { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power2.out", immediateRender: false }, ${T(t - 0.14)});`);
+    sfx("whoosh", t - 0.3, 0.45);
+  });
+  html.push(`<div id="vignette"></div>`);
 }
 
 // Sous-titres.
@@ -489,7 +594,8 @@ html.push(`</div>`);
 segs.forEach((s, i) => {
   const L = LAYOUTS[s.layout];
   const t = s.start;
-  const dur = i === 0 ? 0 : 0.5;
+  const dur = i === 0 || PRINT.has(i) ? 0 : 0.5;
+  if (MOTION && i > 0 && !PRINT.has(i) && s.layout !== segs[i - 1].layout) sfx("whoosh", t - 0.1, 0.25);
   const zoom = s.layout === "face" ? (s.zoom ?? 1) : 1;
   const fx = faceXform(L.face);
   js.push(
@@ -503,16 +609,30 @@ segs.forEach((s, i) => {
 });
 
 // Extrait : fondu de sortie (image vers le crème, son via data-automation non requis : court fondu visuel).
-if (UNTIL) {
+if (UNTIL && !STING) {
   html.push(`<div id="fade-out"></div>`);
   js.push(`tl.fromTo("#fade-out", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.in" }, ${T(FACE_DUR - 0.6)});`);
 }
 
 // Audio : voix (piste son de la face caméra) + musique facultative.
+const voiceAuto = UNTIL
+  ? ` data-automation='${JSON.stringify({ version: 1, lanes: [{ target: "volume", points: [{ t: 0, v: 1 }, { t: Math.max(FACE_DUR - 0.45, 0), v: 1 }, { t: FACE_DUR, v: 0 }] }] })}'`
+  : "";
 const audio = [
-  `<audio id="voice" src="${esc(M.face.src)}" data-start="0" data-duration="${T(FACE_DUR)}" data-track-index="10" data-volume="1"></audio>`,
+  `<audio id="voice" src="${esc(M.face.src)}" data-start="0" data-duration="${T(FACE_DUR)}" data-track-index="10" data-volume="1"${voiceAuto}></audio>`,
 ];
-if (M.music?.src) {
+if (SOUND && M.music?.src === undefined) {
+  // Musique du kit : 50 % sous la voix, pleine sur la signature, fondu final.
+  const pts = [{ t: 0, v: 0 }, { t: 0.8, v: 0.5 }, { t: FACE_DUR, v: 0.5 }];
+  if (END_DUR) pts.push({ t: FACE_DUR + 0.4, v: 1 }, { t: TOTAL - 0.6, v: 1 });
+  pts.push({ t: TOTAL, v: 0 });
+  audio.push(`<audio id="music" src="brand/son/bed.wav" data-start="0" data-duration="${T(TOTAL)}" data-track-index="11" data-volume="1" data-automation='${JSON.stringify({ version: 1, lanes: [{ target: "volume", points: pts.map((p) => ({ t: Number(p.t.toFixed(3)), v: p.v })) }] })}'></audio>`);
+}
+const SFX_LEN = { tick: 0.08, ding: 1.2, whoosh: 0.55, paper: 0.4, type: 0.5, logo: 2.6 };
+SFX.filter((e) => e.t < TOTAL - 0.05).forEach((e, k) => {
+  audio.push(`<audio id="sfx-${k}" src="brand/son/${e.name}.wav" data-start="${T(e.t)}" data-duration="${T(Math.min(SFX_LEN[e.name], TOTAL - e.t))}" data-track-index="${12 + (k % 4)}" data-volume="${e.vol}"></audio>`);
+});
+if (M.music?.src && M.music.src !== "kit") {
   if (!existsSync(join(PROJECT, M.music.src))) fail(`Musique introuvable : ${M.music.src}`);
   audio.push(
     `<audio id="music" src="${esc(M.music.src)}" data-start="0" data-duration="${T(TOTAL)}" data-media-start="${(M.music.from ?? 0).toFixed(3)}" data-track-index="11" data-volume="${M.music.volume ?? 0.08}"></audio>`,
@@ -557,6 +677,35 @@ html, body, #root { background: ${C.page}; font-family: "Manrope", "Outfit", sys
 .end-line { font-family: "Outfit", sans-serif; font-weight: 400; font-size: 44px; color: ${C.page}; letter-spacing: 0; }
 .end-cta { font-family: "Outfit", sans-serif; font-weight: 500; font-size: 40px; color: ${C.ink}; background: ${C.page}; border-radius: 999px; padding: 26px 56px; box-shadow: 0 24px 50px -22px rgba(31,39,51,.6); }
 .end-url { font-family: "JetBrains Mono", monospace; font-size: 28px; letter-spacing: .12em; color: ${C.page}; text-transform: uppercase; }
+.m { display: inline-block; overflow: hidden; vertical-align: top; padding: 0.06em 0 0.12em; margin: -0.06em 0 -0.12em; }
+.mi { display: inline-block; }
+.ch { opacity: ${MOTION ? 0 : 1}; }
+.contact { position: absolute; left: 8%; right: 8%; bottom: -46px; height: 70px; border-radius: 50%; background: radial-gradient(ellipse at center, rgba(31,39,51,.42), rgba(31,39,51,0) 70%); filter: blur(6px); transform-origin: 50% 50%; }
+#print { position: absolute; inset: 0; background: ${C.page}; clip-path: inset(100% 0% 0% 0%); display: flex; align-items: center; justify-content: center; pointer-events: none; }
+#print img { width: 300px; height: auto; }
+#frame { z-index: 3; }
+#captions { z-index: 4; }
+#fade-out { z-index: 6; }
+#vignette { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 90% 75% at 50% 45%, rgba(31,39,51,0) 58%, rgba(31,39,51,.22) 100%); }
+.ag { position: relative; height: 100%; overflow: hidden; background: ${C.page}; padding: 30px 26px 0; font-family: "Outfit", sans-serif; color: ${C.ink}; }
+.ag-h { display: grid; grid-template-columns: 1fr auto; row-gap: 4px; padding-bottom: 18px; border-bottom: 1px solid ${C.line}; }
+.ag-t { font-size: 40px; font-weight: 500; letter-spacing: -0.02em; }
+.ag-d { font-family: "Manrope", sans-serif; font-size: 20px; color: ${C.muted}; grid-column: 1; }
+.ag-p { grid-row: 1 / span 2; grid-column: 2; align-self: center; font-family: "Manrope", sans-serif; font-size: 18px; font-weight: 600; background: ${C.soft}; color: ${C.brand}; border-radius: 999px; padding: 8px 16px; }
+.ag-g { position: relative; margin-top: 16px; margin-left: 64px; }
+.ag-row { position: absolute; left: -64px; right: 0; height: 0; border-top: 1px dashed ${C.line}; }
+.ag-row span { position: absolute; left: 0; top: -11px; font-family: "JetBrains Mono", monospace; font-size: 15px; color: ${C.muted}; background: ${C.page}; padding-right: 6px; }
+.ag-b { position: absolute; left: 6px; right: 0; border-radius: 10px; background: ${C.softTint}; border-left: 6px solid ${C.accent}; padding: 10px 14px; display: flex; flex-direction: column; gap: 4px; opacity: 0; box-shadow: 0 10px 22px -16px rgba(31,39,51,.45); }
+.ag-b1 { border-left-color: ${C.mint}; background: #F3F1EA; }
+.ag-b b { font-size: 22px; font-weight: 500; }
+.ag-b span { font-family: "Manrope", sans-serif; font-size: 16px; color: ${C.muted}; }
+.sting { position: absolute; inset: 0; background: #617990; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.sting-coin { position: absolute; right: 0; bottom: 0; width: 820px; height: auto; -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 22%), linear-gradient(180deg, transparent 0%, #000 20%); -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, transparent 0%, #000 22%), linear-gradient(180deg, transparent 0%, #000 20%); mask-composite: intersect; }
+.sting-in { position: relative; display: flex; flex-direction: column; align-items: center; gap: 34px; margin-top: -380px; }
+#sting-logo { width: 540px; height: auto; }
+#sting-line { width: 110px; height: 3px; background: ${C.page}; opacity: .9; }
+#sting-tag { font-family: "Manrope", sans-serif; font-size: 30px; font-weight: 500; color: ${C.page}; letter-spacing: 0.34em; white-space: nowrap; }
+#sting-cta { margin-top: 30px; font-family: "JetBrains Mono", monospace; font-size: 26px; color: ${C.page}; opacity: .85; letter-spacing: .06em; }
 #grain { position: absolute; inset: 0; background-image: url("${GRAIN}"); background-size: 240px 240px; opacity: .16; mix-blend-mode: multiply; pointer-events: none; }
 #frame { position: absolute; inset: 0; border: ${FRAME}px solid ${C.page}; pointer-events: none; box-shadow: inset 0 0 0 1px rgba(40,34,24,.08); }
 `;
