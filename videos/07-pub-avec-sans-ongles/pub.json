@@ -1,0 +1,139 @@
+{
+  "title": "Reso — pub 15 s « sans reso / avec reso » (prothésiste ongulaire)",
+  "size": [
+    2160,
+    3840
+  ],
+  "fps": 30,
+  "bpm": 76,
+  "shots": [
+    {
+      "src": "media/plan-accroche.mp4",
+      "from": 0.2,
+      "start": 0,
+      "dur": 1.8,
+      "focus": [
+        50,
+        50
+      ],
+      "zoom": [
+        1.0,
+        1.06
+      ],
+      "fadeIn": 0.3
+    },
+    {
+      "type": "split",
+      "start": 1.8,
+      "dur": 8.8,
+      "expandAt": 7.4,
+      "left": {
+        "src": "media/plan-sans.mp4",
+        "from": 1.0,
+        "focus": [
+          50,
+          50
+        ],
+        "label": "sans reso",
+        "filter": "saturate(.72) brightness(.95)",
+        "cropX": 500
+      },
+      "right": {
+        "src": "media/plan-avec.mp4",
+        "from": 1.2,
+        "focus": [
+          50,
+          50
+        ],
+        "label": "avec reso",
+        "cropX": 540
+      },
+      "leftEvents": [
+        {
+          "at": 1.0,
+          "kind": "call",
+          "title": "Appel entrant",
+          "text": "06 •• •• •• 21"
+        },
+        {
+          "at": 3.2,
+          "kind": "message",
+          "title": "Message",
+          "text": "Tu aurais un créneau jeudi ?"
+        },
+        {
+          "at": 5.6,
+          "kind": "call",
+          "title": "2 appels manqués",
+          "text": "Rappeler ?"
+        }
+      ],
+      "rightEvents": [
+        {
+          "at": 3.5,
+          "title": "Nouvelle réservation",
+          "text": "Jeu. 14:00 · Semi-permanent"
+        },
+        {
+          "at": 4.5,
+          "title": "Nouvelle réservation",
+          "text": "Sam. 10:30 · Pose gel"
+        },
+        {
+          "at": 5.5,
+          "title": "Rappel envoyé",
+          "text": "Léa M. · demain 11:00"
+        },
+        {
+          "at": 6.5,
+          "title": "Demande d'avis",
+          "text": "envoyée à Léa M. · Google"
+        }
+      ],
+      "eventsTop": 600
+    },
+    {
+      "src": "media/plan-final.mp4",
+      "from": 1.5,
+      "start": 10.6,
+      "dur": 2.1,
+      "focus": [
+        55,
+        45
+      ],
+      "zoom": [
+        1.0,
+        1.05
+      ]
+    }
+  ],
+  "sfx": [
+    [
+      "buzz",
+      1.1,
+      0.3
+    ]
+  ],
+  "headlines": [
+    {
+      "at": 10.7,
+      "until": 12.6,
+      "lines": [
+        "même métier.",
+        "pas la même",
+        "journée."
+      ],
+      "lineDelays": [
+        0,
+        0.5,
+        0.65
+      ],
+      "top": 1250
+    }
+  ],
+  "sting": {
+    "at": 12.7,
+    "dur": 2.4,
+    "cta": "essayer gratuitement · lien en bio"
+  }
+}
