@@ -11,6 +11,23 @@ const securityHeaders = [
     : []),
 ];
 
+/**
+ * Mollie Connect : l'adresse de retour déclarée chez Mollie (MOLLIE_REDIRECT_URI)
+ * peut avoir un autre chemin que /api/mollie/callback ; elle est alors
+ * redirigée en interne vers la route de retour, sans rien changer chez Mollie.
+ */
+function mollieRedirectPath(): string | null {
+  try {
+    const raw = process.env.MOLLIE_REDIRECT_URI?.trim();
+    if (!raw) return null;
+    const path = new URL(raw).pathname.replace(/\/+$/, "");
+    return path && path !== "/api/mollie/callback" && path.startsWith("/") ? path : null;
+  } catch {
+    return null;
+  }
+}
+const mollieCallbackAlias = mollieRedirectPath();
+
 const nextConfig: NextConfig = {
   // La configuration commerciale (src/config/offer.ts) est lue dans process.env
   // côté serveur et côté client : ces clés sont figées au build pour que les
@@ -28,6 +45,9 @@ const nextConfig: NextConfig = {
     RESO_SITE_URL: process.env.RESO_SITE_URL ?? "",
   },
   poweredByHeader: false,
+  async rewrites() {
+    return mollieCallbackAlias ? [{ source: mollieCallbackAlias, destination: "/api/mollie/callback" }] : [];
+  },
   reactStrictMode: true,
   async headers() {
     return [
