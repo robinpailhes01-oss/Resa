@@ -70,19 +70,24 @@
       ],
       "rightEvents": [
         {
-          "at": 3.9,
+          "at": 3.5,
           "title": "Nouvelle réservation",
           "text": "Sam. 11:00 · Dégradé & barbe"
         },
         {
-          "at": 4.9,
+          "at": 4.5,
           "title": "Nouvelle réservation",
           "text": "Mar. 18:30 · Coupe homme"
         },
         {
-          "at": 6.1,
+          "at": 5.5,
           "title": "Rappel envoyé",
           "text": "Karim B. · demain 10:00"
+        },
+        {
+          "at": 6.5,
+          "title": "Demande d'avis",
+          "text": "envoyée à Karim B. · Google"
         }
       ]
     },

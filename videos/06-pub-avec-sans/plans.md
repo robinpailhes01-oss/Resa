@@ -9,12 +9,12 @@
 | Temps | Plan | Son |
 | --- | --- | --- |
 | 0,0–1,8 | **Accroche** : macro de la tondeuse qui remonte la tempe, particules dans la lumière | vibration à 1,1 s |
-| 1,8–9,2 | **Écran partagé** : les deux moitiés glissent depuis les bords, trait crème au centre, étiquettes « sans reso » / « avec reso ». Gauche : appel entrant, message « Vous avez de la place samedi ? », 2 appels manqués ; le barbier pose la tondeuse et décroche. Droite : 2 réservations et un rappel Reso, le barbier continue. | sonnerie et vibrations à gauche, « ding » feutré à droite |
+| 1,8–9,2 | **Écran partagé** : les deux moitiés glissent depuis les bords, trait crème au centre, étiquettes « sans reso » / « avec reso ». Gauche : appel entrant, message « Vous avez de la place samedi ? », 2 appels manqués ; le barbier pose la tondeuse et décroche. Droite : 2 réservations, un rappel et une demande d'avis Reso, le barbier continue. | sonnerie et vibrations à gauche, « ding » feutré à droite |
 | 9,2–10,6 | **Ouverture** : la moitié gauche se referme, la version « avec » prend tout le cadre | souffle |
 | 10,6–12,7 | **Miroir** : coupe terminée, le client sourit, le barbier passe le blaireau. « même métier. pas la même journée. » | |
 | 12,7–15,1 | **Signature** reso® · essayer gratuitement · lien en bio | logo sonore |
 
-Données fictives uniquement. Les notifications reprennent ce que Reso fait vraiment : réservation en ligne et rappel par email. Reso ne répond pas aux appels ni aux messages : le message est « vos clients réservent seuls », pas « Reso répond à votre place ».
+Données fictives uniquement. Les notifications reprennent ce que Reso fait vraiment : réservation en ligne, rappel par email et demande d'avis Google après le rendez-vous. Pas de « nouvel avis ★★★★★ » : Reso envoie la demande, il ne reçoit pas les avis, et la charte interdit les faux avis. Reso ne répond pas aux appels ni aux messages : le message est « vos clients réservent seuls », pas « Reso répond à votre place ».
 
 ## Génération (Higgsfield)
 
