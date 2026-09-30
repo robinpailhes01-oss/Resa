@@ -81,8 +81,8 @@ export function BookingsChart({
               {d.count > 0 ? (
                 <path
                   d={`M${x} ${padTop + plotH} v${-(h - r)} a${r} ${r} 0 0 1 ${r} ${-r} h${barW - 2 * r} a${r} ${r} 0 0 1 ${r} ${r} v${h - r} z`}
-                  fill={future ? "var(--color-soft)" : "var(--color-brand)"}
-                  stroke={isToday ? "var(--color-accent)" : "none"}
+                  fill={future ? "var(--color-soft)" : "var(--color-powder)"}
+                  stroke={isToday ? "var(--color-ink)" : "none"}
                   strokeWidth={isToday ? 2 : 0}
                 />
               ) : null}
@@ -105,7 +105,7 @@ export function BookingsChart({
       <figcaption className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-[12px] text-ink-muted">
         <span className="inline-flex items-center gap-1.5">
           <span
-            className="inline-block size-2.5 rounded-sm bg-brand"
+            className="inline-block size-2.5 rounded-sm bg-powder"
             aria-hidden="true"
           />{" "}
           Rendez-vous passés
