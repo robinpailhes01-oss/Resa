@@ -64,6 +64,7 @@ export default function ConfidentialitePage() {
         <li>Supabase Inc. : base de données, hébergée dans l’Union européenne (Irlande).</li>
         <li>Resend Inc. : envoi des emails transactionnels (confirmations, rappels, demandes d’avis).</li>
         <li>Mollie B.V. (Pays-Bas) : encaissement et prélèvement de l’abonnement des établissements ; les données de paiement sont saisies chez Mollie uniquement. SumUp sert de solution de secours.</li>
+        <li>Mollie B.V. (Pays-Bas), pour les établissements qui ont relié leur compte : paiement de l’acompte ou de la prestation par leurs clients. La carte est saisie chez Mollie ; {offer.brandName} ne conserve que le montant, le statut du paiement et le rendez-vous concerné.</li>
         <li>Telegram : messages de service envoyés à l’équipe {offer.brandName} (nouvelle inscription, paiement, retour utilisateur), sans donnée de client final.</li>
         <li>Google (Places API) : uniquement lorsqu’un établissement choisit d’importer sa fiche Google ; aucune donnée de client final n’est transmise à Google.</li>
       </ul>

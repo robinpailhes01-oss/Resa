@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { CalendarDays, CreditCard, ExternalLink, LayoutDashboard, LogOut, Mail, Settings, Sparkles, UserRound, Users } from "lucide-react";
+import { CalendarDays, CreditCard, ExternalLink, LayoutDashboard, LogOut, Mail, Settings, Sparkles, UserRound, Users, Wallet } from "lucide-react";
 import { Logo } from "@/components/ui/Logo";
 import type { Establishment } from "@/server/auth/guards";
 import { AccessBanner } from "./AccessBanner";
@@ -31,6 +31,7 @@ const groups: Array<{ label: string; items: Item[] }> = [
   {
     label: "Compte",
     items: [
+      { href: "/app/paiements", label: "Paiements", icon: Wallet },
       { href: "/app/abonnement", label: "Abonnement", icon: CreditCard },
       { href: "/app/parametres", label: "Paramètres", icon: Settings },
     ],

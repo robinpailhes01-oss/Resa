@@ -167,6 +167,8 @@ type JobContext = {
     endsAt: Date;
     durationMin: number;
     priceCents: number;
+    /** Montant déjà réglé en ligne (acompte ou totalité), 0 sinon. */
+    paidCents?: number;
     status: string;
     manageUrl: string | null;
   };
@@ -226,6 +228,7 @@ export function renderJobEmail(ctx: JobContext): EmailMessage | null {
     settings,
   } = ctx;
   const when = formatDateTimeFr(b.startsAt, e.timezone);
+  const paid = b.paidCents ?? 0;
   const firstName = client?.firstName ?? "";
   const details = [
     detail("Prestation", b.serviceName),
@@ -235,6 +238,8 @@ export function renderJobEmail(ctx: JobContext): EmailMessage | null {
     ...(b.priceCents > 0
       ? [detail("Prix", formatPriceCents(b.priceCents))]
       : []),
+    ...(paid > 0 ? [detail("Réglé en ligne", formatPriceCents(paid))] : []),
+    ...(paid > 0 && b.priceCents > paid ? [detail("Reste sur place", formatPriceCents(b.priceCents - paid))] : []),
     ...(addressLine(e) ? [detail("Adresse", addressLine(e)!)] : []),
   ];
   const textDetails = [
@@ -243,6 +248,8 @@ export function renderJobEmail(ctx: JobContext): EmailMessage | null {
     `Durée : ${formatDuration(b.durationMin)}`,
     `Avec : ${practitionerName}`,
     ...(b.priceCents > 0 ? [`Prix : ${formatPriceCents(b.priceCents)}`] : []),
+    ...(paid > 0 ? [`Réglé en ligne : ${formatPriceCents(paid)}`] : []),
+    ...(paid > 0 && b.priceCents > paid ? [`Reste sur place : ${formatPriceCents(b.priceCents - paid)}`] : []),
     ...(addressLine(e) ? [`Adresse : ${addressLine(e)}`] : []),
   ].join("\n");
   const replyTo = e.publicEmail ?? undefined;
@@ -414,6 +421,7 @@ type JobRow = {
   b_ends_at: Date | null;
   b_duration_min: number | null;
   b_price_cents: number | null;
+  b_paid_cents: number | string | null;
   b_status: string | null;
   b_manage_token_hash: string | null;
   manage_token: string | null;
@@ -454,7 +462,8 @@ export async function processEmailJobs(
       e.postal_code as e_postal_code, e.city as e_city, e.timezone as e_timezone, e.booking_terms as e_booking_terms, e.google_place_id as e_google_place_id,
       u.email as owner_email,
       b.service_name as b_service_name, b.starts_at as b_starts_at, b.ends_at as b_ends_at, b.duration_min as b_duration_min,
-      b.price_cents as b_price_cents, b.status as b_status, b.manage_token_hash as b_manage_token_hash,
+      b.price_cents as b_price_cents, b.status as b_status,
+      (select coalesce(sum(bp.amount_cents), 0) from booking_payments bp where bp.booking_id = b.id and bp.status = 'paid') as b_paid_cents, b.manage_token_hash as b_manage_token_hash,
       pr.name as p_name, c.first_name as c_first_name, c.last_name as c_last_name, c.email as c_email, c.phone as c_phone
     from claimed j
     join establishments e on e.id = j.establishment_id
@@ -502,6 +511,7 @@ export async function processEmailJobs(
           endsAt: job.b_ends_at ?? job.b_starts_at,
           durationMin: job.b_duration_min ?? 0,
           priceCents: job.b_price_cents ?? 0,
+          paidCents: Number(job.b_paid_cents ?? 0),
           status: job.b_status ?? "confirmed",
           manageUrl,
         },

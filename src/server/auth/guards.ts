@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { getSql } from "@/server/db";
 import { getCurrentUser, type SessionUser } from "./session";
 import type { SubscriptionStatus } from "@/lib/trial";
+import type { DepositKind, PaymentMode } from "@/lib/booking-payment";
 
 export interface Establishment {
   id: string;
@@ -37,6 +38,10 @@ export interface Establishment {
   googleRating: number | null;
   googleRatingCount: number | null;
   googleMapsUrl: string | null;
+  /** Encaissement à la réservation en ligne (Mollie Connect). */
+  paymentMode: PaymentMode;
+  depositKind: DepositKind;
+  depositValue: number;
 }
 
 export type EstablishmentRow = {
@@ -66,6 +71,9 @@ export type EstablishmentRow = {
   google_rating: string | number | null;
   google_rating_count: number | null;
   google_maps_url: string | null;
+  payment_mode?: PaymentMode;
+  deposit_kind?: DepositKind;
+  deposit_value?: number;
 };
 
 export function mapEstablishment(r: EstablishmentRow): Establishment {
@@ -96,6 +104,9 @@ export function mapEstablishment(r: EstablishmentRow): Establishment {
     googleRating: r.google_rating === null || r.google_rating === undefined ? null : Number(r.google_rating),
     googleRatingCount: r.google_rating_count ?? null,
     googleMapsUrl: r.google_maps_url ?? null,
+    paymentMode: r.payment_mode ?? "none",
+    depositKind: r.deposit_kind ?? "percent",
+    depositValue: r.deposit_value ?? 30,
   };
 }
 

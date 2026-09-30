@@ -11,6 +11,10 @@ import {
   isCancellableByClient,
 } from "@/server/app/bookings";
 import { getEstablishmentById } from "@/server/app/establishments";
+import { after } from "next/server";
+import { bookingPaymentCopy as pay } from "@/content/fr/app";
+import { getBookingPayment, syncBookingPayment } from "@/server/app/booking-payments";
+import { processEmailJobs } from "@/server/app/notifications";
 
 export const metadata: Metadata = {
   title: "Votre rendez-vous",
@@ -26,8 +30,32 @@ export default async function RendezVousClientPage({
 }) {
   const { token } = await params;
   const query = await searchParams;
-  const booking = await getBookingByManageToken(token);
+  let booking = await getBookingByManageToken(token);
   if (!booking) notFound();
+  let payment = await getBookingPayment(booking.id);
+  let paymentOutcome: string | null = null;
+  // Retour de la page de paiement Mollie : l'état est relu tout de suite, sans attendre le webhook.
+  if (query.paiement && payment?.molliePaymentId && payment.status === "open") {
+    try {
+      paymentOutcome = await syncBookingPayment(payment.molliePaymentId);
+      booking = (await getBookingByManageToken(token)) ?? booking;
+      payment = await getBookingPayment(booking.id);
+      if (paymentOutcome === "paid") {
+        after(async () => {
+          try {
+            await processEmailJobs();
+          } catch (error) {
+            console.error("[emails] traitement", error instanceof Error ? error.message : error);
+          }
+        });
+      }
+    } catch (error) {
+      console.error("[paiement] retour", error instanceof Error ? error.message : error);
+    }
+  }
+  const awaitingPayment = booking.status === "pending" && payment?.status === "open";
+  const paidOnline = payment && (payment.status === "paid" || payment.status === "refunded" || payment.status === "refund_failed") ? payment : null;
+  const released = booking.status === "cancelled" && payment && ["failed", "canceled", "expired"].includes(payment.status);
   const establishment = await getEstablishmentById(booking.establishmentId);
   if (!establishment) notFound();
   const tz = establishment.timezone;
@@ -44,7 +72,22 @@ export default async function RendezVousClientPage({
 
   return (
     <BookingShell establishment={establishment}>
-      {query.nouveau ? (
+      {awaitingPayment ? (
+        <StatusMessage tone="pending" className="mb-6">
+          {pay.pending}
+        </StatusMessage>
+      ) : null}
+      {released ? (
+        <StatusMessage tone="error" className="mb-6">
+          {pay.released}
+        </StatusMessage>
+      ) : null}
+      {paymentOutcome === "late_refunded" ? (
+        <StatusMessage tone="error" className="mb-6">
+          {pay.lateRefunded}
+        </StatusMessage>
+      ) : null}
+      {(query.nouveau || (query.paiement && paidOnline)) && booking.status === "confirmed" ? (
         <StatusMessage tone="success" className="mb-6">
           Votre rendez-vous est confirmé.
           {booking.client?.email
@@ -89,8 +132,22 @@ export default async function RendezVousClientPage({
           {booking.priceCents > 0 ? (
             <div className="flex justify-between gap-4">
               <dt className="text-ink-muted">Prix</dt>
-              <dd className="font-medium text-ink">
-                {formatPriceCents(booking.priceCents)} · paiement sur place
+              <dd className="text-right font-medium text-ink">
+                {formatPriceCents(booking.priceCents)}
+                {paidOnline ? null : ` · ${pay.onSite}`}
+              </dd>
+            </div>
+          ) : null}
+          {paidOnline ? (
+            <div className="flex justify-between gap-4">
+              <dt className="text-ink-muted">Réglé en ligne</dt>
+              <dd className="text-right font-medium text-ink">
+                {paidOnline.status === "refunded"
+                  ? pay.refunded(formatPriceCents(paidOnline.amountCents))
+                  : pay.paid(paidOnline.kind === "full" ? "Paiement" : "Acompte", formatPriceCents(paidOnline.amountCents))}
+                {paidOnline.status === "paid" && booking.priceCents > paidOnline.amountCents
+                  ? ` · ${pay.rest(formatPriceCents(booking.priceCents - paidOnline.amountCents))}`
+                  : ""}
               </dd>
             </div>
           ) : null}
@@ -111,7 +168,11 @@ export default async function RendezVousClientPage({
             </p>
           </div>
         ) : null}
-        {booking.status !== "cancelled" ? (
+        {awaitingPayment && payment?.checkoutUrl ? (
+          <div className="mt-6 border-t border-line pt-5">
+            <Button href={payment.checkoutUrl}>{pay.payNow(formatPriceCents(payment.amountCents))}</Button>
+          </div>
+        ) : booking.status !== "cancelled" ? (
           <div className="mt-6 border-t border-line pt-5">
             {cancellable ? (
               <ActionForm

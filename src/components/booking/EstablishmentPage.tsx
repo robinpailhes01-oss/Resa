@@ -19,6 +19,8 @@ type Props = {
   photos: EstablishmentPhoto[];
   base: string;
   todayWeekday: number;
+  /** Règle d'encaissement affichée (« Acompte de 30 % à la réservation ») ; null = paiement sur place. */
+  paymentLabel?: string | null;
 };
 
 const DAY_ORDER = [1, 2, 3, 4, 5, 6, 0];
@@ -28,7 +30,7 @@ function fullAddress(e: Establishment): string {
 }
 
 /** Fiche publique de l'établissement : photos, prestations, équipe, infos pratiques, horaires. */
-export function EstablishmentPage({ establishment: e, services, practitioners, hours, photos, base, todayWeekday }: Props) {
+export function EstablishmentPage({ establishment: e, services, practitioners, hours, photos, base, todayWeekday, paymentLabel = null }: Props) {
   const address = fullAddress(e);
   const mapsHref = address ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${e.name} ${address}`)}` : null;
   const byDay = new Map<number, OpeningHourRow[]>();
@@ -83,7 +85,7 @@ export function EstablishmentPage({ establishment: e, services, practitioners, h
             <h2 id="prestations-title" className="text-[22px]">
               Réserver en ligne chez {e.name}
             </h2>
-            <p className="mt-1 text-[14px] text-ink-muted">24h/24 · Paiement sur place · Confirmation immédiate</p>
+            <p className="mt-1 text-[14px] text-ink-muted">24h/24 · {paymentLabel ?? "Paiement sur place"} · Confirmation immédiate</p>
             {services.length === 0 ? (
               <div className="mt-4">
                 <StatusMessage tone="pending">Aucune prestation n’est encore proposée à la réservation en ligne.</StatusMessage>

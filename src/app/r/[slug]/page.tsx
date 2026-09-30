@@ -18,6 +18,8 @@ import {
 } from "@/lib/time";
 import { publicBookAction } from "@/server/app/actions/public-booking";
 import { availableSlots } from "@/server/app/bookings";
+import { onlinePaymentFor, publicPaymentLabel } from "@/server/app/booking-payments";
+import { bookingPaymentCopy } from "@/content/fr/app";
 import { getEstablishmentBySlug } from "@/server/app/establishments";
 import { effectiveRanges, listOpeningHours } from "@/server/app/hours";
 import { listPhotos } from "@/server/app/photos";
@@ -102,7 +104,11 @@ export default async function ReservationPage({
 
   // Étape 1 : fiche de l'établissement (photos, prestations, équipe, horaires)
   if (!service) {
-    const [hours, photos] = await Promise.all([listOpeningHours(establishment.id, null), listPhotos(establishment.id)]);
+    const [hours, photos, paymentLabel] = await Promise.all([
+      listOpeningHours(establishment.id, null),
+      listPhotos(establishment.id),
+      publicPaymentLabel(establishment, formatPriceCents),
+    ]);
     return (
       <BookingShell establishment={establishment} wide hideTitle>
         <EstablishmentPage
@@ -113,10 +119,14 @@ export default async function ReservationPage({
           photos={photos}
           base={base}
           todayWeekday={weekdayOfDateKey(today)}
+          paymentLabel={paymentLabel}
         />
       </BookingShell>
     );
   }
+
+  // Acompte ou paiement intégral exigé par l'établissement (Mollie Connect).
+  const due = await onlinePaymentFor(establishment, service.priceCents);
 
   // Étape 2 : praticien + date + créneau
   const summary = (
@@ -166,7 +176,16 @@ export default async function ReservationPage({
           </div>
         ) : null}
       </dl>
-      <p className="mt-3 text-[12px] text-ink-muted">Paiement sur place.</p>
+      {due ? (
+        <div className="mt-3 rounded-xl bg-soft-tint px-3 py-2.5 text-[13px] leading-5 text-ink">
+          <p className="font-semibold">
+            {due.kind === "full" ? bookingPaymentCopy.fullDue(formatPriceCents(due.amountCents)) : bookingPaymentCopy.depositDue(formatPriceCents(due.amountCents))}
+          </p>
+          {due.remainingCents > 0 ? <p className="text-ink-muted">{bookingPaymentCopy.rest(formatPriceCents(due.remainingCents))}</p> : null}
+        </div>
+      ) : (
+        <p className="mt-3 text-[12px] text-ink-muted">Paiement sur place.</p>
+      )}
     </aside>
   );
 
@@ -338,8 +357,8 @@ export default async function ReservationPage({
           <div className="mt-5">
             <ActionForm
               action={publicBookAction}
-              submitLabel="Confirmer le rendez-vous"
-              pendingLabel="Confirmation…"
+              submitLabel={due ? bookingPaymentCopy.submit : "Confirmer le rendez-vous"}
+              pendingLabel={due ? "Ouverture du paiement…" : "Confirmation…"}
             >
               <>
                 <input type="hidden" name="slug" value={slug} />
@@ -425,6 +444,11 @@ export default async function ReservationPage({
                     ? " En confirmant, vous acceptez les conditions ci-dessus."
                     : ""}
                 </p>
+                {due ? (
+                  <p className="text-[12px] leading-5 text-ink-muted">
+                    {bookingPaymentCopy.secure} {bookingPaymentCopy.holdNotice}
+                  </p>
+                ) : null}
               </>
             </ActionForm>
           </div>

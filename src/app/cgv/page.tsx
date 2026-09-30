@@ -49,6 +49,15 @@ export default function CgvPage() {
         réservation en ligne est suspendue jusqu’au règlement. Tout retard de paiement entraîne, de plein droit, des
         pénalités égales à trois fois le taux d’intérêt légal et une indemnité forfaitaire de recouvrement de 40 €.
       </p>
+      <p>
+        Encaissement des clients (facultatif) : l’Établissement peut relier son propre compte Mollie pour demander à ses
+        clients un acompte ou le paiement de la prestation lors de la réservation en ligne. Ces sommes sont encaissées
+        directement sur le compte Mollie de l’Établissement, selon le contrat qu’il a conclu avec Mollie B.V. ; {brand} ne les
+        détient à aucun moment et ne prélève aucune commission. L’Établissement fixe la règle d’acompte, en informe ses clients
+        dans ses conditions de réservation et reste seul responsable des remboursements, que {brand} déclenche
+        automatiquement lorsqu’un rendez-vous est annulé par l’Établissement ou par le client dans le délai autorisé.
+        L’Établissement peut déconnecter son compte Mollie à tout moment depuis son espace.
+      </p>
 
       <h2>5. Durée et résiliation</h2>
       <p>

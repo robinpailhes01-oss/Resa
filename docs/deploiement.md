@@ -192,3 +192,17 @@ Tant que le MX du sous-domaine n’est pas en place, le site le détecte et reme
 Une réponse qui décline (« non merci », « pas intéressé »…) est reconnue : le prospect passe « désinscrit » et n’est plus jamais contacté. Un refus reçu dans votre boîte de contact (avant le MX, ou par téléphone) se marque à la main : `https://www.reso-app.fr/api/internal/prospection?optout=adresse@exemple.fr` (même en-tête).
 
 **Réputation email.** Les emails partent de `EMAIL_FROM`. Pour protéger les emails de rendez-vous des clients, mieux vaut à terme un sous-domaine dédié (ex. `Robin de Reso <robin@hello.reso-app.fr>`) vérifié dans Resend : il suffira alors de changer `EMAIL_FROM`… ou de garder l’adresse actuelle tant que le volume reste à 20 par jour.
+
+## 13. Acomptes et paiements des clients (Mollie Connect)
+
+Chaque établissement relie **son propre compte Mollie** depuis son espace (menu **Paiements**) et choisit ce que ses clients règlent en réservant en ligne : rien, un acompte (pourcentage ou montant fixe) ou la totalité. L’argent va directement sur le compte Mollie de l’établissement ; Reso ne le détient jamais et ne prend aucune commission.
+
+**Côté Mollie (une fois).** Mollie → Développeurs → Vos applications → créer une application OAuth. Adresse de retour (Redirect URL) : `https://www.reso-app.fr/api/mollie/callback` (ou la valeur de `MOLLIE_REDIRECT_URI`, qui doit être identique au caractère près).
+
+**Variables Vercel.** `MOLLIE_CLIENT_ID` (`app_…`), `MOLLIE_CLIENT_SECRET`, `MOLLIE_TOKEN_ENCRYPTION_KEY` (au moins 32 caractères aléatoires ; ne plus la changer ensuite), et pour tester `MOLLIE_CONNECT_TESTMODE=1` (paiements fictifs). Sans ces trois variables, la page Paiements affiche « Bientôt disponible » et rien ne change pour les réservations. Redeploy après ajout ; `/api/internal/status` affiche `mollieConnect`.
+
+**Parcours.** Le pro clique « Connecter mon compte Mollie », se connecte (ou crée son compte) chez Mollie et autorise Reso. Tant que Mollie n’a pas activé son compte (informations, IBAN, vérification), la page l’indique et aucune réservation ne demande de paiement. Une fois activé, le client qui réserve voit le montant dû, paie sur la page Mollie, et le rendez-vous est confirmé (emails envoyés) dès le paiement validé. Le créneau est retenu 45 minutes pendant le paiement ; paiement abandonné, échoué ou expiré : le créneau est libéré. Un paiement arrivé après la libération reprend le rendez-vous s’il est encore libre, sinon il est remboursé automatiquement.
+
+**Remboursements.** Automatiques quand l’établissement annule un rendez-vous ou quand le client annule en ligne dans le délai autorisé. Une absence (« client absent ») ne rembourse rien. Si Mollie refuse le remboursement (solde insuffisant), le paiement apparaît « À rembourser depuis Mollie » dans la page Paiements et une alerte est envoyée.
+
+**Sécurité.** Les jetons Mollie sont chiffrés en base (AES-256-GCM). Seul le propriétaire du compte Reso peut relier ou déconnecter le compte Mollie. La déconnexion révoque l’accès chez Mollie et coupe la demande de paiement.

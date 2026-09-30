@@ -197,3 +197,14 @@ export const isLive = offer.launchMode === "live";
 
 /** Exposé pour les tests : reconstruit une configuration à partir d'un environnement. */
 export const __internal = { buildConfig };
+
+/**
+ * Encaissement à la réservation via le compte Mollie de l'établissement :
+ * montant minimum accepté par Mollie (1 €) et durée pendant laquelle le
+ * créneau reste retenu en attendant le paiement.
+ */
+export const bookingPaymentRules = {
+  minOnlineCents: 100,
+  holdMinutes: 45,
+  maxFixedDepositCents: 100_000,
+} as const;

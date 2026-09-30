@@ -10,6 +10,7 @@ import { isValidEmail, normalizeEmail } from "@/server/waitlist/email-normalize"
 import { isDateKey } from "@/lib/time";
 import { canAcceptOnlineBookings, resolveAccess } from "@/lib/trial";
 import { SlotUnavailableError, availableSlots, cancelBookingByClient, createBooking, getBookingByManageToken } from "../bookings";
+import { holdUntil, onlinePaymentFor, refundBookingPayment, startBookingPayment } from "../booking-payments";
 import { getEstablishmentById, getEstablishmentBySlug } from "../establishments";
 import { processEmailJobs } from "../notifications";
 import { getPractitioner } from "../practitioners";
@@ -75,7 +76,10 @@ export async function publicBookAction(_prev: FormState, fd: FormData): Promise<
   const slot = slots.find((s) => s.label === d.time);
   if (!slot) return { error: "Ce créneau n’est plus disponible. Choisissez-en un autre." };
 
+  // Acompte ou paiement intégral : le créneau est retenu le temps du paiement chez Mollie.
+  const due = await onlinePaymentFor(establishment, service.priceCents);
   let token: string;
+  let bookingId: string;
   try {
     const result = await createBooking({
       establishmentId: establishment.id,
@@ -89,12 +93,24 @@ export async function publicBookAction(_prev: FormState, fd: FormData): Promise<
       source: "online",
       clientNotes: d.clientNotes,
       client: { firstName: d.firstName, lastName: d.lastName, email: d.email, phone: d.phone },
+      paymentHoldUntil: due ? holdUntil() : null,
     });
     token = result.manageToken;
+    bookingId = result.booking.id;
   } catch (error) {
     if (error instanceof SlotUnavailableError) return { error: "Ce créneau vient d’être réservé. Choisissez-en un autre." };
     console.error("[réservation] création", error instanceof Error ? error.message : error);
     return { error: GENERIC_ERROR };
+  }
+  if (due) {
+    let checkoutUrl: string;
+    try {
+      checkoutUrl = await startBookingPayment({ establishment, bookingId, serviceName: service.name, startsAt: slot.start, manageToken: token, due });
+    } catch (error) {
+      console.error("[réservation] paiement", error instanceof Error ? error.message : error);
+      return { error: "Le paiement en ligne est momentanément indisponible. Réessayez dans quelques instants ou contactez l’établissement." };
+    }
+    redirect(checkoutUrl);
   }
   after(async () => {
     try {
@@ -117,6 +133,8 @@ export async function cancelByClientAction(_prev: FormState, fd: FormData): Prom
   }
   if (outcome === "invalid") return { error: "Ce lien n’est pas valide." };
   if (outcome === "cancelled") {
+    // Annulation dans les délais : l'acompte ou le paiement est remboursé.
+    await refundBookingPayment(booking.establishmentId, booking.id, `Annulation par le client – ${establishment?.name ?? ""}`).catch(() => "failed");
     after(async () => {
       try {
         await processEmailJobs();
