@@ -128,7 +128,9 @@ describe.skipIf(!url)("acompte à la réservation (Mollie Connect)", () => {
 
     const checkout = await payments.startBookingPayment({ establishment: e, bookingId: booking.id, serviceName: "Soin visage", startsAt: booking.startsAt, manageToken, due: due! });
     expect(checkout).toContain("mollie.com/checkout");
-    expect(mollie.created.at(-1)).toMatchObject({ profileId: "pfl_1", testmode: true, amountCents: 1500 });
+    expect(mollie.created.at(-1)).toMatchObject({ profileId: "pfl_1", testmode: true, amountCents: 1500, applicationFeeCents: 30 });
+    const [feeRow] = await sql`select application_fee_cents from booking_payments where booking_id = ${booking.id}`;
+    expect(feeRow.application_fee_cents).toBe(30);
 
     // Paiement validé → rendez-vous confirmé, emails planifiés avec le lien de gestion.
     const [p] = await sql`select mollie_payment_id from booking_payments where booking_id = ${booking.id}`;

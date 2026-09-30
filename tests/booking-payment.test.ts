@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { amountDue, describePaymentRule, normalizePaymentStatus, validatePaymentRule } from "@/lib/booking-payment";
+import { amountDue, applicationFeeCents, describePaymentRule, normalizePaymentStatus, validatePaymentRule } from "@/lib/booking-payment";
 import { open, seal } from "@/server/secret-box";
 
 const euros = (c: number) => `${c / 100} €`;
@@ -45,6 +45,21 @@ describe("montant à régler en ligne", () => {
     expect(normalizePaymentStatus("authorized")).toBe("open");
     expect(normalizePaymentStatus("pending")).toBe("open");
     expect(normalizePaymentStatus("expired")).toBe("expired");
+  });
+});
+
+describe("commission Reso sur les paiements en ligne", () => {
+  it("2 % arrondi au centime, au moins 1 centime", () => {
+    expect(applicationFeeCents(1500, 2)).toBe(30);
+    expect(applicationFeeCents(1365, 2)).toBe(27);
+    expect(applicationFeeCents(100, 2)).toBe(2);
+    expect(applicationFeeCents(20, 2)).toBe(0);
+  });
+
+  it("aucune commission à 0 %, plafond Mollie respecté", () => {
+    expect(applicationFeeCents(5000, 0)).toBe(0);
+    // Plafond : montant − 0,35 € − 6 %.
+    expect(applicationFeeCents(100, 90)).toBe(59);
   });
 });
 

@@ -43,6 +43,7 @@ const nextConfig: NextConfig = {
     RESO_LEGAL_ENTITY: process.env.RESO_LEGAL_ENTITY ?? "",
     RESO_PRIVACY_VERSION: process.env.RESO_PRIVACY_VERSION ?? "",
     RESO_SITE_URL: process.env.RESO_SITE_URL ?? "",
+    MOLLIE_PLATFORM_FEE_PERCENT: process.env.MOLLIE_PLATFORM_FEE_PERCENT ?? "",
   },
   poweredByHeader: false,
   async rewrites() {

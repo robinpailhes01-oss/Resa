@@ -47,6 +47,11 @@ export interface OfferConfig {
   privacyVersion: string;
   /** Origine publique du site (canonical, liens absolus des emails). */
   siteUrl: string;
+  /**
+   * Commission Reso (en %) sur les paiements en ligne des clients des
+   * établissements (acomptes, Mollie Connect), en plus des frais Mollie.
+   */
+  platformFeePercent: number;
 }
 
 function readOptional(value: string | undefined): string | null {
@@ -104,6 +109,13 @@ function readVatRate(value: string | undefined): number {
   return parsed;
 }
 
+function readFeePercent(value: string | undefined): number {
+  if (!value || !value.trim()) return 2;
+  const parsed = Number(value.replace(",", ".").replace("%", "").trim());
+  if (!Number.isFinite(parsed) || parsed < 0 || parsed > 10) throw new Error(`MOLLIE_PLATFORM_FEE_PERCENT invalide : "${value}" (attendu entre 0 et 10).`);
+  return parsed;
+}
+
 function readInt(value: string | undefined, fallback: number | null, { allowZero = false } = {}): number | null {
   if (!value || !value.trim()) return fallback;
   const parsed = Number.parseInt(value, 10);
@@ -137,6 +149,7 @@ function buildConfig(env: Env): OfferConfig {
     hostingProvider: readOptional(env.RESO_HOSTING_PROVIDER) ?? "Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis",
     privacyVersion: readOptional(env.RESO_PRIVACY_VERSION) ?? "2026-09-18",
     siteUrl: readOptional(env.RESO_SITE_URL) ?? "http://localhost:3000",
+    platformFeePercent: readFeePercent(env.MOLLIE_PLATFORM_FEE_PERCENT),
   };
 
   // L'application est intégrée au site : en mode live, l'inscription et la
@@ -188,6 +201,7 @@ const runtimeEnv: Env = {
   RESO_HOSTING_PROVIDER: process.env.RESO_HOSTING_PROVIDER,
   RESO_PRIVACY_VERSION: process.env.RESO_PRIVACY_VERSION,
   RESO_SITE_URL: process.env.RESO_SITE_URL,
+  MOLLIE_PLATFORM_FEE_PERCENT: process.env.MOLLIE_PLATFORM_FEE_PERCENT,
 };
 
 export const offer: OfferConfig = buildConfig(runtimeEnv);

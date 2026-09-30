@@ -34,7 +34,11 @@ export default function CgvPage() {
         L’abonnement est proposé à {formatEuros(amounts.exVatCents)} hors taxes par mois et par établissement, pour un
         établissement et jusqu’à {offer.practitionerLimit} praticiens
         {amounts.vatRate > 0 ? `, soit ${formatEuros(amounts.totalCents)} toutes taxes comprises (TVA ${amounts.vatRate.toLocaleString("fr-FR")} %)` : " (TVA non applicable, article 293 B du CGI)"}
-        . {brand} ne prélève aucune commission sur les réservations. Les SMS, la caisse et le terminal de paiement ne sont pas
+        . {brand} ne prélève aucune commission sur les réservations
+        {offer.platformFeePercent > 0
+          ? `, hors encaissement en ligne facultatif décrit à l’article 4 (commission de ${offer.platformFeePercent.toLocaleString("fr-FR")} % des sommes encaissées)`
+          : ""}
+        . Les SMS, la caisse et le terminal de paiement ne sont pas
         inclus. Toute évolution du prix est annoncée par email au moins trente jours avant son application.
       </p>
 
@@ -53,7 +57,11 @@ export default function CgvPage() {
         Encaissement des clients (facultatif) : l’Établissement peut relier son propre compte Mollie pour demander à ses
         clients un acompte ou le paiement de la prestation lors de la réservation en ligne. Ces sommes sont encaissées
         directement sur le compte Mollie de l’Établissement, selon le contrat qu’il a conclu avec Mollie B.V. ; {brand} ne les
-        détient à aucun moment et ne prélève aucune commission. L’Établissement fixe la règle d’acompte, en informe ses clients
+        détient à aucun moment.{" "}
+        {offer.platformFeePercent > 0
+          ? `En contrepartie de ce service, ${brand} perçoit une commission de ${offer.platformFeePercent.toLocaleString("fr-FR")} % de chaque paiement encaissé, prélevée par Mollie au moment du paiement, en plus des frais de Mollie ; cette commission n’est pas restituée en cas de remboursement ultérieur.`
+          : `${brand} ne prélève aucune commission sur ces sommes.`}{" "}
+        L’Établissement fixe la règle d’acompte, en informe ses clients
         dans ses conditions de réservation et reste seul responsable des remboursements, que {brand} déclenche
         automatiquement lorsqu’un rendez-vous est annulé par l’Établissement ou par le client dans le délai autorisé.
         L’Établissement peut déconnecter son compte Mollie à tout moment depuis son espace.

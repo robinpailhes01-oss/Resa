@@ -195,7 +195,7 @@ Une réponse qui décline (« non merci », « pas intéressé »…) est reconn
 
 ## 13. Acomptes et paiements des clients (Mollie Connect)
 
-Chaque établissement relie **son propre compte Mollie** depuis son espace (menu **Paiements**) et choisit ce que ses clients règlent en réservant en ligne : rien, un acompte (pourcentage ou montant fixe) ou la totalité. L’argent va directement sur le compte Mollie de l’établissement ; Reso ne le détient jamais et ne prend aucune commission.
+Chaque établissement relie **son propre compte Mollie** depuis son espace (menu **Paiements**) et choisit ce que ses clients règlent en réservant en ligne : rien, un acompte (pourcentage ou montant fixe) ou la totalité. L’argent va directement sur le compte Mollie de l’établissement ; Reso ne le détient jamais. Reso perçoit une commission sur chaque paiement encaissé (`MOLLIE_PLATFORM_FEE_PERCENT`, 2 % par défaut, 0 pour aucune ; entre 0 et 10), prélevée par Mollie comme « application fee » et versée sur le compte Mollie de Reso. Elle n’est pas restituée si le paiement est remboursé (règle Mollie), et aucun argent ne bouge en mode test.
 
 **Côté Mollie (une fois).** Mollie → Développeurs → Vos applications → créer une application OAuth. Adresse de retour (Redirect URL) : `https://www.reso-app.fr/api/mollie/callback` (ou la valeur de `MOLLIE_REDIRECT_URI`, qui doit être identique au caractère près).
 

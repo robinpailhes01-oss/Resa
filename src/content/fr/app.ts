@@ -1,4 +1,6 @@
 import { offer } from "@/config/offer";
+
+const fee = `${offer.platformFeePercent.toLocaleString("fr-FR")} %`;
 import { formatMonthlyPriceExVatCompact } from "@/lib/format";
 
 const price = formatMonthlyPriceExVatCompact(offer.monthlyPriceExVat);
@@ -99,7 +101,9 @@ export const paymentsPage = {
     text: "Mollie est un prestataire de paiement agréé. Vos clients paient par carte, Apple Pay ou virement instantané, et l’argent est versé sur votre compte bancaire par Mollie.",
     points: [
       "Moins de rendez-vous oubliés : un acompte engage vos clients.",
-      "Aucune commission Reso : seuls les frais Mollie s’appliquent, par transaction.",
+      offer.platformFeePercent > 0
+        ? `Commission ${offer.brandName} de ${fee} par paiement encaissé, en plus des frais Mollie. Rien sur les rendez-vous payés sur place.`
+        : `Aucune commission ${offer.brandName} : seuls les frais Mollie s’appliquent, par transaction.`,
       "Pas encore de compte Mollie ? Vous le créez en quelques minutes pendant la connexion.",
     ],
     button: "Connecter mon compte Mollie",
@@ -139,6 +143,10 @@ export const paymentsPage = {
     example: (price: string, due: string, rest: string) => `Exemple pour une prestation à ${price} : ${due} en ligne${rest ? `, ${rest} sur place` : ""}.`,
     noteFree: "Les prestations gratuites, ou dont le montant dû est inférieur à 1 €, restent sans paiement.",
     noteRefund: "Si vous annulez un rendez-vous, ou si votre client annule dans le délai autorisé, le paiement est remboursé automatiquement. En cas d’absence, l’acompte vous reste acquis.",
+    noteFee:
+      offer.platformFeePercent > 0
+        ? `Sur chaque paiement encaissé en ligne, ${offer.brandName} perçoit une commission de ${fee}, prélevée par Mollie. Elle reste due si le paiement est ensuite remboursé.`
+        : "",
     save: "Enregistrer",
     saved: "Réglage enregistré.",
     needsConnection: "Reliez d’abord votre compte Mollie.",

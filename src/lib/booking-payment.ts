@@ -37,6 +37,17 @@ export function amountDue(rule: PaymentRule, priceCents: number): AmountDue | nu
   return { kind: amount >= priceCents ? "full" : "deposit", amountCents: amount, remainingCents: priceCents - amount };
 }
 
+/**
+ * Commission Reso sur un paiement en ligne, en centimes : pourcentage arrondi,
+ * au moins 1 centime, plafonnée par Mollie (montant − 0,35 € − 6 %). 0 si rien.
+ */
+export function applicationFeeCents(amountCents: number, percent: number): number {
+  if (percent <= 0 || amountCents <= 0) return 0;
+  const fee = Math.max(1, Math.round((amountCents * percent) / 100));
+  const cap = Math.floor(amountCents - 35 - amountCents * 0.06);
+  return cap >= 1 ? Math.min(fee, cap) : 0;
+}
+
 /** Valide une règle saisie dans l'espace pro ; renvoie un message d'erreur ou null. */
 export function validatePaymentRule(rule: PaymentRule): string | null {
   if (rule.mode !== "deposit") return null;

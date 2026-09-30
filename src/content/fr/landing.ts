@@ -303,7 +303,7 @@ const faqLive: FaqItem[] = [
   },
   {
     question: `${brand} prélève-t-il une commission sur mes rendez-vous ?`,
-    answer: `Non. ${brand} ne prélève aucune commission de réservation. Si le paiement en ligne est proposé, les frais de son prestataire sont indiqués séparément avant activation.`,
+    answer: `Non. ${brand} ne prélève aucune commission sur les rendez-vous. Seul l’encaissement en ligne d’un acompte, facultatif, comporte ${offer.platformFeePercent > 0 ? `une commission de ${offer.platformFeePercent.toLocaleString("fr-FR")} % sur la somme encaissée, en plus des` : "uniquement les"} frais de Mollie, affichés avant activation.`,
   },
   {
     question: "Mes clients doivent-ils télécharger une application ?",

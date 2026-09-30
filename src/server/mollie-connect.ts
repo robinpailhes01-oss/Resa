@@ -164,7 +164,17 @@ const mapPayment = (p: RawPayment): ConnectPayment => ({
 /** Paiement d'un client, créé sur le compte Mollie de l'établissement. */
 export async function createConnectPayment(
   accessToken: string,
-  input: { profileId: string; testmode: boolean; amountCents: number; description: string; redirectUrl: string; webhookUrl: string; metadata: Record<string, string> },
+  input: {
+    profileId: string;
+    testmode: boolean;
+    amountCents: number;
+    description: string;
+    redirectUrl: string;
+    webhookUrl: string;
+    metadata: Record<string, string>;
+    /** Commission Reso prélevée sur le paiement (versée par Mollie à Reso, non remboursable). */
+    applicationFeeCents?: number;
+  },
   fetchImpl?: typeof fetch,
 ): Promise<ConnectPayment> {
   const body = {
@@ -176,6 +186,7 @@ export async function createConnectPayment(
     locale: "fr_FR",
     metadata: input.metadata,
     profileId: input.profileId,
+    ...(input.applicationFeeCents ? { applicationFee: { amount: euros(input.applicationFeeCents), description: "Commission Reso" } } : {}),
     ...(input.testmode ? { testmode: true } : {}),
   };
   return mapPayment(await call<RawPayment>(accessToken, "/payments", { method: "POST", body: JSON.stringify(body) }, fetchImpl));

@@ -91,6 +91,7 @@ export function PaymentRuleForm({
             ) : null}
             <p>{t.noteFree}</p>
             <p>{t.noteRefund}</p>
+            {t.noteFee ? <p>{t.noteFee}</p> : null}
           </div>
         ) : null}
       </>

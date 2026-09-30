@@ -6,6 +6,9 @@ const { buildConfig } = __internal;
 describe("configuration commerciale", () => {
   it("démarre en pré-lancement par défaut avec 39 € et 3 praticiens (F01, F02)", () => {
     const config = buildConfig({});
+    expect(config.platformFeePercent).toBe(2);
+    expect(buildConfig({ MOLLIE_PLATFORM_FEE_PERCENT: "1,5" }).platformFeePercent).toBe(1.5);
+    expect(() => buildConfig({ MOLLIE_PLATFORM_FEE_PERCENT: "25" })).toThrow(/entre 0 et 10/);
     expect(config.launchMode).toBe("prelaunch");
     expect(config.monthlyPriceExVat).toBe(39);
     expect(config.practitionerLimit).toBe(3);

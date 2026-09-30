@@ -1,6 +1,6 @@
 import "server-only";
-import { amountDue, describePaymentRule, normalizePaymentStatus, type AmountDue, type PaymentRule } from "@/lib/booking-payment";
-import { bookingPaymentRules } from "@/config/offer";
+import { amountDue, applicationFeeCents, describePaymentRule, normalizePaymentStatus, type AmountDue, type PaymentRule } from "@/lib/booking-payment";
+import { bookingPaymentRules, offer } from "@/config/offer";
 import { formatDateTimeFr } from "@/lib/time";
 import { alertOps } from "@/server/alerts";
 import type { Establishment } from "@/server/auth/guards";
@@ -252,9 +252,10 @@ export async function startBookingPayment(params: {
 }): Promise<string> {
   const sql = getSql();
   const { establishment: e, due } = params;
+  const fee = applicationFeeCents(due.amountCents, offer.platformFeePercent);
   const [row] = await sql<PaymentRow[]>`
-    insert into booking_payments (booking_id, establishment_id, kind, amount_cents, manage_token, testmode)
-    values (${params.bookingId}, ${e.id}, ${due.kind}, ${due.amountCents}, ${params.manageToken}, ${connect.isConnectTestMode()})
+    insert into booking_payments (booking_id, establishment_id, kind, amount_cents, application_fee_cents, manage_token, testmode)
+    values (${params.bookingId}, ${e.id}, ${due.kind}, ${due.amountCents}, ${fee}, ${params.manageToken}, ${connect.isConnectTestMode()})
     returning *`;
   try {
     const { token, row: connection } = await accessToken(e.id);
@@ -268,6 +269,7 @@ export async function startBookingPayment(params: {
       redirectUrl: absoluteUrl(`/rdv/${params.manageToken}?paiement=retour`),
       webhookUrl: absoluteUrl("/api/webhooks/mollie-connect"),
       metadata: { bookingPaymentId: row.id, bookingId: params.bookingId },
+      applicationFeeCents: fee,
     });
     if (!payment.checkoutUrl) throw new ConnectError("Mollie n’a pas renvoyé de page de paiement.");
     await sql`update booking_payments set mollie_payment_id = ${payment.id}, checkout_url = ${payment.checkoutUrl}, updated_at = now() where id = ${row.id}`;
