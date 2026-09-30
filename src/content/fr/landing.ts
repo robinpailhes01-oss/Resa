@@ -66,7 +66,7 @@ export const hero = {
   /** Deux lignes, en minuscules comme sur les visuels. */
   title: ["vos rendez-vous,", "sans décrocher."],
   trades: ["coiffure", "barber", "esthétique", "onglerie"],
-  intro: "Vos clientes réservent en ligne, jour et nuit. Rappel par email avant le rendez-vous, demande d’avis Google après la visite. Vous, vous restez avec la personne dans votre fauteuil.",
+  intro: "Vos clients réservent en ligne, jour et nuit. Rappel par email avant le rendez-vous, demande d’avis Google après la visite.",
   /** Ligne de réassurance sous les boutons. */
   reassurance: {
     prelaunch: [priceCompact, "Un établissement", capitalize(practitioners)],
@@ -108,8 +108,8 @@ export const features = {
   cards: [
     {
       id: "booking",
-      title: "Vos clientes réservent quand elles le souhaitent.",
-      text: "Partagez votre lien de réservation et laissez vos clientes choisir leur prestation et leur créneau.",
+      title: "Vos clients réservent quand elles le souhaitent.",
+      text: "Partagez votre lien de réservation et laissez vos clients choisir leur prestation et leur créneau.",
       alt: `Aperçu de la page de réservation ${brand} : choix d’une prestation puis d’un créneau, données fictives.`,
       chip: { title: "Réservation en ligne", text: "24h/24 et 7j/7" },
     },
@@ -125,7 +125,7 @@ export const features = {
   /** Bandeau image : les avis Google. */
   reviews: {
     title: "Des avis Google, sans avoir à les demander.",
-    text: "Après chaque visite, votre cliente reçoit un lien direct vers votre fiche Google. Votre note se construit rendez-vous après rendez-vous.",
+    text: "Après chaque visite, votre client reçoit un lien direct vers votre fiche Google. Votre note se construit rendez-vous après rendez-vous.",
     alt: "Plateau chromé avec peigne, brosses, ciseaux, coton et vernis lavande, sur un socle crème devant un mur bleu poudré.",
   },
 };
@@ -146,7 +146,7 @@ export const howItWorks = {
     },
     {
       title: "Retrouvez vos rendez-vous",
-      text: "Consultez votre agenda et laissez les emails accompagner vos clientes avant et après leur visite.",
+      text: "Consultez votre agenda et laissez les emails accompagner vos clients avant et après leur visite.",
     },
   ],
 };
@@ -198,12 +198,12 @@ export const pricing = {
       value: "equipe",
       label: "Petite équipe",
       name: "Vous êtes plusieurs au salon",
-      description: "Chaque praticien a son agenda, vous gardez la vue d’ensemble, et vos clientes choisissent avec qui réserver.",
+      description: "Chaque praticien a son agenda, vous gardez la vue d’ensemble, et vos clients choisissent avec qui réserver.",
       features: [
         `Agenda pour ${practitioners}, au même prix`,
         "Un agenda par praticien et une vue d’ensemble",
         "Prestations réalisées par un ou plusieurs praticiens",
-        "Vos clientes choisissent avec qui réserver",
+        "Vos clients choisissent avec qui réserver",
         "Confirmations, rappels et demandes d’avis par email",
         `Sans commission de réservation prélevée par ${brand}`,
       ],
@@ -388,7 +388,7 @@ export const footer = {
   brand,
   tagline: brandLine.tagline,
   closing: {
-    title: "Raccrochez. Vos clientes réservent en ligne.",
+    title: "Raccrochez. Vos clients réservent en ligne.",
     text: offer.trialDays ? `${trialLabel}, sans carte bancaire. Ensuite ${priceCompact}, sans engagement.` : `${priceCompact}, sans engagement.`,
     imageAlt: "Ciseaux chromés et serviette éponge sur un socle crème, devant un mur bleu poudré.",
   },

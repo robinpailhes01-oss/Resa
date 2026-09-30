@@ -160,7 +160,7 @@ Pour lancer le cycle à la main : `https://www.reso-app.fr/api/internal/billing`
 
 ## 11. Pages légales
 
-Mentions légales, CGV et confidentialité lisent la configuration : `RESO_LEGAL_ENTITY` (raison sociale et adresse ; par défaut SAS Harmonie Group, 61 rue du Rouet, 13008 Marseille), `RESO_LEGAL_ID` (SIREN), `RESO_VAT_NUMBER`, `RESO_PUBLICATION_DIRECTOR` (par défaut Robin Pailhes), `RESO_HOSTING_PROVIDER` (par défaut Vercel Inc.). Renseignez au minimum `RESO_LEGAL_ID`.
+Mentions légales, CGV et confidentialité lisent la configuration : `RESO_LEGAL_ENTITY` (raison sociale et adresse ; par défaut SAS Harmonie Group, 61 rue du Rouet, 13008 Marseille), `RESO_LEGAL_ID` (SIREN), `RESO_VAT_NUMBER`, `RESO_PUBLICATION_DIRECTOR` (par défaut Robin Pailhes), `RESO_HOSTING_PROVIDER` (par défaut Vercel Inc.). Renseignez au minimum `RESO_LEGAL_ID`, et pour une SAS `RESO_SHARE_CAPITAL` (« SAS au capital de … € »), `RESO_RCS` (« RCS Marseille … ») et `RESO_SUPPORT_PHONE`, affichés dans les mentions légales quand ils sont renseignés.
 
 ## 12. Prospection sortante (Planity et autres)
 

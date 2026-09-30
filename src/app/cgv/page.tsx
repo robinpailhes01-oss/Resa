@@ -13,7 +13,7 @@ export default function CgvPage() {
   const amounts = subscriptionAmounts(offer.monthlyPriceExVat, offer.vatRate);
   const brand = offer.brandName;
   return (
-    <SimplePage title="Conditions générales de vente" intro="Version du 24 septembre 2026. Elles s’appliquent à tout établissement qui crée un compte sur Reso.">
+    <SimplePage title="Conditions générales de vente" intro="Version du 30 septembre 2026. Elles s’appliquent à tout établissement qui crée un compte sur Reso.">
       <h2>1. Éditeur et objet</h2>
       <p>
         {brand} est édité par {offer.legalEntity}
@@ -40,10 +40,14 @@ export default function CgvPage() {
 
       <h2>4. Paiement</h2>
       <p>
-        L’abonnement est payable mensuellement et d’avance, par carte bancaire, via le prestataire de paiement SumUp. Les
-        données de carte sont saisies et conservées exclusivement chez SumUp ; {brand} n’y a pas accès. Un reçu est envoyé par
-        email après chaque paiement. En cas d’échec de paiement, l’Établissement dispose de trois jours pour régulariser ;
-        au-delà, la page de réservation en ligne est suspendue jusqu’au règlement.
+        L’abonnement est payable mensuellement et d’avance, par carte bancaire (ou prélèvement SEPA lorsqu’il est proposé), via
+        le prestataire de paiement Mollie B.V. Le premier paiement enregistre le moyen de paiement de l’Établissement ; les
+        mensualités suivantes sont ensuite prélevées automatiquement à chaque échéance, sans nouvelle démarche, jusqu’à
+        résiliation. Les données de paiement sont saisies et conservées exclusivement chez le prestataire ; {brand} n’y a pas
+        accès. Une facture numérotée est envoyée par email et disponible dans l’espace de l’Établissement après chaque
+        paiement. En cas d’échec de prélèvement, l’Établissement dispose de trois jours pour régulariser ; au-delà, la page de
+        réservation en ligne est suspendue jusqu’au règlement. Tout retard de paiement entraîne, de plein droit, des
+        pénalités égales à trois fois le taux d’intérêt légal et une indemnité forfaitaire de recouvrement de 40 €.
       </p>
 
       <h2>5. Durée et résiliation</h2>
@@ -58,21 +62,21 @@ export default function CgvPage() {
       <p>
         L’Établissement garantit l’exactitude des informations publiées sur sa page de réservation (prestations, prix,
         horaires, photos, mentions importées de sa fiche Google) et dispose des droits sur les contenus qu’il publie. Il
-        informe ses clientes des conditions applicables à leurs rendez-vous. Il utilise le service conformément à la loi et
+        informe ses clients des conditions applicables à leurs rendez-vous. Il utilise le service conformément à la loi et
         s’abstient de tout envoi non sollicité.
       </p>
 
       <h2>7. Disponibilité et responsabilité</h2>
       <p>
         {brand} met en œuvre les moyens raisonnables pour assurer un service disponible et sécurisé, sans garantie de
-        fonctionnement ininterrompu. {brand} n’est pas partie aux prestations réalisées entre l’Établissement et ses clientes.
+        fonctionnement ininterrompu. {brand} n’est pas partie aux prestations réalisées entre l’Établissement et ses clients.
         La responsabilité de {brand} est, en tout état de cause, limitée au montant des sommes versées au titre des trois
         derniers mois d’abonnement.
       </p>
 
       <h2>8. Données personnelles</h2>
       <p>
-        {brand} traite les données de l’Établissement en tant que responsable de traitement, et les données de ses clientes en
+        {brand} traite les données de l’Établissement en tant que responsable de traitement, et les données de ses clients en
         tant que sous-traitant, pour le seul fonctionnement du service. Les modalités figurent dans la politique de
         confidentialité. À la fermeture du compte, l’Établissement peut demander l’export de ses données ; elles sont ensuite
         supprimées dans un délai de trois mois.

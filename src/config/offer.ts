@@ -29,6 +29,12 @@ export interface OfferConfig {
   legalEntity: string | null;
   /** Numéro SIREN ou SIRET de l'éditeur. */
   legalId: string | null;
+  /** Forme et capital (« SAS au capital de 1 000 € »), pour les mentions légales. */
+  shareCapital: string | null;
+  /** Immatriculation (« RCS Marseille 991 738 733 »). */
+  rcs: string | null;
+  /** Téléphone de contact (mentions légales). */
+  supportPhone: string | null;
   /** Numéro de TVA intracommunautaire, ou null en franchise de TVA. */
   vatNumber: string | null;
   /** Taux de TVA appliqué à l'abonnement (20 par défaut ; 0 en franchise). */
@@ -122,6 +128,9 @@ function buildConfig(env: Env): OfferConfig {
     supportEmail: readEmail(env.RESO_SUPPORT_EMAIL, "RESO_SUPPORT_EMAIL"),
     legalEntity: readOptional(env.RESO_LEGAL_ENTITY) ?? "SAS Harmonie Group, 61 rue du Rouet, 13008 Marseille, France",
     legalId: readOptional(env.RESO_LEGAL_ID),
+    shareCapital: readOptional(env.RESO_SHARE_CAPITAL),
+    rcs: readOptional(env.RESO_RCS),
+    supportPhone: readOptional(env.RESO_SUPPORT_PHONE),
     vatNumber: readOptional(env.RESO_VAT_NUMBER),
     vatRate: readVatRate(env.RESO_VAT_RATE),
     publicationDirector: readOptional(env.RESO_PUBLICATION_DIRECTOR) ?? "Robin Pailhes",
@@ -170,6 +179,9 @@ const runtimeEnv: Env = {
   RESO_SUPPORT_EMAIL: process.env.RESO_SUPPORT_EMAIL,
   RESO_LEGAL_ENTITY: process.env.RESO_LEGAL_ENTITY,
   RESO_LEGAL_ID: process.env.RESO_LEGAL_ID,
+  RESO_SHARE_CAPITAL: process.env.RESO_SHARE_CAPITAL,
+  RESO_RCS: process.env.RESO_RCS,
+  RESO_SUPPORT_PHONE: process.env.RESO_SUPPORT_PHONE,
   RESO_VAT_NUMBER: process.env.RESO_VAT_NUMBER,
   RESO_VAT_RATE: process.env.RESO_VAT_RATE,
   RESO_PUBLICATION_DIRECTOR: process.env.RESO_PUBLICATION_DIRECTOR,
