@@ -52,6 +52,15 @@ export interface OfferConfig {
    * établissements (acomptes, Mollie Connect), en plus des frais Mollie.
    */
   platformFeePercent: number;
+  /** Réseaux sociaux de Reso (pied de page) ; un lien absent n'affiche pas son icône. */
+  social: SocialLinks;
+}
+
+export interface SocialLinks {
+  instagram: string | null;
+  tiktok: string | null;
+  facebook: string | null;
+  linkedin: string | null;
 }
 
 function readOptional(value: string | undefined): string | null {
@@ -109,6 +118,18 @@ function readVatRate(value: string | undefined): number {
   return parsed;
 }
 
+function readSocialUrl(value: string | undefined, name: string): string | null {
+  const raw = readOptional(value);
+  if (!raw) return null;
+  const url = raw.startsWith("http") ? raw : `https://${raw}`;
+  try {
+    if (new URL(url).protocol === "https:") return url;
+  } catch {
+    /* signalé ci-dessous */
+  }
+  throw new Error(`${name} doit être une adresse https (reçu : "${raw}").`);
+}
+
 function readFeePercent(value: string | undefined): number {
   if (!value || !value.trim()) return 2;
   const parsed = Number(value.replace(",", ".").replace("%", "").trim());
@@ -150,6 +171,12 @@ function buildConfig(env: Env): OfferConfig {
     privacyVersion: readOptional(env.RESO_PRIVACY_VERSION) ?? "2026-09-18",
     siteUrl: readOptional(env.RESO_SITE_URL) ?? "http://localhost:3000",
     platformFeePercent: readFeePercent(env.MOLLIE_PLATFORM_FEE_PERCENT),
+    social: {
+      instagram: readSocialUrl(env.RESO_INSTAGRAM_URL, "RESO_INSTAGRAM_URL"),
+      tiktok: readSocialUrl(env.RESO_TIKTOK_URL, "RESO_TIKTOK_URL"),
+      facebook: readSocialUrl(env.RESO_FACEBOOK_URL, "RESO_FACEBOOK_URL"),
+      linkedin: readSocialUrl(env.RESO_LINKEDIN_URL, "RESO_LINKEDIN_URL"),
+    },
   };
 
   // L'application est intégrée au site : en mode live, l'inscription et la
@@ -202,6 +229,10 @@ const runtimeEnv: Env = {
   RESO_PRIVACY_VERSION: process.env.RESO_PRIVACY_VERSION,
   RESO_SITE_URL: process.env.RESO_SITE_URL,
   MOLLIE_PLATFORM_FEE_PERCENT: process.env.MOLLIE_PLATFORM_FEE_PERCENT,
+  RESO_INSTAGRAM_URL: process.env.RESO_INSTAGRAM_URL,
+  RESO_TIKTOK_URL: process.env.RESO_TIKTOK_URL,
+  RESO_FACEBOOK_URL: process.env.RESO_FACEBOOK_URL,
+  RESO_LINKEDIN_URL: process.env.RESO_LINKEDIN_URL,
 };
 
 export const offer: OfferConfig = buildConfig(runtimeEnv);

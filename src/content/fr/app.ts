@@ -203,12 +203,16 @@ export const pageEditor = {
   intro: "Ce que voient vos clients avant de réserver : présentation, photos, prestations et avis.",
   view: "Voir ma page",
   about: {
-    title: "Présentation",
-    help: "Quelques lignes sur votre établissement, votre savoir-faire, votre ambiance.",
-    label: "Texte de présentation",
+    title: "Bio et présentation",
+    help: "Votre bio s’affiche sous votre nom, en haut de votre page. La présentation, plus longue, apparaît dans « À propos ».",
+    bioLabel: "Bio",
+    bioHelp: "Une phrase courte, comme sur Instagram. 160 caractères maximum.",
+    bioPlaceholder: "Ex. Soins visage & ongles · sur rendez-vous · Montpellier centre ✨",
+    bioTooLong: "160 caractères maximum pour la bio.",
+    label: "Présentation (À propos)",
     placeholder: "Ex. Institut de beauté au cœur de Montpellier : soins du visage, épilation et beauté des mains, dans un cadre calme et chaleureux.",
     save: "Enregistrer",
-    saved: "Présentation enregistrée.",
+    saved: "Bio et présentation enregistrées.",
     tooLong: "600 caractères maximum.",
   },
   photos: {
@@ -238,6 +242,17 @@ export const pageEditor = {
     manage: "Gérer les prestations",
     empty: "Aucune prestation : vos clients ne peuvent pas encore réserver.",
     hiddenTag: "Masquée",
+    addPhoto: "Ajouter une photo",
+    noPhoto: "Sans photo",
+  },
+  servicePhoto: {
+    title: "Photo de la prestation",
+    help: "Une photo du résultat ou du soin, affichée à côté de la prestation sur votre page de réservation.",
+    add: "Ajouter une photo",
+    replace: "Changer la photo",
+    remove: "Retirer la photo",
+    removeConfirm: "Retirer la photo de cette prestation ?",
+    empty: "Aucune photo pour cette prestation.",
   },
   reviews: {
     title: "Avis clients",
@@ -263,7 +278,7 @@ export const pageEditor = {
     photos: (n: number) => `${n} photo${n > 1 ? "s" : ""}`,
     services: (n: number) => `${n} prestation${n > 1 ? "s" : ""}`,
     reviews: (n: number) => `${n} avis`,
-    about: (ok: boolean) => (ok ? "Présentation rédigée" : "Présentation à rédiger"),
+    about: (ok: boolean) => (ok ? "Bio rédigée" : "Bio à rédiger"),
   },
 };
 

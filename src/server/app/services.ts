@@ -13,6 +13,8 @@ export interface Service {
   sortOrder: number;
   /** Identifiants des praticiens habilités ; vide = tous. */
   practitionerIds: string[];
+  /** Photo de la prestation (facultative). */
+  photoUrl: string | null;
 }
 
 type Row = {
@@ -26,6 +28,7 @@ type Row = {
   active: boolean;
   sort_order: number;
   practitioner_ids: string[] | null;
+  photo_url: string | null;
 };
 
 const map = (r: Row): Service => ({
@@ -39,10 +42,12 @@ const map = (r: Row): Service => ({
   active: r.active,
   sortOrder: r.sort_order,
   practitionerIds: r.practitioner_ids ?? [],
+  photoUrl: r.photo_url ?? null,
 });
 
 const SELECT = (sql: ReturnType<typeof getSql>) => sql`
-  select s.*, (select array_agg(sp.practitioner_id) from service_practitioners sp where sp.service_id = s.id) as practitioner_ids
+  select s.*, (select array_agg(sp.practitioner_id) from service_practitioners sp where sp.service_id = s.id) as practitioner_ids,
+    (select ph.url from establishment_photos ph where ph.service_id = s.id limit 1) as photo_url
   from services s`;
 
 export async function listServices(establishmentId: string, includeInactive = false): Promise<Service[]> {

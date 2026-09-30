@@ -4,6 +4,7 @@ import { Logo } from "@/components/ui/Logo";
 import { offer } from "@/config/offer";
 import { byMode, cta, footer } from "@/content/fr/landing";
 import { CtaLink } from "./CtaLink";
+import { SocialLinks } from "@/components/ui/SocialLinks";
 
 /**
  * Fin de page : le visuel de marque recomposé (« reso® », filet, « BEAUTY BUSINESS
@@ -82,6 +83,11 @@ export function Footer({ closing = false }: { closing?: boolean }) {
         </Link>
         <nav aria-label="Liens de pied de page">
           <ul className="flex flex-wrap gap-x-6 gap-y-1">
+            <li>
+              <a href={footer.proLink.href} className={`${linkClass} font-semibold !text-ink`}>
+                {footer.proLink.label}
+              </a>
+            </li>
             {footer.links.map((link) => (
               <li key={link.href}>
                 <a href={link.href} className={linkClass}>
@@ -106,8 +112,13 @@ export function Footer({ closing = false }: { closing?: boolean }) {
           </ul>
         </nav>
       </div>
-      <div className="container-page pb-8 text-[12px] text-ink-muted">
-        {footer.copyright(year)}
+      <div className="container-page flex flex-col gap-4 pb-8 text-[12px] text-ink-muted sm:flex-row sm:items-center sm:justify-between">
+        <p className="flex flex-wrap items-center gap-x-2 gap-y-1">
+          <span>{footer.copyright(year)}</span>
+          <span aria-hidden="true">·</span>
+          <span className="font-medium text-ink">{footer.madeIn}</span>
+        </p>
+        <SocialLinks withLabel className="-ml-2 sm:ml-0" />
       </div>
     </footer>
   );

@@ -44,6 +44,10 @@ const nextConfig: NextConfig = {
     RESO_PRIVACY_VERSION: process.env.RESO_PRIVACY_VERSION ?? "",
     RESO_SITE_URL: process.env.RESO_SITE_URL ?? "",
     MOLLIE_PLATFORM_FEE_PERCENT: process.env.MOLLIE_PLATFORM_FEE_PERCENT ?? "",
+    RESO_INSTAGRAM_URL: process.env.RESO_INSTAGRAM_URL ?? "",
+    RESO_TIKTOK_URL: process.env.RESO_TIKTOK_URL ?? "",
+    RESO_FACEBOOK_URL: process.env.RESO_FACEBOOK_URL ?? "",
+    RESO_LINKEDIN_URL: process.env.RESO_LINKEDIN_URL ?? "",
   },
   poweredByHeader: false,
   async rewrites() {

@@ -47,6 +47,47 @@ describe.skipIf(!url)("page de réservation : photos et avis", () => {
     await expect(photos.addUploadedPhoto(establishmentId, JPEG, "image/jpeg")).rejects.toBeInstanceOf(photos.PhotoLimitError);
   });
 
+  it("photo de prestation : une seule, hors galerie, réservée aux prestations de l'établissement", async () => {
+    const photos = await import("@/server/app/photos");
+    const { listServices } = await import("@/server/app/services");
+    const [s] = await sql`insert into services (establishment_id, name, duration_min, price_cents) values (${establishmentId}, 'Coupe', 30, 2500) returning id`;
+    const galleryBefore = (await photos.listPhotos(establishmentId)).length;
+
+    expect(await photos.setServicePhoto(establishmentId, s.id, JPEG, "image/jpeg")).toBe(true);
+    expect(await photos.setServicePhoto(establishmentId, s.id, JPEG, "image/jpeg")).toBe(true);
+    const [{ n }] = await sql`select count(*)::int as n from establishment_photos where service_id = ${s.id}`;
+    expect(n).toBe(1);
+    expect((await photos.listPhotos(establishmentId)).length).toBe(galleryBefore);
+    const service = (await listServices(establishmentId)).find((x) => x.id === s.id)!;
+    expect(service.photoUrl).toMatch(/^\/photos\//);
+
+    // Prestation d'un autre établissement : refusé.
+    const [u2] = await sql`insert into users (email, password_hash, full_name) values (${`autre-page+${stamp}@example.com`}, 'x', 'Autre') returning id`;
+    const [e2] = await sql`insert into establishments (owner_user_id, name, slug) values (${u2.id}, 'Autre', ${`autre-page-${stamp}`}) returning id`;
+    expect(await photos.setServicePhoto(e2.id, s.id, JPEG, "image/jpeg")).toBe(false);
+    await sql`delete from establishments where id = ${e2.id}`;
+    await sql`delete from users where id = ${u2.id}`;
+
+    await photos.removeServicePhoto(establishmentId, s.id);
+    expect((await listServices(establishmentId)).find((x) => x.id === s.id)!.photoUrl).toBeNull();
+  });
+
+  it("fiche client : le même numéro retrouve le même client, même sans email", async () => {
+    const { upsertClient, phoneMatchKey } = await import("@/server/app/clients");
+    expect(phoneMatchKey("+33 6 12 34 56 78")).toBe("612345678");
+    expect(phoneMatchKey("12")).toBeNull();
+    const a = await upsertClient(establishmentId, { firstName: "Inès", lastName: "", email: null, phone: "06 12 34 56 78" });
+    const b = await upsertClient(establishmentId, { firstName: "Inès", lastName: "Martin", email: null, phone: "+33612345678" });
+    expect(b.id).toBe(a.id);
+    // Email ajouté plus tard : rattaché à la même fiche.
+    const c = await upsertClient(establishmentId, { firstName: "Inès", lastName: "Martin", email: `ines+${stamp}@example.com`, phone: "0612345678" });
+    expect(c.id).toBe(a.id);
+    expect(c.email).toBe(`ines+${stamp}@example.com`);
+    // Autre email sur le même numéro (ex. deux personnes d'une même famille) : fiches séparées.
+    const d = await upsertClient(establishmentId, { firstName: "Sam", lastName: "", email: `sam+${stamp}@example.com`, phone: "0612345678" });
+    expect(d.id).not.toBe(a.id);
+  });
+
   it("importe les avis, masque un avis, et le masquage survit à l'actualisation", async () => {
     const reviews = await import("@/server/app/reviews");
     const sample = [

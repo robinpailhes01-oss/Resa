@@ -4,7 +4,7 @@ import { ExternalLink, Pencil, Plus } from "lucide-react";
 import { ActionForm } from "@/components/app/ActionForm";
 import { ConfirmButton } from "@/components/app/ConfirmButton";
 import { CopyField } from "@/components/app/CopyField";
-import { TextArea } from "@/components/app/Fields";
+import { TextArea, TextInput } from "@/components/app/Fields";
 import { Card, PageHeader } from "@/components/app/PageHeader";
 import { PhotoUploader } from "@/components/app/PhotoUploader";
 import { ReviewCard, Stars } from "@/components/booking/ReviewCard";
@@ -97,6 +97,7 @@ export default async function MaPage() {
         <h2 className="heading-3">{t.about.title}</h2>
         <p className="mb-4 mt-1 text-[14px] text-ink-muted">{t.about.help}</p>
         <ActionForm action={updateDescriptionAction} submitLabel={t.about.save}>
+          <TextInput id="bio" name="bio" label={t.about.bioLabel} help={t.about.bioHelp} maxLength={160} defaultValue={e.bio ?? ""} placeholder={t.about.bioPlaceholder} />
           <TextArea id="description" name="description" label={t.about.label} maxLength={600} rows={5} defaultValue={e.description ?? ""} placeholder={t.about.placeholder} />
         </ActionForm>
       </Card>
@@ -124,7 +125,13 @@ export default async function MaPage() {
             {services.map((s) => (
               <li key={s.id}>
                 <Link href={`/app/prestations/${s.id}`} className="group flex items-center justify-between gap-4 py-3">
-                  <span className="min-w-0">
+                  {s.photoUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={s.photoUrl} alt="" loading="lazy" className="size-12 shrink-0 rounded-xl object-cover ring-1 ring-line" />
+                  ) : (
+                    <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-page text-center text-[10px] leading-3 text-ink-muted ring-1 ring-line">{t.services.addPhoto}</span>
+                  )}
+                  <span className="min-w-0 flex-1">
                     <span className={cn("block truncate text-[15px] font-medium", s.active ? "text-ink" : "text-ink-muted")}>{s.name}</span>
                     <span className="block text-[13px] text-ink-muted">
                       {formatDuration(s.durationMin)}

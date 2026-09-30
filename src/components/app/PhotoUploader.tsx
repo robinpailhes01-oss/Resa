@@ -31,9 +31,15 @@ async function compress(file: File): Promise<Blob> {
 export function PhotoUploader({
   action,
   remaining,
+  multiple = true,
+  label = t.add,
+  inputId = "photo-upload",
 }: {
   action: (fd: FormData) => Promise<{ ok: true } | { error: string }>;
   remaining: number;
+  multiple?: boolean;
+  label?: string;
+  inputId?: string;
 }) {
   const input = useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -68,10 +74,10 @@ export function PhotoUploader({
 
   return (
     <div className="flex flex-col gap-3">
-      <input ref={input} type="file" accept="image/*" multiple className="sr-only" id="photo-upload" onChange={(e) => onFiles(e.target.files)} />
+      <input ref={input} type="file" accept="image/*" multiple={multiple} className="sr-only" id={inputId} onChange={(e) => onFiles(e.target.files)} />
       <div>
         <Button type="button" size="compact" disabled={Boolean(progress) || remaining <= 0} aria-busy={Boolean(progress)} onClick={() => input.current?.click()}>
-          <ImagePlus aria-hidden="true" /> {progress ?? t.add}
+          <ImagePlus aria-hidden="true" /> {progress ?? label}
         </Button>
       </div>
       <div aria-live="polite">{message ? <StatusMessage tone={message.tone}>{message.text}</StatusMessage> : null}</div>

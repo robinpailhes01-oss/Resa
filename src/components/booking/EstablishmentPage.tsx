@@ -63,6 +63,7 @@ export function EstablishmentPage({ establishment: e, services, practitioners, h
     <div className="flex flex-col gap-8">
       <header>
         <h1 className="text-[28px] leading-9 md:text-[36px] md:leading-[1.1]">{e.name}</h1>
+        {e.bio ? <p className="mt-2 max-w-xl text-[16px] leading-6 text-ink">{e.bio}</p> : null}
         <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[15px] text-ink-muted">
           <span>{businessTypeLabel(e.businessType)}</span>
           {e.googleRating !== null && e.googlePlaceId ? (
@@ -116,6 +117,10 @@ export function EstablishmentPage({ establishment: e, services, practitioners, h
               <ul className="mt-4 divide-y divide-line rounded-2xl bg-card ring-1 ring-line">
                 {services.map((s) => (
                   <li key={s.id} className="flex items-center gap-4 px-4 py-4 md:px-5">
+                    {s.photoUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={s.photoUrl} alt="" loading="lazy" className="size-16 shrink-0 rounded-xl object-cover ring-1 ring-line md:size-20" />
+                    ) : null}
                     <div className="min-w-0 flex-1">
                       <div className="text-[16px] font-semibold text-ink">{s.name}</div>
                       {s.description ? <p className="mt-0.5 line-clamp-2 text-[13.5px] leading-5 text-ink-muted">{s.description}</p> : null}

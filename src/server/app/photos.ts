@@ -21,7 +21,7 @@ type Row = { id: string; url: string; source: EstablishmentPhoto["source"]; sort
 const map = (r: Row): EstablishmentPhoto => ({ id: r.id, url: r.url, source: r.source, sortOrder: r.sort_order });
 
 export async function listPhotos(establishmentId: string): Promise<EstablishmentPhoto[]> {
-  const rows = await getSql()<Row[]>`select id, url, source, sort_order from establishment_photos where establishment_id = ${establishmentId} order by sort_order, created_at`;
+  const rows = await getSql()<Row[]>`select id, url, source, sort_order from establishment_photos where establishment_id = ${establishmentId} and service_id is null order by sort_order, created_at`;
   return rows.map(map);
 }
 
@@ -40,14 +40,32 @@ export async function addPhotos(establishmentId: string, urls: string[], source:
 export async function addUploadedPhoto(establishmentId: string, bytes: Uint8Array, contentType: ImageType): Promise<string> {
   const sql = getSql();
   return sql.begin(async (tx) => {
-    const [count] = await tx<Array<{ n: number }>>`select count(*)::int as n from establishment_photos where establishment_id = ${establishmentId}`;
+    const [count] = await tx<Array<{ n: number }>>`select count(*)::int as n from establishment_photos where establishment_id = ${establishmentId} and service_id is null`;
     if (count.n >= MAX_PHOTOS) throw new PhotoLimitError(`${MAX_PHOTOS} photos maximum.`);
-    const [max] = await tx<Array<{ max: number | null }>>`select max(sort_order) as max from establishment_photos where establishment_id = ${establishmentId}`;
+    const [max] = await tx<Array<{ max: number | null }>>`select max(sort_order) as max from establishment_photos where establishment_id = ${establishmentId} and service_id is null`;
     const id = randomUUID();
     await tx`insert into establishment_photos (id, establishment_id, url, source, sort_order, image, content_type)
       values (${id}, ${establishmentId}, ${`/photos/${id}`}, 'manual', ${(max?.max ?? -1) + 1}, ${Buffer.from(bytes)}, ${contentType})`;
     return id;
   });
+}
+
+/** Photo d'une prestation (une seule : la nouvelle remplace l'ancienne). Renvoie false si la prestation n'appartient pas à l'établissement. */
+export async function setServicePhoto(establishmentId: string, serviceId: string, bytes: Uint8Array, contentType: ImageType): Promise<boolean> {
+  const sql = getSql();
+  return sql.begin(async (tx) => {
+    const owned = await tx`select 1 from services where id = ${serviceId} and establishment_id = ${establishmentId}`;
+    if (owned.length === 0) return false;
+    await tx`delete from establishment_photos where service_id = ${serviceId}`;
+    const id = randomUUID();
+    await tx`insert into establishment_photos (id, establishment_id, service_id, url, source, sort_order, image, content_type)
+      values (${id}, ${establishmentId}, ${serviceId}, ${`/photos/${id}`}, 'manual', 0, ${Buffer.from(bytes)}, ${contentType})`;
+    return true;
+  });
+}
+
+export async function removeServicePhoto(establishmentId: string, serviceId: string): Promise<void> {
+  await getSql()`delete from establishment_photos where service_id = ${serviceId} and establishment_id = ${establishmentId}`;
 }
 
 /** Image d'une photo envoyée (route publique /photos/<id>). */

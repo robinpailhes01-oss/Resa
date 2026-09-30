@@ -57,6 +57,12 @@ export interface ClientInput {
 }
 
 /** Retrouve un client par email (si fourni), sinon le crée. Met à jour le téléphone s'il manquait. */
+/** Clé de rapprochement d'un numéro : ses 9 derniers chiffres (null si trop court). */
+export function phoneMatchKey(phone: string | null | undefined): string | null {
+  const digits = (phone ?? "").replace(/\D/g, "");
+  return digits.length >= 9 ? digits.slice(-9) : null;
+}
+
 export async function upsertClient(establishmentId: string, input: ClientInput, tx: Db = getSql()): Promise<Client> {
   if (input.email) {
     const existing = await tx<Row[]>`select * from clients where establishment_id = ${establishmentId} and email = ${input.email}`;
@@ -66,6 +72,23 @@ export async function upsertClient(establishmentId: string, input: ClientInput, 
         update clients set phone = coalesce(${input.phone}, phone),
           first_name = case when first_name = '' then ${input.firstName} else first_name end
         where id = ${c.id} returning *`;
+      return map(updated);
+    }
+  }
+  // Sans email (ou email inconnu) : même client si le téléphone correspond (9 derniers chiffres,
+  // pour que « 06 12… » et « +33 6 12… » se rejoignent) et qu'il n'a pas d'autre email.
+  const phoneKey = phoneMatchKey(input.phone);
+  if (phoneKey) {
+    const existing = await tx<Row[]>`
+      select * from clients where establishment_id = ${establishmentId}
+        and right(regexp_replace(coalesce(phone, ''), '[^0-9]', '', 'g'), 9) = ${phoneKey}
+        and (email is null or ${input.email}::citext is null)
+      order by created_at limit 1`;
+    if (existing[0]) {
+      const [updated] = await tx<Row[]>`
+        update clients set email = coalesce(email, ${input.email}),
+          last_name = case when last_name = '' then ${input.lastName} else last_name end
+        where id = ${existing[0].id} returning *`;
       return map(updated);
     }
   }

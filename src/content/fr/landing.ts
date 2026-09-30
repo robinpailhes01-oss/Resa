@@ -406,6 +406,20 @@ export const footer = {
     { href: "/confidentialite", label: "Confidentialité" },
   ],
   copyright: (year: number) => `© ${year} ${brand}`,
+  madeIn: "Fabriqué à Montpellier avec authenticité",
+  proLink: { label: "Devenir pro", href: offer.launchMode === "live" ? (offer.signupUrl ?? "/inscription") : "/preinscription" },
+  followUs: "Suivez-nous",
+  social: {
+    instagram: `${brand} sur Instagram`,
+    tiktok: `${brand} sur TikTok`,
+    facebook: `${brand} sur Facebook`,
+    linkedin: `${brand} sur LinkedIn`,
+  },
+  booking: {
+    poweredBy: `Réservation propulsée par ${brand}`,
+    timezone: "Les horaires sont affichés à l’heure de Paris.",
+    pro: `Vous êtes pro ? Découvrez ${brand}`,
+  },
 };
 
 export const metadata = {

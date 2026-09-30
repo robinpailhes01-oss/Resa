@@ -18,6 +18,8 @@ export interface Establishment {
   phone: string | null;
   publicEmail: string | null;
   description: string | null;
+  /** Bio courte affichée sous le nom, sur la page de réservation. */
+  bio: string | null;
   /** Conditions affichées à la cliente avant confirmation et dans l'email. */
   bookingTerms: string | null;
   timezone: string;
@@ -56,6 +58,7 @@ export type EstablishmentRow = {
   phone: string | null;
   public_email: string | null;
   description: string | null;
+  bio?: string | null;
   booking_terms: string | null;
   timezone: string;
   booking_enabled: boolean;
@@ -89,6 +92,7 @@ export function mapEstablishment(r: EstablishmentRow): Establishment {
     phone: r.phone,
     publicEmail: r.public_email,
     description: r.description,
+    bio: r.bio ?? null,
     bookingTerms: r.booking_terms,
     timezone: r.timezone,
     bookingEnabled: r.booking_enabled,
