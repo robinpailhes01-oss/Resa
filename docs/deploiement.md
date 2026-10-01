@@ -160,7 +160,7 @@ Pour lancer le cycle à la main : `https://www.reso-app.fr/api/internal/billing`
 
 ## 11. Pages légales
 
-Mentions légales, CGV et confidentialité lisent la configuration : `RESO_LEGAL_ENTITY` (raison sociale et adresse ; par défaut SAS Harmonie Group, 61 rue du Rouet, 13008 Marseille), `RESO_LEGAL_ID` (SIREN), `RESO_VAT_NUMBER`, `RESO_PUBLICATION_DIRECTOR` (par défaut Robin Pailhes), `RESO_HOSTING_PROVIDER` (par défaut Vercel Inc.). Renseignez au minimum `RESO_LEGAL_ID`.
+Mentions légales, CGV et confidentialité lisent la configuration : `RESO_LEGAL_ENTITY` (raison sociale et adresse ; par défaut SAS Harmonie Group, 61 rue du Rouet, 13008 Marseille), `RESO_LEGAL_ID` (SIREN), `RESO_VAT_NUMBER`, `RESO_PUBLICATION_DIRECTOR` (par défaut Robin Pailhes), `RESO_HOSTING_PROVIDER` (par défaut Vercel Inc.). Renseignez au minimum `RESO_LEGAL_ID`, et pour une SAS `RESO_SHARE_CAPITAL` (« SAS au capital de … € »), `RESO_RCS` (« RCS Marseille … ») et `RESO_SUPPORT_PHONE`, affichés dans les mentions légales quand ils sont renseignés.
 
 ## 12. Prospection sortante (Planity et autres)
 
@@ -173,9 +173,13 @@ Chaque jour, la tâche quotidienne (`/api/internal/daily`, cron Vercel 8 h Paris
 
 Pas de scraping de Planity : les données viennent de Google et des sites des établissements eux-mêmes. Prospection B2B vers des adresses professionnelles publiques, avec opposition en un clic : c’est le cadre admis par la CNIL pour les professionnels.
 
-**Activation.** `PROSPECTION_ENABLED=1` sur Vercel (puis redeploy). Réglages facultatifs : `PROSPECTION_SEARCHES_PER_DAY` (3), `PROSPECTION_DAILY_LIMIT` (20), `PROSPECTION_FOLLOW_UP_DAYS` (5), `PROSPECTION_ENRICH_PER_RUN` (60). Avant d’activer, une simulation complète (recherche, analyse, aucun envoi) : `https://www.reso-app.fr/api/internal/prospection?dry=1` avec l’en-tête `Authorization: Bearer <INTERNAL_TASKS_SECRET>`.
+**Activation.** `PROSPECTION_ENABLED=1` sur Vercel (puis redeploy). Réglages facultatifs : `PROSPECTION_SEARCHES_PER_DAY` (3), `PROSPECTION_DAILY_LIMIT` (20), `PROSPECTION_FOLLOW_UP_DAYS` (5), `PROSPECTION_ENRICH_PER_RUN` (60). Avant d’activer, une simulation complète (recherche, analyse, aucun envoi) : `https://www.reso-app.fr/api/internal/prospection?dry=1` avec l’en-tête `Authorization: Bearer <INTERNAL_TASKS_SECRET>`. Un cycle réel lancé à la main exige `?run=1` : sans paramètre reconnu, la route ne fait rien.
+
+**Page de suivi.** `https://www.reso-app.fr/admin/prospection` : réservée aux comptes administrateurs connectés (adresse vérifiée ; par défaut le compte du fondateur, `RESO_ADMIN_EMAILS` pour changer la liste). Tout autre visiteur, même connecté, obtient une page introuvable. Boutons « A répondu », « Pas intéressé », « Annuler » et « Autoriser la relance des autres ».
 
 **Suivi.** Export tableur de tous les prospects (statut, email, téléphone, outil détecté) : `https://www.reso-app.fr/api/internal/prospection/export?token=<INTERNAL_TASKS_SECRET>` (à ouvrir dans un navigateur). Les établissements sans email mais avec téléphone y figurent : à appeler ou à contacter sur Instagram.
+
+**Relances.** Une relance ne part que si les réponses au premier email sont visibles par le site (adresse `PROSPECTION_REPLY_TO` reçue par Resend, MX en place). Sinon, les réponses arrivent dans la boîte de contact : les relances restent bloquées (signalé dans le récap Telegram). Pour les débloquer, marquez d’abord chaque personne qui a répondu (`?replied=adresse`, ou `?optout=adresse` pour un refus), puis `?allow_follow_ups=1` sur `/api/internal/prospection` (même en-tête).
 
 **Être prévenu des réponses (Telegram).** Les prospects répondent à l’adresse `Reply-To` des emails. Par défaut c’est `RESO_SUPPORT_EMAIL` : les réponses arrivent dans votre boîte habituelle, sans notification. Pour recevoir chaque réponse sur Telegram (avec l’extrait) et la voir transférée dans votre boîte :
 
@@ -188,3 +192,25 @@ Tant que le MX du sous-domaine n’est pas en place, le site le détecte et reme
 Une réponse qui décline (« non merci », « pas intéressé »…) est reconnue : le prospect passe « désinscrit » et n’est plus jamais contacté. Un refus reçu dans votre boîte de contact (avant le MX, ou par téléphone) se marque à la main : `https://www.reso-app.fr/api/internal/prospection?optout=adresse@exemple.fr` (même en-tête).
 
 **Réputation email.** Les emails partent de `EMAIL_FROM`. Pour protéger les emails de rendez-vous des clients, mieux vaut à terme un sous-domaine dédié (ex. `Robin de Reso <robin@hello.reso-app.fr>`) vérifié dans Resend : il suffira alors de changer `EMAIL_FROM`… ou de garder l’adresse actuelle tant que le volume reste à 20 par jour.
+
+## 13. Acomptes et paiements des clients (Mollie Connect)
+
+Chaque établissement relie **son propre compte Mollie** depuis son espace (menu **Paiements**) et choisit ce que ses clients règlent en réservant en ligne : rien, un acompte (pourcentage ou montant fixe) ou la totalité. L’argent va directement sur le compte Mollie de l’établissement ; Reso ne le détient jamais. Reso perçoit une commission sur chaque paiement encaissé (`MOLLIE_PLATFORM_FEE_PERCENT`, 2 % par défaut, 0 pour aucune ; entre 0 et 10), prélevée par Mollie comme « application fee » et versée sur le compte Mollie de Reso. Elle n’est pas restituée si le paiement est remboursé (règle Mollie), et aucun argent ne bouge en mode test.
+
+**Côté Mollie (une fois).** Mollie → Développeurs → Vos applications → créer une application OAuth. Adresse de retour (Redirect URL) : `https://www.reso-app.fr/api/mollie/callback` (ou la valeur de `MOLLIE_REDIRECT_URI`, qui doit être identique au caractère près).
+
+**Variables Vercel.** `MOLLIE_CLIENT_ID` (`app_…`), `MOLLIE_CLIENT_SECRET`, `MOLLIE_TOKEN_ENCRYPTION_KEY` (au moins 32 caractères aléatoires ; ne plus la changer ensuite), et pour tester `MOLLIE_CONNECT_TESTMODE=1` (paiements fictifs). Sans ces trois variables, la page Paiements affiche « Bientôt disponible » et rien ne change pour les réservations. Redeploy après ajout ; `/api/internal/status` affiche `mollieConnect`.
+
+**Parcours.** Le pro clique « Connecter mon compte Mollie », se connecte (ou crée son compte) chez Mollie et autorise Reso. Tant que Mollie n’a pas activé son compte (informations, IBAN, vérification), la page l’indique et aucune réservation ne demande de paiement. Une fois activé, le client qui réserve voit le montant dû, paie sur la page Mollie, et le rendez-vous est confirmé (emails envoyés) dès le paiement validé. Le créneau est retenu 45 minutes pendant le paiement ; paiement abandonné, échoué ou expiré : le créneau est libéré. Un paiement arrivé après la libération reprend le rendez-vous s’il est encore libre, sinon il est remboursé automatiquement.
+
+**Remboursements.** Automatiques quand l’établissement annule un rendez-vous ou quand le client annule en ligne dans le délai autorisé. Une absence (« client absent ») ne rembourse rien. Si Mollie refuse le remboursement (solde insuffisant), le paiement apparaît « À rembourser depuis Mollie » dans la page Paiements et une alerte est envoyée.
+
+**Sécurité.** Les jetons Mollie sont chiffrés en base (AES-256-GCM). Seul le propriétaire du compte Reso peut relier ou déconnecter le compte Mollie. La déconnexion révoque l’accès chez Mollie et coupe la demande de paiement.
+
+## 14. Page de réservation : photos et avis (menu « Ma page »)
+
+Chaque établissement modifie sa page publique depuis **Ma page** : présentation, photos, prestations et avis. Un encart du tableau de bord y mène.
+
+**Photos.** Envoyées depuis le téléphone ou l’ordinateur (12 au plus). Le navigateur les redimensionne (1 600 px) et les compresse en JPEG avant l’envoi ; elles sont stockées dans la base et servies par `/photos/<id>` avec un cache long. Le type réel du fichier est vérifié (JPEG, PNG ou WebP uniquement). La première photo sert de couverture.
+
+**Avis.** Uniquement des avis Google authentiques, importés tels quels (auteur, note, texte, date) : jamais de saisie manuelle. Import automatique quand la fiche Google est reliée (inscription ou Paramètres), puis bouton « Actualiser mes avis Google ». Google transmet au plus 5 avis par fiche. L’établissement peut masquer un avis ; le choix est conservé à chaque actualisation. La page publique affiche jusqu’à 6 avis avec texte, la note moyenne et un lien vers tous les avis Google. Chaque actualisation est un appel Place Details (champ `reviews`, facturé par Google au tarif « Enterprise + Atmosphere »), déclenché uniquement à la demande.

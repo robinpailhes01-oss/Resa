@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ArrowRight, CalendarDays, Plus } from "lucide-react";
+import Image from "next/image";
+import { ArrowRight, CalendarCheck, CalendarDays, Gauge, Plus, UserX, Wallet } from "lucide-react";
 import { BookingsChart } from "@/components/app/BookingsChart";
 import { OnboardingChecklist } from "@/components/app/OnboardingChecklist";
-import { Card, PageHeader } from "@/components/app/PageHeader";
+import { Card } from "@/components/app/PageHeader";
 import { DeltaBadge, StatTile } from "@/components/app/StatTile";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
@@ -23,6 +24,9 @@ import { listOpeningHours } from "@/server/app/hours";
 import { listPractitioners } from "@/server/app/practitioners";
 import { listServices } from "@/server/app/services";
 import { getDashboardStats } from "@/server/app/stats";
+import { listPhotos } from "@/server/app/photos";
+import { listReviews } from "@/server/app/reviews";
+import { pageEditor } from "@/content/fr/app";
 
 export const metadata: Metadata = { title: "Tableau de bord" };
 
@@ -54,14 +58,17 @@ export default async function DashboardPage({
   const today = todayDateKey(tz);
   const now = new Date();
 
-  const [stats, todayBookings, services, hours, practitioners] =
+  const [stats, todayBookings, services, hours, practitioners, photos, reviews] =
     await Promise.all([
       getDashboardStats(establishment.id, tz, periodKey, now),
       listBookingsForDay(establishment.id, today, tz),
       listServices(establishment.id),
       listOpeningHours(establishment.id, null),
       listPractitioners(establishment.id),
+      listPhotos(establishment.id),
+      listReviews(establishment.id),
     ]);
+  const shownReviews = reviews.filter((r) => !r.hidden).length;
   const c = stats.current;
   const activeToday = todayBookings.filter(
     (b) =>
@@ -102,28 +109,77 @@ export default async function DashboardPage({
 
   return (
     <div>
-      <PageHeader
-        title={`Bonjour ${user.fullName.split(" ")[0]}`}
-        intro={formatDateKeyLong(today)}
-        actions={
-          <div className="flex flex-wrap items-center gap-2">
-            <Button href="/app/agenda" variant="secondary" size="compact">
-              <CalendarDays className="size-4" /> Agenda du jour
-            </Button>
-            <Button href="/app/rendez-vous/nouveau" size="compact">
+      <section className="powder-panel grain relative isolate mb-8 overflow-hidden rounded-[22px] md:rounded-[28px]">
+        <Image
+          src="/brand/ciseaux.webp"
+          alt=""
+          width={974}
+          height={494}
+          sizes="520px"
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-0 right-0 -z-10 hidden h-full w-[52%] object-cover opacity-90 [mask-image:linear-gradient(to_right,transparent,#000_55%)] md:block"
+        />
+        <div className="relative px-6 py-8 md:px-10 md:py-11">
+          <p className="eyebrow !text-page/85">{formatDateKeyLong(today)}</p>
+          <h1 className="mt-3 text-[36px] leading-none tracking-[-0.04em] text-page md:text-[52px]">Bonjour {user.fullName.split(" ")[0]}</h1>
+          <p className="mt-4 max-w-md text-[15px] leading-6 text-page md:text-[16px]">
+            {activeToday.length === 0
+              ? "Aucun rendez-vous aujourd’hui."
+              : `${activeToday.length} rendez-vous aujourd’hui${todayRevenue > 0 ? `, pour ${formatPriceCents(todayRevenue)}` : ""}.`}
+          </p>
+          <div className="mt-6 flex flex-wrap items-center gap-2.5">
+            <Button href="/app/rendez-vous/nouveau" variant="inverse" size="compact">
               <Plus className="size-4" /> Nouveau rendez-vous
             </Button>
+            <Button href="/app/agenda" variant="ghost" size="compact" className="!text-page hover:!bg-page/10">
+              <CalendarDays className="size-4" /> Agenda du jour
+            </Button>
           </div>
-        }
-      />
+        </div>
+      </section>
       <OnboardingChecklist steps={steps} slug={establishment.slug} />
 
-      <Card className="mb-6">
+      <Card className="mb-8">
+        <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+          <div className="flex min-w-0 items-center gap-4">
+            <div aria-hidden="true" className="hidden shrink-0 grid-cols-2 gap-1 overflow-hidden rounded-2xl sm:grid">
+              {[0, 1, 2, 3].map((i) =>
+                photos[i] ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img key={i} src={photos[i].url} alt="" loading="lazy" className="size-12 object-cover" />
+                ) : (
+                  <span key={i} className="size-12 bg-soft-tint" />
+                ),
+              )}
+            </div>
+            <div className="min-w-0">
+              <h2 className="heading-3">{pageEditor.dashboard.title}</h2>
+              <p className="mt-1 text-[14px] text-ink-muted">{pageEditor.dashboard.text}</p>
+              <ul className="mt-3 flex flex-wrap gap-2 text-[12px] font-medium">
+                {[
+                  { label: pageEditor.dashboard.photos(photos.length), ok: photos.length > 0 },
+                  { label: pageEditor.dashboard.services(services.length), ok: services.length > 0 },
+                  { label: pageEditor.dashboard.reviews(shownReviews), ok: shownReviews > 0 },
+                  { label: pageEditor.dashboard.about(Boolean(establishment.description)), ok: Boolean(establishment.description) },
+                ].map((chip) => (
+                  <li key={chip.label} className={cn("rounded-full px-2.5 py-1", chip.ok ? "bg-success-tint text-success" : "bg-page text-ink-muted ring-1 ring-line")}>
+                    {chip.label}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <Button href="/app/ma-page" size="compact" className="shrink-0 self-start md:self-center">
+            {pageEditor.dashboard.edit} <ArrowRight aria-hidden="true" />
+          </Button>
+        </div>
+      </Card>
+
+      <Card className="mb-8">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <h2 className="text-[18px]">Aujourd’hui</h2>
-          <p className="text-[14px] text-ink-muted">
-            {activeToday.length} rendez-vous
-            {todayRevenue > 0 ? ` · ${formatPriceCents(todayRevenue)}` : ""}
+          <h2 className="heading-3">À venir aujourd’hui</h2>
+          <p className="index-tag">
+            [{String(activeToday.length).padStart(3, "0")}]
           </p>
         </div>
         {upcomingToday.length === 0 ? (
@@ -138,9 +194,9 @@ export default async function DashboardPage({
               <li key={b.id}>
                 <Link
                   href={`/app/rendez-vous/${b.id}`}
-                  className="flex items-center gap-4 py-2.5 text-[14px] hover:text-brand"
+                  className="flex items-center gap-4 py-3 text-[14px] transition-colors hover:text-brand"
                 >
-                  <span className="w-12 shrink-0 font-semibold tabular-nums text-ink">
+                  <span className="w-14 shrink-0 font-mono text-[15px] font-medium tabular-nums text-ink">
                     {formatTimeFr(b.startsAt, tz)}
                   </span>
                   <span className="min-w-0 flex-1 truncate">
@@ -176,14 +232,14 @@ export default async function DashboardPage({
         )}
       </Card>
 
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <h2 className="text-[18px]">
-          Activité{" "}
-          <span className="font-normal text-ink-muted">· {periodLabel}</span>
-        </h2>
+      <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <p className="eyebrow">Activité</p>
+          <h2 className="heading-3 mt-1">{periodLabel}</h2>
+        </div>
         <nav
           aria-label="Période"
-          className="flex gap-1 rounded-xl bg-card p-1 ring-1 ring-line"
+          className="flex max-w-full gap-1 overflow-x-auto rounded-full bg-card p-1 ring-1 ring-line"
         >
           {PERIODS.map((p) => (
             <Link
@@ -191,10 +247,10 @@ export default async function DashboardPage({
               href={p.key === "mois" ? "/app" : `/app?periode=${p.key}`}
               aria-current={p.key === periodKey ? "page" : undefined}
               className={cn(
-                "rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors",
+                "min-h-9 shrink-0 whitespace-nowrap rounded-full px-3.5 py-2 text-[13px] font-medium transition-colors sm:px-4",
                 p.key === periodKey
-                  ? "bg-brand text-white"
-                  : "text-ink-muted hover:text-brand",
+                  ? "bg-ink text-page"
+                  : "text-ink-muted hover:text-ink",
               )}
             >
               {p.label}
@@ -206,6 +262,7 @@ export default async function DashboardPage({
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatTile
           label="Rendez-vous"
+          icon={<CalendarCheck className="size-4" strokeWidth={1.8} />}
           value={c.bookings}
           hint={`${c.online} en ligne · ${c.manual} ajoutés à la main`}
           footer={
@@ -213,7 +270,8 @@ export default async function DashboardPage({
           }
         />
         <StatTile
-          label="Chiffre d’affaires réalisé"
+          label="Revenus"
+          icon={<Wallet className="size-4" strokeWidth={1.8} />}
           value={formatPriceCents(c.revenueDoneCents)}
           hint={
             c.revenueUpcomingCents > 0
@@ -227,7 +285,8 @@ export default async function DashboardPage({
           }
         />
         <StatTile
-          label="Taux de remplissage"
+          label="Remplissage"
+          icon={<Gauge className="size-4" strokeWidth={1.8} />}
           value={pct(stats.fillRate)}
           hint={
             stats.openMinutes > 0
@@ -236,13 +295,14 @@ export default async function DashboardPage({
           }
         />
         <StatTile
-          label="Annulations et absences"
+          label="Annulations"
+          icon={<UserX className="size-4" strokeWidth={1.8} />}
           value={c.cancelled + c.noShows}
           hint={`${c.cancelled} annulation${c.cancelled > 1 ? "s" : ""} · ${c.noShows} absence${c.noShows > 1 ? "s" : ""}`}
           footer={
-            <span className="text-[12px] text-ink-muted">
-              Taux de perte : {pct(c.lossRate)} · {stats.newClients} nouvelle
-              {stats.newClients > 1 ? "s" : ""} cliente
+            <span className="text-[12px] leading-5 text-ink-muted">
+              Taux de perte : {pct(c.lossRate)} · {stats.newClients} nouveau
+              {stats.newClients > 1 ? "x" : ""} client
               {stats.newClients > 1 ? "s" : ""}
             </span>
           }
@@ -251,8 +311,8 @@ export default async function DashboardPage({
 
       <Card className="mt-6">
         <div className="flex items-baseline justify-between gap-2">
-          <h2 className="text-[18px]">Rendez-vous par jour</h2>
-          <span className="text-[13px] text-ink-muted">
+          <h2 className="heading-3">Rendez-vous par jour</h2>
+          <span className="index-tag whitespace-nowrap">
             {c.bookings} sur la période
           </span>
         </div>
@@ -263,7 +323,7 @@ export default async function DashboardPage({
 
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <Card>
-          <h2 className="text-[18px]">Prestations les plus demandées</h2>
+          <h2 className="heading-3">Prestations les plus demandées</h2>
           {c.topServices.length === 0 ? (
             <p className="mt-3 text-[14px] text-ink-muted">
               Aucun rendez-vous sur la période.
@@ -287,7 +347,7 @@ export default async function DashboardPage({
                       aria-hidden="true"
                     >
                       <div
-                        className="h-full rounded-full bg-brand"
+                        className="h-full rounded-full bg-powder"
                         style={{
                           width: `${Math.max(2, Math.round(share * 100))}%`,
                         }}
@@ -300,7 +360,7 @@ export default async function DashboardPage({
           )}
         </Card>
         <Card>
-          <h2 className="text-[18px]">Par praticien</h2>
+          <h2 className="heading-3">Par praticien</h2>
           {stats.perPractitioner.length === 0 ? (
             <p className="mt-3 text-[14px] text-ink-muted">
               Aucun praticien actif.

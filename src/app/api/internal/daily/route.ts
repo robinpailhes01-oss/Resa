@@ -5,6 +5,7 @@ import { collectWeeklyStats } from "@/server/app/weekly-report";
 import { formatWeeklyReport } from "@/lib/weekly-report";
 import { ProspectionDisabledError, runProspection } from "@/server/prospection";
 import { notifyTelegram } from "@/server/telegram";
+import { releaseExpiredHolds } from "@/server/app/booking-payments";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -25,6 +26,13 @@ export async function GET(request: Request) {
   } catch (error) {
     console.error("[daily] facturation", error instanceof Error ? error.message : error);
     out.billing = "erreur";
+  }
+
+  try {
+    out.releasedHolds = await releaseExpiredHolds(now);
+  } catch (error) {
+    console.error("[daily] créneaux retenus", error instanceof Error ? error.message : error);
+    out.releasedHolds = "erreur";
   }
 
   const parisWeekday = new Intl.DateTimeFormat("en-US", { weekday: "short", timeZone: "Europe/Paris" }).format(now);

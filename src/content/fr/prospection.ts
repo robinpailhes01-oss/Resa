@@ -47,8 +47,49 @@ export const prospectionContent = {
     "Un « non merci » et je ne reviens pas vers vous.",
     `${i.senderName}\n${i.brandName}`,
   ],
+  /** Campagnes ponctuelles : texte validé tel quel par l'équipe. */
+  campaigns: {
+    "herault-shooting": {
+      fromName: "Ludivine & Robin · Reso",
+      subject: (name: string) => `Un shooting photo offert pour ${name} 📸`,
+      paragraphs: (siteUrl: string): string[] => [
+        "Bonjour ! C’est Ludivine et Robin 👋 Avec mon équipe, on a créé Reso ici à Montpellier pour aider les salons à gérer leurs rendez-vous plus simplement.",
+        "Pour faire découvrir l’appli aux salons du coin, on offre un shooting photo de votre salon pour toute inscription 📸 Et vous pouvez la tester une semaine gratuitement, sans carte bancaire.",
+        `Je vous laisse le lien pour jeter un œil : ${siteUrl}`,
+      ],
+    },
+  } as Record<string, { fromName: string; subject: (name: string) => string; paragraphs: (siteUrl: string) => string[] }>,
   /** Pas de pied de page : un « non » en réponse suffit, il est reconnu et respecté (plus aucun contact). */
   footer: (_i: ProspectionEmailInput): string => "",
+  admin: {
+    title: "Suivi de la prospection",
+    intro: "Cochez les salons qui vous ont répondu : ils ne seront jamais relancés. Les autres peuvent être relancés une fois les réponses vérifiées.",
+    awaiting: "En attente de réponse",
+    replied: "Ont répondu",
+    declined: "Pas intéressés",
+    signedUp: "Inscrits",
+    followedUp: "Relancés",
+    empty: "Aucun salon dans cette catégorie.",
+    markReplied: "A répondu",
+    markDeclined: "Pas intéressé",
+    undo: "Annuler",
+    firstEmail: "Email le",
+    followUpOn: "Relancé le",
+    followUpBlocked: "Relance en attente de votre feu vert",
+    followUpScheduled: "Relance prévue",
+    allowTitle: "Relancer ceux qui n’ont pas répondu",
+    allowHelp: (n: number) =>
+      n > 0
+        ? `${n} salon${n > 1 ? "s" : ""} en attente. Vérifiez d’abord votre boîte contact@ et marquez ceux qui ont répondu. La relance part ensuite au prochain envoi du matin, 5 jours après le premier email, jours ouvrés seulement.`
+        : "Aucune relance en attente de votre feu vert.",
+    allowButton: "Autoriser la relance des autres",
+    done: {
+      replied: "Marqué « a répondu » : aucune relance.",
+      declined: "Marqué « pas intéressé » : plus aucun contact.",
+      undo: "Annulé : le salon est de nouveau en attente.",
+      allow: "Relance autorisée pour les salons restés sans réponse.",
+    } as Record<string, string>,
+  },
   unsubscribePage: {
     title: "Ne plus recevoir d’emails",
     intro: "Confirmez pour que nous ne vous écrivions plus. Aucune autre information ne vous sera demandée.",

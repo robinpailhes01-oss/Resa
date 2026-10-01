@@ -1,5 +1,5 @@
 import { FaqAccordion } from "@/components/ui/faq-chat-accordion";
-import { Section } from "@/components/ui/Section";
+import { Section, SectionKicker } from "@/components/ui/Section";
 import { byMode, faq } from "@/content/fr/landing";
 
 export function Faq() {
@@ -8,7 +8,7 @@ export function Faq() {
     <Section id="faq" labelledBy="faq-title" className="!pt-4 md:!pt-8">
       <div className="mx-auto max-w-2xl">
         <div className="reveal reveal-blur mb-8 flex flex-col items-center gap-3 text-center md:mb-10">
-          <p className="eyebrow">{faq.label}</p>
+          <SectionKicker index={faq.index} eyebrow={faq.label} />
           <h2 id="faq-title" className="heading-2">
             {faq.title}
           </h2>

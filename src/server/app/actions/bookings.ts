@@ -10,6 +10,7 @@ import { isValidEmail, normalizeEmail } from "@/server/waitlist/email-normalize"
 import { hhmmToMinutes, isDateKey, zonedToUtc } from "@/lib/time";
 import { SlotUnavailableError, createBooking, updateBookingNotes, updateBookingStatus, type BookingStatus } from "../bookings";
 import { updateClient } from "../clients";
+import { refundBookingPayment } from "../booking-payments";
 import { processEmailJobs } from "../notifications";
 import { getPractitioner } from "../practitioners";
 import { getService } from "../services";
@@ -96,7 +97,11 @@ export async function setBookingStatusAction(id: string, status: BookingStatus):
   const { establishment } = await requireEstablishment();
   if (!statuses.includes(status)) return;
   await updateBookingStatus(establishment.id, id, status);
-  if (status === "cancelled") processEmailsSoon();
+  if (status === "cancelled") {
+    // Annulation par l'établissement : l'acompte ou le paiement en ligne est remboursé.
+    await refundBookingPayment(establishment.id, id, `Annulation par ${establishment.name}`).catch(() => "failed");
+    processEmailsSoon();
+  }
   revalidatePath("/app/agenda");
   revalidatePath(`/app/rendez-vous/${id}`);
 }

@@ -19,9 +19,13 @@ export default async function EquipePage() {
     <div className="mx-auto max-w-4xl">
       <PageHeader
         title="Équipe"
-        intro={`${active} praticien${active > 1 ? "s" : ""} actif${active > 1 ? "s" : ""} sur ${PRACTITIONER_LIMIT} inclus dans votre offre.`}
+        intro={
+          PRACTITIONER_LIMIT === null
+            ? `${active} praticien${active > 1 ? "s" : ""} actif${active > 1 ? "s" : ""}. Agendas illimités : ajoutez toute votre équipe, au même prix.`
+            : `${active} praticien${active > 1 ? "s" : ""} actif${active > 1 ? "s" : ""} sur ${PRACTITIONER_LIMIT} inclus dans votre offre.`
+        }
         actions={
-          active < PRACTITIONER_LIMIT ? (
+          PRACTITIONER_LIMIT === null || active < PRACTITIONER_LIMIT ? (
             <Button href="/app/equipe/nouveau" size="compact">
               <Plus aria-hidden="true" /> Ajouter un praticien
             </Button>

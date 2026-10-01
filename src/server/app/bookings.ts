@@ -6,6 +6,7 @@ import { computeSlots, type BusyInterval, type Slot } from "./availability";
 import { upsertClient, type ClientInput } from "./clients";
 import { effectiveRanges } from "./hours";
 import { onBookingCancelled, scheduleBookingEmails } from "./notifications";
+import { releaseExpiredHolds } from "./booking-payments";
 import { weekdayOfDateKey } from "@/lib/time";
 
 export type BookingStatus = "pending" | "confirmed" | "completed" | "cancelled" | "no_show";
@@ -149,6 +150,8 @@ export async function availableSlots(params: {
   now?: Date;
 }): Promise<Slot[]> {
   const sql = getSql();
+  // Créneaux retenus pour un paiement jamais finalisé : rendus disponibles.
+  await releaseExpiredHolds(params.now);
   const weekday = weekdayOfDateKey(params.dateKey);
   const ranges = (await effectiveRanges(params.establishmentId, params.practitionerId)).filter((r) => r.weekday === weekday);
   if (ranges.length === 0) return [];
@@ -200,6 +203,8 @@ export interface CreateBookingInput {
   notes?: string | null;
   clientNotes?: string | null;
   client: ClientInput | null;
+  /** Paiement en ligne exigé : créneau retenu jusqu'à cette date, emails envoyés au paiement. */
+  paymentHoldUntil?: Date | null;
 }
 
 /**
@@ -217,17 +222,17 @@ export async function createBooking(input: CreateBookingInput): Promise<{ bookin
     try {
       rows = await tx<Array<{ id: string }>>`
         insert into bookings (establishment_id, practitioner_id, service_id, client_id, service_name, duration_min, buffer_min, price_cents,
-          starts_at, ends_at, status, source, notes, client_notes, manage_token_hash)
+          starts_at, ends_at, status, source, notes, client_notes, manage_token_hash, payment_hold_until)
         values (${input.establishmentId}, ${input.practitionerId}, ${input.serviceId}, ${client?.id ?? null}, ${input.serviceName}, ${input.durationMin},
-          ${input.bufferMin}, ${input.priceCents}, ${input.startsAt}, ${endsAt}, ${input.status ?? "confirmed"}, ${input.source},
-          ${input.notes ?? null}, ${input.clientNotes ?? null}, ${hashToken(raw)})
+          ${input.bufferMin}, ${input.priceCents}, ${input.startsAt}, ${endsAt}, ${input.paymentHoldUntil ? "pending" : (input.status ?? "confirmed")}, ${input.source},
+          ${input.notes ?? null}, ${input.clientNotes ?? null}, ${hashToken(raw)}, ${input.paymentHoldUntil ?? null})
         returning id`;
     } catch (error) {
       if ((error as { code?: string }).code === "23P01") throw new SlotUnavailableError();
       throw error;
     }
     const id = rows[0].id;
-    await scheduleBookingEmails(tx, {
+    if (!input.paymentHoldUntil) await scheduleBookingEmails(tx, {
       establishmentId: input.establishmentId,
       bookingId: id,
       startsAt: input.startsAt,
@@ -245,7 +250,7 @@ export async function updateBookingStatus(establishmentId: string, id: string, s
   const sql = getSql();
   await sql.begin(async (tx) => {
     const rows = await tx<Array<{ client_email: string | null }>>`
-      update bookings b set status = ${status},
+      update bookings b set status = ${status}, payment_hold_until = null,
         cancelled_at = case when ${status} = 'cancelled' then now() else null end,
         cancelled_by = case when ${status} = 'cancelled' then 'pro' else null end
       from (select b2.id, c.email as client_email from bookings b2 left join clients c on c.id = b2.client_id where b2.id = ${id} and b2.establishment_id = ${establishmentId}) src
@@ -276,7 +281,7 @@ export async function cancelBookingByClient(raw: string, cancellationHours: numb
   if (booking.startsAt.getTime() - now.getTime() < cancellationHours * 3600_000) return "too_late";
   const sql = getSql();
   await sql.begin(async (tx) => {
-    await tx`update bookings set status = 'cancelled', cancelled_at = now(), cancelled_by = 'client' where id = ${booking.id}`;
+    await tx`update bookings set status = 'cancelled', cancelled_at = now(), cancelled_by = 'client', payment_hold_until = null where id = ${booking.id}`;
     await onBookingCancelled(tx, { establishmentId: booking.establishmentId, bookingId: booking.id, hasClientEmail: Boolean(booking.client?.email), cancelledBy: "client" });
   });
   return "cancelled";

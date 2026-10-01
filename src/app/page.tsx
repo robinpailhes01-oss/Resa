@@ -6,7 +6,10 @@ import { Header } from "@/components/landing/Header";
 import { Hero } from "@/components/landing/Hero";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import { Pricing } from "@/components/landing/Pricing";
+import { ProductShowcase } from "@/components/landing/ProductShowcase";
 import { Testimonials } from "@/components/landing/Testimonials";
+import { TwoSides } from "@/components/landing/TwoSides";
+import { SetupCall } from "@/components/landing/SetupCall";
 import { RevealObserver } from "@/components/landing/Reveal";
 import { offer } from "@/config/offer";
 import { formatMonthlyPriceExVatCompact } from "@/lib/format";
@@ -44,13 +47,16 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
       <Header />
       <main id="contenu" className="flex-1">
         <Hero />
+        <ProductShowcase />
         <Features />
+        <TwoSides />
         <HowItWorks />
+        <SetupCall />
         <Pricing />
         <Testimonials />
         <Faq />
       </main>
-      <Footer />
+      <Footer closing />
       <RevealObserver />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
     </>

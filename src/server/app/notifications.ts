@@ -167,6 +167,8 @@ type JobContext = {
     endsAt: Date;
     durationMin: number;
     priceCents: number;
+    /** Montant déjà réglé en ligne (acompte ou totalité), 0 sinon. */
+    paidCents?: number;
     status: string;
     manageUrl: string | null;
   };
@@ -191,22 +193,22 @@ function esc(v: string): string {
 
 function shell(title: string, salon: string, rows: string[]): string {
   return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${esc(title)}</title></head>
-<body style="margin:0;padding:0;background:#faf7f2;font-family:Manrope,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:#27242a;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#faf7f2;"><tr><td align="center" style="padding:32px 16px;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#ffffff;border-radius:16px;">
-<tr><td style="padding:28px 28px 4px 28px;font-size:20px;font-weight:700;color:#493344;">${esc(salon)}</td></tr>
+<body style="margin:0;padding:0;background:#fbf6ea;font-family:Manrope,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:#1f2733;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#fbf6ea;"><tr><td align="center" style="padding:32px 16px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#fffdf8;border-radius:16px;">
+<tr><td style="padding:28px 28px 4px 28px;font-size:20px;font-weight:700;color:#4a6179;">${esc(salon)}</td></tr>
 ${rows.join("")}
-<tr><td style="padding:20px 28px 28px 28px;font-size:12px;line-height:18px;color:#655b66;border-top:1px solid #eee;">Email envoyé par ${esc(offer.brandName)} pour ${esc(salon)}.</td></tr>
+<tr><td style="padding:20px 28px 28px 28px;font-size:12px;line-height:18px;color:#5f6672;border-top:1px solid #eee;">Email envoyé par ${esc(offer.brandName)} pour ${esc(salon)}.</td></tr>
 </table></td></tr></table></body></html>`;
 }
 const p = (t: string) =>
   `<tr><td style="padding:12px 28px 0 28px;font-size:16px;line-height:25px;">${t}</td></tr>`;
 const detail = (label: string, value: string) =>
-  `<tr><td style="padding:6px 28px 0 28px;font-size:15px;line-height:22px;"><span style="color:#655b66;">${esc(label)} :</span> <strong>${esc(value)}</strong></td></tr>`;
+  `<tr><td style="padding:6px 28px 0 28px;font-size:15px;line-height:22px;"><span style="color:#5f6672;">${esc(label)} :</span> <strong>${esc(value)}</strong></td></tr>`;
 const note = (html: string) =>
-  `<tr><td style="padding:16px 28px 0 28px;"><div style="background:#faf7f2;border-radius:12px;padding:12px 16px;font-size:13px;line-height:20px;color:#655b66;">${html}</div></td></tr>`;
+  `<tr><td style="padding:16px 28px 0 28px;"><div style="background:#fbf6ea;border-radius:12px;padding:12px 16px;font-size:13px;line-height:20px;color:#5f6672;">${html}</div></td></tr>`;
 const button = (href: string, label: string) =>
-  `<tr><td style="padding:22px 28px 8px 28px;"><a href="${esc(href)}" style="display:inline-block;background:#493344;color:#ffffff;text-decoration:none;font-weight:600;font-size:16px;line-height:24px;padding:12px 24px;border-radius:12px;">${esc(label)}</a></td></tr>`;
+  `<tr><td style="padding:22px 28px 8px 28px;"><a href="${esc(href)}" style="display:inline-block;background:#4a6179;color:#fffdf8;text-decoration:none;font-weight:600;font-size:16px;line-height:24px;padding:12px 24px;border-radius:12px;">${esc(label)}</a></td></tr>`;
 
 function addressLine(e: JobContext["establishment"]): string | null {
   const parts = [
@@ -226,6 +228,7 @@ export function renderJobEmail(ctx: JobContext): EmailMessage | null {
     settings,
   } = ctx;
   const when = formatDateTimeFr(b.startsAt, e.timezone);
+  const paid = b.paidCents ?? 0;
   const firstName = client?.firstName ?? "";
   const details = [
     detail("Prestation", b.serviceName),
@@ -235,6 +238,8 @@ export function renderJobEmail(ctx: JobContext): EmailMessage | null {
     ...(b.priceCents > 0
       ? [detail("Prix", formatPriceCents(b.priceCents))]
       : []),
+    ...(paid > 0 ? [detail("Réglé en ligne", formatPriceCents(paid))] : []),
+    ...(paid > 0 && b.priceCents > paid ? [detail("Reste sur place", formatPriceCents(b.priceCents - paid))] : []),
     ...(addressLine(e) ? [detail("Adresse", addressLine(e)!)] : []),
   ];
   const textDetails = [
@@ -243,6 +248,8 @@ export function renderJobEmail(ctx: JobContext): EmailMessage | null {
     `Durée : ${formatDuration(b.durationMin)}`,
     `Avec : ${practitionerName}`,
     ...(b.priceCents > 0 ? [`Prix : ${formatPriceCents(b.priceCents)}`] : []),
+    ...(paid > 0 ? [`Réglé en ligne : ${formatPriceCents(paid)}`] : []),
+    ...(paid > 0 && b.priceCents > paid ? [`Reste sur place : ${formatPriceCents(b.priceCents - paid)}`] : []),
     ...(addressLine(e) ? [`Adresse : ${addressLine(e)}`] : []),
   ].join("\n");
   const replyTo = e.publicEmail ?? undefined;
@@ -414,6 +421,7 @@ type JobRow = {
   b_ends_at: Date | null;
   b_duration_min: number | null;
   b_price_cents: number | null;
+  b_paid_cents: number | string | null;
   b_status: string | null;
   b_manage_token_hash: string | null;
   manage_token: string | null;
@@ -454,7 +462,8 @@ export async function processEmailJobs(
       e.postal_code as e_postal_code, e.city as e_city, e.timezone as e_timezone, e.booking_terms as e_booking_terms, e.google_place_id as e_google_place_id,
       u.email as owner_email,
       b.service_name as b_service_name, b.starts_at as b_starts_at, b.ends_at as b_ends_at, b.duration_min as b_duration_min,
-      b.price_cents as b_price_cents, b.status as b_status, b.manage_token_hash as b_manage_token_hash,
+      b.price_cents as b_price_cents, b.status as b_status,
+      (select coalesce(sum(bp.amount_cents), 0) from booking_payments bp where bp.booking_id = b.id and bp.status = 'paid') as b_paid_cents, b.manage_token_hash as b_manage_token_hash,
       pr.name as p_name, c.first_name as c_first_name, c.last_name as c_last_name, c.email as c_email, c.phone as c_phone
     from claimed j
     join establishments e on e.id = j.establishment_id
@@ -502,6 +511,7 @@ export async function processEmailJobs(
           endsAt: job.b_ends_at ?? job.b_starts_at,
           durationMin: job.b_duration_min ?? 0,
           priceCents: job.b_price_cents ?? 0,
+          paidCents: Number(job.b_paid_cents ?? 0),
           status: job.b_status ?? "confirmed",
           manageUrl,
         },

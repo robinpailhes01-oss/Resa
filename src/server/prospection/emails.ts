@@ -7,7 +7,7 @@ import { formatEuros } from "@/lib/billing";
 import type { EmailMessage } from "@/server/email/types";
 
 const esc = (v: string) => v.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c] ?? c);
-const linkify = (text: string) => esc(text).replace(/https?:\/\/[^\s)]+/g, (url) => `<a href="${url}" style="color:#6c4ff8">${url}</a>`);
+const linkify = (text: string) => esc(text).replace(/https?:\/\/[^\s)]+/g, (url) => `<a href="${url}" style="color:#4a6179">${url}</a>`);
 
 export interface ProspectForEmail {
   name: string;
@@ -38,9 +38,9 @@ function build(to: string, subject: string, paragraphs: string[], input: Prospec
   const footer = prospectionContent.footer(input);
   const text = [...paragraphs, ...(footer ? ["", footer] : [])].join("\n\n").replace(/\n\n\n/g, "\n\n");
   // Style volontairement sobre (email écrit à la main) : pas de bandeau, pas de bouton, pas d'image.
-  const html = `<!doctype html><html lang="fr"><body style="margin:0;padding:24px 16px;background:#ffffff;font-family:Inter,Arial,sans-serif;color:#111116;font-size:15px;line-height:24px"><div style="max-width:560px;margin:0 auto">${paragraphs
+  const html = `<!doctype html><html lang="fr"><body style="margin:0;padding:24px 16px;background:#fffdf8;font-family:Inter,Arial,sans-serif;color:#1f2733;font-size:15px;line-height:24px"><div style="max-width:560px;margin:0 auto">${paragraphs
     .map((p) => `<p style="margin:0 0 16px">${linkify(p).replace(/\n/g, "<br>")}</p>`)
-    .join("")}${footer ? `<p style="margin:28px 0 0;font-size:12px;line-height:18px;color:#6f707c">${linkify(footer)}</p>` : ""}</div></body></html>`;
+    .join("")}${footer ? `<p style="margin:28px 0 0;font-size:12px;line-height:18px;color:#5f6672">${linkify(footer)}</p>` : ""}</div></body></html>`;
   return { to, subject, text, html, fromName: prospectionContent.fromName, replyTo };
 }
 
@@ -56,4 +56,16 @@ export function prospectionFirstEmail(p: ProspectForEmail, replyTo: string | und
 export function prospectionFollowUpEmail(p: ProspectForEmail, replyTo: string | undefined = offer.supportEmail ?? undefined): EmailMessage {
   const input = prospectionEmailInput(p);
   return build(p.email, prospectionContent.subjects.followUp(input.establishmentName, p.bookingProvider && p.bookingProvider !== "autre" ? input.providerLabel : null), prospectionContent.followUp(input), input, replyTo);
+}
+
+/** Premier email d'une campagne ponctuelle (texte fixe, nom du salon dans l'objet). */
+export function prospectionCampaignEmail(campaign: string, p: Pick<ProspectForEmail, "name" | "email">, replyTo: string | undefined = offer.supportEmail ?? undefined): EmailMessage {
+  const content = prospectionContent.campaigns[campaign];
+  if (!content) throw new Error(`Campagne inconnue : ${campaign}`);
+  const paragraphs = content.paragraphs(offer.siteUrl.replace(/\/$/, ""));
+  const text = paragraphs.join("\n\n");
+  const html = `<!doctype html><html lang="fr"><body style="margin:0;padding:24px 16px;background:#fffdf8;font-family:Inter,Arial,sans-serif;color:#1f2733;font-size:15px;line-height:24px"><div style="max-width:560px;margin:0 auto">${paragraphs
+    .map((para) => `<p style="margin:0 0 16px">${linkify(para)}</p>`)
+    .join("")}</div></body></html>`;
+  return { to: p.email, subject: content.subject(shortEstablishmentName(p.name)), text, html, fromName: content.fromName, replyTo };
 }

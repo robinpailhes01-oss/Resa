@@ -16,7 +16,8 @@ export interface OfferConfig {
   launchMode: LaunchMode;
   monthlyPriceExVat: number;
   currency: "EUR";
-  practitionerLimit: number;
+  /** Praticiens (agendas) inclus ; null = illimité, même prix quel que soit leur nombre. */
+  practitionerLimit: number | null;
   /** Durée de l'essai gratuit en jours (7 par défaut ; RESO_TRIAL_DAYS=0 la désactive). */
   trialDays: number | null;
   /** URL réelle de création de compte. `null` tant qu'elle n'est pas validée. */
@@ -29,6 +30,12 @@ export interface OfferConfig {
   legalEntity: string | null;
   /** Numéro SIREN ou SIRET de l'éditeur. */
   legalId: string | null;
+  /** Forme et capital (« SAS au capital de 1 000 € »), pour les mentions légales. */
+  shareCapital: string | null;
+  /** Immatriculation (« RCS Marseille 991 738 733 »). */
+  rcs: string | null;
+  /** Téléphone de contact (mentions légales). */
+  supportPhone: string | null;
   /** Numéro de TVA intracommunautaire, ou null en franchise de TVA. */
   vatNumber: string | null;
   /** Taux de TVA appliqué à l'abonnement (20 par défaut ; 0 en franchise). */
@@ -41,6 +48,22 @@ export interface OfferConfig {
   privacyVersion: string;
   /** Origine publique du site (canonical, liens absolus des emails). */
   siteUrl: string;
+  /**
+   * Commission Reso (en %) sur les paiements en ligne des clients des
+   * établissements (acomptes, Mollie Connect), en plus des frais Mollie.
+   */
+  platformFeePercent: number;
+  /** Réseaux sociaux de Reso (pied de page) ; un lien absent n'affiche pas son icône. */
+  social: SocialLinks;
+  /** Numéro WhatsApp des démos en visio (format international, chiffres seuls : 33612345678). */
+  demoWhatsapp: string | null;
+}
+
+export interface SocialLinks {
+  instagram: string | null;
+  tiktok: string | null;
+  facebook: string | null;
+  linkedin: string | null;
 }
 
 function readOptional(value: string | undefined): string | null {
@@ -98,6 +121,41 @@ function readVatRate(value: string | undefined): number {
   return parsed;
 }
 
+function readSocialUrl(value: string | undefined, name: string): string | null {
+  const raw = readOptional(value);
+  if (!raw) return null;
+  const url = raw.startsWith("http") ? raw : `https://${raw}`;
+  try {
+    if (new URL(url).protocol === "https:") return url;
+  } catch {
+    /* signalé ci-dessous */
+  }
+  throw new Error(`${name} doit être une adresse https (reçu : "${raw}").`);
+}
+
+/** Vide, 0 ou « illimite » : agendas illimités. Sinon, nombre maximum de praticiens actifs. */
+function readPractitionerLimit(value: string | undefined): number | null {
+  const raw = (value ?? "").trim().toLowerCase();
+  if (!raw || raw === "0" || raw.startsWith("illimit") || raw === "unlimited") return null;
+  return readInt(raw, null);
+}
+
+function readWhatsapp(value: string | undefined): string | null {
+  const digits = (value ?? "").replace(/[^0-9]/g, "");
+  if (!digits) return null;
+  // 06… saisi à la française : converti au format international.
+  const international = digits.startsWith("0") && digits.length === 10 ? `33${digits.slice(1)}` : digits;
+  if (international.length < 10 || international.length > 15) throw new Error(`RESO_DEMO_WHATSAPP invalide : "${value}".`);
+  return international;
+}
+
+function readFeePercent(value: string | undefined): number {
+  if (!value || !value.trim()) return 2;
+  const parsed = Number(value.replace(",", ".").replace("%", "").trim());
+  if (!Number.isFinite(parsed) || parsed < 0 || parsed > 10) throw new Error(`MOLLIE_PLATFORM_FEE_PERCENT invalide : "${value}" (attendu entre 0 et 10).`);
+  return parsed;
+}
+
 function readInt(value: string | undefined, fallback: number | null, { allowZero = false } = {}): number | null {
   if (!value || !value.trim()) return fallback;
   const parsed = Number.parseInt(value, 10);
@@ -115,19 +173,30 @@ function buildConfig(env: Env): OfferConfig {
     launchMode: readLaunchMode(env.RESO_LAUNCH_MODE),
     monthlyPriceExVat: readPrice(env.RESO_MONTHLY_PRICE_EX_VAT, 39),
     currency: "EUR",
-    practitionerLimit: readInt(env.RESO_PRACTITIONER_LIMIT, 3) ?? 3,
+    practitionerLimit: readPractitionerLimit(env.RESO_PRACTITIONER_LIMIT),
     trialDays: readInt(env.RESO_TRIAL_DAYS, 7, { allowZero: true }),
     signupUrl: readHttpsUrl(env.RESO_SIGNUP_URL, "RESO_SIGNUP_URL"),
     loginUrl: readHttpsUrl(env.RESO_LOGIN_URL, "RESO_LOGIN_URL"),
     supportEmail: readEmail(env.RESO_SUPPORT_EMAIL, "RESO_SUPPORT_EMAIL"),
     legalEntity: readOptional(env.RESO_LEGAL_ENTITY) ?? "SAS Harmonie Group, 61 rue du Rouet, 13008 Marseille, France",
     legalId: readOptional(env.RESO_LEGAL_ID),
+    shareCapital: readOptional(env.RESO_SHARE_CAPITAL),
+    rcs: readOptional(env.RESO_RCS),
+    supportPhone: readOptional(env.RESO_SUPPORT_PHONE),
     vatNumber: readOptional(env.RESO_VAT_NUMBER),
     vatRate: readVatRate(env.RESO_VAT_RATE),
     publicationDirector: readOptional(env.RESO_PUBLICATION_DIRECTOR) ?? "Robin Pailhes",
     hostingProvider: readOptional(env.RESO_HOSTING_PROVIDER) ?? "Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis",
     privacyVersion: readOptional(env.RESO_PRIVACY_VERSION) ?? "2026-09-18",
     siteUrl: readOptional(env.RESO_SITE_URL) ?? "http://localhost:3000",
+    platformFeePercent: readFeePercent(env.MOLLIE_PLATFORM_FEE_PERCENT),
+    demoWhatsapp: readWhatsapp(env.RESO_DEMO_WHATSAPP),
+    social: {
+      instagram: readSocialUrl(env.RESO_INSTAGRAM_URL, "RESO_INSTAGRAM_URL"),
+      tiktok: readSocialUrl(env.RESO_TIKTOK_URL, "RESO_TIKTOK_URL"),
+      facebook: readSocialUrl(env.RESO_FACEBOOK_URL, "RESO_FACEBOOK_URL"),
+      linkedin: readSocialUrl(env.RESO_LINKEDIN_URL, "RESO_LINKEDIN_URL"),
+    },
   };
 
   // L'application est intégrée au site : en mode live, l'inscription et la
@@ -170,12 +239,21 @@ const runtimeEnv: Env = {
   RESO_SUPPORT_EMAIL: process.env.RESO_SUPPORT_EMAIL,
   RESO_LEGAL_ENTITY: process.env.RESO_LEGAL_ENTITY,
   RESO_LEGAL_ID: process.env.RESO_LEGAL_ID,
+  RESO_SHARE_CAPITAL: process.env.RESO_SHARE_CAPITAL,
+  RESO_RCS: process.env.RESO_RCS,
+  RESO_SUPPORT_PHONE: process.env.RESO_SUPPORT_PHONE,
   RESO_VAT_NUMBER: process.env.RESO_VAT_NUMBER,
   RESO_VAT_RATE: process.env.RESO_VAT_RATE,
   RESO_PUBLICATION_DIRECTOR: process.env.RESO_PUBLICATION_DIRECTOR,
   RESO_HOSTING_PROVIDER: process.env.RESO_HOSTING_PROVIDER,
   RESO_PRIVACY_VERSION: process.env.RESO_PRIVACY_VERSION,
   RESO_SITE_URL: process.env.RESO_SITE_URL,
+  MOLLIE_PLATFORM_FEE_PERCENT: process.env.MOLLIE_PLATFORM_FEE_PERCENT,
+  RESO_DEMO_WHATSAPP: process.env.RESO_DEMO_WHATSAPP,
+  RESO_INSTAGRAM_URL: process.env.RESO_INSTAGRAM_URL,
+  RESO_TIKTOK_URL: process.env.RESO_TIKTOK_URL,
+  RESO_FACEBOOK_URL: process.env.RESO_FACEBOOK_URL,
+  RESO_LINKEDIN_URL: process.env.RESO_LINKEDIN_URL,
 };
 
 export const offer: OfferConfig = buildConfig(runtimeEnv);
@@ -185,3 +263,14 @@ export const isLive = offer.launchMode === "live";
 
 /** Exposé pour les tests : reconstruit une configuration à partir d'un environnement. */
 export const __internal = { buildConfig };
+
+/**
+ * Encaissement à la réservation via le compte Mollie de l'établissement :
+ * montant minimum accepté par Mollie (1 €) et durée pendant laquelle le
+ * créneau reste retenu en attendant le paiement.
+ */
+export const bookingPaymentRules = {
+  minOnlineCents: 100,
+  holdMinutes: 45,
+  maxFixedDepositCents: 100_000,
+} as const;

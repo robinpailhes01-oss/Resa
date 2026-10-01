@@ -41,7 +41,6 @@ Sans `DATABASE_URL`, seule la landing fonctionne : les demandes vont dans `.data
 | `node scripts/recette-landing.mjs` | Recette fonctionnelle de la landing : navigation, menu mobile, CTA, préinscription avec et sans JavaScript, mouvement réduit |
 | `node scripts/recette-parcours.mjs` | Parcours complet d'un établissement en mode live : landing → inscription → vérification d'email → onboarding → réservation cliente → mot de passe oublié → reconnexion (serveur lancé avec `RESO_LAUNCH_MODE=live`) |
 | `node scripts/recette-app.mjs` | Recette de bout en bout de l'application avec Playwright (compte → établissement → réservation publique → annulation) |
-| `node scripts/og-image.mjs` | Régénère `src/app/opengraph-image.png` |
 
 ## Organisation du code
 
@@ -136,3 +135,5 @@ Domaine et marque vérifiés · identité légale, hébergeur et contact · prix
 ## Prospection sortante
 
 Recherche quotidienne d’établissements (Google Places), détection de l’outil de réservation (Planity…), email B2B avec désinscription en un clic, relance unique, récap Telegram. Détails et activation : `docs/deploiement.md`, partie 12.
+
+L’image de partage (`src/app/opengraph-image.jpg`) et les visuels du site (`public/brand/`) proviennent des visuels de marque Instagram.

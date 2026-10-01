@@ -29,6 +29,7 @@ export function formatMonthlyPriceExVatCompact(amount: number, currency: "EUR" =
 }
 
 /** Formate le nombre de praticiens : « jusqu'à 3 praticiens ». */
-export function formatPractitioners(limit: number): string {
+export function formatPractitioners(limit: number | null): string {
+  if (limit === null) return "agendas illimités";
   return `jusqu’à ${limit}${NBSP}praticien${limit > 1 ? "s" : ""}`;
 }

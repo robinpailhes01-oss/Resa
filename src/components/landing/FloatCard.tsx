@@ -4,9 +4,9 @@ import { cn } from "@/lib/cn";
 type Tone = "brand" | "peach" | "mint" | "ice";
 const tones: Record<Tone, string> = {
   brand: "bg-soft-tint text-brand",
-  peach: "bg-accent-tint text-[#c2653a]",
+  peach: "bg-accent-tint text-lilac-ink",
   mint: "bg-success-tint text-success",
-  ice: "bg-ice text-[#2f5ed6]",
+  ice: "bg-ice text-brand",
 };
 
 type FloatCardProps = {

@@ -1,9 +1,10 @@
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Users } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { PricingSwitch } from "@/components/ui/pricing-switch";
-import { Section } from "@/components/ui/Section";
+import { Section, SectionKicker } from "@/components/ui/Section";
 import { byMode, cta, pricing } from "@/content/fr/landing";
 import { PricingViewTracker } from "./PricingViewTracker";
+import { DemoCallCard } from "./DemoCallCard";
 
 /** Une offre, deux façons de la lire : sélecteur de profil, carte animée, précisions discrètes. */
 export function Pricing() {
@@ -12,13 +13,18 @@ export function Pricing() {
   return (
     <Section id="tarif" labelledBy="tarif-title" className="!pt-8 md:!pt-12">
       <div className="reveal reveal-blur mx-auto flex max-w-2xl flex-col items-center gap-4 text-center">
-        <p className="inline-flex items-center rounded-full bg-soft-tint px-3.5 py-1.5 text-[12px] font-semibold uppercase tracking-[0.12em] text-brand">{pricing.label}</p>
+        <SectionKicker index={pricing.index} eyebrow={pricing.label} />
         <h2 id="tarif-title" className="heading-2">
           {pricing.title[0]}
           <br />
           {pricing.title[1]}
         </h2>
         <p className="max-w-xl text-[16px] leading-7 text-ink-muted md:text-[17px]">{pricing.intro}</p>
+        {pricing.samePriceBadge ? (
+          <p className="inline-flex items-center gap-2 rounded-full bg-success-tint px-4 py-1.5 text-[14px] font-semibold text-success">
+            <Users aria-hidden="true" className="size-4" /> {pricing.samePriceBadge}
+          </p>
+        ) : null}
       </div>
       <div className="reveal mt-10" style={{ "--d": "80ms" } as React.CSSProperties}>
         <PricingSwitch
@@ -47,6 +53,7 @@ export function Pricing() {
           </ul>
         </PricingSwitch>
       </div>
+      <DemoCallCard className="reveal mx-auto mt-10 max-w-xl" />
       <PricingViewTracker targetId="tarif-card" />
     </Section>
   );

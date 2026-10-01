@@ -90,3 +90,36 @@ export function prospectionSettings(env: Record<string, string | undefined> = pr
 export function isProspectionEnabled(env: Record<string, string | undefined> = process.env): boolean {
   return (env.PROSPECTION_ENABLED ?? "").trim() === "1";
 }
+
+/** Campagne ponctuelle : un département, des outils de réservation exclus, un texte dédié, un nombre total d'envois. */
+export interface ProspectionCampaign {
+  key: string;
+  /** Préfixe de code postal du département (« 34 » pour l'Hérault). */
+  postalPrefix: string;
+  cities: string[];
+  /** Établissements détectés sur ces outils : jamais contactés par la campagne. */
+  excludeProviders: string[];
+  /** Nombre total de premiers emails de la campagne. */
+  total: number;
+}
+
+/**
+ * Jamais contactés par une campagne : enseignes nationales (l'outil de réservation est
+ * imposé par le siège) et adresses appartenant à une plateforme ou à une enseigne.
+ */
+export const campaignExclusions = {
+  names: /franck provost|dessange|the barber company|beauty success|jean[- ]louis david|saint[- ]algue|camille albane|tchip|coiff.?\s?&\s?co|yves rocher|marionnaud|sephora|body minute|esthetic center|nocibé|nocibe|ladies hair|planet nails|l'onglerie/i,
+  emailDomains: /@(.+\.)?(rdv360\.com|planity\.com|treatwell\.(fr|com)|fresha\.com|kalendes\.com|booksy\.com|wavy\.co|salonkee\.(fr|com)|franckprovost\.com|dessange\.com|thebarbercompany\.fr|beautysuccess\.fr|yves-rocher\.fr|marionnaud\.fr|jeanlouisdavid\.com|saint-algue\.com|camilleablane\.com|tchip\.fr)$/i,
+  /** Adresses de service (boutique en ligne, ressources humaines…) : pas le salon. */
+  emailLocalParts: /^(e-?commerce|webmaster|rh|recrutement|jobs|noreply|no-reply|compta|facturation|marketing|presse)@/i,
+};
+
+export const prospectionCampaigns: Record<string, ProspectionCampaign> = {
+  herault: {
+    key: "herault-shooting",
+    postalPrefix: "34",
+    cities: ["Montpellier", "Béziers", "Sète", "Lunel", "Agde", "Castelnau-le-Lez", "Lattes", "Frontignan", "Pérols", "Mauguio", "Pézenas", "Clermont-l'Hérault", "Saint-Jean-de-Védas", "Juvignac", "Lodève", "Ganges"],
+    excludeProviders: ["planity"],
+    total: 20,
+  },
+};

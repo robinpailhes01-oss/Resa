@@ -10,11 +10,11 @@ const base =
   "btn inline-flex items-center justify-center gap-2 rounded-button font-semibold text-[15px] leading-tight text-center disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:transform-none [&_svg]:size-[18px] [&_svg]:shrink-0";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-ink text-white shadow-[0_1px_2px_rgba(17,17,22,0.16),0_8px_20px_-10px_rgba(17,17,22,0.45)] hover:bg-ink-hover hover:shadow-[0_2px_4px_rgba(17,17,22,0.14),0_12px_28px_-10px_rgba(17,17,22,0.5)]",
+  primary: "bg-ink text-page shadow-[0_1px_2px_rgba(31,39,51,0.16),0_8px_20px_-10px_rgba(31,39,51,0.45)] hover:bg-ink-hover hover:shadow-[0_2px_4px_rgba(31,39,51,0.14),0_12px_28px_-10px_rgba(31,39,51,0.5)]",
   secondary: "bg-card text-ink border border-ink/10 shadow-card hover:border-ink/20 hover:shadow-lift",
   ghost: "bg-transparent text-ink hover:bg-ink/5 active:bg-ink/10",
   /** Sur fond sombre : bouton blanc, texte noir. */
-  inverse: "bg-white text-ink hover:bg-page",
+  inverse: "bg-page text-ink shadow-[0_8px_24px_-12px_rgba(20,28,38,0.5)] hover:bg-card",
   /** Lien texte avec chevron. */
   link: "bg-transparent px-0 text-ink underline-offset-4 hover:underline hover:transform-none [&_svg]:size-4",
 };

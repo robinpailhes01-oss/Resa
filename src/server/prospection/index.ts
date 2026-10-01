@@ -20,10 +20,10 @@ import { getSql } from "@/server/db";
 import { getEmailSender } from "@/server/email";
 import { isGoogleImportEnabled, searchPlaces } from "@/server/google/places";
 import { escapeHtml, notifyTelegram } from "@/server/telegram";
-import type { ReceivedEmail } from "@/server/resend-inbound";
+import { isResendInboundConfigured, type ReceivedEmail } from "@/server/resend-inbound";
 import { prospectionFirstEmail, prospectionFollowUpEmail, type ProspectForEmail } from "./emails";
 
-type ProspectRow = {
+export type ProspectRow = {
   id: string;
   google_place_id: string;
   name: string;
@@ -83,19 +83,18 @@ async function fetchPage(url: string, fetchImpl: typeof fetch): Promise<string |
   }
 }
 
-async function isOptedOut(email: string): Promise<boolean> {
+export async function isOptedOut(email: string): Promise<boolean> {
   const [row] = await getSql()`select 1 as ok from prospect_optouts where email = ${email} limit 1`;
   return Boolean(row);
 }
 
-async function isExistingUser(email: string): Promise<boolean> {
+export async function isExistingUser(email: string): Promise<boolean> {
   const [row] = await getSql()`select 1 as ok from users where email = ${email} limit 1`;
   return Boolean(row);
 }
 
 /** 1. Découverte : recherches Google du jour, insertion des établissements inconnus. */
 export async function discoverProspects(now: Date, fetchImpl: typeof fetch = fetch): Promise<{ queries: string[]; found: number; created: number; errors: string[] }> {
-  const sql = getSql();
   const settings = prospectionSettings();
   const queries = planQueries(now, prospectionCategories, prospectionCities, settings.searchesPerDay);
   const result = { queries: queries.map((q) => q.text), found: 0, created: 0, errors: [] as string[] };
@@ -108,15 +107,23 @@ export async function discoverProspects(now: Date, fetchImpl: typeof fetch = fet
       continue;
     }
     result.found += candidates.length;
-    for (const c of candidates) {
-      const [inserted] = await sql`
-        insert into prospects (google_place_id, name, category, city, address, postal_code, phone, website, rating, rating_count, maps_url, unsubscribe_token)
-        values (${c.placeId}, ${c.name}, ${q.category.key}, ${c.city ?? q.city}, ${c.formattedAddress || null}, ${c.postalCode}, ${c.phone}, ${c.website}, ${c.rating}, ${c.ratingCount}, ${c.mapsUrl}, ${randomBytes(16).toString("hex")})
-        on conflict (google_place_id) do nothing returning id`;
-      if (inserted) result.created += 1;
-    }
+    result.created += await insertProspectCandidates(candidates, q.category.key, q.city);
   }
   return result;
+}
+
+/** Enregistre les établissements trouvés par une recherche Google (les déjà connus sont ignorés). */
+export async function insertProspectCandidates(candidates: Awaited<ReturnType<typeof searchPlaces>>, categoryKey: string, city: string): Promise<number> {
+  const sql = getSql();
+  let created = 0;
+  for (const c of candidates) {
+    const [inserted] = await sql`
+      insert into prospects (google_place_id, name, category, city, address, postal_code, phone, website, rating, rating_count, maps_url, unsubscribe_token)
+      values (${c.placeId}, ${c.name}, ${categoryKey}, ${c.city ?? city}, ${c.formattedAddress || null}, ${c.postalCode}, ${c.phone}, ${c.website}, ${c.rating}, ${c.ratingCount}, ${c.mapsUrl}, ${randomBytes(16).toString("hex")})
+      on conflict (google_place_id) do nothing returning id`;
+    if (inserted) created += 1;
+  }
+  return created;
 }
 
 /** Analyse d'un site : outil de réservation utilisé et email public (accueil puis page contact). */
@@ -143,8 +150,13 @@ async function analyseWebsite(website: string, fetchImpl: typeof fetch): Promise
 
 /** 2. Enrichissement : pour chaque nouveau prospect, outil de réservation et email ; statut résultant. */
 export async function enrichProspects(now: Date, fetchImpl: typeof fetch = fetch, limit = prospectionSettings().enrichPerRun): Promise<{ enriched: number; emailsFound: number }> {
+  const rows = await getSql()<ProspectRow[]>`select * from prospects where enriched_at is null order by created_at limit ${limit}`;
+  return enrichProspectRows(rows, now, fetchImpl);
+}
+
+/** Analyse les sites des prospects donnés (six à la fois) : outil de réservation, email, statut. */
+export async function enrichProspectRows(rows: ProspectRow[], now: Date, fetchImpl: typeof fetch = fetch): Promise<{ enriched: number; emailsFound: number }> {
   const sql = getSql();
-  const rows = await sql<ProspectRow[]>`select * from prospects where enriched_at is null order by created_at limit ${limit}`;
   const result = { enriched: 0, emailsFound: 0 };
   const worker = async (row: ProspectRow) => {
     let provider: BookingProvider | null = null;
@@ -187,7 +199,11 @@ export async function sendOutreach(now: Date, dryRun: boolean): Promise<{ sent: 
   await sql`update prospects set status = 'inscrit', updated_at = ${now} where status in ('a_contacter','contacte','relance') and email is not null and exists (select 1 from users u where u.email = prospects.email)`;
   if (!isBusinessDayParis(now)) return { sent: 0, followUps: 0, sentTo: [], followUpTo: [], skipped: "week-end : envois reportés à lundi" };
   const sender = getEmailSender();
-  const replyTo = (await prospectionReplyTo()).address;
+  const reply = await prospectionReplyTo();
+  const replyTo = reply.address;
+  // Les réponses sont-elles vues par le site (adresse reçue par Resend, MX en place) ?
+  // Sinon elles arrivent dans la boîte de contact et une relance pourrait viser quelqu'un qui a déjà répondu.
+  const repliesMonitored = Boolean(process.env.PROSPECTION_REPLY_TO?.trim() && !reply.fallback && isResendInboundConfigured() && replyTo === process.env.PROSPECTION_REPLY_TO?.trim());
   const result = { sent: 0, followUps: 0, sentTo: [] as string[], followUpTo: [] as string[], skipped: null as string | null };
   // Ciblage : par défaut, uniquement les établissements détectés sur Planity. Jamais d'email générique.
   const providers = settings.providers === "all" ? null : settings.providers;
@@ -196,7 +212,7 @@ export async function sendOutreach(now: Date, dryRun: boolean): Promise<{ sent: 
   // manuel après le cron n'envoie pas une seconde fournée.
   const dayStart = parisDayStart(now);
   const [already] = await sql<Array<{ firsts: number; follow_ups: number }>>`
-    select count(*) filter (where first_email_at >= ${dayStart})::int as firsts,
+    select count(*) filter (where first_email_at >= ${dayStart} and campaign is null)::int as firsts,
       count(*) filter (where follow_up_at >= ${dayStart})::int as follow_ups from prospects`;
   const firstQuota = Math.max(0, settings.dailyEmailLimit - already.firsts);
   const followUpQuota = Math.max(0, settings.dailyEmailLimit - already.follow_ups);
@@ -213,15 +229,17 @@ export async function sendOutreach(now: Date, dryRun: boolean): Promise<{ sent: 
     }
     if (!dryRun) {
       await sender.send(prospectionFirstEmail(toEmailProspect(row), replyTo));
-      await sql`update prospects set status = 'contacte', first_email_at = ${now}, updated_at = ${now} where id = ${row.id}`;
+      await sql`update prospects set status = 'contacte', first_email_at = ${now}, follow_up_allowed = ${repliesMonitored}, updated_at = ${now} where id = ${row.id}`;
     }
     result.sent += 1;
     result.sentTo.push(`${row.name} · ${row.city}`);
   }
 
+  if (firstQuota === 0) result.skipped = "limite quotidienne de premiers emails déjà atteinte";
+
   const due = new Date(now.getTime() - settings.followUpAfterDays * 86_400_000);
   const followUps = await sql<ProspectRow[]>`
-    select * from prospects where status = 'contacte' and follow_up_at is null and first_email_at <= ${due} and email is not null
+    select * from prospects where status = 'contacte' and follow_up_allowed and follow_up_at is null and first_email_at <= ${due} and email is not null
       and (${providers === null} or booking_provider = any(${providers ?? []}))
     order by first_email_at limit ${followUpQuota}`;
   for (const row of followUps) {
@@ -275,6 +293,7 @@ export async function runProspection(options: { now?: Date; dryRun?: boolean; fe
     followUps: outreach.followUps,
     sentTo: outreach.sentTo,
     followUpTo: outreach.followUpTo,
+    followUpsBlocked: await followUpsAwaitingCheck(),
     skipped: outreach.skipped,
     dryRun,
     totals: await totals(),
@@ -402,4 +421,89 @@ export async function optOutProspectByEmail(email: string, now = new Date()): Pr
   await sql`insert into prospect_optouts (email) values (${address}) on conflict (email) do nothing`;
   const rows = await sql`update prospects set status = 'desinscrit', updated_at = ${now} where email = ${address} and status <> 'desinscrit' returning id`;
   return { matched: rows.length };
+}
+
+/** Réponse reçue dans la boîte de contact (hors site) : le prospect passe « a répondu », plus aucune relance. */
+export async function markProspectReplied(email: string, now = new Date()): Promise<{ matched: number }> {
+  const address = email.trim().toLowerCase();
+  if (!/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(address)) return { matched: 0 };
+  const rows = await getSql()`update prospects set status = 'repondu', replied_at = ${now}, updated_at = ${now}
+    where email = ${address} and status in ('a_contacter','contacte','relance') returning id`;
+  return { matched: rows.length };
+}
+
+/**
+ * Autorise la relance des prospects déjà contactés dont les réponses n'étaient pas visibles,
+ * une fois les réponses reçues marquées (`markProspectReplied` / `optOutProspectByEmail`).
+ */
+export async function allowPendingFollowUps(now = new Date()): Promise<{ allowed: number }> {
+  const rows = await getSql()`update prospects set follow_up_allowed = true, updated_at = ${now}
+    where status = 'contacte' and not follow_up_allowed and follow_up_at is null returning id`;
+  return { allowed: rows.length };
+}
+
+/** Prospects contactés dont la relance attend une vérification manuelle des réponses. */
+export async function followUpsAwaitingCheck(): Promise<number> {
+  const [row] = await getSql()<Array<{ n: number }>>`select count(*)::int as n from prospects where status = 'contacte' and not follow_up_allowed and follow_up_at is null`;
+  return row.n;
+}
+
+export interface ContactedProspect {
+  id: string;
+  name: string;
+  city: string;
+  email: string | null;
+  bookingProvider: string | null;
+  status: string;
+  firstEmailAt: Date | null;
+  followUpAt: Date | null;
+  followUpAllowed: boolean;
+  repliedAt: Date | null;
+  lastReply: string | null;
+}
+
+/** Prospects déjà contactés, du plus récent au plus ancien (page de suivi). */
+export async function listContactedProspects(): Promise<ContactedProspect[]> {
+  const rows = await getSql()<Array<ProspectRow & { follow_up_allowed: boolean }>>`
+    select * from prospects where first_email_at is not null order by first_email_at desc, name limit 500`;
+  return rows.map((r) => ({
+    id: r.id,
+    name: r.name,
+    city: r.city,
+    email: r.email,
+    bookingProvider: r.booking_provider,
+    status: r.status,
+    firstEmailAt: r.first_email_at,
+    followUpAt: r.follow_up_at,
+    followUpAllowed: r.follow_up_allowed,
+    repliedAt: r.replied_at,
+    lastReply: r.last_reply,
+  }));
+}
+
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/** Marquage manuel depuis la page de suivi : a répondu, pas intéressé (liste d'exclusion), ou annulation. */
+export async function setProspectOutcome(id: string, outcome: "replied" | "declined" | "undo", now = new Date()): Promise<boolean> {
+  if (!UUID_RE.test(id)) return false;
+  const sql = getSql();
+  if (outcome === "replied") {
+    const rows = await sql`update prospects set status = 'repondu', replied_at = coalesce(replied_at, ${now}), updated_at = ${now}
+      where id = ${id} and status in ('contacte','relance','repondu','desinscrit') returning id`;
+    return rows.length > 0;
+  }
+  if (outcome === "declined") {
+    const [row] = await sql<Array<{ email: string | null }>>`update prospects set status = 'desinscrit', updated_at = ${now}
+      where id = ${id} and status in ('contacte','relance','repondu','desinscrit') returning email`;
+    if (!row) return false;
+    if (row.email) await sql`insert into prospect_optouts (email) values (${row.email}) on conflict (email) do nothing`;
+    return true;
+  }
+  // Annulation d'un marquage par erreur : retour « contacté » (ou « relancé »), retrait de la liste d'exclusion.
+  const [row] = await sql<Array<{ email: string | null }>>`update prospects
+    set status = case when follow_up_at is null then 'contacte' else 'relance' end, replied_at = null, updated_at = ${now}
+    where id = ${id} and status in ('repondu','desinscrit') returning email`;
+  if (!row) return false;
+  if (row.email) await sql`delete from prospect_optouts where email = ${row.email}`;
+  return true;
 }

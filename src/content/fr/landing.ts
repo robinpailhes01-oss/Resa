@@ -19,6 +19,10 @@ const price = formatMonthlyPriceExVat(offer.monthlyPriceExVat, offer.currency);
 const priceAmount = formatPrice(offer.monthlyPriceExVat, offer.currency);
 const priceCompact = formatMonthlyPriceExVatCompact(offer.monthlyPriceExVat, offer.currency);
 const practitioners = formatPractitioners(offer.practitionerLimit);
+const unlimitedAgendas = offer.practitionerLimit === null;
+/** Message clé du tarif : le prix ne dépend pas du nombre d'agendas. */
+const samePrice = "Même prix, quel que soit le nombre d’agendas";
+const teamScope = unlimitedAgendas ? "quel que soit le nombre de praticiens" : `pour ${practitioners}`;
 const brand = offer.brandName;
 
 type ByMode<T> = Record<LaunchMode, T>;
@@ -53,17 +57,30 @@ export const cta = {
   secondary: { label: `Découvrir ${brand}`, href: "/#produit" },
 };
 
+/** Signature de marque (visuel logo Instagram). */
+export const brandLine = {
+  tagline: "Beauty business simplified",
+  note: "pour les pros beauté",
+};
+
 export const hero = {
-  eyebrow: "Pensé pour les professionnels de la beauté",
-  /** Deux lignes, sur tous les écrans. */
-  title: ["Votre agenda.", "L’esprit libre."],
-  intro: "Réservations en ligne, agenda partagé et emails automatiques. Tout ce qu’il faut pour organiser votre activité, dans une seule offre.",
+  /** Étiquette d'index, reprise des visuels (« [001] »). */
+  index: "[001]",
+  note: brandLine.note,
+  /** Deux lignes, en minuscules comme sur les visuels. */
+  title: ["vos rendez-vous,", "sans décrocher."],
+  trades: ["coiffure", "barber", "esthétique", "onglerie"],
+  /** Pastille animée : « Pour » puis un métier après l'autre. */
+  rotator: { lead: "Pour", words: ["la coiffure", "les barbers", "l’esthétique", "les ongleries", "le massage", "les cils"] },
+  intro: "Vos clients réservent en ligne, jour et nuit. Rappel par email avant le rendez-vous, demande d’avis Google après la visite.",
   /** Ligne de réassurance sous les boutons. */
   reassurance: {
     prelaunch: [priceCompact, "Un établissement", capitalize(practitioners)],
     live: offer.trialDays ? [trialLabel, "Sans carte bancaire", `${priceCompact} ensuite`] : [priceCompact, "Un établissement", capitalize(practitioners)],
   } satisfies ByMode<string[]>,
   reassuranceCaption: { prelaunch: "Tarif prévu au lancement", live: null } satisfies ByMode<string | null>,
+  imageAlt: "Nature morte sur un socle crème : flacon, peigne, brosses, ciseaux, coton et vernis lavande sur un plateau chromé ; au premier plan, un combiné de téléphone décroché.",
+  secondary: { label: "Voir la démo", href: "/demo" },
   previewCaption: {
     prelaunch: "Aperçu illustratif du produit en préparation, données fictives.",
     live: "Aperçu avec des données fictives.",
@@ -75,8 +92,18 @@ export const hero = {
   previewAlt: `Aperçu illustratif de l’agenda ${brand} : la journée de Camille chez Maison Alba, un établissement fictif.`,
 };
 
+/** Bloc « l'agenda » sous le hero. */
+export const productShowcase = {
+  index: "[002]",
+  eyebrow: "L’agenda",
+  title: "Toute la journée du salon, sur un seul écran.",
+  text: "Chaque praticien a sa colonne. Les réservations en ligne arrivent d’elles-mêmes, celles prises au téléphone s’ajoutent en deux gestes.",
+};
+
 export const features = {
+  index: "[003]",
   eyebrow: { prelaunch: "Ce que prépare Reso", live: "Fonctionnalités" } satisfies ByMode<string>,
+  title: "Le téléphone sonne moins. L’agenda se remplit quand même.",
   main: {
     title: "Votre journée, en un regard.",
     text: "Retrouvez vos rendez-vous, vos praticiens et les informations utiles dans un agenda clair, pensé pour votre quotidien.",
@@ -87,8 +114,8 @@ export const features = {
   cards: [
     {
       id: "booking",
-      title: "Vos clientes réservent quand elles le souhaitent.",
-      text: "Partagez votre lien de réservation et laissez vos clientes choisir leur prestation et leur créneau.",
+      title: "Vos clients réservent quand elles le souhaitent.",
+      text: "Partagez votre lien de réservation et laissez vos clients choisir leur prestation et leur créneau.",
       alt: `Aperçu de la page de réservation ${brand} : choix d’une prestation puis d’un créneau, données fictives.`,
       chip: { title: "Réservation en ligne", text: "24h/24 et 7j/7" },
     },
@@ -101,15 +128,30 @@ export const features = {
       steps: ["Confirmation", "Rappel", "Demande d’avis"],
     },
   ] as const,
+  /** Encaissement en ligne avec Mollie (facultatif). */
+  payments: {
+    eyebrow: "Partenaire de paiement : Mollie",
+    title: "Acomptes et paiements en ligne, sans vous en occuper.",
+    text: "Demandez un acompte ou le paiement complet au moment de la réservation. Vos clients paient par carte ou Apple Pay chez Mollie, notre partenaire de paiement agréé, et l’argent arrive directement sur votre compte.",
+    points: ["Acompte en pourcentage ou montant fixe", "Remboursement automatique si vous annulez", "Moins de rendez-vous oubliés"],
+  },
+  /** Bandeau image : les avis Google. */
+  reviews: {
+    title: "Des avis Google, sans avoir à les demander.",
+    text: "Après chaque visite, votre client reçoit un lien direct vers votre fiche Google. Votre note se construit rendez-vous après rendez-vous.",
+    alt: "Plateau chromé avec peigne, brosses, ciseaux, coton et vernis lavande, sur un socle crème devant un mur bleu poudré.",
+  },
 };
 
 export const howItWorks = {
+  index: "[005]",
   eyebrow: "Comment ça marche",
-  title: "Votre organisation, en trois étapes.",
+  title: "Dix minutes pour démarrer.",
+  stepLabel: "étape",
   steps: [
     {
-      title: "Configurez votre espace",
-      text: "Ajoutez vos prestations, vos horaires et les membres de votre équipe.",
+      title: "Importez votre fiche Google",
+      text: "Photos, adresse et horaires arrivent en un clic. Ajoutez vos prestations et votre équipe.",
     },
     {
       title: "Partagez votre lien",
@@ -117,12 +159,77 @@ export const howItWorks = {
     },
     {
       title: "Retrouvez vos rendez-vous",
-      text: "Consultez votre agenda et laissez les emails accompagner vos clientes avant et après leur visite.",
+      text: "Consultez votre agenda et laissez les emails accompagner vos clients avant et après leur visite.",
     },
   ],
 };
 
+/** Section « Côté pro / Côté client » : le même rendez-vous vu des deux côtés. */
+export const twoSides = {
+  index: "[004]",
+  eyebrow: "Deux côtés, une seule app",
+  title: "Ce que vous voyez. Ce que vos clients voient.",
+  intro: "Basculez d’un côté à l’autre : votre journée dans votre espace pro, et la page où vos clients réservent.",
+  tabs: { pro: "Côté pro", client: "Côté client" },
+  demo: "Voir la démo complète",
+  pro: {
+    salon: "Maison Alba",
+    subtitle: "Compte et réglages",
+    today: "Aujourd’hui",
+    week: "Cette semaine",
+    date: "Jeudi 2 octobre",
+    nextIn: "Dans 1 h 20",
+    next: { time: "13:00", name: "Julien Marchand", service: "Soin visage éclat", deposit: "Acompte de 20 € reçu" },
+    actions: { call: "Appeler", open: "Voir la fiche" },
+    done: [
+      { time: "09:00", name: "Camille Berger", price: "45 €" },
+      { time: "10:30", name: "Nadia Toussaint", price: "60 €" },
+    ],
+    later: [
+      { time: "15:00", name: "Sofia Renaud", service: "Pose semi-permanent", price: "40 €" },
+      { time: "16:30", name: "Hugo Lemoine", service: "Beauté des mains", price: "30 €" },
+    ],
+    end: { time: "19:00", label: "Fin de journée" },
+  },
+  client: {
+    back: "Maison Alba",
+    bio: "Soins visage & ongles · Montpellier centre",
+    deposit: "Acompte de 30 % à la réservation",
+    filters: ["Tout", "Visage", "Ongles", "Regard"],
+    services: [
+      { name: "Soin visage éclat", text: "Nettoyage, gommage, masque et modelage.", meta: "1 h · 65 €", image: "/demo/soin-visage.webp" },
+      { name: "Pose semi-permanent", text: "Sur ongles naturels, tenue trois semaines.", meta: "1 h · 40 €", image: "/demo/ongles.webp" },
+      { name: "Beauté des mains", text: "Limage, cuticules, soin et vernis.", meta: "45 min · 30 €", image: "/demo/mains.webp" },
+      { name: "Rehaussement de cils", text: "Avec teinture, regard ouvert.", meta: "1 h 15 · 55 €", image: "/demo/cils.webp" },
+    ],
+    add: "Ajouter",
+  },
+  caption: "Aperçu avec des données fictives.",
+};
+
+/** Section « On vous installe tout » : un appel avec l'équipe pour démarrer. */
+export const setupCall = {
+  eyebrow: "Installation offerte",
+  title: "Pas le temps ? On vous installe tout.",
+  text: "Un appel de 20 minutes avec l’équipe : on crée votre page, on importe vos prestations, vos horaires et vos photos, on règle vos rappels et votre lien de réservation. Ensuite, on reste joignables.",
+  points: ["Votre page prête en un appel", "Vos prestations et horaires importés", "Un contact à Montpellier, pas un robot"],
+  button: "Prendre un appel avec l’équipe",
+  note: "Gratuit, sans engagement.",
+  whatsappMessage: `Bonjour, j’aimerais un appel pour qu’on m’aide à installer ${brand}.`,
+  emailSubject: `Appel pour installer ${brand}`,
+};
+
+/** Carte « Vous préférez qu'on vous montre ? » : démo en visio WhatsApp. */
+export const demoCall = {
+  title: "Vous préférez qu’on vous montre ?",
+  text: "Ludivine vous fait la démo en visio WhatsApp, 20 minutes, un soir à 21\u00a0h. Gratuit, sans engagement.",
+  button: "Réserver une visio avec Ludivine",
+  whatsappMessage: `Bonjour Ludivine, j’aimerais une démo de ${brand} en visio.`,
+  emailSubject: `Démo de ${brand} en visio avec Ludivine`,
+};
+
 export const testimonialsSection = {
+  index: "[007]",
   label: "Les avis",
   title: "Ce qu’en disent les professionnels.",
   /** Bloc affiché tant qu'aucun témoignage réel n'est publié (src/content/fr/testimonials.ts). */
@@ -143,10 +250,15 @@ export interface PricingProfile {
 }
 
 export const pricing = {
+  index: "[006]",
   label: "Une offre simple",
   title: ["Tout l’essentiel.", "Un prix clair."],
-  intro: "Un seul tarif, quel que soit votre profil. Choisissez le vôtre pour voir ce que Reso vous apporte au quotidien.",
+  intro: unlimitedAgendas
+    ? "Un seul tarif, quel que soit votre profil et le nombre d’agendas : seule ou à dix praticiens, vous payez le même prix."
+    : "Un seul tarif, quel que soit votre profil. Choisissez le vôtre pour voir ce que Reso vous apporte au quotidien.",
   selectorLabel: "Votre profil",
+  /** Pastille au-dessus de la carte : le prix ne dépend pas du nombre d'agendas (null si plafonné). */
+  samePriceBadge: unlimitedAgendas ? "1 agenda ou 10 agendas : même prix" : null,
   /** Même offre, même prix : seule la présentation change selon le profil. */
   profiles: [
     {
@@ -160,21 +272,21 @@ export const pricing = {
         "Fichier clients et historique des rendez-vous",
         "Confirmations et rappels par email",
         "Demandes d’avis par email après la visite",
+        "Acomptes en ligne avec Mollie (facultatif)",
         `Sans commission de réservation prélevée par ${brand}`,
       ],
     },
     {
-      value: "equipe",
-      label: "Petite équipe",
-      name: "Vous êtes plusieurs au salon",
-      description: "Chaque praticien a son agenda, vous gardez la vue d’ensemble, et vos clientes choisissent avec qui réserver.",
+      value: "avenir",
+      label: "À venir",
+      name: "Ce qu’on prépare pour vous",
+      description: "Voici les prochaines nouveautés que nous préparons, pensées pour remplir votre agenda et fidéliser vos clientes.",
       features: [
-        `Agenda pour ${practitioners}, au même prix`,
-        "Un agenda par praticien et une vue d’ensemble",
-        "Prestations réalisées par un ou plusieurs praticiens",
-        "Vos clientes choisissent avec qui réserver",
-        "Confirmations, rappels et demandes d’avis par email",
-        `Sans commission de réservation prélevée par ${brand}`,
+        "Création de stories Instagram personnalisées",
+        "Relances aidées par l’IA",
+        "Carte de fidélité automatisée",
+        "Cartes cadeaux",
+        "Et bien plus encore",
       ],
     },
   ] satisfies PricingProfile[],
@@ -182,18 +294,18 @@ export const pricing = {
   price: priceAmount,
   priceUnit: `HT${NBSP}/${NBSP}mois`,
   billing: { prelaunch: "Un établissement, facturé chaque mois", live: "Facturé chaque mois, sans engagement de durée" } satisfies ByMode<string>,
-  scope: `Un établissement${NBSP}· ${capitalize(practitioners)}`,
+  scope: unlimitedAgendas ? `Un établissement${NBSP}· ${samePrice}` : `Un établissement${NBSP}· ${capitalize(practitioners)}`,
   highlights: [
     "Agenda et réservation en ligne",
     "Confirmations, rappels et demandes d’avis par email",
-    capitalize(practitioners),
+    unlimitedAgendas ? samePrice : capitalize(practitioners),
     `Sans commission de réservation prélevée par ${brand}`,
   ],
   badge: { prelaunch: "Tout inclus", live: offer.trialDays ? trialLabel : "Tout inclus" } satisfies ByMode<string>,
   inclusionsTitle: "Ce qui est inclus",
   inclusions: [
     "Page de réservation et lien à partager",
-    `Agenda pour ${practitioners}`,
+    unlimitedAgendas ? "Agendas illimités : un par praticien, au même prix" : `Agenda pour ${practitioners}`,
     "Fichier clients et historique des rendez-vous",
     "Confirmations de réservation par email",
     "Rappels de rendez-vous par email",
@@ -202,7 +314,7 @@ export const pricing = {
   ],
   mentions: [
     "SMS, caisse et terminal de paiement non inclus.",
-    "Les éventuels frais de paiement en ligne sont distincts.",
+    `Paiement en ligne facultatif : frais Mollie${offer.platformFeePercent > 0 ? ` et ${offer.platformFeePercent.toLocaleString("fr-FR")} % par paiement encaissé` : ""}, uniquement sur les acomptes et paiements.`,
   ],
   afterCta: {
     prelaunch: "Offre en préparation. Conditions définitives communiquées à l’ouverture.",
@@ -221,11 +333,11 @@ export interface FaqItem {
 const faqPrelaunch: FaqItem[] = [
   {
     question: `À qui s’adresse ${brand} ?`,
-    answer: `${brand} est conçu pour les professionnels de la beauté et du bien-être qui travaillent seuls ou en petite équipe : instituts, ongleries, spécialistes du regard et salons de soins notamment. L’offre prévue couvre un établissement et ${practitioners}.`,
+    answer: `${brand} est conçu pour les professionnels de la beauté et du bien-être qui travaillent seuls ou en petite équipe : instituts, ongleries, spécialistes du regard et salons de soins notamment. L’offre prévue couvre un établissement, ${unlimitedAgendas ? "avec autant d’agendas que de praticiens, au même prix" : practitioners}.`,
   },
   {
     question: `Combien coûtera ${brand} ?`,
-    answer: `Le tarif prévu est de ${price.replace(`${NBSP}/${NBSP}`, ` par `)} et par établissement, pour ${practitioners}. L’offre et ses conditions définitives seront confirmées lors de l’ouverture. Aucun paiement n’est demandé pour être informé du lancement.`,
+    answer: `Le tarif prévu est de ${price.replace(`${NBSP}/${NBSP}`, ` par `)} et par établissement, ${teamScope}. L’offre et ses conditions définitives seront confirmées lors de l’ouverture. Aucun paiement n’est demandé pour être informé du lancement.`,
   },
   {
     question: "Que comprennent les emails automatiques ?",
@@ -259,11 +371,11 @@ const faqPrelaunch: FaqItem[] = [
 const faqLive: FaqItem[] = [
   {
     question: `À qui s’adresse ${brand} ?`,
-    answer: `${brand} est conçu pour les professionnels de la beauté et du bien-être qui travaillent seuls ou en petite équipe : instituts, ongleries, spécialistes du regard et salons de soins notamment. L’offre couvre un établissement et ${practitioners}.`,
+    answer: `${brand} est conçu pour les professionnels de la beauté et du bien-être qui travaillent seuls ou en petite équipe : instituts, ongleries, spécialistes du regard et salons de soins notamment. L’offre couvre un établissement, ${unlimitedAgendas ? "avec autant d’agendas que de praticiens, au même prix" : practitioners}.`,
   },
   {
     question: `Combien coûte ${brand} ?`,
-    answer: `Le tarif est de ${price.replace(`${NBSP}/${NBSP}`, ` par `)} et par établissement, pour ${practitioners}. Les conditions commerciales sont indiquées avant la création de votre compte.`,
+    answer: `Le tarif est de ${price.replace(`${NBSP}/${NBSP}`, ` par `)} et par établissement, ${teamScope}. Que vous travailliez seule ou à dix, le prix est le même. Les conditions commerciales sont indiquées avant la création de votre compte.`,
   },
   {
     question: "Que comprennent les emails automatiques ?",
@@ -272,7 +384,11 @@ const faqLive: FaqItem[] = [
   },
   {
     question: `${brand} prélève-t-il une commission sur mes rendez-vous ?`,
-    answer: `Non. ${brand} ne prélève aucune commission de réservation. Si le paiement en ligne est proposé, les frais de son prestataire sont indiqués séparément avant activation.`,
+    answer: `Non. ${brand} ne prélève aucune commission sur les rendez-vous. Seul l’encaissement en ligne d’un acompte, facultatif, comporte ${offer.platformFeePercent > 0 ? `une commission de ${offer.platformFeePercent.toLocaleString("fr-FR")} % sur la somme encaissée, en plus des` : "uniquement les"} frais de Mollie, affichés avant activation.`,
+  },
+  {
+    question: "Puis-je demander un acompte à la réservation ?",
+    answer: `Oui, si vous le souhaitez. Reliez votre compte Mollie, notre partenaire de paiement, depuis votre espace : vous choisissez un acompte (en pourcentage ou en montant fixe) ou le paiement complet. Vos clients paient par carte ou Apple Pay, l’argent arrive directement sur votre compte, et le remboursement est automatique si vous annulez le rendez-vous.${offer.platformFeePercent > 0 ? ` Frais : ceux de Mollie, plus ${offer.platformFeePercent.toLocaleString("fr-FR")} % par paiement encaissé.` : ""}`,
   },
   {
     question: "Mes clients doivent-ils télécharger une application ?",
@@ -301,6 +417,7 @@ const faqLive: FaqItem[] = [
 ];
 
 export const faq = {
+  index: "[008]",
   label: "Questions fréquentes",
   title: "Vos questions, nos réponses.",
   /** Petit horodatage de la conversation. */
@@ -354,7 +471,12 @@ export const waitlist = {
 
 export const footer = {
   brand,
-  tagline: "Les rendez-vous qui font rayonner votre métier.",
+  tagline: brandLine.tagline,
+  closing: {
+    title: "Raccrochez. Vos clients réservent en ligne.",
+    text: offer.trialDays ? `${trialLabel}, sans carte bancaire. Ensuite ${priceCompact}, sans engagement.` : `${priceCompact}, sans engagement.`,
+    imageAlt: "Ciseaux chromés et serviette éponge sur un socle crème, devant un mur bleu poudré.",
+  },
   links: [
     { href: "/#produit", label: "Produit" },
     { href: "/#fonctionnalites", label: "Fonctionnalités" },
@@ -369,6 +491,20 @@ export const footer = {
     { href: "/confidentialite", label: "Confidentialité" },
   ],
   copyright: (year: number) => `© ${year} ${brand}`,
+  madeIn: "Fabriqué à Montpellier avec authenticité",
+  proLink: { label: "Devenir pro", href: offer.launchMode === "live" ? (offer.signupUrl ?? "/inscription") : "/preinscription" },
+  followUs: "Suivez-nous",
+  social: {
+    instagram: `${brand} sur Instagram`,
+    tiktok: `${brand} sur TikTok`,
+    facebook: `${brand} sur Facebook`,
+    linkedin: `${brand} sur LinkedIn`,
+  },
+  booking: {
+    poweredBy: `Réservation propulsée par ${brand}`,
+    timezone: "Les horaires sont affichés à l’heure de Paris.",
+    pro: `Vous êtes pro ? Découvrez ${brand}`,
+  },
 };
 
 export const metadata = {

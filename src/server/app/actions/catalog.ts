@@ -6,7 +6,9 @@ import { z } from "zod";
 import type { FormState } from "@/components/app/ActionForm";
 import { requireEstablishment } from "@/server/auth/guards";
 import { PRACTITIONER_LIMIT, countActivePractitioners, createPractitioner, deletePractitioner, updatePractitioner } from "../practitioners";
-import { createService, deleteService, updateService } from "../services";
+import { createService, deleteService, moveService, updateService } from "../services";
+import { createCategory, deleteCategory, moveCategory, updateCategory } from "../categories";
+import { categoriesEditor } from "@/content/fr/app";
 import { GENERIC_ERROR, bool, fieldErrors, int, priceToCents, str } from "./shared";
 import { templatesFor } from "@/content/fr/service-templates";
 
@@ -18,6 +20,7 @@ const serviceSchema = z.object({
   priceCents: z.number().int().min(0),
   active: z.boolean(),
   practitionerIds: z.array(z.string().uuid()).max(20),
+  categoryId: z.string().uuid().nullable().optional(),
 });
 
 function readService(fd: FormData) {
@@ -29,7 +32,15 @@ function readService(fd: FormData) {
     priceCents: priceToCents(str(fd, "price")),
     active: fd.has("active") ? bool(fd, "active") : true,
     practitionerIds: fd.getAll("practitionerIds").map(String),
+    // Champ absent (formulaire sans rubriques) : rubrique inchangée.
+    categoryId: fd.has("categoryId") ? str(fd, "categoryId") || null : undefined,
   });
+}
+
+function refreshCatalog(slug: string) {
+  revalidatePath("/app/prestations");
+  revalidatePath("/app/ma-page");
+  revalidatePath(`/r/${slug}`);
 }
 
 export async function createServiceAction(_prev: FormState, fd: FormData): Promise<FormState> {
@@ -42,7 +53,7 @@ export async function createServiceAction(_prev: FormState, fd: FormData): Promi
     console.error("[app] création prestation", error instanceof Error ? error.message : error);
     return { error: GENERIC_ERROR };
   }
-  revalidatePath("/app/prestations");
+  refreshCatalog(establishment.slug);
   redirect("/app/prestations");
 }
 
@@ -57,8 +68,64 @@ export async function updateServiceAction(_prev: FormState, fd: FormData): Promi
     console.error("[app] mise à jour prestation", error instanceof Error ? error.message : error);
     return { error: GENERIC_ERROR };
   }
-  revalidatePath("/app/prestations");
+  refreshCatalog(establishment.slug);
   redirect("/app/prestations");
+}
+
+export async function moveServiceAction(id: string, direction: "up" | "down"): Promise<void> {
+  const { establishment } = await requireEstablishment();
+  await moveService(establishment.id, id, direction);
+  refreshCatalog(establishment.slug);
+}
+
+const categorySchema = z.object({
+  title: z
+    .string()
+    .transform((v) => v.replace(/\s+/g, " ").trim())
+    .pipe(z.string().min(1, categoriesEditor.titleRequired).max(120, categoriesEditor.titleTooLong)),
+  description: z.string().trim().max(1500, categoriesEditor.descriptionTooLong).transform((v) => v || null),
+});
+
+const readCategory = (fd: FormData) => categorySchema.safeParse({ title: str(fd, "title"), description: str(fd, "description") });
+
+export async function createCategoryAction(_prev: FormState, fd: FormData): Promise<FormState> {
+  const { establishment } = await requireEstablishment();
+  const parsed = readCategory(fd);
+  if (!parsed.success) return fieldErrors(parsed.error);
+  try {
+    await createCategory(establishment.id, parsed.data);
+  } catch (error) {
+    console.error("[app] création rubrique", error instanceof Error ? error.message : error);
+    return { error: GENERIC_ERROR };
+  }
+  refreshCatalog(establishment.slug);
+  redirect("/app/prestations#rubriques");
+}
+
+export async function updateCategoryAction(id: string, _prev: FormState, fd: FormData): Promise<FormState> {
+  const { establishment } = await requireEstablishment();
+  const parsed = readCategory(fd);
+  if (!parsed.success) return fieldErrors(parsed.error);
+  try {
+    if (!(await updateCategory(establishment.id, id, parsed.data))) return { error: GENERIC_ERROR };
+  } catch (error) {
+    console.error("[app] mise à jour rubrique", error instanceof Error ? error.message : error);
+    return { error: GENERIC_ERROR };
+  }
+  refreshCatalog(establishment.slug);
+  return { success: categoriesEditor.saved };
+}
+
+export async function deleteCategoryAction(id: string): Promise<void> {
+  const { establishment } = await requireEstablishment();
+  await deleteCategory(establishment.id, id);
+  refreshCatalog(establishment.slug);
+}
+
+export async function moveCategoryAction(id: string, direction: "up" | "down"): Promise<void> {
+  const { establishment } = await requireEstablishment();
+  await moveCategory(establishment.id, id, direction);
+  refreshCatalog(establishment.slug);
 }
 
 export async function deleteServiceAction(id: string): Promise<void> {
@@ -79,7 +146,7 @@ export async function createPractitionerAction(_prev: FormState, fd: FormData): 
   const { establishment } = await requireEstablishment();
   const parsed = practitionerSchema.safeParse({ name: fd.get("name"), roleTitle: fd.get("roleTitle") ?? "", color: fd.get("color") ?? "soft", active: true });
   if (!parsed.success) return fieldErrors(parsed.error);
-  if ((await countActivePractitioners(establishment.id)) >= PRACTITIONER_LIMIT) {
+  if (PRACTITIONER_LIMIT !== null && (await countActivePractitioners(establishment.id)) >= PRACTITIONER_LIMIT) {
     return { error: `Votre offre comprend jusqu’à ${PRACTITIONER_LIMIT} praticiens actifs.` };
   }
   try {
@@ -100,7 +167,7 @@ export async function updatePractitionerAction(_prev: FormState, fd: FormData): 
   if (parsed.data.active) {
     const active = await countActivePractitioners(establishment.id);
     const current = await import("../practitioners").then((m) => m.getPractitioner(establishment.id, id));
-    if (current && !current.active && active >= PRACTITIONER_LIMIT) {
+    if (PRACTITIONER_LIMIT !== null && current && !current.active && active >= PRACTITIONER_LIMIT) {
       return { error: `Votre offre comprend jusqu’à ${PRACTITIONER_LIMIT} praticiens actifs.` };
     }
   }

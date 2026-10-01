@@ -37,24 +37,29 @@ export function StatTile({
   value,
   hint,
   footer,
+  icon,
   className,
 }: {
   label: string;
   value: ReactNode;
   hint?: ReactNode;
   footer?: ReactNode;
+  icon?: ReactNode;
   className?: string;
 }) {
   return (
-    <div className={cn("rounded-2xl bg-card p-5 ring-1 ring-line", className)}>
-      <p className="text-[13px] font-medium text-ink-muted">{label}</p>
-      <p className="mt-1.5 text-[28px] font-bold leading-9 tracking-tight text-ink">
+    <div className={cn("rounded-[20px] bg-card p-5 shadow-card ring-1 ring-line md:p-6", className)}>
+      <div className="flex items-center justify-between gap-3">
+        <p className="eyebrow !text-[11px] !tracking-[0.14em]">{label}</p>
+        {icon ? <span aria-hidden="true" className="inline-flex size-8 items-center justify-center rounded-lg bg-soft-tint text-brand">{icon}</span> : null}
+      </div>
+      <p className="mt-4 font-display text-[40px] font-medium leading-none tracking-[-0.04em] tabular-nums text-ink">
         {value}
       </p>
       {hint ? (
-        <p className="mt-0.5 text-[13px] text-ink-muted">{hint}</p>
+        <p className="mt-2 text-[13px] leading-5 text-ink-muted">{hint}</p>
       ) : null}
-      {footer ? <div className="mt-2">{footer}</div> : null}
+      {footer ? <div className="mt-3 leading-5">{footer}</div> : null}
     </div>
   );
 }

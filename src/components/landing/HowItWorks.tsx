@@ -1,26 +1,25 @@
-import { ArrowRight } from "lucide-react";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { howItWorks } from "@/content/fr/landing";
 
 type Delay = { "--d": string } & React.CSSProperties;
 
-/** Trois étapes numérotées reliées par un trait : la typographie fait le travail. */
+/** Trois étapes indexées [001] [002] [003], comme les visuels : la typographie fait le travail. */
 export function HowItWorks() {
   return (
-    <Section id="etapes" labelledBy="etapes-title" className="!pt-8 md:!pt-12">
-      <SectionHeading id="etapes-title" eyebrow={howItWorks.eyebrow} title={howItWorks.title} />
-      <ol className="relative mx-auto mt-10 grid max-w-5xl gap-8 md:mt-14 md:grid-cols-3 md:gap-6">
-        <span aria-hidden="true" className="absolute inset-x-[16%] top-6 hidden h-px bg-line md:block" />
+    <Section id="etapes" labelledBy="etapes-title" className="!pt-10 md:!pt-16">
+      <SectionHeading id="etapes-title" index={howItWorks.index} eyebrow={howItWorks.eyebrow} title={howItWorks.title} />
+      <ol className="mt-10 grid border-t border-ink/15 md:mt-14 md:grid-cols-3">
         {howItWorks.steps.map((step, i) => (
-          <li key={step.title} className="reveal relative flex flex-col items-center gap-4 text-center" style={{ "--d": `${i * 100}ms` } as Delay}>
-            <span className="relative z-10 inline-flex size-12 items-center justify-center rounded-full border border-line bg-card text-[13px] font-semibold tabular-nums text-brand shadow-card">
-              {String(i + 1).padStart(2, "0")}
+          <li
+            key={step.title}
+            className="reveal flex flex-col gap-3 border-b border-ink/15 py-7 md:border-b-0 md:border-l md:px-8 md:py-10 md:first:border-l-0 md:first:pl-0"
+            style={{ "--d": `${i * 100}ms` } as Delay}
+          >
+            <span className="index-tag">
+              {howItWorks.stepLabel} {String(i + 1).padStart(2, "0")}
             </span>
-            <div className="max-w-xs">
-              <h3 className="text-[17px] font-semibold tracking-tight text-ink md:text-[18px]">{step.title}</h3>
-              <p className="mt-2 text-[15px] leading-6 text-ink-muted">{step.text}</p>
-            </div>
-            {i < howItWorks.steps.length - 1 ? <ArrowRight aria-hidden="true" className="mt-1 size-4 rotate-90 text-ink-muted/50 md:hidden" /> : null}
+            <h3 className="heading-3 mt-2">{step.title}</h3>
+            <p className="max-w-sm text-[15px] leading-6 text-ink-muted md:text-[16px]">{step.text}</p>
           </li>
         ))}
       </ol>

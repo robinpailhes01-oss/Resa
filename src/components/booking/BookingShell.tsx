@@ -1,8 +1,10 @@
 import type { ReactNode } from "react";
+import Link from "next/link";
 import { Logo } from "@/components/ui/Logo";
-import { offer } from "@/config/offer";
 import type { Establishment } from "@/server/auth/guards";
 import { businessTypeLabel } from "@/server/app/establishments";
+import { footer } from "@/content/fr/landing";
+import { SocialLinks } from "@/components/ui/SocialLinks";
 
 /** Gabarit de la page de réservation publique : en-tête établissement, contenu, pied discret. */
 export function BookingShell({ establishment, children, wide = false, hideTitle = false }: { establishment: Establishment; children: ReactNode; wide?: boolean; hideTitle?: boolean }) {
@@ -28,8 +30,19 @@ export function BookingShell({ establishment, children, wide = false, hideTitle 
         )}
         {children}
       </main>
-      <footer className={`mx-auto ${width} px-4 pb-10 text-[12px] text-ink-muted`}>
-        Réservation propulsée par {offer.brandName}. Les horaires sont affichés à l’heure de Paris.
+      <footer className={`mx-auto ${width} flex flex-col gap-3 border-t border-line px-4 pb-10 pt-6 text-[12px] text-ink-muted sm:flex-row sm:items-center sm:justify-between`}>
+        <div className="flex flex-col gap-1">
+          <p>
+            {footer.booking.poweredBy} · <span className="font-medium text-ink">{footer.madeIn}</span>
+          </p>
+          <p>
+            {footer.booking.timezone}{" "}
+            <Link href="/" className="font-medium text-brand underline-offset-4 hover:underline">
+              {footer.booking.pro}
+            </Link>
+          </p>
+        </div>
+        <SocialLinks className="-ml-2 sm:ml-0" />
       </footer>
     </div>
   );

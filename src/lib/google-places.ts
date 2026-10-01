@@ -256,3 +256,49 @@ export function parseGoogleMapsUrl(raw: string): ParsedMapsUrl {
   }
   return out;
 }
+
+export interface GoogleReview {
+  /** Identifiant Google de l'avis (places/…/reviews/…). */
+  externalId: string;
+  authorName: string;
+  authorUrl: string | null;
+  authorPhotoUrl: string | null;
+  rating: number;
+  text: string;
+  relativeTime: string | null;
+  publishedAt: Date | null;
+}
+
+type RawReview = {
+  name?: string;
+  rating?: number;
+  text?: { text?: string };
+  originalText?: { text?: string };
+  relativePublishTimeDescription?: string;
+  publishTime?: string;
+  authorAttribution?: { displayName?: string; uri?: string; photoUri?: string };
+};
+
+const httpsOrNull = (v: string | undefined) => (v && /^https:\/\//.test(v) ? v : null);
+
+/** Avis renvoyés par Place Details (5 au plus, choisis par Google), tels que publiés. */
+export function parsePlaceReviews(payload: { reviews?: RawReview[] }): GoogleReview[] {
+  return (payload.reviews ?? [])
+    .map((r): GoogleReview | null => {
+      const rating = Math.round(Number(r.rating));
+      const author = r.authorAttribution?.displayName?.trim();
+      if (!r.name || !author || !(rating >= 1 && rating <= 5)) return null;
+      const published = r.publishTime ? new Date(r.publishTime) : null;
+      return {
+        externalId: r.name,
+        authorName: author.slice(0, 120),
+        authorUrl: httpsOrNull(r.authorAttribution?.uri),
+        authorPhotoUrl: httpsOrNull(r.authorAttribution?.photoUri),
+        rating,
+        text: (r.originalText?.text ?? r.text?.text ?? "").trim().slice(0, 2000),
+        relativeTime: r.relativePublishTimeDescription?.slice(0, 60) ?? null,
+        publishedAt: published && !Number.isNaN(published.getTime()) ? published : null,
+      };
+    })
+    .filter((r): r is GoogleReview => r !== null);
+}

@@ -10,13 +10,13 @@ export function PageHeader({
   actions?: ReactNode;
 }) {
   return (
-    <div className="mb-6 flex flex-col gap-4 md:mb-8 md:flex-row md:items-end md:justify-between">
+    <div className="mb-7 flex flex-col gap-4 border-b border-line pb-6 md:mb-9 md:flex-row md:items-end md:justify-between md:pb-7">
       <div>
-        <h1 className="text-[26px] leading-8 md:text-[30px] md:leading-9">
+        <h1 className="text-[30px] leading-9 tracking-[-0.03em] md:text-[38px] md:leading-[44px]">
           {title}
         </h1>
         {intro ? (
-          <p className="mt-1.5 text-[15px] text-ink-muted">{intro}</p>
+          <p className="mt-2 max-w-2xl text-[15px] leading-6 text-ink-muted">{intro}</p>
         ) : null}
       </div>
       {actions ? <div className="flex flex-wrap gap-2">{actions}</div> : null}
@@ -33,7 +33,7 @@ export function Card({
 }) {
   return (
     <div
-      className={`rounded-2xl bg-card p-5 ring-1 ring-line md:p-6 ${className ?? ""}`}
+      className={`rounded-[20px] bg-card p-5 shadow-card ring-1 ring-line md:p-7 ${className ?? ""}`}
     >
       {children}
     </div>
@@ -50,8 +50,8 @@ export function EmptyState({
   action?: ReactNode;
 }) {
   return (
-    <div className="rounded-2xl border border-dashed border-line bg-card/60 px-6 py-12 text-center">
-      <h2 className="text-[18px] font-semibold text-ink">{title}</h2>
+    <div className="rounded-[20px] border border-dashed border-ink/20 bg-card/60 px-6 py-14 text-center">
+      <h2 className="heading-3">{title}</h2>
       <p className="mx-auto mt-2 max-w-md text-[15px] text-ink-muted">{text}</p>
       {action ? <div className="mt-6 flex justify-center">{action}</div> : null}
     </div>

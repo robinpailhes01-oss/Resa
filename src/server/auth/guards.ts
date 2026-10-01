@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { getSql } from "@/server/db";
 import { getCurrentUser, type SessionUser } from "./session";
 import type { SubscriptionStatus } from "@/lib/trial";
+import type { DepositKind, PaymentMode } from "@/lib/booking-payment";
 
 export interface Establishment {
   id: string;
@@ -17,6 +18,8 @@ export interface Establishment {
   phone: string | null;
   publicEmail: string | null;
   description: string | null;
+  /** Bio courte affichée sous le nom, sur la page de réservation. */
+  bio: string | null;
   /** Conditions affichées à la cliente avant confirmation et dans l'email. */
   bookingTerms: string | null;
   timezone: string;
@@ -37,6 +40,10 @@ export interface Establishment {
   googleRating: number | null;
   googleRatingCount: number | null;
   googleMapsUrl: string | null;
+  /** Encaissement à la réservation en ligne (Mollie Connect). */
+  paymentMode: PaymentMode;
+  depositKind: DepositKind;
+  depositValue: number;
 }
 
 export type EstablishmentRow = {
@@ -51,6 +58,7 @@ export type EstablishmentRow = {
   phone: string | null;
   public_email: string | null;
   description: string | null;
+  bio?: string | null;
   booking_terms: string | null;
   timezone: string;
   booking_enabled: boolean;
@@ -66,6 +74,9 @@ export type EstablishmentRow = {
   google_rating: string | number | null;
   google_rating_count: number | null;
   google_maps_url: string | null;
+  payment_mode?: PaymentMode;
+  deposit_kind?: DepositKind;
+  deposit_value?: number;
 };
 
 export function mapEstablishment(r: EstablishmentRow): Establishment {
@@ -81,6 +92,7 @@ export function mapEstablishment(r: EstablishmentRow): Establishment {
     phone: r.phone,
     publicEmail: r.public_email,
     description: r.description,
+    bio: r.bio ?? null,
     bookingTerms: r.booking_terms,
     timezone: r.timezone,
     bookingEnabled: r.booking_enabled,
@@ -96,6 +108,9 @@ export function mapEstablishment(r: EstablishmentRow): Establishment {
     googleRating: r.google_rating === null || r.google_rating === undefined ? null : Number(r.google_rating),
     googleRatingCount: r.google_rating_count ?? null,
     googleMapsUrl: r.google_maps_url ?? null,
+    paymentMode: r.payment_mode ?? "none",
+    depositKind: r.deposit_kind ?? "percent",
+    depositValue: r.deposit_value ?? 30,
   };
 }
 

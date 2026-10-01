@@ -17,7 +17,8 @@ import { hhmmToMinutes } from "@/lib/time";
 import { parseGoogleMeta, parseHoursJson, parsePhotoNames } from "@/lib/google-places";
 import { getSql } from "@/server/db";
 import { resolvePhotoUrls } from "@/server/google/places";
-import { addPhotos, deletePhoto } from "../photos";
+import { addPhotos } from "../photos";
+import { syncGoogleReviews } from "../reviews";
 import { GENERIC_ERROR, bool, fieldErrors, int, optStr, str } from "./shared";
 
 const typeValues = BUSINESS_TYPES.map((t) => t.value) as [string, ...string[]];
@@ -66,6 +67,11 @@ export async function createEstablishmentAction(_prev: FormState, fd: FormData):
         where id = ${establishment.id}`;
     }
     if (googlePhotos.length > 0) await addPhotos(establishment.id, await resolvePhotoUrls(googlePhotos), "google");
+    if (googlePlaceId) {
+      after(() =>
+        syncGoogleReviews(establishment.id, googlePlaceId).catch((error) => console.error("[google] avis", error instanceof Error ? error.message : error)),
+      );
+    }
     after(() =>
       notifyTelegram(
         telegramEvents.establishment({ name: establishment.name, businessType: businessTypeLabel(establishment.businessType), city: establishment.city, slug: establishment.slug }, offer.siteUrl.replace(/\/$/, "")),
@@ -192,19 +198,4 @@ export async function updateNotificationSettingsAction(_prev: FormState, fd: For
   }
   revalidatePath("/app/emails");
   return { success: "Réglages enregistrés." };
-}
-
-export async function deletePhotoAction(_prev: FormState, fd: FormData): Promise<FormState> {
-  const { establishment } = await requireEstablishment();
-  const id = str(fd, "photoId");
-  if (!id) return { error: GENERIC_ERROR };
-  try {
-    await deletePhoto(establishment.id, id);
-  } catch (error) {
-    console.error("[app] suppression photo", error instanceof Error ? error.message : error);
-    return { error: GENERIC_ERROR };
-  }
-  revalidatePath("/app/parametres");
-  revalidatePath(`/r/${establishment.slug}`);
-  return { success: "Photo retirée." };
 }

@@ -5,6 +5,7 @@ import { getEmailSender } from "@/server/email";
 import { isGoogleImportEnabled } from "@/server/google/places";
 import { isSumUpConfigured } from "@/server/sumup";
 import { isMollieConfigured, isMollieTestMode, listRecurringMethods } from "@/server/mollie";
+import { connectRedirectUri, isConnectTestMode, isMollieConnectConfigured } from "@/server/mollie-connect";
 import { isTelegramConfigured } from "@/server/telegram";
 import { isProspectionEnabled, prospectionSettings } from "@/config/prospection";
 import { isResendInboundConfigured } from "@/server/resend-inbound";
@@ -37,6 +38,9 @@ export async function GET(request: Request) {
     sumup: isSumUpConfigured() ? "configuré" : "absent (SUMUP_API_KEY et SUMUP_MERCHANT_CODE)",
     mollie: isMollieConfigured() ? (isMollieTestMode() ? "configuré (mode test)" : "configuré (live)") : "absent (MOLLIE_API_KEY)",
     mollieMethods,
+    mollieConnect: isMollieConnectConfigured()
+      ? `configuré (${isConnectTestMode() ? "paiements de test" : "live"}) · redirect ${connectRedirectUri()}`
+      : "absent (MOLLIE_CLIENT_ID, MOLLIE_CLIENT_SECRET, MOLLIE_TOKEN_ENCRYPTION_KEY)",
     billing: isMollieConfigured() ? "mollie (prélèvement automatique)" : isSumUpConfigured() ? "sumup (paiement mensuel manuel)" : "désactivé",
     googlePlaces: isGoogleImportEnabled() ? "configuré" : "absent (GOOGLE_PLACES_API_KEY)",
     telegram: isTelegramConfigured() ? "configuré" : "absent (TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID)",

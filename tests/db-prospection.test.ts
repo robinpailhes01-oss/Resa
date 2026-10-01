@@ -3,6 +3,11 @@ import postgres from "postgres";
 import { ConsoleEmailSender } from "@/server/email/console-sender";
 import { setEmailSenderForTests } from "@/server/email";
 
+// Adresse de contact définie avant le chargement de la configuration (transfert des réponses).
+vi.hoisted(() => {
+  process.env.RESO_SUPPORT_EMAIL = "contact@reso-test.example";
+});
+
 const url = process.env.TEST_DATABASE_URL;
 process.env.DATABASE_URL = url ?? "";
 process.env.PROSPECTION_ENABLED = "1";
@@ -106,7 +111,12 @@ describe.skipIf(!url)("prospection en base", () => {
     expect(await prospection.peekProspectToken(institut.unsubscribe_token)).toBe(true);
     expect(await prospection.unsubscribeProspect(institut.unsubscribe_token)).toBe(true);
     expect(await prospection.unsubscribeProspect("0000")).toBe(false);
+    // Réponses non visibles par le site (pas d'adresse Resend) : aucune relance tant qu'elles ne sont pas vérifiées.
     const later = new Date("2026-10-05T06:00:00Z"); // lundi suivant, 7 jours après
+    const blocked = await prospection.runProspection({ now: new Date("2026-10-05T05:00:00Z"), dryRun: true, fetchImpl: fakeFetch });
+    expect(blocked.followUps).toBe(0);
+    expect(blocked.followUpsBlocked).toBeGreaterThan(0);
+    expect(await prospection.allowPendingFollowUps()).toMatchObject({ allowed: 1 });
     const follow = await prospection.runProspection({ now: later, fetchImpl: fakeFetch });
     expect(follow.followUps).toBe(1);
     expect(sender.sent).toHaveLength(3);
@@ -139,6 +149,16 @@ describe.skipIf(!url)("prospection en base", () => {
     // Inscription d'un prospect : marqué inscrit, nom renvoyé pour la notification.
     expect(await prospection.matchProspectSignup("contact@barber-test-planity.example")).toBe("Barber Test Planity (Marseille)");
     expect(await prospection.matchProspectSignup("inconnu@nulle-part.example")).toBeNull();
+
+    // Page de suivi : marquer « pas intéressé » puis annuler ; « a répondu » bloque la relance.
+    const [institutRow] = await sql<Array<{ id: string }>>`select id from prospects where google_place_id = ${places.contactPage.placeId}`;
+    expect(await prospection.setProspectOutcome(institutRow.id, "undo")).toBe(true);
+    const [undone] = await sql<Array<{ status: string }>>`select status from prospects where id = ${institutRow.id}`;
+    expect(undone.status).toBe("contacte");
+    expect(await prospection.setProspectOutcome(institutRow.id, "replied")).toBe(true);
+    const listed = await prospection.listContactedProspects();
+    expect(listed.find((p) => p.id === institutRow.id)).toMatchObject({ status: "repondu" });
+    expect(await prospection.setProspectOutcome("pas-un-uuid", "replied")).toBe(false);
 
     // Récap hebdo : 2 emails, 1 relance sur la période.
     const stats = await prospection.prospectionWeeklyStats(new Date("2026-09-27T00:00:00Z"));

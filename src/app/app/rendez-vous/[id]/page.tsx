@@ -11,6 +11,8 @@ import { formatDateTimeFr, formatDuration, formatPriceCents, formatTimeFr, toZon
 import { requireEstablishment } from "@/server/auth/guards";
 import { setBookingStatusAction, updateBookingNotesAction } from "@/server/app/actions/bookings";
 import { getBooking, type BookingStatus } from "@/server/app/bookings";
+import { getBookingPayment } from "@/server/app/booking-payments";
+import { paymentsPage } from "@/content/fr/app";
 
 export const metadata: Metadata = { title: "Rendez-vous" };
 
@@ -29,6 +31,9 @@ export default async function RendezVousPage({ params, searchParams }: { params:
   const query = await searchParams;
   const booking = await getBooking(establishment.id, id);
   if (!booking) notFound();
+  const payment = await getBookingPayment(booking.id);
+  const awaitingPayment = booking.status === "pending" && payment?.status === "open";
+  const paid = payment?.status === "paid";
   const tz = establishment.timezone;
   const dateKey = toZonedParts(booking.startsAt, tz).dateKey;
   const setStatus = (status: BookingStatus) => setBookingStatusAction.bind(null, booking.id, status);
@@ -52,7 +57,7 @@ export default async function RendezVousPage({ params, searchParams }: { params:
       ) : null}
       <Card className="mb-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <span className={`rounded-full px-3 py-1 text-[13px] font-semibold ${badge[booking.status]}`}>{labels[booking.status]}</span>
+          <span className={`rounded-full px-3 py-1 text-[13px] font-semibold ${badge[booking.status]}`}>{awaitingPayment ? "Paiement en cours" : labels[booking.status]}</span>
           <span className="text-[13px] text-ink-muted">{booking.source === "online" ? "Réservé en ligne" : "Ajouté par vous"}</span>
         </div>
         <dl className="mt-5 grid gap-4 sm:grid-cols-2">
@@ -75,6 +80,15 @@ export default async function RendezVousPage({ params, searchParams }: { params:
             <dd className="mt-1 text-[16px] font-semibold text-ink">{booking.practitionerName}</dd>
             <dt className="mt-3 text-[12px] font-medium uppercase tracking-wide text-ink-muted">Prix</dt>
             <dd className="mt-1 text-[16px] font-semibold text-ink">{booking.priceCents > 0 ? formatPriceCents(booking.priceCents) : "—"}</dd>
+            {payment && payment.status !== "open" ? (
+              <dd className="mt-1 text-[14px] text-ink-muted">
+                {payment.kind === "full" ? paymentsPage.history.full : paymentsPage.history.deposit} {formatPriceCents(payment.amountCents)} ·{" "}
+                <span className={payment.status === "refund_failed" ? "font-medium text-error" : "font-medium text-ink"}>
+                  {paymentsPage.history.status[payment.status] ?? payment.status}
+                </span>
+                {payment.testmode ? " (test)" : ""}
+              </dd>
+            ) : null}
           </div>
         </dl>
         {booking.clientNotes ? (
@@ -88,7 +102,7 @@ export default async function RendezVousPage({ params, searchParams }: { params:
           {active ? <ConfirmButton action={setStatus("completed")}>Marquer terminé</ConfirmButton> : null}
           {active ? <ConfirmButton action={setStatus("no_show")}>Cliente absente</ConfirmButton> : null}
           {active ? (
-            <ConfirmButton action={setStatus("cancelled")} variant="danger" confirm="Annuler ce rendez-vous ? La cliente recevra un email d’annulation si elle a une adresse.">
+            <ConfirmButton action={setStatus("cancelled")} variant="danger" confirm={paid ? "Annuler ce rendez-vous ? Le paiement en ligne sera remboursé automatiquement et le client prévenu par email." : "Annuler ce rendez-vous ? La cliente recevra un email d’annulation si elle a une adresse."}>
               Annuler le rendez-vous
             </ConfirmButton>
           ) : null}

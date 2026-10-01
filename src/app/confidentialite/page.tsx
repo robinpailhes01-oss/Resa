@@ -63,9 +63,38 @@ export default function ConfidentialitePage() {
         <li>Vercel Inc. (États-Unis) : hébergement du site et exécution de l’application, clauses contractuelles types.</li>
         <li>Supabase Inc. : base de données, hébergée dans l’Union européenne (Irlande).</li>
         <li>Resend Inc. : envoi des emails transactionnels (confirmations, rappels, demandes d’avis).</li>
-        <li>SumUp : encaissement de l’abonnement des établissements ; les données de carte sont saisies chez SumUp uniquement.</li>
-        <li>Google (Places API) : uniquement lorsqu’un établissement choisit d’importer sa fiche Google ; aucune donnée de cliente n’est transmise à Google.</li>
+        <li>Mollie B.V. (Pays-Bas) : encaissement et prélèvement de l’abonnement des établissements ; les données de paiement sont saisies chez Mollie uniquement. SumUp sert de solution de secours.</li>
+        <li>Mollie B.V. (Pays-Bas), pour les établissements qui ont relié leur compte : paiement de l’acompte ou de la prestation par leurs clients. La carte est saisie chez Mollie ; {offer.brandName} ne conserve que le montant, le statut du paiement et le rendez-vous concerné.</li>
+        <li>Telegram : messages de service envoyés à l’équipe {offer.brandName} (nouvelle inscription, paiement, retour utilisateur), sans donnée de client final.</li>
+        <li>Google (Places API) : uniquement lorsqu’un établissement choisit d’importer sa fiche Google ; aucune donnée de client final n’est transmise à Google.</li>
       </ul>
+
+      <h2>Comptes professionnels et clients des établissements</h2>
+      <p>
+        Lorsqu’un professionnel crée un compte, {offer.brandName} traite son identité, son email, les informations de son
+        établissement et les données de facturation, pour fournir le service et respecter ses obligations comptables (factures
+        conservées dix ans). Les données des clients finaux d’un établissement (nom, email, téléphone, rendez-vous) sont
+        traitées pour le compte de cet établissement, qui en est responsable ; elles servent uniquement aux réservations, aux
+        rappels et aux demandes d’avis, et sont supprimées à la fermeture du compte selon les conditions de vente.
+      </p>
+
+      <h2>Prospection commerciale entre professionnels</h2>
+      <p>
+        {offer.brandName} peut écrire à des établissements de beauté dont l’adresse professionnelle est publiée (fiche Google,
+        site internet) pour leur présenter le service. Les données utilisées sont le nom de l’établissement, son adresse, son
+        téléphone, son site et son email professionnel. Base légale : intérêt légitime de {offer.brandName} à promouvoir son
+        offre auprès de professionnels. Ces données sont conservées trois ans au plus après le dernier contact. Chaque
+        destinataire peut s’opposer à tout moment, en répondant simplement « non merci » à l’email ou en écrivant
+        {offer.supportEmail ? (
+          <>
+            {" "}
+            à <a href={`mailto:${offer.supportEmail}`}>{offer.supportEmail}</a>
+          </>
+        ) : (
+          " à l’adresse de contact"
+        )}
+        : il est alors inscrit sur une liste d’opposition et n’est plus jamais contacté.
+      </p>
 
       <h2>Durées de conservation</h2>
       <ul>
@@ -88,9 +117,10 @@ export default function ConfidentialitePage() {
 
       <h2>Cookies et mesure d’audience</h2>
       <p>
-        Cette version du site ne dépose aucun cookie publicitaire ni traceur soumis à consentement, et n’embarque aucun contenu
-        tiers. Si un outil de mesure était ajouté, un mécanisme permettant d’accepter, de refuser et de modifier votre choix serait
-        mis en place avant tout dépôt.
+        Le site dépose un seul cookie, strictement nécessaire : le cookie de session qui maintient la connexion d’un
+        professionnel à son espace. Il ne requiert pas de consentement. Aucun cookie publicitaire, aucun traceur de mesure
+        d’audience et aucun contenu tiers ne sont chargés. Si un outil de mesure était ajouté, un mécanisme permettant
+        d’accepter, de refuser et de modifier votre choix serait mis en place avant tout dépôt.
       </p>
 
       <h2>Sécurité</h2>

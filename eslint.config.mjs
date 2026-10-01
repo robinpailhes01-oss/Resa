@@ -15,6 +15,8 @@ const eslintConfig = defineConfig([
     // Skills Claude (scripts vendored HyperFrames et outils vidéo) et projets vidéo.
     ".claude/**",
     "videos/**",
+    // CRM de prospection : projet Vercel séparé (voir crm/README.md).
+    "crm/**",
   ]),
 ]);
 

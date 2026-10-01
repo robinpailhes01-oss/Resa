@@ -23,19 +23,21 @@ export function AccessBanner({ establishment }: { establishment: Establishment }
           : access.state === "past_due"
             ? accessNotice.pastDue(fmt(access.paidUntil))
             : accessNotice.active(fmt(access.paidUntil));
+  // Abonnement à jour : rien à signaler, on n'encombre pas le haut de page.
+  if (access.state === "active") return null;
   const warning = access.state === "expired" || access.state === "cancelled" || access.state === "past_due";
-  const showCta = access.state !== "active";
+  const showCta = true;
   const Icon = access.state === "trial" ? Clock : warning ? AlertTriangle : Sparkles;
   return (
     <div
       role={warning ? "alert" : "status"}
       data-access={access.state}
       className={cn(
-        "mb-6 flex items-start gap-3 rounded-xl border px-4 py-3 text-[14px] leading-6 text-ink",
-        warning ? "border-accent/50 bg-accent-tint" : "border-line bg-soft-tint/60",
+        "mb-7 flex items-start gap-3 rounded-2xl border px-4 py-3 text-[14px] leading-6 text-ink",
+        warning ? "border-accent bg-accent-tint" : "border-line bg-card shadow-card",
       )}
     >
-      <Icon aria-hidden="true" className={cn("mt-1 size-4 shrink-0", warning ? "text-accent" : "text-brand")} />
+      <Icon aria-hidden="true" className={cn("mt-1 size-4 shrink-0", warning ? "text-lilac-ink" : "text-brand")} />
       <p className="flex-1">
         <span className="font-semibold">{notice.title} · </span>
         {notice.text}

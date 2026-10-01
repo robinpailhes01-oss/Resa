@@ -29,6 +29,8 @@ export default function MentionsLegalesPage() {
 
       <h2>Éditeur du site</h2>
       <p>{publisher ?? "Identité de l’éditeur : à renseigner (RESO_LEGAL_ENTITY)."}</p>
+      {offer.shareCapital ? <p>{offer.shareCapital}</p> : null}
+      {offer.rcs ? <p>{offer.rcs}</p> : null}
       {offer.legalId ? <p>SIREN : {offer.legalId}</p> : null}
       {offer.vatNumber ? <p>TVA intracommunautaire : {offer.vatNumber}</p> : null}
       {offer.publicationDirector ? <p>Directeur ou directrice de la publication : {offer.publicationDirector}</p> : null}
@@ -41,12 +43,14 @@ export default function MentionsLegalesPage() {
           "Adresse de contact : à renseigner (RESO_SUPPORT_EMAIL)."
         )}
       </p>
+      {offer.supportPhone ? <p>Téléphone : {offer.supportPhone}</p> : null}
 
       <h2>Hébergement</h2>
       <p>{host}</p>
       <p>
         Base de données hébergée par Supabase Inc. dans l’Union européenne (région AWS eu-west-1, Irlande). Emails envoyés par
-        Resend Inc. Paiements de l’abonnement traités par SumUp Payments Limited et SumUp Limited (SumUp) : {offer.brandName} ne
+        Resend Inc. Paiements de l’abonnement et prélèvements mensuels traités par Mollie B.V. (Amsterdam, Pays-Bas),
+        prestataire de services de paiement agréé ; SumUp Payments Limited sert de solution de secours : {offer.brandName} ne
         stocke aucune donnée de carte bancaire.
       </p>
 
