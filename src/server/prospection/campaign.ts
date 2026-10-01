@@ -1,5 +1,5 @@
 import "server-only";
-import { prospectionCampaigns, prospectionCategories, isProspectionEnabled } from "@/config/prospection";
+import { campaignExclusions, prospectionCampaigns, prospectionCategories, isProspectionEnabled } from "@/config/prospection";
 import { isBusinessDayParis } from "@/lib/prospection";
 import { getSql } from "@/server/db";
 import { getEmailSender } from "@/server/email";
@@ -51,13 +51,25 @@ export async function runCampaign(id: string, options: { dryRun: boolean; now?: 
   const result: CampaignResult = { campaign: campaign.key, alreadySent, searches: [], enriched: 0, ready: [], sent: [], remainingQueries: 0, skipped: null };
   if (remaining === 0) return { ...result, skipped: "campagne terminée" };
 
-  const readyRows = () => sql<ProspectRow[]>`
+  // Enseignes et adresses de plateforme : écartées une fois pour toutes (jamais contactées par une campagne).
+  const excluded = (r: ProspectRow) =>
+    campaignExclusions.names.test(r.name) || campaignExclusions.emailDomains.test(r.email ?? "") || campaignExclusions.emailLocalParts.test(r.email ?? "");
+  const readyRows = async () => {
+    const rows = await candidateRows();
+    const kept: ProspectRow[] = [];
+    for (const r of rows) {
+      if (excluded(r)) await sql`update prospects set status = 'sans_email', email_source = 'exclu-campagne', updated_at = ${now} where id = ${r.id}`;
+      else kept.push(r);
+    }
+    return kept.slice(0, remaining);
+  };
+  const candidateRows = () => sql<ProspectRow[]>`
     select * from prospects
     where status = 'a_contacter' and email is not null and campaign is null and first_email_at is null and ${inDepartment}
       and (booking_provider is null or not (booking_provider = any(${campaign.excludeProviders})))
       -- Une adresse présente sur plusieurs fiches est celle d'une agence ou d'une chaîne : jamais contactée.
       and email not in (select email from prospects where email is not null group by email having count(*) > 1)
-    order by created_at limit ${remaining}`;
+    order by created_at limit ${remaining * 3}`;
 
   // Recherches de la campagne, ville par ville (les plus proches de Montpellier d'abord).
   const queries = campaign.cities.flatMap((city) => prospectionCategories.map((category) => ({ text: `${category.query} ${city}`, category, city })));

@@ -103,6 +103,17 @@ export interface ProspectionCampaign {
   total: number;
 }
 
+/**
+ * Jamais contactés par une campagne : enseignes nationales (l'outil de réservation est
+ * imposé par le siège) et adresses appartenant à une plateforme ou à une enseigne.
+ */
+export const campaignExclusions = {
+  names: /franck provost|dessange|the barber company|beauty success|jean[- ]louis david|saint[- ]algue|camille albane|tchip|coiff.?\s?&\s?co|yves rocher|marionnaud|sephora|body minute|esthetic center|nocibé|nocibe|ladies hair|planet nails|l'onglerie/i,
+  emailDomains: /@(.+\.)?(rdv360\.com|planity\.com|treatwell\.(fr|com)|fresha\.com|kalendes\.com|booksy\.com|wavy\.co|salonkee\.(fr|com)|franckprovost\.com|dessange\.com|thebarbercompany\.fr|beautysuccess\.fr|yves-rocher\.fr|marionnaud\.fr|jeanlouisdavid\.com|saint-algue\.com|camilleablane\.com|tchip\.fr)$/i,
+  /** Adresses de service (boutique en ligne, ressources humaines…) : pas le salon. */
+  emailLocalParts: /^(e-?commerce|webmaster|rh|recrutement|jobs|noreply|no-reply|compta|facturation|marketing|presse)@/i,
+};
+
 export const prospectionCampaigns: Record<string, ProspectionCampaign> = {
   herault: {
     key: "herault-shooting",
