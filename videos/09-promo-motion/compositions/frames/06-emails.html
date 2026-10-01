@@ -524,12 +524,12 @@
       // ---- Scene 2 (0.8–3.2): word -> arc -> card lights up ----
       var WORD_AT = [0.8, 1.55, 2.3];
       words.forEach(function (w) {
-        tl.set(w, { yPercent: 115 }, 0);
+        tl.set(w, { yPercent: 140 }, 0);
       });
 
       WORD_AT.forEach(function (t, i) {
         // masked word rise
-        tl.fromTo(words[i], { yPercent: 115 }, { yPercent: 0, duration: 0.55, ease: "power3.out" }, t);
+        tl.fromTo(words[i], { yPercent: 140 }, { yPercent: 0, duration: 0.55, ease: "power3.out" }, t);
 
         // arc draws hub -> card, a spark rides the pen tip
         var L = lens[i];
@@ -590,7 +590,7 @@
         { clipPath: "inset(0% 0% 0% 0% round 100px)", duration: 0.5, ease: "expo.out" },
         3.0
       );
-      tl.fromTo(words[3], { yPercent: 115 }, { yPercent: 0, duration: 0.6, ease: "power3.out" }, 3.08);
+      tl.fromTo(words[3], { yPercent: 140 }, { yPercent: 0, duration: 0.6, ease: "power3.out" }, 3.08);
 
       var PUSH_AT = 3.05;
       var PUSH_DUR = 1.4;
@@ -612,7 +612,7 @@
       tl.to(rings, { opacity: 0.4, duration: 1.0, ease: "power2.inOut" }, PUSH_AT + 0.05);
       tl.to(shot, { filter: "blur(10px)", opacity: 0.25, duration: 1.0, ease: "power2.inOut" }, PUSH_AT + 0.05);
       // card 3 turns to face camera as focus lands
-      tl.to(cards[2], { rotationY: 0, duration: PUSH_DUR, ease: "power2.inOut" }, PUSH_AT);
+      tl.to(cards[2], { rotationY: 0, z: 40, duration: PUSH_DUR, ease: "power2.inOut" }, PUSH_AT);
 
       window.__timelines = window.__timelines || {};
       window.__timelines[FID] = tl;

@@ -179,7 +179,7 @@
       display: inline-block;
     }
     [data-composition-id="04-creneau"] .cr04-lav {
-      color: #d5cce9;
+      color: #ddd6ee;
     }
 
     /* ---------- foreground: coordonnées card + confirmation pill ---------- */
@@ -259,9 +259,9 @@
     data-height="1080"
   >
     <!-- full-bleed powder-blue stage -->
-    <div class="clip cr04-layer cr04-bg" data-start="0" data-duration="4.5" data-track-index="0">
-      <div class="cr04-grid"></div>
-      <svg class="cr04-arcs" viewBox="0 0 2320 1480" fill="none">
+    <div id="f04-creneau-stage" class="clip cr04-layer cr04-bg" data-start="0" data-duration="4.5" data-track-index="0">
+      <div class="cr04-grid" data-layout-allow-overflow></div>
+      <svg class="cr04-arcs" data-layout-allow-overflow viewBox="0 0 2320 1480" fill="none">
         <circle cx="2050" cy="1500" r="1180" stroke="rgba(251,246,234,0.25)" stroke-width="2" />
         <circle cx="2050" cy="1500" r="1420" stroke="rgba(251,246,234,0.12)" stroke-width="1.5" />
         <circle cx="-120" cy="-260" r="900" stroke="rgba(251,246,234,0.16)" stroke-width="1.5" />
@@ -270,17 +270,17 @@
     </div>
 
     <!-- world: tilted créneaux card on the table -->
-    <div class="clip cr04-layer" data-start="0" data-duration="4.5" data-track-index="1">
-      <div class="cr04-cam">
+    <div id="f04-creneau-world" class="clip cr04-layer" data-start="0" data-duration="4.5" data-track-index="1">
+      <div class="cr04-cam" data-layout-allow-overflow>
         <div class="cr04-pan">
           <div class="cr04-table">
             <div class="cr04-plane">
-              <div class="cr04-sheet">
-                <img src="assets/reservation-mobile-creneaux.png" alt="" />
+              <div class="cr04-sheet" data-layout-allow-overflow>
+                <img data-layout-allow-overflow src="assets/reservation-mobile-creneaux.png" alt="" />
               </div>
               <div class="cr04-ripple cr04-r1"></div>
               <div class="cr04-ripple cr04-r2"></div>
-              <div class="cr04-slot">10:30</div>
+              <div class="cr04-slot" data-layout-allow-occlusion>10:30</div>
               <div class="cr04-cursor-anchor">
                 <div class="cr04-cursor-bill">
                   <svg class="cr04-cursor" viewBox="0 0 74 92">
@@ -301,23 +301,23 @@
     </div>
 
     <!-- title on the stage -->
-    <div class="clip cr04-layer" data-start="0" data-duration="4.5" data-track-index="2">
+    <div id="f04-creneau-title" class="clip cr04-layer" data-start="0" data-duration="4.5" data-track-index="2">
       <div class="cr04-title">
         <span class="cr04-line"
-          ><span class="cr04-w"><span class="cr04-wi">Elles</span></span>
-          <span class="cr04-w"><span class="cr04-wi">réservent</span></span></span
+          ><span class="cr04-w" data-layout-allow-overflow><span class="cr04-wi">Elles</span></span>
+          <span class="cr04-w" data-layout-allow-overflow><span class="cr04-wi">réservent</span></span></span
         >
         <span class="cr04-line"
-          ><span class="cr04-w"><span class="cr04-wi">seules,</span></span>
-          <span class="cr04-w"><span class="cr04-wi cr04-lav">24h/24.</span></span></span
+          ><span class="cr04-w" data-layout-allow-overflow><span class="cr04-wi">seules,</span></span>
+          <span class="cr04-w" data-layout-allow-overflow><span class="cr04-wi cr04-lav">24h/24.</span></span></span
         >
       </div>
     </div>
 
     <!-- foreground: coordonnées card + confirmation -->
-    <div class="clip cr04-layer cr04-front" data-start="0" data-duration="4.5" data-track-index="3">
+    <div id="f04-creneau-front" class="clip cr04-layer cr04-front" data-start="0" data-duration="4.5" data-track-index="3">
       <div class="cr04-coord">
-        <img src="assets/reservation-mobile-coordonnees.png" alt="" />
+        <img data-layout-allow-overflow src="assets/reservation-mobile-coordonnees.png" alt="" />
       </div>
       <div class="cr04-pill-wrap">
         <div class="cr04-pill">
@@ -354,8 +354,8 @@
       qa(".cr04-wi").forEach((el, i) => {
         tl.fromTo(
           el,
-          { yPercent: 115 },
-          { yPercent: 0, duration: 0.7, ease: "expo.out" },
+          { yPercent: 115, opacity: 0 },
+          { yPercent: 0, opacity: 1, duration: 0.7, ease: "expo.out" },
           0.12 + i * 0.09,
         );
       });
