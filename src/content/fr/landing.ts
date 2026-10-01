@@ -92,6 +92,28 @@ export const hero = {
   previewAlt: `Aperçu illustratif de l’agenda ${brand} : la journée de Camille chez Maison Alba, un établissement fictif.`,
 };
 
+/**
+ * Vidéo de présentation (paysage, voix off) sous le hero. Elle cite l'essai
+ * gratuit et le tarif : affichée seulement en mode live.
+ */
+export const promoVideo = {
+  visible: { prelaunch: false, live: true } satisfies ByMode<boolean>,
+  eyebrow: "En vidéo",
+  title: `${brand} en 40 secondes.`,
+  text: "Votre page de réservation, l’agenda, le tableau de bord et les emails automatiques : tout ce que fait l’application, montré sur la démo.",
+  /** H.264 d’abord (Safari, Chrome), VP9 en secours (Chromium sans codecs propriétaires). */
+  sources: [
+    { src: "/videos/reso-presentation.mp4", type: "video/mp4" },
+    { src: "/videos/reso-presentation.webm", type: "video/webm" },
+  ],
+  poster: "/videos/reso-presentation-poster.webp",
+  captions: { src: "/videos/reso-presentation.fr.vtt", label: "Français" },
+  playLabel: "Lancer la vidéo",
+  duration: "0:38",
+  ariaLabel: `Vidéo de présentation de ${brand}, avec voix off et sous-titres`,
+  caption: "Démo avec des données d’exemple.",
+};
+
 /** Bloc « l'agenda » sous le hero. */
 export const productShowcase = {
   index: "[002]",

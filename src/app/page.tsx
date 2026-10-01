@@ -6,6 +6,7 @@ import { Header } from "@/components/landing/Header";
 import { Hero } from "@/components/landing/Hero";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import { Pricing } from "@/components/landing/Pricing";
+import { PromoVideo } from "@/components/landing/PromoVideo";
 import { ProductShowcase } from "@/components/landing/ProductShowcase";
 import { Testimonials } from "@/components/landing/Testimonials";
 import { TwoSides } from "@/components/landing/TwoSides";
@@ -47,6 +48,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
       <Header />
       <main id="contenu" className="flex-1">
         <Hero />
+        <PromoVideo />
         <ProductShowcase />
         <Features />
         <TwoSides />
