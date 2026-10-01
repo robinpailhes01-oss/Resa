@@ -72,7 +72,7 @@ Scene 3 (1.1–2.5s) : un trait crème fin se trace sous le logo, puis « BEAUTY
 - focal: assets/app-ma-page.png
 - roles: app-ma-page = cutout (grand écran desktop, héros, 2880×1694) · app-page-publique-mobile = supporting (téléphone devant, à droite, 1170×2532) · app-page-publique-desktop = background (grande carte très floue en profondeur, ~30 %)
 - asset_candidates: assets/app-ma-page.png, assets/app-page-publique-mobile.png, assets/app-page-publique-desktop.png
-- status: outline
+- status: animated
 - src: compositions/frames/03-page.html
 - voiceover: « Vous avez votre propre page de réservation : vos photos, vos prestations, vos avis. » (débute à 0.3s ; « vos photos » ≈ 2.75s, « vos prestations » ≈ 3.3s, « vos avis » ≈ 4.2s)
 
@@ -114,7 +114,7 @@ Scene 4 (3.4–4.5s) : une pastille verte-poudrée « ✓ Réservation confirmé
 - focal: assets/app-agenda.png
 - roles: app-agenda = cutout (grand écran desktop incliné, 2880×1756)
 - asset_candidates: assets/app-agenda.png
-- status: outline
+- status: animated
 - src: compositions/frames/05-agenda.html
 - voiceover: « Et tout arrive directement dans votre agenda. » (débute à 0.2s ; « agenda » ≈ 2.1s)
 
@@ -134,7 +134,7 @@ Scene 3 (2.6–4.0s) : une notification « Nouvelle réservation · Julie Martin
 - focal: assets/app-dashboard-activite.png
 - roles: app-dashboard-activite = cutout (grande carte, 2240×1000 : tuiles + graphique) · app-dashboard = background (écran complet très flou en profondeur, « Bonjour Camille »)
 - asset_candidates: assets/app-dashboard-activite.png, assets/app-dashboard.png
-- status: outline
+- status: animated
 - src: compositions/frames/055-tableau.html
 - voiceover: « Votre tableau de bord vous montre vos rendez-vous, vos revenus, votre remplissage… en un coup d'œil. » (débute à 0.3s ; « rendez-vous » ≈ 2.0s, « revenus » ≈ 2.8s, « remplissage » ≈ 3.7s, « coup d'œil » ≈ 4.8s)
 

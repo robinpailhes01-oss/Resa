@@ -450,12 +450,12 @@
       tl.fromTo(
         "#f05-agenda-canvas",
         { x: 0, y: 0, scale: 0.416667 },
-        { x: -337, y: -158, scale: 0.548, duration: 1.05, ease: "power3.inOut" },
+        { x: -330, y: -158, scale: 0.548, duration: 1.05, ease: "power3.inOut" },
         1.25,
       );
       tl.to("#f05-agenda-win", { z: 60, rotationY: -10, rotationX: 2, duration: 1.05, ease: "power3.inOut" }, 1.25);
       // breathing drift on the hold (never dies)
-      tl.to("#f05-agenda-canvas", { x: -345, y: -164, scale: 0.552, duration: 2.2, ease: "sine.inOut" }, 2.3);
+      tl.to("#f05-agenda-canvas", { x: -334, y: -162, scale: 0.55, duration: 2.2, ease: "sine.inOut" }, 2.3);
       tl.to("#f05-agenda-win", { z: 80, rotationY: -9, duration: 2.2, ease: "sine.inOut" }, 2.3);
 
       // empty slot lights up, then the booking block drops into it (lands on « agenda » ≈ 2.1s)
