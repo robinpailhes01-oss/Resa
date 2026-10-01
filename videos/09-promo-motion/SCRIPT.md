@@ -13,4 +13,4 @@ Texte dit (≈ 30 s), une phrase par scène :
 
 Règles : la voix décrit ce que fait Reso, sans promettre de résultat chiffré. Les chiffres visibles du tableau de bord sont les **données d'exemple de la démo** (mention à l'écran).
 
-Génération : Higgsfield `text2speech_v2`, moteur ElevenLabs, une prise par phrase (pour caler chaque phrase sur sa scène), puis assemblage et normalisation dans `mix.sh`.
+Génération : Higgsfield `text2speech_v2`, moteur ElevenLabs, voix « Céline » (choisie parmi 7 essais, dossier media/voix-test), une prise continue découpée phrase par phrase, accélérée de 6 % (atempo), puis assemblage et normalisation dans `mix.sh`.

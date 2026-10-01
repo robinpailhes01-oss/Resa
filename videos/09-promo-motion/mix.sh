@@ -4,22 +4,24 @@
 #   node ../../.claude/skills/reso-video-charte/scripts/sound-kit.mjs audio --bed 38 --bpm 84
 #   media/vo.mp3 : prise voix off retenue (SCRIPT.md)
 #   npx hyperframes render --skill=product-launch-video --quality high --output renders/video.mp4
-# Sortie : renders/09-promo-motion-v2.mp4 (−15 LUFS).
+# Sortie : renders/09-promo-motion-v3.mp4 (−15 LUFS).
 set -euo pipefail
 cd "$(dirname "$0")"
 A=audio
-DUR=37.3
+DUR=37.7
+TEMPO=1.06   # voix légèrement accélérée (timbre inchangé)
 
 # Voix : phrase = début dans la prise, fin dans la prise, position dans la vidéo (s).
 VO=(
-  "0.00 3.90 0.30"     # Vos clientes vous cherchent en ligne… tout de suite !
-  "3.90 5.77 4.74"     # Avec Réso, c'est simple.
-  "5.77 10.71 6.96"    # Vous avez votre propre page de réservation…
-  "10.71 14.69 12.01"  # Vos clientes choisissent leur créneau…
-  "14.69 17.14 16.55"  # Et tout arrive directement dans votre agenda.
-  "17.14 22.79 20.62"  # Votre tableau de bord vous montre…
-  "22.79 27.09 26.92"  # Confirmation, rappel, demande d'avis…
-  "27.09 31.00 31.30"  # Essayez Réso gratuitement…
+  "0.00 2.10 0.25"     # Vos clientes vous cherchent en ligne…
+  "2.90 6.00 2.35"     # …et elles veulent réserver, tout de suite !
+  "6.00 7.90 5.15"     # Avec Réso, c'est simple.
+  "7.90 13.45 7.00"    # Vous avez votre propre page de réservation…
+  "13.45 18.30 12.20"  # Vos clientes choisissent leur créneau…
+  "18.30 21.95 16.70"  # Et tout arrive directement dans votre agenda.
+  "21.95 28.75 20.70"  # Votre tableau de bord vous montre…
+  "28.75 34.10 27.40"  # Confirmation, rappel, demande d'avis…
+  "34.10 38.43 31.70"  # Essayez Réso gratuitement…
 )
 
 # Bruitages : fichier, instant (s), gain.
@@ -27,19 +29,19 @@ SFX=(
   "type 1.9 0.4"       # requête tapée
   "whoosh 4.35 0.6"    # zoom à travers la barre
   "logo 4.9 0.6"       # reso® se forme
-  "whoosh 6.6 0.35"    # fenêtre « Ma page »
-  "tick 10.9 0.6"      # pastille avis
-  "tick 13.95 0.7"     # clic sur le créneau
-  "ding 15.45 0.5"     # réservation confirmée
-  "ding 18.6 0.6"      # rendez-vous dans l'agenda
-  "tick 22.6 0.55"     # tuile rendez-vous
-  "tick 23.4 0.55"     # tuile revenus
-  "tick 24.3 0.55"     # tuile remplissage
-  "tick 27.85 0.5"     # confirmation
-  "tick 28.6 0.5"      # rappel
-  "tick 29.35 0.5"     # avis
-  "tick 34.18 0.6"     # clic « Créer ma page »
-  "logo 34.75 0.9"     # signature
+  "whoosh 6.8 0.35"    # fenêtre « Ma page »
+  "tick 11.15 0.6"     # pastille avis
+  "tick 14.15 0.7"     # clic sur le créneau
+  "ding 15.65 0.5"     # réservation confirmée
+  "ding 18.8 0.6"      # rendez-vous dans l'agenda
+  "tick 22.7 0.55"     # tuile rendez-vous
+  "tick 23.5 0.55"     # tuile revenus
+  "tick 24.4 0.55"     # tuile remplissage
+  "tick 28.23 0.5"     # confirmation
+  "tick 28.98 0.5"     # rappel
+  "tick 29.73 0.5"     # avis
+  "tick 34.58 0.6"     # clic « Créer ma page »
+  "logo 35.15 0.9"     # signature
 )
 
 inputs=(-i renders/video.mp4 -i "$A/bed.wav")
@@ -50,7 +52,7 @@ for v in "${VO[@]}"; do
   read -r from to at <<<"$v"
   inputs+=(-i media/vo.mp3)
   ms=$(awk "BEGIN{printf \"%d\", $at*1000}")
-  filters+="[$n:a]atrim=$from:$to,asetpts=PTS-STARTPTS,aresample=48000,afade=t=in:d=0.03,afade=t=out:st=$(awk "BEGIN{print $to-$from-0.06}"):d=0.06,adelay=${ms}|${ms}[v$n];"
+  filters+="[$n:a]atrim=$from:$to,asetpts=PTS-STARTPTS,aresample=48000,afade=t=in:d=0.03,atempo=$TEMPO,afade=t=out:st=$(awk "BEGIN{print ($to-$from)/$TEMPO-0.06}"):d=0.06,adelay=${ms}|${ms}[v$n];"
   vmix+="[v$n]"
   n=$((n + 1))
 done
@@ -74,5 +76,5 @@ filters+="[bedr][key]sidechaincompress=threshold=0.03:ratio=6:attack=40:release=
 filters+="[bed][voice]${smix}amix=inputs=$((nsfx + 2)):normalize=0,atrim=0:$DUR,loudnorm=I=-15:TP=-1.5:LRA=11[a]"
 
 ffmpeg -y -v error "${inputs[@]}" -filter_complex "$filters" -map 0:v -map "[a]" \
-  -c:v copy -c:a aac -b:a 192k -ar 48000 -movflags +faststart renders/09-promo-motion-v2.mp4
-echo "✔ renders/09-promo-motion-v2.mp4"
+  -c:v copy -c:a aac -b:a 192k -ar 48000 -movflags +faststart renders/09-promo-motion-v3.mp4
+echo "✔ renders/09-promo-motion-v3.mp4"

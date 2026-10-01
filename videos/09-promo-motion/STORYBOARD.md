@@ -1,6 +1,6 @@
 ---
 format: 1920x1080
-duration: 37.3s
+duration: 37.7s
 message: "Vos clientes réservent en ligne, toutes seules — Reso s'occupe du reste."
 arc: Hook → Product intro → Demo loop (page → créneau → agenda → emails) → CTA
 audience: Professionnels indépendants de la beauté en France
@@ -9,7 +9,7 @@ music: none
 voiceover: media/vo.wav (assemblée par mix.sh, hors pipeline)
 ---
 
-Voix off féminine (SCRIPT.md, ElevenLabs « Chloe ») découpée phrase par phrase et posée sur chaque frame par `mix.sh` ; les titres à l'écran reprennent les mots-clés de la voix. Musique et bruitages (kit sonore Reso) ajoutés au même mixage, hors du pipeline audio. Les écrans de l'app viennent de la démo en ligne (reso-app.fr/demo, données d'exemple) capturée en 2880 px.
+Voix off féminine (SCRIPT.md, ElevenLabs « Céline », accélérée de 6 %) découpée phrase par phrase et posée sur chaque frame par `mix.sh` ; les titres à l'écran reprennent les mots-clés de la voix. Musique et bruitages (kit sonore Reso) ajoutés au même mixage, hors du pipeline audio. Les écrans de l'app viennent de la démo en ligne (reso-app.fr/demo, données d'exemple) capturée en 2880 px.
 
 ## Video direction
 
@@ -44,7 +44,7 @@ Scene 4 (3.0–4.5s) : 3 suggestions tombent sous la barre en cascade (« esthé
 ## Frame 2 — Marque : reso®
 
 - scene: Push-in à travers la barre ; le mot-symbole reso® se dévoile au centre, « Beauty business simplified » en dessous.
-- duration: 2.3s
+- duration: 2.5s
 - transition_in: zoom-through
 - type: branding
 - blueprint: logo-assemble-lockup (Adapt)
@@ -127,7 +127,7 @@ Scene 3 (2.6–4.0s) : une notification « Nouvelle réservation · Julie Martin
 ## Frame 6 — Tableau de bord : « vos rendez-vous, vos revenus, votre remplissage »
 
 - scene: Le vrai tableau de bord : les 4 tuiles d'activité (Rendez-vous 86, Revenus 4 230 €, Remplissage 78 %, Annulations 3) puis le graphique « Rendez-vous par jour » ; la caméra passe de tuile en tuile au rythme de la voix.
-- duration: 6s
+- duration: 6.2s
 - transition_in: crossfade
 - type: feature_showcase
 - blueprint: camera-journey (Adapt)
