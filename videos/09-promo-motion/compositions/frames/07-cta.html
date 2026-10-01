@@ -149,9 +149,6 @@
     .cta07-word {
       display: inline-block;
     }
-    .cta07-word-accent {
-      color: #d9cfee;
-    }
     #cta07-offer {
       position: absolute;
       left: 0;
@@ -165,7 +162,7 @@
       color: rgba(251, 246, 234, 0.88);
     }
     #cta07-offer .cta07-dot {
-      color: #b6a6d8;
+      color: rgba(251, 246, 234, 0.88);
       padding: 0 0.35em;
     }
 
@@ -310,7 +307,7 @@
       color: rgba(251, 246, 234, 0.72);
     }
     #cta07-price .cta07-dot {
-      color: rgba(251, 246, 234, 0.45);
+      color: rgba(251, 246, 234, 0.72);
       padding: 0 0.4em;
     }
   </style>
@@ -325,7 +322,7 @@
   >
     <!-- Ground: powder-blue stage, floor grid, luminous arcs -->
     <div id="cta07-ground" class="clip cta07-ground" data-start="0" data-duration="5.5" data-track-index="0">
-      <div class="cta07-floor"></div>
+      <div class="cta07-floor" data-layout-allow-overflow></div>
       <svg class="cta07-arcs" viewBox="0 0 1920 1080" fill="none">
         <path d="M -200 860 C 300 420, 1200 180, 2140 300" stroke="rgba(251,246,234,0.25)" stroke-width="1.6" />
         <path d="M -160 1000 C 520 620, 1360 520, 2120 700" stroke="rgba(251,246,234,0.14)" stroke-width="1.2" />
@@ -345,7 +342,7 @@
 
         <div id="cta07-stack">
           <div id="cta07-title">
-            <span class="cta07-mask"><span class="cta07-word">Envie</span></span><span class="cta07-mask"><span class="cta07-word cta07-word-accent">d’essayer&nbsp;?</span></span>
+            <span class="cta07-mask" data-layout-allow-overflow><span class="cta07-word">Envie</span></span><span class="cta07-mask" data-layout-allow-overflow><span class="cta07-word">d’essayer&nbsp;?</span></span>
           </div>
 
           <div id="cta07-offer">7 jours offerts<span class="cta07-dot">·</span>sans carte bancaire</div>
