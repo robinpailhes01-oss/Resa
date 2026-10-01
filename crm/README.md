@@ -16,3 +16,11 @@ Variables du projet Vercel :
 | `BLOB_READ_WRITE_TOKEN` | Ajoutée automatiquement par le store Blob relié au projet |
 
 Changer `CRM_PASSWORD` puis redéployer coupe l'accès à ceux qui ne connaissent pas le nouveau mot de passe ; changer aussi `CRM_SECRET` déconnecte toutes les sessions ouvertes.
+
+## Importer des leads
+
+`crm/data/leads.json` contient les lots déjà repérés (Embrun – Gap, Hérault – Gard). Pour les charger dans le CRM déployé, sans doublon :
+
+```bash
+CRM_URL=https://<url-du-crm> CRM_PASSWORD=<mot de passe> node crm/scripts/import.mjs
+```
