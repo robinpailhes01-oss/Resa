@@ -55,8 +55,9 @@ tests/screenshots/
 /videos/*/snapshots/
 /videos/*/index.html
 *.mp4
-!/public/videos/*.mp4
 *.mov
 *.webm
+!/public/videos/*.mp4
+!/public/videos/*.webm
 /videos/*/capture/assets/
 /videos/*/audio/
