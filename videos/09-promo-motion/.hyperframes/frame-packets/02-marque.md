@@ -11,14 +11,14 @@
 ## Frame 2 — Marque : reso®
 
 - scene: Push-in à travers la barre ; le mot-symbole reso® se dévoile au centre, « Beauty business simplified » en dessous.
-- duration: 2.5s
+- duration: 2.3s
 - transition_in: zoom-through
 - type: branding
 - blueprint: logo-assemble-lockup (Adapt)
 - focal: assets/logo-reso-creme.svg
 - roles: logo-reso-creme = cutout (centre)
 - asset_candidates: assets/logo-reso-creme.svg
-- status: outline
+- status: animated
 - src: compositions/frames/02-marque.html
 - voiceover: (aucune) — à l'écran : reso® · BEAUTY BUSINESS SIMPLIFIED
 

@@ -1,14 +1,15 @@
 ---
 format: 1920x1080
-duration: 30s
+duration: 37.3s
 message: "Vos clientes réservent en ligne, toutes seules — Reso s'occupe du reste."
 arc: Hook → Product intro → Demo loop (page → créneau → agenda → emails) → CTA
 audience: Professionnels indépendants de la beauté en France
 mode: collaborative
 music: none
+voiceover: media/vo.wav (assemblée par mix.sh, hors pipeline)
 ---
 
-Pas de voix off : le texte à l'écran porte le message (titres courts révélés mot par mot), et les reveals sont calés sur ces titres comme ils le seraient sur une voix. Musique et bruitages (kit sonore Reso) sont ajoutés à l'assemblage, hors du pipeline audio.
+Voix off féminine (SCRIPT.md, ElevenLabs « Chloe ») découpée phrase par phrase et posée sur chaque frame par `mix.sh` ; les titres à l'écran reprennent les mots-clés de la voix. Musique et bruitages (kit sonore Reso) ajoutés au même mixage, hors du pipeline audio. Les écrans de l'app viennent de la démo en ligne (reso-app.fr/demo, données d'exemple) capturée en 2880 px.
 
 ## Video direction
 
@@ -43,7 +44,7 @@ Scene 4 (3.0–4.5s) : 3 suggestions tombent sous la barre en cascade (« esthé
 ## Frame 2 — Marque : reso®
 
 - scene: Push-in à travers la barre ; le mot-symbole reso® se dévoile au centre, « Beauty business simplified » en dessous.
-- duration: 2.5s
+- duration: 2.3s
 - transition_in: zoom-through
 - type: branding
 - blueprint: logo-assemble-lockup (Adapt)
@@ -61,26 +62,26 @@ Scene 2 (0.4–1.4s) : le mot-symbole reso® se dévoile de gauche à droite par
 Scene 3 (1.1–2.5s) : un trait crème fin se trace sous le logo, puis « BEAUTY BUSINESS SIMPLIFIED » apparaît en tracking large qui se resserre ; tenue immobile. Centré, 2 couches.
 - sfx: whoosh à l'entrée, logo (logo sonore) à 0.5s.
 
-## Frame 3 — « On crée votre page de réservation. »
+## Frame 3 — « Votre page de réservation. »
 
-- scene: La vraie page publique « Maison Alba » arrive dans un téléphone flottant incliné en 3D, une 2e carte (prestations + horaires) glisse derrière en profondeur.
-- duration: 4.5s
+- scene: Le vrai écran desktop « Ma page de réservation » (photos, bio) arrive en grand panneau 3D incliné ; puis la page publique « Maison Alba » côté client glisse devant dans un téléphone, comme son aperçu.
+- duration: 5.2s
 - transition_in: crossfade
 - type: product_intro
 - blueprint: device-surface-showcase (Adapt)
-- focal: assets/page-publique-mobile-haut.png
-- roles: page-publique-mobile-haut = cutout (dans un téléphone, héros) · page-publique-mobile-horaires = supporting (carte en profondeur, floue)
-- asset_candidates: assets/page-publique-mobile-haut.png, assets/page-publique-mobile-horaires.png
-- status: animated
+- focal: assets/app-ma-page.png
+- roles: app-ma-page = cutout (grand écran desktop, héros, 2880×1694) · app-page-publique-mobile = supporting (téléphone devant, à droite, 1170×2532) · app-page-publique-desktop = background (grande carte très floue en profondeur, ~30 %)
+- asset_candidates: assets/app-ma-page.png, assets/app-page-publique-mobile.png, assets/app-page-publique-desktop.png
+- status: outline
 - src: compositions/frames/03-page.html
-- voiceover: (aucune) — à l'écran : « On crée votre page de réservation. »
+- voiceover: « Vous avez votre propre page de réservation : vos photos, vos prestations, vos avis. » (débute à 0.3s ; « vos photos » ≈ 2.75s, « vos prestations » ≈ 3.3s, « vos avis » ≈ 4.2s)
 
-Adapt : variante « floating-window push-scroll » : un téléphone crème flottant (cadre fin, coins ~56px) incliné ~-18° en rotateY, l'écran fait défiler doucement la page réelle.
-Scene 1 (0.0–1.2s) : titre « On crée votre page de réservation. » monte mot par mot à gauche (colonne 40 %, tiers supérieur). Mise en page asymétrique 40/60.
-Scene 2 (0.8–2.4s) : le téléphone arrive depuis la droite et la profondeur (translateZ négatif → 0, rotateY -30° → -18°, `power3`), ombre longue au sol ; l'écran montre la page publique (haut : « Maison Alba », bouton « Prendre rendez-vous », photo).
-Scene 3 (2.2–3.6s) : derrière lui, en profondeur et légèrement floue, la carte « prestations + horaires » (page-publique-mobile-horaires) glisse en place, décalée en haut à droite (`depth-of-field-blur`).
-Scene 4 (3.2–4.5s) : l'écran du téléphone fait défiler doucement la page jusqu'au bouton « Prendre rendez-vous » qui s'illumine d'un halo lavande (`3d-page-scroll` + `asr-keyword-glow`) ; tenue.
-- sfx: whoosh doux à l'arrivée du téléphone.
+Adapt : écran desktop réel en héros (fenêtre crème à coins arrondis, fine barre de titre avec 3 pastilles et l'URL « reso-app.fr/r/maison-alba »), incliné en rotateY ~14° et rotateX ~6°, occupant ~62 % de la largeur à droite ; un téléphone (page publique) passe devant.
+Scene 1 (0.0–1.3s) : kicker « MA PAGE » + titre « Votre page de réservation. » monte mot par mot à gauche (colonne ~34 %, tiers supérieur). La fenêtre desktop arrive depuis la profondeur à droite (`power3`/`expo.out`), ombre longue.
+Scene 2 (1.3–2.6s) : la caméra glisse vers la rangée « Photos » de la capture ; les 4 photos sont mises en valeur une à une par un léger soulèvement (calques recadrés sur les vraies photos de la capture, aux coordonnées exactes) au rythme de « vos photos » (≈2.75s).
+Scene 3 (2.6–4.0s) : le téléphone (page publique mobile) glisse depuis le bas-droite devant la fenêtre, incliné rotateY -16°, l'écran défile doucement de la photo vers « Choix de la prestation » (≈ « vos prestations » 3.3s).
+Scene 4 (4.0–5.2s) : une petite pastille crème « ★ 4,9 · avis Google » éclot près du téléphone sur « vos avis » (≈4.2s) — chiffre visible sur la capture de démo ; tenue avec micro push de caméra.
+- sfx: whoosh doux à l'arrivée de la fenêtre, tick sur la pastille avis.
 
 ## Frame 4 — « Elles réservent seules, 24h/24. »
 
@@ -105,28 +106,48 @@ Scene 4 (3.4–4.5s) : une pastille verte-poudrée « ✓ Réservation confirmé
 
 ## Frame 5 — « Tout arrive dans votre agenda. »
 
-- scene: Travelling latéral vers l'agenda réel ; un nouveau bloc « Soin du visage · Julie M. » tombe dans la journée avec un « ding ».
+- scene: Le vrai agenda desktop (deux colonnes Camille / Inès) en grand panneau 3D ; un nouveau rendez-vous « 11:00 · Julie Martin · Soin du visage » tombe dans un créneau vide avec un « ding ».
 - duration: 4s
 - transition_in: crossfade
 - type: benefit_highlight
 - blueprint: camera-journey (Adapt)
-- focal: assets/agenda-mobile-lundi.png
-- roles: agenda-mobile-lundi = cutout (téléphone / grande carte)
-- asset_candidates: assets/agenda-mobile-lundi.png
-- status: animated
+- focal: assets/app-agenda.png
+- roles: app-agenda = cutout (grand écran desktop incliné, 2880×1756)
+- asset_candidates: assets/app-agenda.png
+- status: outline
 - src: compositions/frames/05-agenda.html
-- voiceover: (aucune) — à l'écran : « Tout arrive dans votre agenda. »
+- voiceover: « Et tout arrive directement dans votre agenda. » (débute à 0.2s ; « agenda » ≈ 2.1s)
 
-Adapt : une seule jambe de caméra (travelling latéral + léger push) qui se pose sur l'agenda, puis la conséquence (le bloc qui tombe) ; c'est le plan respiration.
-Scene 1 (0.0–1.4s) : travelling latéral de droite à gauche qui se pose (`viewport-change`, `power3`) : l'agenda (capture) dans un grand téléphone légèrement incliné, à droite du cadre ; titre « Tout arrive dans votre agenda. » à gauche, mot par mot. Asymétrique 45/55.
-Scene 2 (1.4–2.8s) : un bloc de rendez-vous HTML crème-lavande « Soin du visage · 10:30 · Julie M. » descend du haut et se loge dans un créneau vide de la colonne de l'agenda (aligné sur la grille de l'image), petite ombre qui se resserre à l'atterrissage.
-Scene 3 (2.8–4.0s) : une notification « Nouvelle réservation » (icône reso) glisse brièvement au-dessus du téléphone puis se pose ; tenue immobile.
+Adapt : une seule jambe de caméra (travelling latéral + push) qui se pose sur la grille, puis la conséquence (le bloc qui tombe) ; plan respiration.
+Scene 1 (0.0–1.4s) : la fenêtre desktop de l'agenda (fenêtre crème, barre de titre fine) arrive par travelling de droite à gauche et se pose, inclinée rotateY ~-12°, ~68 % de la largeur à droite ; titre « Tout arrive dans votre agenda. » à gauche mot par mot, « agenda. » en lavande claire.
+Scene 2 (1.4–2.6s) : la caméra pousse vers un créneau vide de la colonne « Inès » entre 11:00 et 13:00 ; un bloc HTML lavande clair aux couleurs exactes des blocs de la capture « 11:00 · Julie Martin / Soin du visage » descend du haut et se loge à l'atterrissage ≈2.1s (sur « agenda »), ombre qui se resserre, anneau lavande.
+Scene 3 (2.6–4.0s) : une notification « Nouvelle réservation · Julie Martin · 11:00 » (icône reso) glisse au-dessus de la fenêtre et se pose ; tenue.
 - sfx: ding à l'atterrissage du bloc.
 
-## Frame 6 — « Confirmation, rappel, avis : automatiques. »
+## Frame 6 — Tableau de bord : « vos rendez-vous, vos revenus, votre remplissage »
+
+- scene: Le vrai tableau de bord : les 4 tuiles d'activité (Rendez-vous 86, Revenus 4 230 €, Remplissage 78 %, Annulations 3) puis le graphique « Rendez-vous par jour » ; la caméra passe de tuile en tuile au rythme de la voix.
+- duration: 6s
+- transition_in: crossfade
+- type: feature_showcase
+- blueprint: camera-journey (Adapt)
+- focal: assets/app-dashboard-activite.png
+- roles: app-dashboard-activite = cutout (grande carte, 2240×1000 : tuiles + graphique) · app-dashboard = background (écran complet très flou en profondeur, « Bonjour Camille »)
+- asset_candidates: assets/app-dashboard-activite.png, assets/app-dashboard.png
+- status: outline
+- src: compositions/frames/055-tableau.html
+- voiceover: « Votre tableau de bord vous montre vos rendez-vous, vos revenus, votre remplissage… en un coup d'œil. » (débute à 0.3s ; « rendez-vous » ≈ 2.0s, « revenus » ≈ 2.8s, « remplissage » ≈ 3.7s, « coup d'œil » ≈ 4.8s)
+
+Adapt : les chiffres des tuiles sont des données d'exemple de la démo ; on les montre tels quels (capture), avec une mention discrète « Données d'exemple » en mono en bas à droite de la carte. Les comptes animés sont des calques HTML posés exactement sur les chiffres de la capture (même police Outfit 500, même couleur encre #1F2733, fond de tuile #FFFDF8 qui masque le chiffre d'origine) et finissent exactement sur la valeur capturée.
+Scene 1 (0.0–1.4s) : kicker « TABLEAU DE BORD » + titre « Tout, en un coup d'œil. » en haut à gauche, mot par mot ; la carte d'activité arrive depuis la profondeur, inclinée rotateX ~18°, comme posée sur une table, ~78 % de la largeur ; en fond, l'écran complet très flou.
+Scene 2 (1.4–4.4s) : la caméra (`coordinate-target-zoom`) passe sur la tuile Rendez-vous (≈2.0s : 0 → 86 en count-up), puis Revenus (≈2.8s : 0 → 4 230 €), puis Remplissage (≈3.7s : 0 → 78 %), chaque tuile active se soulève légèrement (ombre plus longue, liseré lavande) pendant que les autres restent nettes.
+Scene 3 (4.4–6.0s) : la caméra recule pour montrer tout le tableau ; les barres du graphique « Rendez-vous par jour » montent de gauche à droite (calque de masque qui révèle la capture de bas en haut, barre par barre) sur « en un coup d'œil » ; tenue.
+- sfx: tick à chaque tuile.
+
+## Frame 7 — « Confirmation, rappel, avis : automatiques. »
 
 - scene: Un nœud central reso relié par des arcs lumineux à trois cartes qui s'allument tour à tour : Confirmation · Rappel la veille · Demande d'avis Google ; en fond, la vraie page « Emails automatiques ».
-- duration: 4.5s
+- duration: 4.8s
 - transition_in: crossfade
 - type: feature_showcase
 - blueprint: constellation-hub (Adapt)
@@ -143,10 +164,10 @@ Scene 2 (0.8–3.2s) : le titre se construit mot par mot en haut : « Confirmati
 Scene 3 (3.0–4.5s) : « Automatiques. » arrive en accent lavande ; la caméra pousse doucement vers la carte 3, les autres passent en flou (`depth-of-field-blur`) ; tenue.
 - sfx: tick à chaque carte qui s'allume.
 
-## Frame 7 — Appel à l'action et signature
+## Frame 8 — Appel à l'action et signature
 
 - scene: « Envie d'essayer ? » ; carte « 7 jours offerts · sans carte bancaire » ; bouton « Créer ma page » cliqué par le curseur ; résolution sur la signature reso® + « puis 39 € HT/mois, sans engagement ».
-- duration: 5.5s
+- duration: 6s
 - transition_in: crossfade
 - type: cta
 - blueprint: titlecard-reveal (Adapt)

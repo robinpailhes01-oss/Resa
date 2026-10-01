@@ -18,7 +18,7 @@
 - focal: barre de recherche reconstruite (HTML)
 - roles: aucun asset image (tout est construit) · fond = plateau poudré avec silhouettes floues de cartes
 - asset_candidates: none
-- status: outline
+- status: animated
 - src: compositions/frames/01-accroche.html
 - voiceover: (aucune) — à l'écran : kicker « AUJOURD'HUI » · « Vos clientes vous cherchent en ligne. »
 

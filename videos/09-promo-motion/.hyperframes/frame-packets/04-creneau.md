@@ -18,7 +18,7 @@
 - focal: assets/reservation-mobile-creneaux.png
 - roles: reservation-mobile-creneaux = cutout (grande carte inclinée) · reservation-mobile-coordonnees = supporting (carte qui pivote en avant)
 - asset_candidates: assets/reservation-mobile-creneaux.png, assets/reservation-mobile-coordonnees.png
-- status: outline
+- status: animated
 - src: compositions/frames/04-creneau.html
 - voiceover: (aucune) — à l'écran : « Elles réservent seules, 24h/24. »
 

@@ -8,17 +8,17 @@
 
 ## Assigned storyboard block
 
-## Frame 6 — « Confirmation, rappel, avis : automatiques. »
+## Frame 7 — « Confirmation, rappel, avis : automatiques. »
 
 - scene: Un nœud central reso relié par des arcs lumineux à trois cartes qui s'allument tour à tour : Confirmation · Rappel la veille · Demande d'avis Google ; en fond, la vraie page « Emails automatiques ».
-- duration: 4.5s
+- duration: 4.8s
 - transition_in: crossfade
 - type: feature_showcase
 - blueprint: constellation-hub (Adapt)
 - focal: nœud reso + 3 cartes emails (HTML)
 - roles: emails-mobile-haut = background (grande carte inclinée floutée, ~35 %) · emails-mobile-avis = supporting (petite carte nette, en bas à droite)
 - asset_candidates: assets/emails-mobile-haut.png, assets/emails-mobile-avis.png
-- status: outline
+- status: animated
 - src: compositions/frames/06-emails.html
 - voiceover: (aucune) — à l'écran : « Confirmation, rappel, avis. Automatiques. »
 

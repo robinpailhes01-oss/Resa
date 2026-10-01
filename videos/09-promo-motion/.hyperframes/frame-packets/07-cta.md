@@ -8,17 +8,17 @@
 
 ## Assigned storyboard block
 
-## Frame 7 — Appel à l'action et signature
+## Frame 8 — Appel à l'action et signature
 
 - scene: « Envie d'essayer ? » ; carte « 7 jours offerts · sans carte bancaire » ; bouton « Créer ma page » cliqué par le curseur ; résolution sur la signature reso® + « puis 39 € HT/mois, sans engagement ».
-- duration: 5.5s
+- duration: 6s
 - transition_in: crossfade
 - type: cta
 - blueprint: titlecard-reveal (Adapt)
 - focal: bouton « Créer ma page » (HTML) puis assets/logo-reso-creme.svg
 - roles: dashboard-tablette-bonjour = background (tablette inclinée très floue derrière le titre, ~25 %) · logo-reso-creme = cutout (signature finale)
 - asset_candidates: assets/logo-reso-creme.svg, assets/dashboard-tablette-bonjour.png
-- status: outline
+- status: animated
 - src: compositions/frames/07-cta.html
 - voiceover: (aucune) — à l'écran : « Envie d'essayer ? » · « 7 jours offerts, sans carte bancaire » · « Créer ma page » · reso® Beauty business simplified
 
