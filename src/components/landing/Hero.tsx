@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ArrowDown } from "lucide-react";
+import { Eye } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { offer } from "@/config/offer";
 import { byMode, cta, hero } from "@/content/fr/landing";
@@ -42,8 +42,19 @@ export function Hero() {
               <br />
               {hero.title[1]}
             </h1>
-            <p className="enter mt-4 text-[13px] tracking-[0.14em] text-page/90 md:mt-6 md:text-[15px]" style={d(160)}>
-              {hero.trades.join(" · ")}
+            <p className="enter mt-5 inline-flex items-center gap-2.5 rounded-full bg-card/95 py-2 pl-2.5 pr-5 text-[15px] font-semibold text-ink shadow-[0_8px_24px_-14px_rgba(20,28,38,0.55)] ring-1 ring-page/60 md:mt-7 md:text-[17px]" style={d(160)}>
+              <span aria-hidden="true" className="inline-flex size-6 items-center justify-center rounded-full bg-accent/30">
+                <span className="size-3 rounded-full bg-lilac-ink" />
+              </span>
+              <span>{hero.rotator.lead}</span>
+              <span className="sr-only">{hero.rotator.words.join(", ")}</span>
+              <span aria-hidden="true" className="word-rotator font-display text-powder-deep">
+                <span className="word-rotator__track">
+                  {[...hero.rotator.words, hero.rotator.words[0]].map((word, i) => (
+                    <span key={i}>{word}</span>
+                  ))}
+                </span>
+              </span>
             </p>
             <p className="enter mt-5 max-w-[34rem] text-[15px] leading-6 text-page md:mt-7 md:text-[17px] md:leading-7" style={d(220)}>
               {hero.intro}
@@ -53,8 +64,8 @@ export function Hero() {
                 {primary.label}
               </CtaLink>
               <Button href={hero.secondary.href} variant="ghost" fullWidth className="!text-page hover:!bg-page/10 sm:w-auto sm:whitespace-nowrap">
+                <Eye aria-hidden="true" />
                 {hero.secondary.label}
-                <ArrowDown aria-hidden="true" />
               </Button>
             </div>
             <p className="enter mt-3 text-[13px] text-page/90 md:mt-4 md:text-[14px]" style={d(320)}>

@@ -855,3 +855,36 @@
   text-underline-offset: 4px;
   font-weight: 500;
 }
+
+/* Pastille « Pour … » du premier écran : un métier après l'autre, en boucle. */
+.word-rotator {
+  --rot-h: 1.3em;
+  display: inline-block;
+  height: var(--rot-h);
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.word-rotator__track {
+  display: flex;
+  flex-direction: column;
+}
+.word-rotator__track > span {
+  display: block;
+  height: var(--rot-h);
+  line-height: var(--rot-h);
+  white-space: nowrap;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .word-rotator__track {
+    animation: word-rotate 15s cubic-bezier(0.7, 0, 0.3, 1) infinite;
+  }
+}
+@keyframes word-rotate {
+  0.00%, 13.33% { transform: translateY(calc(-0 * var(--rot-h))); }
+  16.67%, 30.00% { transform: translateY(calc(-1 * var(--rot-h))); }
+  33.33%, 46.67% { transform: translateY(calc(-2 * var(--rot-h))); }
+  50.00%, 63.33% { transform: translateY(calc(-3 * var(--rot-h))); }
+  66.67%, 80.00% { transform: translateY(calc(-4 * var(--rot-h))); }
+  83.33%, 96.67% { transform: translateY(calc(-5 * var(--rot-h))); }
+  100% { transform: translateY(calc(-6 * var(--rot-h))); }
+}

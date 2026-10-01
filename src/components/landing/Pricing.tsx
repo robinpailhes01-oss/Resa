@@ -4,6 +4,7 @@ import { PricingSwitch } from "@/components/ui/pricing-switch";
 import { Section, SectionKicker } from "@/components/ui/Section";
 import { byMode, cta, pricing } from "@/content/fr/landing";
 import { PricingViewTracker } from "./PricingViewTracker";
+import { DemoCallCard } from "./DemoCallCard";
 
 /** Une offre, deux façons de la lire : sélecteur de profil, carte animée, précisions discrètes. */
 export function Pricing() {
@@ -47,6 +48,7 @@ export function Pricing() {
           </ul>
         </PricingSwitch>
       </div>
+      <DemoCallCard className="reveal mx-auto mt-10 max-w-xl" />
       <PricingViewTracker targetId="tarif-card" />
     </Section>
   );

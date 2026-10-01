@@ -54,6 +54,8 @@ export interface OfferConfig {
   platformFeePercent: number;
   /** Réseaux sociaux de Reso (pied de page) ; un lien absent n'affiche pas son icône. */
   social: SocialLinks;
+  /** Numéro WhatsApp des démos en visio (format international, chiffres seuls : 33612345678). */
+  demoWhatsapp: string | null;
 }
 
 export interface SocialLinks {
@@ -130,6 +132,15 @@ function readSocialUrl(value: string | undefined, name: string): string | null {
   throw new Error(`${name} doit être une adresse https (reçu : "${raw}").`);
 }
 
+function readWhatsapp(value: string | undefined): string | null {
+  const digits = (value ?? "").replace(/[^0-9]/g, "");
+  if (!digits) return null;
+  // 06… saisi à la française : converti au format international.
+  const international = digits.startsWith("0") && digits.length === 10 ? `33${digits.slice(1)}` : digits;
+  if (international.length < 10 || international.length > 15) throw new Error(`RESO_DEMO_WHATSAPP invalide : "${value}".`);
+  return international;
+}
+
 function readFeePercent(value: string | undefined): number {
   if (!value || !value.trim()) return 2;
   const parsed = Number(value.replace(",", ".").replace("%", "").trim());
@@ -171,6 +182,7 @@ function buildConfig(env: Env): OfferConfig {
     privacyVersion: readOptional(env.RESO_PRIVACY_VERSION) ?? "2026-09-18",
     siteUrl: readOptional(env.RESO_SITE_URL) ?? "http://localhost:3000",
     platformFeePercent: readFeePercent(env.MOLLIE_PLATFORM_FEE_PERCENT),
+    demoWhatsapp: readWhatsapp(env.RESO_DEMO_WHATSAPP),
     social: {
       instagram: readSocialUrl(env.RESO_INSTAGRAM_URL, "RESO_INSTAGRAM_URL"),
       tiktok: readSocialUrl(env.RESO_TIKTOK_URL, "RESO_TIKTOK_URL"),
@@ -229,6 +241,7 @@ const runtimeEnv: Env = {
   RESO_PRIVACY_VERSION: process.env.RESO_PRIVACY_VERSION,
   RESO_SITE_URL: process.env.RESO_SITE_URL,
   MOLLIE_PLATFORM_FEE_PERCENT: process.env.MOLLIE_PLATFORM_FEE_PERCENT,
+  RESO_DEMO_WHATSAPP: process.env.RESO_DEMO_WHATSAPP,
   RESO_INSTAGRAM_URL: process.env.RESO_INSTAGRAM_URL,
   RESO_TIKTOK_URL: process.env.RESO_TIKTOK_URL,
   RESO_FACEBOOK_URL: process.env.RESO_FACEBOOK_URL,

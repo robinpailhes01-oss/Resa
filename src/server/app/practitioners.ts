@@ -1,4 +1,5 @@
 import "server-only";
+import { offer } from "@/config/offer";
 import { getSql } from "@/server/db";
 
 export interface Practitioner {
@@ -23,7 +24,8 @@ const map = (r: Row): Practitioner => ({
   sortOrder: r.sort_order,
 });
 
-export const PRACTITIONER_LIMIT = 3;
+/** Praticiens actifs inclus dans l'offre (RESO_PRACTITIONER_LIMIT, 3 par défaut). */
+export const PRACTITIONER_LIMIT = offer.practitionerLimit;
 
 export async function listPractitioners(establishmentId: string, includeInactive = false): Promise<Practitioner[]> {
   const rows = await getSql()<Row[]>`

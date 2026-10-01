@@ -66,6 +66,8 @@ export const hero = {
   /** Deux lignes, en minuscules comme sur les visuels. */
   title: ["vos rendez-vous,", "sans décrocher."],
   trades: ["coiffure", "barber", "esthétique", "onglerie"],
+  /** Pastille animée : « Pour » puis un métier après l'autre. */
+  rotator: { lead: "Pour", words: ["la coiffure", "les barbers", "l’esthétique", "les ongleries", "le massage", "les cils"] },
   intro: "Vos clients réservent en ligne, jour et nuit. Rappel par email avant le rendez-vous, demande d’avis Google après la visite.",
   /** Ligne de réassurance sous les boutons. */
   reassurance: {
@@ -74,7 +76,7 @@ export const hero = {
   } satisfies ByMode<string[]>,
   reassuranceCaption: { prelaunch: "Tarif prévu au lancement", live: null } satisfies ByMode<string | null>,
   imageAlt: "Nature morte sur un socle crème : flacon, peigne, brosses, ciseaux, coton et vernis lavande sur un plateau chromé ; au premier plan, un combiné de téléphone décroché.",
-  secondary: { label: "Voir l’agenda", href: "/#produit" },
+  secondary: { label: "Voir la démo", href: "/demo" },
   previewCaption: {
     prelaunch: "Aperçu illustratif du produit en préparation, données fictives.",
     live: "Aperçu avec des données fictives.",
@@ -122,6 +124,13 @@ export const features = {
       steps: ["Confirmation", "Rappel", "Demande d’avis"],
     },
   ] as const,
+  /** Encaissement en ligne avec Mollie (facultatif). */
+  payments: {
+    eyebrow: "Partenaire de paiement : Mollie",
+    title: "Acomptes et paiements en ligne, sans vous en occuper.",
+    text: "Demandez un acompte ou le paiement complet au moment de la réservation. Vos clients paient par carte ou Apple Pay chez Mollie, notre partenaire de paiement agréé, et l’argent arrive directement sur votre compte.",
+    points: ["Acompte en pourcentage ou montant fixe", "Remboursement automatique si vous annulez", "Moins de rendez-vous oubliés"],
+  },
   /** Bandeau image : les avis Google. */
   reviews: {
     title: "Des avis Google, sans avoir à les demander.",
@@ -131,7 +140,7 @@ export const features = {
 };
 
 export const howItWorks = {
-  index: "[004]",
+  index: "[005]",
   eyebrow: "Comment ça marche",
   title: "Dix minutes pour démarrer.",
   stepLabel: "étape",
@@ -151,8 +160,60 @@ export const howItWorks = {
   ],
 };
 
+/** Section « Côté pro / Côté client » : le même rendez-vous vu des deux côtés. */
+export const twoSides = {
+  index: "[004]",
+  eyebrow: "Deux côtés, une seule app",
+  title: "Ce que vous voyez. Ce que vos clients voient.",
+  intro: "Basculez d’un côté à l’autre : votre journée dans votre espace pro, et la page où vos clients réservent.",
+  tabs: { pro: "Côté pro", client: "Côté client" },
+  demo: "Voir la démo complète",
+  pro: {
+    salon: "Maison Alba",
+    subtitle: "Compte et réglages",
+    today: "Aujourd’hui",
+    week: "Cette semaine",
+    date: "Jeudi 2 octobre",
+    nextIn: "Dans 1 h 20",
+    next: { time: "13:00", name: "Julien Marchand", service: "Soin visage éclat", deposit: "Acompte de 20 € reçu" },
+    actions: { call: "Appeler", open: "Voir la fiche" },
+    done: [
+      { time: "09:00", name: "Camille Berger", price: "45 €" },
+      { time: "10:30", name: "Nadia Toussaint", price: "60 €" },
+    ],
+    later: [
+      { time: "15:00", name: "Sofia Renaud", service: "Pose semi-permanent", price: "40 €" },
+      { time: "16:30", name: "Hugo Lemoine", service: "Beauté des mains", price: "30 €" },
+    ],
+    end: { time: "19:00", label: "Fin de journée" },
+  },
+  client: {
+    back: "Maison Alba",
+    bio: "Soins visage & ongles · Montpellier centre",
+    deposit: "Acompte de 30 % à la réservation",
+    filters: ["Tout", "Visage", "Ongles", "Regard"],
+    services: [
+      { name: "Soin visage éclat", text: "Nettoyage, gommage, masque et modelage.", meta: "1 h · 65 €", image: "/brand/outils.webp" },
+      { name: "Pose semi-permanent", text: "Sur ongles naturels, tenue trois semaines.", meta: "1 h · 40 €", image: "/brand/nature-morte.webp" },
+      { name: "Beauté des mains", text: "Limage, cuticules, soin et vernis.", meta: "45 min · 30 €", image: "/brand/ciseaux.webp" },
+      { name: "Rehaussement de cils", text: "Avec teinture, regard ouvert.", meta: "1 h 15 · 55 €", image: null },
+    ],
+    add: "Ajouter",
+  },
+  caption: "Aperçu avec des données fictives.",
+};
+
+/** Carte « Vous préférez qu'on vous montre ? » : démo en visio WhatsApp. */
+export const demoCall = {
+  title: "Vous préférez qu’on vous montre ?",
+  text: "Ludivine vous fait la démo en visio WhatsApp, 20 minutes, un soir à 21\u00a0h. Gratuit, sans engagement.",
+  button: "Réserver une visio avec Ludivine",
+  whatsappMessage: `Bonjour Ludivine, j’aimerais une démo de ${brand} en visio.`,
+  emailSubject: `Démo de ${brand} en visio avec Ludivine`,
+};
+
 export const testimonialsSection = {
-  index: "[006]",
+  index: "[007]",
   label: "Les avis",
   title: "Ce qu’en disent les professionnels.",
   /** Bloc affiché tant qu'aucun témoignage réel n'est publié (src/content/fr/testimonials.ts). */
@@ -173,7 +234,7 @@ export interface PricingProfile {
 }
 
 export const pricing = {
-  index: "[005]",
+  index: "[006]",
   label: "Une offre simple",
   title: ["Tout l’essentiel.", "Un prix clair."],
   intro: "Un seul tarif, quel que soit votre profil. Choisissez le vôtre pour voir ce que Reso vous apporte au quotidien.",
@@ -191,6 +252,7 @@ export const pricing = {
         "Fichier clients et historique des rendez-vous",
         "Confirmations et rappels par email",
         "Demandes d’avis par email après la visite",
+        "Acomptes en ligne avec Mollie (facultatif)",
         `Sans commission de réservation prélevée par ${brand}`,
       ],
     },
@@ -205,6 +267,7 @@ export const pricing = {
         "Prestations réalisées par un ou plusieurs praticiens",
         "Vos clients choisissent avec qui réserver",
         "Confirmations, rappels et demandes d’avis par email",
+        "Acomptes en ligne avec Mollie (facultatif)",
         `Sans commission de réservation prélevée par ${brand}`,
       ],
     },
@@ -233,7 +296,7 @@ export const pricing = {
   ],
   mentions: [
     "SMS, caisse et terminal de paiement non inclus.",
-    "Les éventuels frais de paiement en ligne sont distincts.",
+    `Paiement en ligne facultatif : frais Mollie${offer.platformFeePercent > 0 ? ` et ${offer.platformFeePercent.toLocaleString("fr-FR")} % par paiement encaissé` : ""}, uniquement sur les acomptes et paiements.`,
   ],
   afterCta: {
     prelaunch: "Offre en préparation. Conditions définitives communiquées à l’ouverture.",
@@ -306,6 +369,10 @@ const faqLive: FaqItem[] = [
     answer: `Non. ${brand} ne prélève aucune commission sur les rendez-vous. Seul l’encaissement en ligne d’un acompte, facultatif, comporte ${offer.platformFeePercent > 0 ? `une commission de ${offer.platformFeePercent.toLocaleString("fr-FR")} % sur la somme encaissée, en plus des` : "uniquement les"} frais de Mollie, affichés avant activation.`,
   },
   {
+    question: "Puis-je demander un acompte à la réservation ?",
+    answer: `Oui, si vous le souhaitez. Reliez votre compte Mollie, notre partenaire de paiement, depuis votre espace : vous choisissez un acompte (en pourcentage ou en montant fixe) ou le paiement complet. Vos clients paient par carte ou Apple Pay, l’argent arrive directement sur votre compte, et le remboursement est automatique si vous annulez le rendez-vous.${offer.platformFeePercent > 0 ? ` Frais : ceux de Mollie, plus ${offer.platformFeePercent.toLocaleString("fr-FR")} % par paiement encaissé.` : ""}`,
+  },
+  {
     question: "Mes clients doivent-ils télécharger une application ?",
     answer:
       "Non. La réservation se fait depuis un lien accessible dans leur navigateur, sur téléphone ou ordinateur. Vous pouvez partager ce lien sur votre site et vos réseaux sociaux.",
@@ -332,7 +399,7 @@ const faqLive: FaqItem[] = [
 ];
 
 export const faq = {
-  index: "[007]",
+  index: "[008]",
   label: "Questions fréquentes",
   title: "Vos questions, nos réponses.",
   /** Petit horodatage de la conversation. */

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { CalendarCheck, Globe, MessageSquareHeart, Send } from "lucide-react";
+import { CalendarCheck, Check, Globe, MessageSquareHeart, Send, Wallet } from "lucide-react";
 import { BookingPreview } from "@/components/previews/BookingPreview";
 import { EmailPreview } from "@/components/previews/EmailPreview";
 import { Section, SectionHeading } from "@/components/ui/Section";
@@ -54,6 +54,26 @@ export function Features() {
           </div>
         </article>
       </div>
+
+      <article className="reveal relative mt-5 grid gap-6 rounded-[22px] bg-card p-6 shadow-card ring-1 ring-line md:mt-6 md:grid-cols-12 md:items-center md:rounded-[28px] md:p-10">
+        <div className="md:col-span-7">
+          <p className="eyebrow flex items-center gap-2">
+            <Wallet aria-hidden="true" className="size-4" /> {features.payments.eyebrow}
+          </p>
+          <h3 className="heading-3 mt-3 !text-[26px] md:!text-[32px]">{features.payments.title}</h3>
+          <p className="mt-4 text-[15px] leading-6 text-ink-muted md:text-[16px] md:leading-7">{features.payments.text}</p>
+        </div>
+        <ul className="flex flex-col gap-2.5 md:col-span-5">
+          {features.payments.points.map((point) => (
+            <li key={point} className="flex items-center gap-3 rounded-2xl bg-page px-4 py-3 text-[15px] font-medium text-ink ring-1 ring-line">
+              <span aria-hidden="true" className="inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-success-tint text-success">
+                <Check className="size-4" />
+              </span>
+              {point}
+            </li>
+          ))}
+        </ul>
+      </article>
 
       <article className="reveal panel-dark text-page grain relative mt-5 grid overflow-hidden rounded-[22px] md:mt-6 md:grid-cols-12 md:rounded-[28px]">
         <div className="relative z-10 flex flex-col justify-center px-6 py-9 md:col-span-5 md:px-10 md:py-12">
