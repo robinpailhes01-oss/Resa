@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // CRM de prospection : projet Vercel séparé (voir crm/README.md).
+    "crm/**",
   ]),
 ]);
 
