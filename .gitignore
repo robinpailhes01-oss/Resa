@@ -57,3 +57,4 @@ tests/screenshots/
 *.mp4
 *.mov
 *.webm
+/videos/*/capture/assets/
