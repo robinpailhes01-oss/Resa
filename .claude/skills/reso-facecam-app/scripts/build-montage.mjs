@@ -572,6 +572,9 @@ if (MOTION) {
   html.push(`<div id="vignette"></div>`);
 }
 
+// Mention permanente (ex. « Publicité · image virtuelle » pour un visage généré par IA, loi du 9 juin 2023).
+if (M.badge) html.push(`<div id="badge">${esc(M.badge)}</div>`);
+
 // Sous-titres.
 html.push(`<div id="captions">`);
 capGroups.forEach((g, i) => {
@@ -707,6 +710,7 @@ html, body, #root { background: ${C.page}; font-family: "Manrope", "Outfit", sys
 #sting-tag { font-family: "Manrope", sans-serif; font-size: 30px; font-weight: 500; color: ${C.page}; letter-spacing: 0.34em; white-space: nowrap; }
 #sting-cta { margin-top: 30px; font-family: "JetBrains Mono", monospace; font-size: 26px; color: ${C.page}; opacity: .85; letter-spacing: .06em; }
 #grain { position: absolute; inset: 0; background-image: url("${GRAIN}"); background-size: 240px 240px; opacity: .16; mix-blend-mode: multiply; pointer-events: none; }
+#badge { position: absolute; z-index: 5; left: 40px; top: 42px; font-family: "JetBrains Mono", monospace; font-size: 15px; letter-spacing: .03em; color: rgba(251,246,234,.92); background: rgba(31,39,51,.42); padding: 7px 14px; border-radius: 999px; white-space: nowrap; pointer-events: none; }
 #frame { position: absolute; inset: 0; border: ${FRAME}px solid ${C.page}; pointer-events: none; box-shadow: inset 0 0 0 1px rgba(40,34,24,.08); }
 `;
 

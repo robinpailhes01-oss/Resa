@@ -1,0 +1,113 @@
+{
+  "id": "08-ugc-estheticienne",
+  "title": "Reso — UGC esthéticienne",
+  "fps": 30,
+  "badge": "Publicité · image virtuelle",
+  "face": {
+    "src": "media/face.mp4",
+    "focusY": 24,
+    "bubbleCrop": 0.6,
+    "splitFocusY": 26
+  },
+  "transcript": "transcript.json",
+  "captions": {
+    "maxWords": 4,
+    "maxChars": 24,
+    "emphasis": [
+      "Reso,",
+      "seules,",
+      "agenda.",
+      "Google,",
+      "Sept",
+      "jours",
+      "bancaire."
+    ],
+    "drop": [
+      "euh",
+      "heu"
+    ]
+  },
+  "segments": [
+    {
+      "start": 0,
+      "layout": "face",
+      "title": "vous décrochez encore en plein soin ?",
+      "titleDuration": 3.6,
+      "captions": false
+    },
+    {
+      "start": 4.0,
+      "layout": "split",
+      "app": {
+        "src": "media/app/page-publique-mobile-haut.png",
+        "frame": "phone"
+      }
+    },
+    {
+      "start": 7.6,
+      "layout": "app",
+      "app": {
+        "src": "media/app/reservation-mobile-creneaux.png",
+        "frame": "phone"
+      },
+      "chips": [
+        {
+          "at": 0.5,
+          "icon": "calendar",
+          "title": "Nouvelle réservation",
+          "text": "Soin du visage · 21:47"
+        }
+      ]
+    },
+    {
+      "start": 9.1,
+      "layout": "split",
+      "app": {
+        "src": "media/app/agenda-mobile-lundi.png",
+        "frame": "phone"
+      }
+    },
+    {
+      "start": 11.0,
+      "layout": "app",
+      "app": {
+        "src": "media/app/emails-mobile-haut.png",
+        "frame": "phone"
+      },
+      "chips": [
+        {
+          "at": 1.0,
+          "icon": "mail",
+          "title": "Rappel envoyé",
+          "text": "Inès M. · demain 10:00"
+        }
+      ]
+    },
+    {
+      "start": 14.1,
+      "layout": "app",
+      "app": {
+        "src": "media/app/emails-mobile-avis.png",
+        "frame": "phone"
+      },
+      "chips": [
+        {
+          "at": 1.2,
+          "icon": "mail",
+          "title": "Demande d'avis envoyée",
+          "text": "Inès M. · Google"
+        }
+      ]
+    },
+    {
+      "start": 17.0,
+      "layout": "face",
+      "zoom": 1.1
+    }
+  ],
+  "endCard": {
+    "style": "sting",
+    "cta": "essayer gratuitement",
+    "url": "lien en bio"
+  }
+}
