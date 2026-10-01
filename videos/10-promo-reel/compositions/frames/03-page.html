@@ -1,0 +1,490 @@
+<template>
+  <script src="assets/gsap.min.js"></script>
+  <style>
+    @font-face {
+      font-family: "Outfit";
+      src: url("assets/fonts/outfit.woff2") format("woff2");
+      font-weight: 100 900;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Manrope";
+      src: url("assets/fonts/manrope.woff2") format("woff2");
+      font-weight: 200 800;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "JetBrains Mono";
+      src: url("assets/fonts/jetbrainsmono.woff2") format("woff2");
+      font-weight: 100 800;
+      font-display: block;
+    }
+
+    #root {
+      position: absolute;
+      inset: 0;
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      font-family: "Outfit", sans-serif;
+    }
+
+    [data-composition-id="03-page"] .pg03-layer {
+      position: absolute;
+      inset: 0;
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+    }
+
+    /* ---------- stage ground (full 1080x1920) ---------- */
+    [data-composition-id="03-page"] .pg03-bg {
+      background: radial-gradient(130% 80% at 50% 40%, #6f879d 0%, #617990 36%, #4c6178 68%, #3e5166 100%);
+    }
+    [data-composition-id="03-page"] .pg03-grid {
+      position: absolute;
+      inset: -80px;
+      background-image:
+        linear-gradient(rgba(251, 246, 234, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(251, 246, 234, 0.06) 1px, transparent 1px);
+      background-size: 96px 96px;
+    }
+    [data-composition-id="03-page"] .pg03-arcs {
+      position: absolute;
+      left: -200px;
+      top: -200px;
+      width: 1480px;
+      height: 2320px;
+    }
+    [data-composition-id="03-page"] .pg03-vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(95% 70% at 50% 45%, rgba(31, 39, 51, 0) 52%, rgba(31, 39, 51, 0.45) 100%);
+    }
+    /* deep, very blurred public desktop page (lower-left, behind everything) */
+    [data-composition-id="03-page"] .pg03-deep {
+      position: absolute;
+      left: -260px;
+      top: 1180px;
+      width: 980px;
+      height: 817px;
+      border-radius: 28px;
+      overflow: hidden;
+      background: #fffdf8;
+      opacity: 0.3;
+      filter: blur(14px);
+      transform-origin: 50% 50%;
+    }
+    [data-composition-id="03-page"] .pg03-deep img {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 980px;
+      height: 817px;
+    }
+
+    /* ---------- camera / world ---------- */
+    [data-composition-id="03-page"] .pg03-cam {
+      position: absolute;
+      inset: 0;
+      transform-origin: 540px 930px;
+    }
+    [data-composition-id="03-page"] .pg03-stage3d {
+      position: absolute;
+      inset: 0;
+      perspective: 2200px;
+      perspective-origin: 540px 900px;
+    }
+    /* desktop window: same internal 1160x722 system as the 16:9 frame
+       (40px title bar + 2880x1694 capture at s = 0.40278), scaled 0.86 by GSAP.
+       Centre (528, 920) → on-screen box ≈ 998 x 621, y ≈ 610–1231 */
+    [data-composition-id="03-page"] .pg03-win {
+      position: absolute;
+      left: -52px;
+      top: 559px;
+      width: 1160px;
+      height: 722px;
+      transform-style: preserve-3d;
+      transform-origin: 50% 50%;
+    }
+    [data-composition-id="03-page"] .pg03-sheet {
+      position: absolute;
+      inset: 0;
+      border-radius: 26px;
+      overflow: hidden;
+      background: #fffdf8;
+      border: 1px solid #e7dfd0;
+      box-shadow: 0 60px 120px -40px rgba(31, 39, 51, 0.55), 0 30px 60px -40px rgba(31, 39, 51, 0.35);
+    }
+    [data-composition-id="03-page"] .pg03-bar {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1160px;
+      height: 40px;
+      background: #f6f0e3;
+      border-bottom: 1px solid #e7dfd0;
+    }
+    [data-composition-id="03-page"] .pg03-dots {
+      position: absolute;
+      left: 20px;
+      top: 14px;
+      display: flex;
+      gap: 9px;
+    }
+    [data-composition-id="03-page"] .pg03-dots span {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #d9cfbd;
+    }
+    [data-composition-id="03-page"] .pg03-url {
+      position: absolute;
+      left: 430px;
+      top: 7px;
+      width: 300px;
+      height: 26px;
+      border-radius: 100px;
+      background: #fffdf8;
+      border: 1px solid #e7dfd0;
+      font-family: "Manrope", sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 24px;
+      text-align: center;
+      color: #474d57;
+    }
+    [data-composition-id="03-page"] .pg03-shot {
+      position: absolute;
+      left: 0;
+      top: 40px;
+      width: 1160px;
+      height: 682px;
+    }
+    /* photo lift layers — measured on the 2880x1694 capture:
+       x 674/1192/1710/2228, w 498; y 638, h 374 → × 0.40278, + 40px title bar */
+    [data-composition-id="03-page"] .pg03-ph {
+      position: absolute;
+      top: 297px;
+      width: 201px;
+      height: 151px;
+      border-radius: 9px;
+      background-image: url("assets/app-ma-page.png");
+      background-size: 1160px 682px;
+      background-repeat: no-repeat;
+      opacity: 0;
+    }
+    [data-composition-id="03-page"] .pg03-hole {
+      position: absolute;
+      top: 297px;
+      width: 201px;
+      height: 151px;
+      border-radius: 9px;
+      background: #f3ede1;
+      box-shadow: inset 0 2px 8px rgba(31, 39, 51, 0.12);
+      opacity: 0;
+    }
+    [data-composition-id="03-page"] .pg03-h1 { left: 271.5px; }
+    [data-composition-id="03-page"] .pg03-h2 { left: 480.1px; }
+    [data-composition-id="03-page"] .pg03-h3 { left: 688.8px; }
+    [data-composition-id="03-page"] .pg03-h4 { left: 897.4px; }
+    [data-composition-id="03-page"] .pg03-ph1 { left: 271.5px; background-position: -271.5px -257px; }
+    [data-composition-id="03-page"] .pg03-ph2 { left: 480.1px; background-position: -480.1px -257px; }
+    [data-composition-id="03-page"] .pg03-ph3 { left: 688.8px; background-position: -688.8px -257px; }
+    [data-composition-id="03-page"] .pg03-ph4 { left: 897.4px; background-position: -897.4px -257px; }
+
+    /* ---------- title (upper band) ---------- */
+    [data-composition-id="03-page"] .pg03-kicker {
+      position: absolute;
+      left: 86px;
+      top: 268px;
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 500;
+      font-size: 26px;
+      letter-spacing: 0.18em;
+      color: #fffdf8;
+      text-shadow: 0 4px 18px rgba(31, 39, 51, 0.45);
+    }
+    [data-composition-id="03-page"] .pg03-title {
+      position: absolute;
+      left: 80px;
+      top: 318px;
+      font-family: "Outfit", sans-serif;
+      font-weight: 500;
+      font-size: 106px;
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+      color: #fbf6ea;
+    }
+    [data-composition-id="03-page"] .pg03-line {
+      display: block;
+      white-space: nowrap;
+    }
+    [data-composition-id="03-page"] .pg03-w {
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: top;
+      padding: 0 0.04em 0.12em;
+      margin: 0 -0.04em -0.12em;
+    }
+    [data-composition-id="03-page"] .pg03-wi {
+      display: inline-block;
+    }
+    [data-composition-id="03-page"] .pg03-lav {
+      color: #e9e4f5;
+    }
+
+    /* ---------- foreground phone + review pill ---------- */
+    [data-composition-id="03-page"] .pg03-front {
+      perspective: 1800px;
+      perspective-origin: 780px 1200px;
+    }
+    /* native 380x664 (screen internals unchanged), scaled 0.94 by GSAP
+       → on-screen ≈ 357 x 624, x ≈ 612–969, y ≈ 922–1546 */
+    [data-composition-id="03-page"] .pg03-phone {
+      position: absolute;
+      left: 600px;
+      top: 902px;
+      width: 380px;
+      height: 664px;
+      border-radius: 54px;
+      background: #fffdf8;
+      border: 1px solid #e7dfd0;
+      box-shadow: 0 70px 130px -40px rgba(31, 39, 51, 0.7), 0 24px 50px -30px rgba(31, 39, 51, 0.45);
+      transform-origin: 50% 50%;
+    }
+    [data-composition-id="03-page"] .pg03-screen {
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      width: 356px;
+      height: 640px;
+      border-radius: 43px;
+      overflow: hidden;
+      background: #faf6ec;
+    }
+    /* 1170x2532 at 356 wide → 770px tall; scroll range 0 → -130 */
+    [data-composition-id="03-page"] .pg03-screen img {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 356px;
+      height: 770px;
+    }
+    [data-composition-id="03-page"] .pg03-pill-wrap {
+      position: absolute;
+      left: 640px;
+      top: 1352px;
+      width: 0;
+      height: 0;
+    }
+    [data-composition-id="03-page"] .pg03-pill {
+      position: absolute;
+      left: -380px;
+      top: 0;
+      width: 400px;
+      height: 84px;
+      border-radius: 100px;
+      background: #fffdf8;
+      border: 1px solid #e7dfd0;
+      color: #1f2733;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      font-family: "Outfit", sans-serif;
+      font-weight: 500;
+      font-size: 34px;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      box-shadow: 0 30px 60px -22px rgba(31, 39, 51, 0.6), 0 0 0 7px rgba(182, 166, 216, 0.35);
+      transform-origin: 80% 50%;
+    }
+    [data-composition-id="03-page"] .pg03-star {
+      width: 36px;
+      height: 36px;
+      flex: 0 0 auto;
+    }
+    [data-composition-id="03-page"] .pg03-sep {
+      opacity: 0.5;
+    }
+    [data-composition-id="03-page"] .pg03-muted {
+      color: #5f6672;
+    }
+  </style>
+
+  <div
+    id="root"
+    data-composition-id="03-page"
+    data-start="0"
+    data-duration="5.2"
+    data-width="1080"
+    data-height="1920"
+  >
+    <!-- full-bleed powder-blue stage -->
+    <div id="f03-page-stage" class="clip pg03-layer pg03-bg" data-start="0" data-duration="5.2" data-track-index="0">
+      <div class="pg03-grid" data-layout-allow-overflow></div>
+      <svg class="pg03-arcs" data-layout-allow-overflow viewBox="0 0 1480 2320" fill="none">
+        <circle cx="1500" cy="2100" r="1180" stroke="rgba(251,246,234,0.25)" stroke-width="2" />
+        <circle cx="1500" cy="2100" r="1420" stroke="rgba(251,246,234,0.12)" stroke-width="1.5" />
+        <circle cx="-140" cy="-60" r="760" stroke="rgba(251,246,234,0.16)" stroke-width="1.5" />
+      </svg>
+      <div class="pg03-deep" data-layout-allow-overflow>
+        <img src="assets/app-page-publique-desktop.png" alt="" />
+      </div>
+      <div class="pg03-vignette"></div>
+    </div>
+
+    <!-- world: desktop window "Ma page de réservation" -->
+    <div id="f03-page-world" class="clip pg03-layer" data-start="0" data-duration="5.2" data-track-index="1">
+      <div class="pg03-cam" data-layout-allow-overflow>
+        <div class="pg03-stage3d">
+          <div class="pg03-win" data-layout-allow-overflow>
+            <div class="pg03-sheet">
+              <div class="pg03-bar">
+                <div class="pg03-dots"><span></span><span></span><span></span></div>
+                <div class="pg03-url">reso-app.fr/r/maison-alba</div>
+              </div>
+              <img class="pg03-shot" src="assets/app-ma-page.png" alt="" />
+            </div>
+            <div class="pg03-hole pg03-h1"></div>
+            <div class="pg03-hole pg03-h2"></div>
+            <div class="pg03-hole pg03-h3"></div>
+            <div class="pg03-hole pg03-h4"></div>
+            <div class="pg03-ph pg03-ph1" data-layout-allow-occlusion></div>
+            <div class="pg03-ph pg03-ph2" data-layout-allow-occlusion></div>
+            <div class="pg03-ph pg03-ph3" data-layout-allow-occlusion></div>
+            <div class="pg03-ph pg03-ph4" data-layout-allow-occlusion></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- title on the stage -->
+    <div id="f03-page-title" class="clip pg03-layer" data-start="0" data-duration="5.2" data-track-index="2">
+      <div class="pg03-kicker">MA PAGE</div>
+      <div class="pg03-title">
+        <span class="pg03-line"
+          ><span class="pg03-w" data-layout-allow-overflow><span class="pg03-wi">Votre</span></span>
+          <span class="pg03-w" data-layout-allow-overflow><span class="pg03-wi">page</span></span>
+          <span class="pg03-w" data-layout-allow-overflow><span class="pg03-wi">de</span></span></span
+        >
+        <span class="pg03-line"
+          ><span class="pg03-w" data-layout-allow-overflow><span class="pg03-wi pg03-lav">réservation.</span></span></span
+        >
+      </div>
+    </div>
+
+    <!-- foreground: public page in a phone + review pill -->
+    <div id="f03-page-front" class="clip pg03-layer pg03-front" data-start="0" data-duration="5.2" data-track-index="3">
+      <div class="pg03-phone">
+        <div class="pg03-screen">
+          <img data-layout-allow-overflow src="assets/app-page-publique-mobile.png" alt="" />
+        </div>
+      </div>
+      <div class="pg03-pill-wrap">
+        <div class="pg03-pill">
+          <svg class="pg03-star" viewBox="0 0 24 24">
+            <path
+              d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4l-5.8 3.1 1.1-6.5-4.7-4.6 6.5-.9z"
+              fill="#B6A6D8"
+              stroke="#1F2733"
+              stroke-width="1.4"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <span>4,9</span><span class="pg03-sep">·</span><span class="pg03-muted">avis Google</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const R = document.querySelector('[data-composition-id="03-page"]');
+      const q = (s) => R.querySelector(s);
+      const qa = (s) => Array.from(R.querySelectorAll(s));
+      const tl = gsap.timeline({ paused: true });
+      const WS = 0.86; // window fit scale (internal 1160x722 coordinate system kept)
+      const PS = 0.94; // phone fit scale
+
+      // ---- Scene 1 (0.0–1.3): window arrives from depth; title rises word by word
+      tl.fromTo(
+        q(".pg03-win"),
+        { rotationY: -30, rotationX: 12, z: -900, x: 160, y: 60, scale: WS, opacity: 0 },
+        { rotationY: -14, rotationX: 6, z: 0, x: 0, y: 0, scale: WS, opacity: 1, duration: 1.35, ease: "expo.out" },
+        0,
+      );
+      tl.fromTo(q(".pg03-deep"), { scale: 1.08, opacity: 0 }, { scale: 1, opacity: 0.3, duration: 1.4, ease: "power2.out" }, 0);
+      tl.fromTo(q(".pg03-cam"), { scale: 0.94 }, { scale: 1, duration: 1.3, ease: "power3.out" }, 0);
+
+      tl.fromTo(q(".pg03-kicker"), { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, 0.1);
+      qa(".pg03-wi").forEach((el, i) => {
+        tl.fromTo(
+          el,
+          { yPercent: 115, opacity: 0 },
+          { yPercent: 0, opacity: 1, duration: 0.7, ease: "expo.out" },
+          0.3 + i * 0.12,
+        );
+      });
+
+      // ---- Scene 2 (1.3–2.6): camera glides to the Photos row, photos lift one by one
+      tl.to(q(".pg03-cam"), { scale: 1.13, x: 0, y: -18, duration: 1.3, ease: "power3.inOut" }, 1.25);
+      tl.to(q(".pg03-win"), { rotationY: -9, rotationX: 4, duration: 1.3, ease: "power2.inOut" }, 1.25);
+
+      const lifts = [2.0, 2.25, 2.5, 2.75];
+      const holes = qa(".pg03-hole");
+      qa(".pg03-ph").forEach((el, i) => {
+        const t = lifts[i];
+        tl.fromTo(holes[i], { opacity: 0 }, { opacity: 1, duration: 0.01, ease: "none" }, t);
+        tl.fromTo(
+          el,
+          { z: 0, y: 0, scale: 1, opacity: 0, boxShadow: "0 0px 0px -10px rgba(31,39,51,0)" },
+          {
+            z: 70,
+            y: -4,
+            scale: 1.05,
+            opacity: 1,
+            boxShadow: "0 34px 50px -18px rgba(31,39,51,0.6)",
+            duration: 0.35,
+            ease: "power3.out",
+          },
+          t,
+        );
+        tl.to(
+          el,
+          { z: 34, y: -2, scale: 1.03, boxShadow: "0 18px 30px -16px rgba(31,39,51,0.45)", duration: 0.45, ease: "power2.inOut" },
+          t + 0.35,
+        );
+      });
+
+      // ---- Scene 3 (2.6–4.0): camera eases back, phone slides in from bottom-right, screen scrolls
+      tl.to(q(".pg03-cam"), { scale: 1.0, x: 0, y: -10, duration: 1.2, ease: "power3.inOut" }, 2.75);
+      tl.fromTo(
+        q(".pg03-phone"),
+        { x: 360, y: 560, rotationY: -34, rotationZ: 8, scale: PS, opacity: 0 },
+        { x: 0, y: 0, rotationY: -16, rotationZ: 0, scale: PS, opacity: 1, duration: 1.05, ease: "expo.out" },
+        2.7,
+      );
+      tl.fromTo(q(".pg03-screen img"), { y: 0 }, { y: -130, duration: 0.9, ease: "power2.inOut" }, 3.0);
+
+      // ---- Scene 4 (4.0–5.2): review pill blooms on "vos avis", micro camera push
+      tl.fromTo(
+        q(".pg03-pill"),
+        { scale: 0.2, opacity: 0, x: 40 },
+        { scale: 1, opacity: 1, x: 0, duration: 0.55, ease: "power3.out" },
+        4.15,
+      );
+      tl.to(q(".pg03-cam"), { scale: 1.04, duration: 1.2, ease: "power1.inOut" }, 4.0);
+      tl.fromTo(
+        q(".pg03-phone"),
+        { rotationY: -16 },
+        { rotationY: -12, duration: 1.2, ease: "power1.inOut", immediateRender: false },
+        4.0,
+      );
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["03-page"] = tl;
+    })();
+  </script>
+</template>
