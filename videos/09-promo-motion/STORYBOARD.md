@@ -28,7 +28,7 @@ Pas de voix off : le texte à l'écran porte le message (titres courts révélé
 - focal: barre de recherche reconstruite (HTML)
 - roles: aucun asset image (tout est construit) · fond = plateau poudré avec silhouettes floues de cartes
 - asset_candidates: none
-- status: outline
+- status: animated
 - src: compositions/frames/01-accroche.html
 - voiceover: (aucune) — à l'écran : kicker « AUJOURD'HUI » · « Vos clientes vous cherchent en ligne. »
 
@@ -50,7 +50,7 @@ Scene 4 (3.0–4.5s) : 3 suggestions tombent sous la barre en cascade (« esthé
 - focal: assets/logo-reso-creme.svg
 - roles: logo-reso-creme = cutout (centre)
 - asset_candidates: assets/logo-reso-creme.svg
-- status: outline
+- status: animated
 - src: compositions/frames/02-marque.html
 - voiceover: (aucune) — à l'écran : reso® · BEAUTY BUSINESS SIMPLIFIED
 
@@ -71,7 +71,7 @@ Scene 3 (1.1–2.5s) : un trait crème fin se trace sous le logo, puis « BEAUTY
 - focal: assets/page-publique-mobile-haut.png
 - roles: page-publique-mobile-haut = cutout (dans un téléphone, héros) · page-publique-mobile-horaires = supporting (carte en profondeur, floue)
 - asset_candidates: assets/page-publique-mobile-haut.png, assets/page-publique-mobile-horaires.png
-- status: outline
+- status: animated
 - src: compositions/frames/03-page.html
 - voiceover: (aucune) — à l'écran : « On crée votre page de réservation. »
 
@@ -92,7 +92,7 @@ Scene 4 (3.2–4.5s) : l'écran du téléphone fait défiler doucement la page j
 - focal: assets/reservation-mobile-creneaux.png
 - roles: reservation-mobile-creneaux = cutout (grande carte inclinée) · reservation-mobile-coordonnees = supporting (carte qui pivote en avant)
 - asset_candidates: assets/reservation-mobile-creneaux.png, assets/reservation-mobile-coordonnees.png
-- status: outline
+- status: animated
 - src: compositions/frames/04-creneau.html
 - voiceover: (aucune) — à l'écran : « Elles réservent seules, 24h/24. »
 
@@ -113,7 +113,7 @@ Scene 4 (3.4–4.5s) : une pastille verte-poudrée « ✓ Réservation confirmé
 - focal: assets/agenda-mobile-lundi.png
 - roles: agenda-mobile-lundi = cutout (téléphone / grande carte)
 - asset_candidates: assets/agenda-mobile-lundi.png
-- status: outline
+- status: animated
 - src: compositions/frames/05-agenda.html
 - voiceover: (aucune) — à l'écran : « Tout arrive dans votre agenda. »
 
@@ -133,7 +133,7 @@ Scene 3 (2.8–4.0s) : une notification « Nouvelle réservation » (icône reso
 - focal: nœud reso + 3 cartes emails (HTML)
 - roles: emails-mobile-haut = background (grande carte inclinée floutée, ~35 %) · emails-mobile-avis = supporting (petite carte nette, en bas à droite)
 - asset_candidates: assets/emails-mobile-haut.png, assets/emails-mobile-avis.png
-- status: outline
+- status: animated
 - src: compositions/frames/06-emails.html
 - voiceover: (aucune) — à l'écran : « Confirmation, rappel, avis. Automatiques. »
 
@@ -153,7 +153,7 @@ Scene 3 (3.0–4.5s) : « Automatiques. » arrive en accent lavande ; la caméra
 - focal: bouton « Créer ma page » (HTML) puis assets/logo-reso-creme.svg
 - roles: dashboard-tablette-bonjour = background (tablette inclinée très floue derrière le titre, ~25 %) · logo-reso-creme = cutout (signature finale)
 - asset_candidates: assets/logo-reso-creme.svg, assets/dashboard-tablette-bonjour.png
-- status: outline
+- status: animated
 - src: compositions/frames/07-cta.html
 - voiceover: (aucune) — à l'écran : « Envie d'essayer ? » · « 7 jours offerts, sans carte bancaire » · « Créer ma page » · reso® Beauty business simplified
 

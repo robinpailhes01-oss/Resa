@@ -58,3 +58,4 @@ tests/screenshots/
 *.mov
 *.webm
 /videos/*/capture/assets/
+/videos/*/audio/

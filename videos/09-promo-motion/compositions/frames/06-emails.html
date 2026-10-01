@@ -336,9 +336,9 @@
     }
   </style>
 
-  <div id="root" data-composition-id="06-emails" data-start="0" data-duration="4.5" data-width="1920" data-height="1080">
+  <div id="root" data-composition-id="06-emails" data-start="0" data-duration="5" data-width="1920" data-height="1080">
     <!-- full-bleed ground -->
-    <div class="clip e06-bg" id="f06-emails-bg" data-start="0" data-duration="4.5" data-track-index="0">
+    <div class="clip e06-bg" id="f06-emails-bg" data-start="0" data-duration="5" data-track-index="0">
       <div class="e06-grid" id="f06-emails-grid" data-layout-allow-overflow></div>
       <svg class="e06-bg-arcs" data-layout-allow-overflow viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
         <path class="e06-bgarc" d="M -120 980 C 380 560, 1100 420, 2040 640" />
@@ -348,7 +348,7 @@
     </div>
 
     <!-- scene -->
-    <div class="clip e06-scene" id="f06-emails-scene" data-start="0" data-duration="4.5" data-track-index="1">
+    <div class="clip e06-scene" id="f06-emails-scene" data-start="0" data-duration="5" data-track-index="1">
       <div class="e06-shot-layer" id="f06-emails-shotlayer">
         <div class="e06-shot" id="f06-emails-shot" data-layout-allow-overflow>
           <img src="assets/emails-mobile-haut.png" alt="" />
@@ -435,7 +435,7 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script src="assets/gsap.min.js"></script>
   <script>
     (function () {
       var FID = "06-emails";
@@ -605,7 +605,7 @@
         [cards[0], 6],
         [cards[1], 5],
       ].forEach(function (pair) {
-        tl.to(pair[0], { "--dof": pair[1] + "px", opacity: 0.72, duration: 1.0, ease: "power2.inOut" }, PUSH_AT + 0.05);
+        tl.to(pair[0], { "--dof": pair[1] + "px", z: -90, opacity: 0.72, duration: 1.0, ease: "power2.inOut" }, PUSH_AT + 0.05);
       });
       tl.to(hub, { "--dof": "7px", opacity: 0.6, duration: 1.0, ease: "power2.inOut" }, PUSH_AT + 0.05);
       tl.to([arcs[0], arcs[1]], { opacity: 0.35, duration: 1.0, ease: "power2.inOut" }, PUSH_AT + 0.05);
