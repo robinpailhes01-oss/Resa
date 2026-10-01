@@ -57,3 +57,15 @@ export function prospectionFollowUpEmail(p: ProspectForEmail, replyTo: string | 
   const input = prospectionEmailInput(p);
   return build(p.email, prospectionContent.subjects.followUp(input.establishmentName, p.bookingProvider && p.bookingProvider !== "autre" ? input.providerLabel : null), prospectionContent.followUp(input), input, replyTo);
 }
+
+/** Premier email d'une campagne ponctuelle (texte fixe, nom du salon dans l'objet). */
+export function prospectionCampaignEmail(campaign: string, p: Pick<ProspectForEmail, "name" | "email">, replyTo: string | undefined = offer.supportEmail ?? undefined): EmailMessage {
+  const content = prospectionContent.campaigns[campaign];
+  if (!content) throw new Error(`Campagne inconnue : ${campaign}`);
+  const paragraphs = content.paragraphs(offer.siteUrl.replace(/\/$/, ""));
+  const text = paragraphs.join("\n\n");
+  const html = `<!doctype html><html lang="fr"><body style="margin:0;padding:24px 16px;background:#fffdf8;font-family:Inter,Arial,sans-serif;color:#1f2733;font-size:15px;line-height:24px"><div style="max-width:560px;margin:0 auto">${paragraphs
+    .map((para) => `<p style="margin:0 0 16px">${linkify(para)}</p>`)
+    .join("")}</div></body></html>`;
+  return { to: p.email, subject: content.subject(shortEstablishmentName(p.name)), text, html, fromName: content.fromName, replyTo };
+}

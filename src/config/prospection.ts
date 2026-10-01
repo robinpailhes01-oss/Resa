@@ -90,3 +90,25 @@ export function prospectionSettings(env: Record<string, string | undefined> = pr
 export function isProspectionEnabled(env: Record<string, string | undefined> = process.env): boolean {
   return (env.PROSPECTION_ENABLED ?? "").trim() === "1";
 }
+
+/** Campagne ponctuelle : un département, des outils de réservation exclus, un texte dédié, un nombre total d'envois. */
+export interface ProspectionCampaign {
+  key: string;
+  /** Préfixe de code postal du département (« 34 » pour l'Hérault). */
+  postalPrefix: string;
+  cities: string[];
+  /** Établissements détectés sur ces outils : jamais contactés par la campagne. */
+  excludeProviders: string[];
+  /** Nombre total de premiers emails de la campagne. */
+  total: number;
+}
+
+export const prospectionCampaigns: Record<string, ProspectionCampaign> = {
+  herault: {
+    key: "herault-shooting",
+    postalPrefix: "34",
+    cities: ["Montpellier", "Béziers", "Sète", "Lunel", "Agde", "Castelnau-le-Lez", "Lattes", "Frontignan", "Pérols", "Mauguio", "Pézenas", "Clermont-l'Hérault", "Saint-Jean-de-Védas", "Juvignac", "Lodève", "Ganges"],
+    excludeProviders: ["planity"],
+    total: 20,
+  },
+};

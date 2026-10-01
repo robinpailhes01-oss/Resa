@@ -23,7 +23,7 @@ import { escapeHtml, notifyTelegram } from "@/server/telegram";
 import { isResendInboundConfigured, type ReceivedEmail } from "@/server/resend-inbound";
 import { prospectionFirstEmail, prospectionFollowUpEmail, type ProspectForEmail } from "./emails";
 
-type ProspectRow = {
+export type ProspectRow = {
   id: string;
   google_place_id: string;
   name: string;
@@ -83,19 +83,18 @@ async function fetchPage(url: string, fetchImpl: typeof fetch): Promise<string |
   }
 }
 
-async function isOptedOut(email: string): Promise<boolean> {
+export async function isOptedOut(email: string): Promise<boolean> {
   const [row] = await getSql()`select 1 as ok from prospect_optouts where email = ${email} limit 1`;
   return Boolean(row);
 }
 
-async function isExistingUser(email: string): Promise<boolean> {
+export async function isExistingUser(email: string): Promise<boolean> {
   const [row] = await getSql()`select 1 as ok from users where email = ${email} limit 1`;
   return Boolean(row);
 }
 
 /** 1. Découverte : recherches Google du jour, insertion des établissements inconnus. */
 export async function discoverProspects(now: Date, fetchImpl: typeof fetch = fetch): Promise<{ queries: string[]; found: number; created: number; errors: string[] }> {
-  const sql = getSql();
   const settings = prospectionSettings();
   const queries = planQueries(now, prospectionCategories, prospectionCities, settings.searchesPerDay);
   const result = { queries: queries.map((q) => q.text), found: 0, created: 0, errors: [] as string[] };
@@ -108,15 +107,23 @@ export async function discoverProspects(now: Date, fetchImpl: typeof fetch = fet
       continue;
     }
     result.found += candidates.length;
-    for (const c of candidates) {
-      const [inserted] = await sql`
-        insert into prospects (google_place_id, name, category, city, address, postal_code, phone, website, rating, rating_count, maps_url, unsubscribe_token)
-        values (${c.placeId}, ${c.name}, ${q.category.key}, ${c.city ?? q.city}, ${c.formattedAddress || null}, ${c.postalCode}, ${c.phone}, ${c.website}, ${c.rating}, ${c.ratingCount}, ${c.mapsUrl}, ${randomBytes(16).toString("hex")})
-        on conflict (google_place_id) do nothing returning id`;
-      if (inserted) result.created += 1;
-    }
+    result.created += await insertProspectCandidates(candidates, q.category.key, q.city);
   }
   return result;
+}
+
+/** Enregistre les établissements trouvés par une recherche Google (les déjà connus sont ignorés). */
+export async function insertProspectCandidates(candidates: Awaited<ReturnType<typeof searchPlaces>>, categoryKey: string, city: string): Promise<number> {
+  const sql = getSql();
+  let created = 0;
+  for (const c of candidates) {
+    const [inserted] = await sql`
+      insert into prospects (google_place_id, name, category, city, address, postal_code, phone, website, rating, rating_count, maps_url, unsubscribe_token)
+      values (${c.placeId}, ${c.name}, ${categoryKey}, ${c.city ?? city}, ${c.formattedAddress || null}, ${c.postalCode}, ${c.phone}, ${c.website}, ${c.rating}, ${c.ratingCount}, ${c.mapsUrl}, ${randomBytes(16).toString("hex")})
+      on conflict (google_place_id) do nothing returning id`;
+    if (inserted) created += 1;
+  }
+  return created;
 }
 
 /** Analyse d'un site : outil de réservation utilisé et email public (accueil puis page contact). */
@@ -143,8 +150,13 @@ async function analyseWebsite(website: string, fetchImpl: typeof fetch): Promise
 
 /** 2. Enrichissement : pour chaque nouveau prospect, outil de réservation et email ; statut résultant. */
 export async function enrichProspects(now: Date, fetchImpl: typeof fetch = fetch, limit = prospectionSettings().enrichPerRun): Promise<{ enriched: number; emailsFound: number }> {
+  const rows = await getSql()<ProspectRow[]>`select * from prospects where enriched_at is null order by created_at limit ${limit}`;
+  return enrichProspectRows(rows, now, fetchImpl);
+}
+
+/** Analyse les sites des prospects donnés (six à la fois) : outil de réservation, email, statut. */
+export async function enrichProspectRows(rows: ProspectRow[], now: Date, fetchImpl: typeof fetch = fetch): Promise<{ enriched: number; emailsFound: number }> {
   const sql = getSql();
-  const rows = await sql<ProspectRow[]>`select * from prospects where enriched_at is null order by created_at limit ${limit}`;
   const result = { enriched: 0, emailsFound: 0 };
   const worker = async (row: ProspectRow) => {
     let provider: BookingProvider | null = null;
@@ -200,7 +212,7 @@ export async function sendOutreach(now: Date, dryRun: boolean): Promise<{ sent: 
   // manuel après le cron n'envoie pas une seconde fournée.
   const dayStart = parisDayStart(now);
   const [already] = await sql<Array<{ firsts: number; follow_ups: number }>>`
-    select count(*) filter (where first_email_at >= ${dayStart})::int as firsts,
+    select count(*) filter (where first_email_at >= ${dayStart} and campaign is null)::int as firsts,
       count(*) filter (where follow_up_at >= ${dayStart})::int as follow_ups from prospects`;
   const firstQuota = Math.max(0, settings.dailyEmailLimit - already.firsts);
   const followUpQuota = Math.max(0, settings.dailyEmailLimit - already.follow_ups);

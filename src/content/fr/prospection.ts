@@ -47,6 +47,18 @@ export const prospectionContent = {
     "Un « non merci » et je ne reviens pas vers vous.",
     `${i.senderName}\n${i.brandName}`,
   ],
+  /** Campagnes ponctuelles : texte validé tel quel par l'équipe. */
+  campaigns: {
+    "herault-shooting": {
+      fromName: "Ludivine & Robin · Reso",
+      subject: (name: string) => `Un shooting photo offert pour ${name} 📸`,
+      paragraphs: (siteUrl: string): string[] => [
+        "Bonjour ! C’est Ludivine et Robin 👋 Avec mon équipe, on a créé Reso ici à Montpellier pour aider les salons à gérer leurs rendez-vous plus simplement.",
+        "Pour faire découvrir l’appli aux salons du coin, on offre un shooting photo de votre salon pour toute inscription 📸 Et vous pouvez la tester une semaine gratuitement, sans carte bancaire.",
+        `Je vous laisse le lien pour jeter un œil : ${siteUrl}`,
+      ],
+    },
+  } as Record<string, { fromName: string; subject: (name: string) => string; paragraphs: (siteUrl: string) => string[] }>,
   /** Pas de pied de page : un « non » en réponse suffit, il est reconnu et respecté (plus aucun contact). */
   footer: (_i: ProspectionEmailInput): string => "",
   admin: {
