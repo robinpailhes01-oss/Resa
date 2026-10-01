@@ -49,8 +49,8 @@
       top: -260px;
       width: 1800px;
       height: 1846px;
-      opacity: 0.3;
-      filter: blur(30px);
+      opacity: 0.26;
+      filter: blur(30px) brightness(0.82);
       transform-origin: 50% 30%;
     }
     [data-composition-id="055-tableau"] .tb55-ghost img {
@@ -68,7 +68,9 @@
     [data-composition-id="055-tableau"] .tb55-vignette {
       position: absolute;
       inset: 0;
-      background: radial-gradient(85% 80% at 50% 45%, rgba(31, 39, 51, 0) 50%, rgba(31, 39, 51, 0.45) 100%);
+      background:
+        linear-gradient(180deg, rgba(31, 39, 51, 0.42) 0%, rgba(31, 39, 51, 0.18) 20%, rgba(31, 39, 51, 0) 34%),
+        radial-gradient(85% 80% at 50% 45%, rgba(31, 39, 51, 0) 50%, rgba(31, 39, 51, 0.45) 100%);
     }
 
     /* ---------- camera / world ---------- */
@@ -91,7 +93,7 @@
     [data-composition-id="055-tableau"] .tb55-plane {
       position: absolute;
       left: -172px;
-      top: -143px;
+      top: -157px;
       width: 2264px;
       height: 1040px;
       transform-origin: 1132px 1040px;
@@ -147,11 +149,12 @@
       overflow: hidden;
       transform-origin: 50% 60%;
     }
-    [data-composition-id="055-tableau"] .tb55-tile img {
+    [data-composition-id="055-tableau"] .tb55-crop {
       position: absolute;
-      top: -62px;
-      width: 2240px;
-      height: 1000px;
+      inset: 0;
+      background-image: url("assets/app-dashboard-activite.png");
+      background-size: 2240px 1000px;
+      background-repeat: no-repeat;
     }
     [data-composition-id="055-tableau"] .tb55-mask {
       position: absolute;
@@ -218,7 +221,7 @@
       font-weight: 500;
       font-size: 22px;
       letter-spacing: 0.18em;
-      color: rgba(251, 246, 234, 0.75);
+      color: rgba(251, 246, 234, 0.88);
       white-space: nowrap;
     }
     [data-composition-id="055-tableau"] .tb55-title {
@@ -232,7 +235,6 @@
       letter-spacing: -0.03em;
       color: #fbf6ea;
       white-space: nowrap;
-      text-shadow: 0 10px 40px rgba(31, 39, 51, 0.35);
     }
     [data-composition-id="055-tableau"] .tb55-w {
       display: inline-block;
@@ -255,7 +257,7 @@
       position: absolute;
       left: 4px;
       right: 26px;
-      bottom: -8px;
+      bottom: -10px;
       height: 5px;
       border-radius: 3px;
       background: #ddd6ee;
@@ -305,25 +307,25 @@
 
                   <!-- tile 1: rendez-vous -->
                   <div class="tb55-tile tb55-t0" style="left: 38px" data-layout-allow-overflow>
-                    <img data-layout-allow-overflow src="assets/app-dashboard-activite.png" alt="" style="left: -38px" />
+                    <div class="tb55-crop" style="background-position: -38px -62px"></div>
                     <div class="tb55-mask"></div>
-                    <div class="tb55-num" id="f055-tableau-n0">0</div>
+                    <div class="tb55-num" data-layout-allow-occlusion id="f055-tableau-n0">0</div>
                     <div class="tb55-chipmask tb55-cm0"></div>
                     <div class="tb55-ring tb55-r0"></div>
                   </div>
                   <!-- tile 2: revenus -->
                   <div class="tb55-tile tb55-t1" style="left: 586px" data-layout-allow-overflow>
-                    <img data-layout-allow-overflow src="assets/app-dashboard-activite.png" alt="" style="left: -586px" />
+                    <div class="tb55-crop" style="background-position: -586px -62px"></div>
                     <div class="tb55-mask"></div>
-                    <div class="tb55-num" id="f055-tableau-n1">0&nbsp;€</div>
+                    <div class="tb55-num" data-layout-allow-occlusion id="f055-tableau-n1">0&nbsp;€</div>
                     <div class="tb55-chipmask tb55-cm1"></div>
                     <div class="tb55-ring tb55-r1"></div>
                   </div>
                   <!-- tile 3: remplissage -->
                   <div class="tb55-tile tb55-t2" style="left: 1134px" data-layout-allow-overflow>
-                    <img data-layout-allow-overflow src="assets/app-dashboard-activite.png" alt="" style="left: -1134px" />
+                    <div class="tb55-crop" style="background-position: -1134px -62px"></div>
                     <div class="tb55-mask"></div>
-                    <div class="tb55-num" id="f055-tableau-n2">0&nbsp;%</div>
+                    <div class="tb55-num" data-layout-allow-occlusion id="f055-tableau-n2">0&nbsp;%</div>
                     <div class="tb55-ring tb55-r2"></div>
                   </div>
 
@@ -368,7 +370,7 @@
         PX = 960,
         PY = 560; // .tb55-table perspective + origin
       const OX = 960,
-        OY = 897; // plane transform-origin (1132,1040) in table coords
+        OY = 883; // plane transform-origin (1132,1040) in table coords
       const TILT = 15; // tilt held during the tile-to-tile journey
       function proj(u, v, deg) {
         const a = (deg * Math.PI) / 180;

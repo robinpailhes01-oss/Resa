@@ -58,28 +58,22 @@
     }
 
     /* ---------- 3D stage: the desktop window ---------- */
-    /* camera wrapper: the push scales this layer; its mask dissolves the window's
-       left edge into the stage so the title keeps its own zone during the push */
     .f05-agenda-cam {
       position: absolute;
       inset: 0;
-      --f05-m0: 380px;
-      --f05-m1: 480px;
-      -webkit-mask-image: linear-gradient(90deg, transparent var(--f05-m0), #000 var(--f05-m1));
-      mask-image: linear-gradient(90deg, transparent var(--f05-m0), #000 var(--f05-m1));
     }
     .f05-agenda-stage3d {
       position: absolute;
       inset: 0;
       perspective: 2600px;
-      perspective-origin: 1620px 494px;
+      perspective-origin: 1250px 470px;
     }
     .f05-agenda-win {
       position: absolute;
-      left: 640px;
-      top: 100px;
-      width: 1240px;
-      height: 766px;
+      left: 650px;
+      top: 104px;
+      width: 1200px;
+      height: 742px;
       border-radius: 22px;
       overflow: hidden;
       background: #fffdf8;
@@ -93,7 +87,7 @@
       position: absolute;
       left: 0;
       top: 0;
-      width: 1240px;
+      width: 1200px;
       height: 34px;
       background: #fffdf8;
       border-bottom: 1px solid #e7dfd0;
@@ -111,20 +105,20 @@
       position: absolute;
       left: 0;
       top: 34px;
-      width: 1240px;
-      height: 732px;
+      width: 1200px;
+      height: 708px;
       overflow: hidden;
       background: #fbf6ea;
     }
-    /* The capture is laid out at its native 2880×1756 px and scaled once, so every
-       overlay below is authored in capture pixels (measured from app-agenda.png). */
+    /* The capture is laid out at its native 2880×1756 px and scaled by GSAP (the
+       in-window camera), so every overlay below is authored in capture pixels
+       (measured from app-agenda.png). */
     .f05-agenda-canvas {
       position: absolute;
       left: 0;
       top: 0;
       width: 2880px;
       height: 1756px;
-      transform: scale(0.430556);
       transform-origin: 0 0;
     }
     .f05-agenda-canvas > img {
@@ -355,12 +349,12 @@
       data-layout-allow-overflow
     >
      <div class="f05-agenda-stage3d" data-layout-allow-overflow>
-      <div data-layout-allow-occlusion data-layout-allow-overflow class="f05-agenda-win" id="f05-agenda-win" data-layout-allow-overflow>
+      <div class="f05-agenda-win" id="f05-agenda-win" data-layout-allow-overflow>
         <div class="f05-agenda-bar">
           <i style="left: 18px"></i><i style="left: 36px"></i><i style="left: 54px"></i>
         </div>
         <div class="f05-agenda-screen" data-layout-allow-overflow>
-          <div class="f05-agenda-canvas" data-layout-allow-overflow>
+          <div class="f05-agenda-canvas" id="f05-agenda-canvas" data-layout-allow-overflow>
             <img src="assets/app-agenda.png" alt="" />
             <div class="f05-agenda-slot" id="f05-agenda-slot"></div>
             <div class="f05-agenda-shadow" id="f05-agenda-shadow"></div>
@@ -449,23 +443,20 @@
       tl.fromTo("#f05-agenda-copy", { x: 0 }, { x: -10, duration: 4.5, ease: "none" }, 0);
 
       // ---------- Scene 2 (1.4–2.6): camera pushes toward Inès's empty 11:00 slot ----------
+      // The window is the viewport: the capture zooms inside it from the full app
+      // (sidebar included, scale 1200/2880) onto the Camille / Inès grid, so the
+      // window never grows over the title. Final framing keeps the hour labels
+      // (capture x 620) and Inès's column (x ≤ 2780) inside the 1200px screen.
       tl.fromTo(
-        "#f05-agenda-cam",
-        { scale: 1, "--f05-m0": "380px", "--f05-m1": "480px" },
-        {
-          scale: 1.25,
-          "--f05-m0": "520px",
-          "--f05-m1": "660px",
-          duration: 1.0,
-          ease: "power3.inOut",
-          transformOrigin: "1740px 494px",
-        },
-        1.3,
+        "#f05-agenda-canvas",
+        { x: 0, y: 0, scale: 0.416667 },
+        { x: -337, y: -158, scale: 0.548, duration: 1.05, ease: "power3.inOut" },
+        1.25,
       );
-      tl.to("#f05-agenda-win", { rotationY: -10, rotationX: 2, duration: 1.0, ease: "power3.inOut" }, 1.3);
+      tl.to("#f05-agenda-win", { z: 60, rotationY: -10, rotationX: 2, duration: 1.05, ease: "power3.inOut" }, 1.25);
       // breathing drift on the hold (never dies)
-      tl.to("#f05-agenda-cam", { scale: 1.28, duration: 2.2, ease: "sine.inOut" }, 2.3);
-      tl.to("#f05-agenda-win", { rotationY: -9, duration: 2.2, ease: "sine.inOut" }, 2.3);
+      tl.to("#f05-agenda-canvas", { x: -345, y: -164, scale: 0.552, duration: 2.2, ease: "sine.inOut" }, 2.3);
+      tl.to("#f05-agenda-win", { z: 80, rotationY: -9, duration: 2.2, ease: "sine.inOut" }, 2.3);
 
       // empty slot lights up, then the booking block drops into it (lands on « agenda » ≈ 2.1s)
       const LAND = 2.1;
