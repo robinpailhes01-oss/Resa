@@ -29,14 +29,14 @@
       font-family: "Outfit", sans-serif;
     }
 
-    /* ---------- stage (full-bleed clip, never moves with the world) ---------- */
-    .a05-bg {
+    /* ---------- stage (full-bleed clip) ---------- */
+    .f05-agenda-bg {
       position: absolute;
       inset: 0;
       overflow: hidden;
       background: radial-gradient(120% 95% at 62% 42%, #617990 0%, #566d84 42%, #3e5166 100%);
     }
-    .a05-grid {
+    .f05-agenda-grid {
       position: absolute;
       inset: -120px;
       background-image:
@@ -44,35 +44,172 @@
         linear-gradient(90deg, rgba(251, 246, 234, 0.06) 1px, transparent 1px);
       background-size: 120px 120px;
     }
-    .a05-arcs {
+    .f05-agenda-arcs {
       position: absolute;
       left: -200px;
       top: -200px;
       width: 2600px;
       height: 1600px;
     }
-    .a05-vignette {
+    .f05-agenda-vignette {
       position: absolute;
       inset: 0;
       background: radial-gradient(90% 80% at 55% 45%, transparent 55%, rgba(31, 39, 51, 0.45) 100%);
     }
 
-    /* ---------- camera world ---------- */
-    .a05-world {
+    /* ---------- 3D stage: the desktop window ---------- */
+    /* camera wrapper: the push scales this layer; its mask dissolves the window's
+       left edge into the stage so the title keeps its own zone during the push */
+    .f05-agenda-cam {
       position: absolute;
       inset: 0;
+      --f05-m0: 380px;
+      --f05-m1: 480px;
+      -webkit-mask-image: linear-gradient(90deg, transparent var(--f05-m0), #000 var(--f05-m1));
+      mask-image: linear-gradient(90deg, transparent var(--f05-m0), #000 var(--f05-m1));
+    }
+    .f05-agenda-stage3d {
+      position: absolute;
+      inset: 0;
+      perspective: 2600px;
+      perspective-origin: 1620px 494px;
+    }
+    .f05-agenda-win {
+      position: absolute;
+      left: 640px;
+      top: 100px;
+      width: 1240px;
+      height: 766px;
+      border-radius: 22px;
+      overflow: hidden;
+      background: #fffdf8;
+      border: 1px solid #e7dfd0;
+      box-shadow:
+        0 60px 120px -40px rgba(31, 39, 51, 0.55),
+        0 18px 40px -20px rgba(31, 39, 51, 0.35);
       transform-origin: 50% 50%;
-      will-change: transform, filter;
+    }
+    .f05-agenda-bar {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1240px;
+      height: 34px;
+      background: #fffdf8;
+      border-bottom: 1px solid #e7dfd0;
+      box-sizing: border-box;
+    }
+    .f05-agenda-bar i {
+      position: absolute;
+      top: 12px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #e3dac8;
+    }
+    .f05-agenda-screen {
+      position: absolute;
+      left: 0;
+      top: 34px;
+      width: 1240px;
+      height: 732px;
+      overflow: hidden;
+      background: #fbf6ea;
+    }
+    /* The capture is laid out at its native 2880×1756 px and scaled once, so every
+       overlay below is authored in capture pixels (measured from app-agenda.png). */
+    .f05-agenda-canvas {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 2880px;
+      height: 1756px;
+      transform: scale(0.430556);
+      transform-origin: 0 0;
+    }
+    .f05-agenda-canvas > img {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 2880px;
+      height: 1756px;
+      display: block;
     }
 
-    /* ---------- title column (45%) ---------- */
-    .a05-copy {
+    /* Inès column, 11:00–12:00 slot: hour lines at y 780 / 892, blocks inset 4px,
+       column block x 1770–2768, radius 24 (same as « 15:00 · Léa Martin »). */
+    .f05-agenda-slot {
       position: absolute;
-      left: 150px;
-      top: 270px;
-      width: 760px;
+      left: 1770px;
+      top: 784px;
+      width: 998px;
+      height: 104px;
+      border-radius: 24px;
+      border: 3px dashed rgba(182, 166, 216, 0.95);
+      background: rgba(182, 166, 216, 0.12);
+      box-sizing: border-box;
     }
-    .a05-kicker {
+    .f05-agenda-shadow {
+      position: absolute;
+      left: 1790px;
+      top: 800px;
+      width: 958px;
+      height: 92px;
+      border-radius: 28px;
+      background: rgba(62, 81, 102, 0.55);
+      filter: blur(var(--f05-sh-blur, 36px));
+    }
+    .f05-agenda-block {
+      position: absolute;
+      left: 1770px;
+      top: 784px;
+      width: 998px;
+      height: 104px;
+      border-radius: 24px;
+      background: #efe9f7;
+      font-family: "Manrope", sans-serif;
+      transform-origin: 50% 100%;
+    }
+    .f05-agenda-block-t {
+      position: absolute;
+      left: 23px;
+      top: 27px;
+      font-size: 24px;
+      line-height: 1;
+      font-weight: 600;
+      color: #1f2733;
+      white-space: nowrap;
+    }
+    .f05-agenda-block-s {
+      position: absolute;
+      left: 22px;
+      top: 57px;
+      font-size: 22px;
+      line-height: 1;
+      font-weight: 400;
+      color: #5f6672;
+      white-space: nowrap;
+    }
+    .f05-agenda-ring {
+      position: absolute;
+      left: 1770px;
+      top: 784px;
+      width: 998px;
+      height: 104px;
+      border-radius: 26px;
+      border: 4px solid #b6a6d8;
+      box-shadow: 0 0 40px rgba(182, 166, 216, 0.8);
+      box-sizing: border-box;
+    }
+
+    /* ---------- title column ---------- */
+    .f05-agenda-copy {
+      position: absolute;
+      left: 112px;
+      top: 300px;
+      width: 520px;
+    }
+    .f05-agenda-kicker {
       font-family: "JetBrains Mono", monospace;
       font-size: 20px;
       font-weight: 500;
@@ -82,235 +219,102 @@
       display: flex;
       align-items: center;
       gap: 16px;
-      margin-bottom: 34px;
+      margin-bottom: 32px;
     }
-    .a05-kicker-dot {
+    .f05-agenda-kicker-dot {
       width: 10px;
       height: 10px;
       border-radius: 50%;
       background: #b6a6d8;
       box-shadow: 0 0 18px rgba(182, 166, 216, 0.8);
     }
-    .a05-title {
+    .f05-agenda-title {
       font-family: "Outfit", sans-serif;
       font-weight: 500;
-      font-size: 104px;
+      font-size: 96px;
       line-height: 1.04;
       letter-spacing: -0.03em;
       color: #fbf6ea;
       margin: 0;
     }
-    .a05-line {
+    .f05-agenda-line {
       display: block;
       white-space: nowrap;
     }
-    .a05-mask {
+    .f05-agenda-mask {
       display: inline-block;
       overflow: hidden;
       vertical-align: top;
       padding: 0 0.04em 0.12em 0;
       margin-bottom: -0.12em;
     }
-    .a05-w {
+    .f05-agenda-w {
       display: inline-block;
-      will-change: transform;
     }
-    .a05-hl {
+    .f05-agenda-hl {
       color: #d6ccef;
     }
 
-    /* ---------- 3D stage for phone + notification ---------- */
-    .a05-stage3d {
-      position: absolute;
-      left: 1010px;
-      top: 70px;
-      width: 600px;
-      height: 820px;
-      perspective: 1800px;
-      perspective-origin: 30% 40%;
-    }
-    .a05-rig {
-      position: absolute;
-      inset: 0;
-      transform-style: preserve-3d;
-    }
-    .a05-phone {
-      position: absolute;
-      left: 36px;
-      top: 14px;
-      width: 528px;
-      height: 790px;
-      border-radius: 28px;
-      background: #fffdf8;
-      border: 1px solid #e7dfd0;
-      box-shadow:
-        0 60px 120px -40px rgba(31, 39, 51, 0.55),
-        0 18px 40px -20px rgba(31, 39, 51, 0.35);
-      transform-style: preserve-3d;
-    }
-    .a05-screen {
-      position: absolute;
-      left: 14px;
-      top: 14px;
-      width: 500px;
-      height: 762px;
-      border-radius: 18px;
-      overflow: hidden;
-      background: #f8f4ea;
-    }
-    .a05-screen img {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 500px;
-      height: auto;
-      display: block;
-    }
-    /* gentle shade at the bottom of the screen so the crop reads as a scroll */
-    .a05-screen-fade {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 90px;
-      background: linear-gradient(to bottom, rgba(253, 251, 245, 0), rgba(253, 251, 245, 0.9));
-    }
-
-    /* The empty 10:00–11:00 slot in the capture (orig y 1181–1336, x 237–1079) ×(500/1170).
-       Coordinates are relative to .a05-phone (screen inset 14px). */
-    .a05-slotglow {
-      position: absolute;
-      left: 115px;
-      top: 519px;
-      width: 360px;
-      height: 66px;
-      border-radius: 9px;
-      border: 1.5px dashed rgba(182, 166, 216, 0.95);
-      background: rgba(182, 166, 216, 0.14);
-    }
-    .a05-shadow {
-      position: absolute;
-      left: 115px;
-      top: 525px;
-      width: 360px;
-      height: 62px;
-      border-radius: 12px;
-      background: rgba(31, 39, 51, 0.55);
-      filter: blur(var(--a05-sh-blur, 20px));
-    }
-    .a05-block {
-      position: absolute;
-      left: 115px;
-      top: 519px;
-      width: 360px;
-      height: 66px;
-      border-radius: 9px;
-      background: linear-gradient(100deg, #f3eefa 0%, #fbf8f1 100%);
-      border: 1px solid rgba(182, 166, 216, 0.55);
-      border-left: 5px solid #b6a6d8;
-      padding: 8px 12px 0 12px;
-      box-sizing: border-box;
-      font-family: "Manrope", sans-serif;
-      color: #1f2733;
-      transform-origin: 50% 100%;
-    }
-    .a05-block-t {
-      font-size: 17px;
-      font-weight: 700;
-      line-height: 1.2;
-      letter-spacing: -0.01em;
-    }
-    .a05-block-s {
-      margin-top: 4px;
-      font-size: 14.5px;
-      font-weight: 500;
-      line-height: 1.2;
-      color: #5f6672;
-    }
-    .a05-block-new {
-      position: absolute;
-      right: 10px;
-      top: 9px;
-      font-family: "JetBrains Mono", monospace;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      color: #5e4f8f;
-      background: rgba(182, 166, 216, 0.3);
-      border-radius: 100px;
-      padding: 3px 7px;
-    }
-    .a05-ring {
-      position: absolute;
-      left: 115px;
-      top: 519px;
-      width: 360px;
-      height: 66px;
-      border-radius: 11px;
-      border: 2px solid #b6a6d8;
-      box-shadow: 0 0 24px rgba(182, 166, 216, 0.7);
-    }
-
     /* ---------- notification ---------- */
-    .a05-notif {
+    .f05-agenda-notif {
       position: absolute;
-      left: -70px;
-      top: -6px;
-      width: 470px;
-      height: 96px;
-      border-radius: 24px;
-      background: rgba(255, 253, 248, 0.97);
+      left: 1236px;
+      top: 116px;
+      width: 560px;
+      height: 104px;
+      border-radius: 26px;
+      background: rgba(255, 253, 248, 0.98);
       border: 1px solid #e7dfd0;
       box-shadow:
         0 50px 90px -30px rgba(31, 39, 51, 0.6),
         0 10px 26px -12px rgba(31, 39, 51, 0.3);
       display: flex;
       align-items: center;
-      gap: 18px;
-      padding: 0 22px;
+      gap: 20px;
+      padding: 0 26px 0 22px;
       box-sizing: border-box;
     }
-    .a05-icon {
+    .f05-agenda-icon {
       flex: 0 0 auto;
-      width: 58px;
-      height: 58px;
-      border-radius: 15px;
+      width: 62px;
+      height: 62px;
+      border-radius: 16px;
       background: linear-gradient(150deg, #617990 0%, #3e5166 100%);
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    .a05-icon img {
-      width: 44px;
+    .f05-agenda-icon img {
+      width: 46px;
       height: auto;
       display: block;
     }
-    .a05-notif-txt {
+    .f05-agenda-notif-txt {
       flex: 1 1 auto;
       min-width: 0;
     }
-    .a05-notif-h {
+    .f05-agenda-notif-h {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
     }
-    .a05-notif-t {
+    .f05-agenda-notif-t {
       font-family: "Outfit", sans-serif;
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 600;
       letter-spacing: -0.015em;
       color: #1f2733;
     }
-    .a05-notif-time {
+    .f05-agenda-notif-time {
       font-family: "JetBrains Mono", monospace;
-      font-size: 12px;
+      font-size: 13px;
       letter-spacing: 0.1em;
-      color: #6e6e6e;
+      color: #6b6b6b;
     }
-    .a05-notif-s {
-      margin-top: 4px;
+    .f05-agenda-notif-s {
+      margin-top: 5px;
       font-family: "Manrope", sans-serif;
-      font-size: 17px;
+      font-size: 19px;
       font-weight: 500;
       color: #5f6672;
       white-space: nowrap;
@@ -325,61 +329,81 @@
     data-width="1920"
     data-height="1080"
   >
-    <div class="a05-bg clip" id="a05-bg" data-layout-allow-overflow data-start="0" data-duration="4.5" data-track-index="0">
-      <div class="a05-grid" id="a05-grid" data-layout-allow-overflow></div>
-      <svg class="a05-arcs" id="a05-arcs" data-layout-allow-overflow viewBox="0 0 2600 1600" fill="none">
+    <div
+      class="f05-agenda-bg clip"
+      id="f05-agenda-bg"
+      data-layout-allow-overflow
+      data-start="0"
+      data-duration="4.5"
+      data-track-index="0"
+    >
+      <div class="f05-agenda-grid" id="f05-agenda-grid" data-layout-allow-overflow></div>
+      <svg class="f05-agenda-arcs" id="f05-agenda-arcs" data-layout-allow-overflow viewBox="0 0 2600 1600" fill="none">
         <path d="M-100 1400 C 600 700, 1500 380, 2700 520" stroke="rgba(251,246,234,0.25)" stroke-width="1.5" />
         <path d="M-100 1560 C 800 900, 1700 700, 2700 820" stroke="rgba(251,246,234,0.14)" stroke-width="1.2" />
         <path d="M300 -100 C 900 500, 1900 760, 2700 260" stroke="rgba(251,246,234,0.1)" stroke-width="1" />
       </svg>
-      <div class="a05-vignette"></div>
+      <div class="f05-agenda-vignette"></div>
     </div>
 
     <div
-      class="a05-world clip"
-      id="a05-world"
+      class="f05-agenda-cam clip"
+      id="f05-agenda-cam"
       data-start="0"
       data-duration="4.5"
       data-track-index="1"
       data-layout-allow-overflow
     >
-      <div class="a05-copy">
-        <div class="a05-kicker" id="a05-kicker"><span class="a05-kicker-dot"></span>Agenda</div>
-        <h1 class="a05-title">
-          <span class="a05-line"><span class="a05-mask"><span class="a05-w">Tout</span></span> <span class="a05-mask"><span class="a05-w">arrive</span></span></span>
-          <span class="a05-line"><span class="a05-mask"><span class="a05-w">dans</span></span> <span class="a05-mask"><span class="a05-w">votre</span></span></span>
-          <span class="a05-line"><span class="a05-mask"><span class="a05-w a05-hl">agenda.</span></span></span>
-        </h1>
-      </div>
-
-      <div class="a05-stage3d">
-        <div class="a05-rig" id="a05-rig">
-          <div class="a05-phone" id="a05-phone">
-            <div class="a05-screen">
-              <img src="assets/agenda-mobile-lundi.png" alt="" />
-              <div class="a05-screen-fade"></div>
+     <div class="f05-agenda-stage3d" data-layout-allow-overflow>
+      <div data-layout-allow-occlusion data-layout-allow-overflow class="f05-agenda-win" id="f05-agenda-win" data-layout-allow-overflow>
+        <div class="f05-agenda-bar">
+          <i style="left: 18px"></i><i style="left: 36px"></i><i style="left: 54px"></i>
+        </div>
+        <div class="f05-agenda-screen" data-layout-allow-overflow>
+          <div class="f05-agenda-canvas" data-layout-allow-overflow>
+            <img src="assets/app-agenda.png" alt="" />
+            <div class="f05-agenda-slot" id="f05-agenda-slot"></div>
+            <div class="f05-agenda-shadow" id="f05-agenda-shadow"></div>
+            <div class="f05-agenda-block" id="f05-agenda-block">
+              <div class="f05-agenda-block-t">11:00 · Julie Martin</div>
+              <div class="f05-agenda-block-s">Soin du visage</div>
             </div>
-            <div class="a05-slotglow" id="a05-slotglow"></div>
-            <div class="a05-shadow" id="a05-shadow"></div>
-            <div class="a05-block" id="a05-block">
-              <div class="a05-block-t">Soin du visage</div>
-              <div class="a05-block-s">10:30 · Julie M.</div>
-              <span class="a05-block-new">NEW</span>
-            </div>
-            <div class="a05-ring" id="a05-ring"></div>
-          </div>
-
-          <div class="a05-notif" id="a05-notif">
-            <div class="a05-icon"><img src="assets/logo-reso-creme.svg" alt="" /></div>
-            <div class="a05-notif-txt">
-              <div class="a05-notif-h">
-                <span class="a05-notif-t">Nouvelle réservation</span>
-                <span class="a05-notif-time">MAINTENANT</span>
-              </div>
-              <div class="a05-notif-s">Soin du visage · 10:30 · Julie M.</div>
-            </div>
+            <div class="f05-agenda-ring" id="f05-agenda-ring"></div>
           </div>
         </div>
+      </div>
+     </div>
+    </div>
+
+    <div
+      class="f05-agenda-copy clip"
+      id="f05-agenda-copy"
+      data-start="0"
+      data-duration="4.5"
+      data-track-index="2"
+    >
+      <div class="f05-agenda-kicker" id="f05-agenda-kicker"><span class="f05-agenda-kicker-dot"></span>Agenda</div>
+      <h1 class="f05-agenda-title">
+        <span class="f05-agenda-line"><span class="f05-agenda-mask" data-layout-allow-overflow><span data-layout-allow-occlusion data-layout-allow-overflow class="f05-agenda-w" id="f05-agenda-w1">Tout</span></span> <span class="f05-agenda-mask" data-layout-allow-overflow><span data-layout-allow-occlusion data-layout-allow-overflow class="f05-agenda-w" id="f05-agenda-w2">arrive</span></span></span>
+        <span class="f05-agenda-line"><span class="f05-agenda-mask" data-layout-allow-overflow><span data-layout-allow-occlusion data-layout-allow-overflow class="f05-agenda-w" id="f05-agenda-w3">dans</span></span> <span class="f05-agenda-mask" data-layout-allow-overflow><span data-layout-allow-occlusion data-layout-allow-overflow class="f05-agenda-w" id="f05-agenda-w4">votre</span></span></span>
+        <span class="f05-agenda-line"><span class="f05-agenda-mask" data-layout-allow-overflow><span data-layout-allow-occlusion data-layout-allow-overflow class="f05-agenda-w f05-agenda-hl" id="f05-agenda-w5">agenda.</span></span></span>
+      </h1>
+    </div>
+
+    <div
+      class="f05-agenda-notif clip"
+      id="f05-agenda-notif"
+      data-start="0"
+      data-duration="4.5"
+      data-track-index="3"
+    >
+      <div class="f05-agenda-icon"><img src="assets/logo-reso-creme.svg" alt="" /></div>
+      <div class="f05-agenda-notif-txt">
+        <div class="f05-agenda-notif-h">
+          <span class="f05-agenda-notif-t">Nouvelle réservation</span>
+          <span class="f05-agenda-notif-time">MAINTENANT</span>
+        </div>
+        <div class="f05-agenda-notif-s">Julie Martin · 11:00</div>
       </div>
     </div>
   </div>
@@ -387,94 +411,108 @@
   <script>
     (function () {
       const FID = "05-agenda";
-      const root = document.querySelector('[data-composition-id="' + FID + '"]');
-      const q = (sel) => root.querySelector(sel);
-      const qa = (sel) => root.querySelectorAll(sel);
-
-      const world = q("#a05-world");
       const tl = gsap.timeline({ paused: true });
 
-      // ---- one camera state, one writer (viewport-change) ----
-      const cam = { x: 560, y: 10, scale: 0.92, blur: 7 };
-      function applyCamera() {
-        world.style.transform = "translate(" + cam.x + "px," + cam.y + "px) scale(" + cam.scale + ")";
-        world.style.filter = cam.blur > 0.05 ? "blur(" + cam.blur.toFixed(2) + "px)" : "none";
+      // ---------- Scene 1 (0.0–1.4): lateral travelling right → left, window settles tilted ----------
+      const cam = { blur: 8 };
+      const win = document.getElementById("f05-agenda-win");
+      function applyBlur() {
+        win.style.filter = cam.blur > 0.05 ? "blur(" + cam.blur.toFixed(2) + "px)" : "none";
       }
-      applyCamera();
+      applyBlur();
+      tl.to(cam, { blur: 0, duration: 0.85, ease: "power2.out", onUpdate: applyBlur }, 0);
 
-      // Scene 1 (0.0–1.4): lateral travelling right→left that settles + slight push
-      tl.to(cam, { x: 0, y: 0, scale: 1, duration: 1.4, ease: "power3.out", onUpdate: applyCamera }, 0);
-      tl.to(cam, { blur: 0, duration: 0.8, ease: "power2.out", onUpdate: applyCamera }, 0);
-      // breathing drift on the hold (never dies)
-      tl.to(cam, { x: -18, scale: 1.03, duration: 2.6, ease: "sine.inOut", onUpdate: applyCamera }, 1.4);
-
-      // background parallax (slower plane)
-      tl.fromTo("#a05-arcs", { x: 220 }, { x: -20, duration: 4, ease: "power3.out" }, 0);
-      tl.fromTo("#a05-grid", { x: 90 }, { x: 0, duration: 1.6, ease: "power3.out" }, 0);
-
-      // phone tilt resolves with the camera, then near-imperceptible drift
       tl.fromTo(
-        "#a05-rig",
-        { rotationY: -30, rotationX: 8, rotationZ: 1.5 },
-        { rotationY: -13, rotationX: 5, rotationZ: 0.5, duration: 1.4, ease: "power3.out" },
+        "#f05-agenda-win",
+        { x: 1150, z: -160, rotationY: -28, rotationX: 4 },
+        { x: 0, z: 0, rotationY: -12, rotationX: 3, duration: 1.4, ease: "power3.out" },
         0,
       );
-      tl.to("#a05-rig", { rotationY: -10, rotationX: 4, duration: 2.6, ease: "sine.inOut" }, 1.4);
 
-      // kicker + word-by-word masked title
-      tl.fromTo("#a05-kicker", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, 0.2);
-      tl.fromTo(
-        qa(".a05-w"),
-        { yPercent: 140 },
-        { yPercent: 0, duration: 0.75, ease: "expo.out", stagger: 0.09 },
-        0.3,
-      );
+      // background parallax (slower planes)
+      tl.fromTo("#f05-agenda-arcs", { x: 260 }, { x: -30, duration: 4.5, ease: "power3.out" }, 0);
+      tl.fromTo("#f05-agenda-grid", { x: 110 }, { x: 0, duration: 1.6, ease: "power3.out" }, 0);
 
-      // Scene 2 (1.4–2.8): empty slot lights up, booking block drops into it
-      tl.fromTo("#a05-slotglow", { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power2.out" }, 1.25);
-      tl.to("#a05-slotglow", { opacity: 0, duration: 0.2, ease: "power2.out" }, 2.22);
+      // kicker + word-by-word masked title, paced to the voice-over
+      tl.fromTo("#f05-agenda-kicker", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, 0.15);
+      const words = [
+        ["#f05-agenda-w1", 0.25],
+        ["#f05-agenda-w2", 0.42],
+        ["#f05-agenda-w3", 1.3],
+        ["#f05-agenda-w4", 1.48],
+        ["#f05-agenda-w5", 1.85],
+      ];
+      words.forEach(function (w) {
+        tl.fromTo(w[0], { yPercent: 140 }, { yPercent: 0, duration: 0.7, ease: "expo.out" }, w[1]);
+      });
+      // title column: near-imperceptible drift so the hold never dies
+      tl.fromTo("#f05-agenda-copy", { x: 0 }, { x: -10, duration: 4.5, ease: "none" }, 0);
 
-      const LAND = 2.25;
+      // ---------- Scene 2 (1.4–2.6): camera pushes toward Inès's empty 11:00 slot ----------
       tl.fromTo(
-        "#a05-block",
-        { y: -330, z: 240, rotationX: 22, opacity: 0 },
-        { y: 0, z: 0, rotationX: 0, duration: 0.8, ease: "power3.inOut", immediateRender: true },
-        1.45,
+        "#f05-agenda-cam",
+        { scale: 1, "--f05-m0": "380px", "--f05-m1": "480px" },
+        {
+          scale: 1.25,
+          "--f05-m0": "520px",
+          "--f05-m1": "660px",
+          duration: 1.0,
+          ease: "power3.inOut",
+          transformOrigin: "1740px 494px",
+        },
+        1.3,
       );
-      tl.fromTo("#a05-block", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "none", immediateRender: false }, 1.45);
+      tl.to("#f05-agenda-win", { rotationY: -10, rotationX: 2, duration: 1.0, ease: "power3.inOut" }, 1.3);
+      // breathing drift on the hold (never dies)
+      tl.to("#f05-agenda-cam", { scale: 1.28, duration: 2.2, ease: "sine.inOut" }, 2.3);
+      tl.to("#f05-agenda-win", { rotationY: -9, duration: 2.2, ease: "sine.inOut" }, 2.3);
+
+      // empty slot lights up, then the booking block drops into it (lands on « agenda » ≈ 2.1s)
+      const LAND = 2.1;
+      tl.fromTo("#f05-agenda-slot", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 1.3);
+      tl.to("#f05-agenda-slot", { opacity: 0, duration: 0.15, ease: "power2.out" }, LAND - 0.05);
+
       tl.fromTo(
-        "#a05-shadow",
-        { opacity: 0, scale: 1.35, "--a05-sh-blur": "34px", y: 30 },
-        { opacity: 0.42, scale: 1, "--a05-sh-blur": "7px", y: 0, duration: 0.8, ease: "power3.inOut" },
-        1.45,
+        "#f05-agenda-block",
+        { y: -420, scale: 1.08, opacity: 0 },
+        { y: 0, scale: 1, duration: 0.65, ease: "power3.in", immediateRender: true },
+        LAND - 0.65,
       );
-      // landing accent (the "ding"): soft lavender ring expands and dissolves
       tl.fromTo(
-        "#a05-ring",
-        { opacity: 0, scale: 1 },
-        { opacity: 0.9, scale: 1.02, duration: 0.08, ease: "none" },
-        LAND,
+        "#f05-agenda-block",
+        { opacity: 0 },
+        { opacity: 1, duration: 0.22, ease: "none", immediateRender: false },
+        LAND - 0.65,
       );
-      tl.to("#a05-ring", { opacity: 0, scale: 1.14, duration: 0.55, ease: "power3.out" }, LAND + 0.08);
-      // small settle on contact (compression, no bounce)
       tl.fromTo(
-        "#a05-block",
+        "#f05-agenda-shadow",
+        { opacity: 0, scale: 1.25, y: 60, "--f05-sh-blur": "60px" },
+        { opacity: 0.5, scale: 1, y: 0, "--f05-sh-blur": "16px", duration: 0.65, ease: "power3.in" },
+        LAND - 0.65,
+      );
+      tl.to("#f05-agenda-shadow", { opacity: 0.32, duration: 0.4, ease: "power2.out" }, LAND);
+      // contact: short compression, no bounce
+      tl.fromTo(
+        "#f05-agenda-block",
         { scaleY: 1 },
-        { scaleY: 0.96, duration: 0.08, ease: "power2.out", immediateRender: false },
+        { scaleY: 0.93, duration: 0.07, ease: "power2.out", immediateRender: false },
         LAND,
       );
-      tl.to("#a05-block", { scaleY: 1, duration: 0.35, ease: "power3.out" }, LAND + 0.08);
+      tl.to("#f05-agenda-block", { scaleY: 1, duration: 0.35, ease: "power3.out" }, LAND + 0.07);
+      // the « ding »: lavender ring flashes and dissolves outward
+      tl.fromTo("#f05-agenda-ring", { opacity: 0, scale: 1 }, { opacity: 1, scale: 1.01, duration: 0.07, ease: "none" }, LAND);
+      tl.to("#f05-agenda-ring", { opacity: 0, scale: 1.12, duration: 0.6, ease: "power3.out" }, LAND + 0.07);
 
-      // Scene 3 (2.8–4.0): notification slides over the phone and rests
+      // ---------- Scene 3 (2.6–4.0): notification slides over the window and rests ----------
       tl.fromTo(
-        "#a05-notif",
-        { y: -110, z: 60, opacity: 0, filter: "blur(10px)" },
-        { y: 0, z: 90, opacity: 1, filter: "blur(0px)", duration: 0.7, ease: "expo.out" },
-        2.85,
+        "#f05-agenda-notif",
+        { y: -90, opacity: 0, scale: 0.96, filter: "blur(10px)" },
+        { y: 0, opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.7, ease: "expo.out" },
+        2.6,
       );
-      tl.to("#a05-notif", { y: 6, duration: 0.45, ease: "sine.inOut" }, 3.55);
+      tl.to("#f05-agenda-notif", { y: 6, duration: 1.2, ease: "sine.inOut" }, 3.3);
 
-      tl.set({}, {}, 4);
+      tl.set({}, {}, 4.5);
 
       window.__timelines = window.__timelines || {};
       window.__timelines[FID] = tl;
