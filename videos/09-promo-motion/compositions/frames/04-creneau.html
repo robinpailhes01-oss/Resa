@@ -72,16 +72,16 @@
       position: absolute;
       inset: 0;
       perspective: 1900px;
-      perspective-origin: 860px 600px;
+      perspective-origin: 1150px 600px;
     }
     [data-composition-id="04-creneau"] .cr04-plane {
       position: absolute;
-      left: 315px;
-      top: -744px;
+      left: 605px;
+      top: 36px;
       width: 900px;
-      height: 1948px;
+      height: 1168px;
       transform-style: preserve-3d;
-      transform-origin: 545px 1344px;
+      transform-origin: 545px 564px;
     }
     [data-composition-id="04-creneau"] .cr04-sheet {
       position: absolute;
@@ -93,7 +93,9 @@
       box-shadow: 0 60px 120px -40px rgba(31, 39, 51, 0.55);
     }
     [data-composition-id="04-creneau"] .cr04-sheet img {
-      display: block;
+      position: absolute;
+      left: 0;
+      top: -780px;
       width: 900px;
       height: 1948px;
     }
@@ -101,7 +103,7 @@
     [data-composition-id="04-creneau"] .cr04-slot {
       position: absolute;
       left: 458px;
-      top: 1292px;
+      top: 512px;
       width: 173px;
       height: 105px;
       border-radius: 15px;
@@ -120,7 +122,7 @@
     [data-composition-id="04-creneau"] .cr04-ripple {
       position: absolute;
       left: 494px;
-      top: 1294px;
+      top: 514px;
       width: 100px;
       height: 100px;
       border-radius: 50%;
@@ -177,7 +179,7 @@
       display: inline-block;
     }
     [data-composition-id="04-creneau"] .cr04-lav {
-      color: #b6a6d8;
+      color: #d5cce9;
     }
 
     /* ---------- foreground: coordonnées card + confirmation pill ---------- */
@@ -345,8 +347,8 @@
         0,
       );
       // coordinate-target-zoom: outer scales, inner counter-translates, same ease/duration
-      tl.fromTo(q(".cr04-cam"), { scale: 0.8 }, { scale: 1.25, duration: 1.45, ease: "power3.inOut" }, 0);
-      tl.fromTo(q(".cr04-pan"), { x: 0, y: 260 }, { x: 4, y: -28, duration: 1.45, ease: "power3.inOut" }, 0);
+      tl.fromTo(q(".cr04-cam"), { scale: 0.85 }, { scale: 1.2, duration: 1.45, ease: "power3.inOut" }, 0);
+      tl.fromTo(q(".cr04-pan"), { x: 0, y: 200 }, { x: -7, y: -10, duration: 1.45, ease: "power3.inOut" }, 0);
 
       // masked word-by-word title
       qa(".cr04-wi").forEach((el, i) => {
@@ -363,18 +365,19 @@
       const cursor = q(".cr04-cursor");
       tl.fromTo(
         anchor,
-        { x: 820, y: 1640, opacity: 0 },
-        { x: 820, y: 1640, opacity: 1, duration: 0.2, ease: "power2.out" },
+        { x: 820, y: 860, opacity: 0 },
+        { x: 820, y: 860, opacity: 1, duration: 0.2, ease: "power2.out" },
         1.15,
       );
       tl.fromTo(
         anchor,
-        { x: 820, y: 1640 },
-        { x: 548, y: 1348, duration: 0.65, ease: "power3.out", immediateRender: false },
+        { x: 820, y: 860 },
+        { x: 548, y: 568, duration: 0.65, ease: "power3.out", immediateRender: false },
         1.2,
       );
       // camera chases the cursor slightly
-      tl.to(q(".cr04-pan"), { x: -10, y: -40, duration: 0.9, ease: "power2.inOut" }, 1.45);
+      tl.to(q(".cr04-pan"), { x: -22, y: -20, duration: 0.9, ease: "power2.inOut" }, 1.45);
+      tl.to(q(".cr04-cam"), { scale: 1.25, duration: 0.9, ease: "power2.inOut" }, 1.45);
 
       const CLICK = 1.95;
       tl.fromTo(cursor, { scale: 1 }, { scale: 0.84, duration: 0.08, ease: "power2.in" }, CLICK);
@@ -406,8 +409,8 @@
         { filter: "blur(7px) brightness(0.88)", duration: 1.0, ease: "power2.inOut", immediateRender: false },
         2.4,
       );
-      tl.to(q(".cr04-cam"), { scale: 1.2, duration: 2.1, ease: "power2.inOut" }, 2.4);
-      tl.to(q(".cr04-pan"), { x: -167, y: -30, duration: 2.1, ease: "power2.inOut" }, 2.4);
+      tl.to(q(".cr04-cam"), { scale: 1.15, duration: 2.1, ease: "power2.inOut" }, 2.4);
+      tl.to(q(".cr04-pan"), { x: -125, y: 215, duration: 2.0, ease: "power3.inOut" }, 2.25);
       tl.fromTo(anchor, { opacity: 1 }, { opacity: 0, duration: 0.4, ease: "power2.out", immediateRender: false }, 2.5);
 
       // ---- Scene 4 (3.4–4.5): soft pop of the confirmation pill, hold
