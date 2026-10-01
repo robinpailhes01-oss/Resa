@@ -33,7 +33,7 @@ Déclinaison verticale (Instagram Reels) de la vidéo 09 (`videos/09-promo-motio
 - focal: barre de recherche reconstruite (HTML)
 - roles: aucun asset image (tout est construit) · fond = plateau poudré avec silhouettes floues de cartes
 - asset_candidates: none
-- status: outline
+- status: animated
 - src: compositions/frames/01-accroche.html
 - voiceover: (aucune) — à l'écran : kicker « AUJOURD'HUI » · « Vos clientes vous cherchent en ligne. »
 
@@ -55,7 +55,7 @@ Scene 4 (3.0–4.5s) : 3 suggestions tombent sous la barre en cascade (« esthé
 - focal: assets/logo-reso-creme.svg
 - roles: logo-reso-creme = cutout (centre)
 - asset_candidates: assets/logo-reso-creme.svg
-- status: outline
+- status: animated
 - src: compositions/frames/02-marque.html
 - voiceover: (aucune) — à l'écran : reso® · BEAUTY BUSINESS SIMPLIFIED
 
@@ -76,7 +76,7 @@ Scene 3 (1.1–2.5s) : un trait crème fin se trace sous le logo, puis « BEAUTY
 - focal: assets/app-ma-page.png
 - roles: app-ma-page = cutout (grand écran desktop, héros, 2880×1694) · app-page-publique-mobile = supporting (téléphone devant, à droite, 1170×2532) · app-page-publique-desktop = background (grande carte très floue en profondeur, ~30 %)
 - asset_candidates: assets/app-ma-page.png, assets/app-page-publique-mobile.png, assets/app-page-publique-desktop.png
-- status: outline
+- status: animated
 - src: compositions/frames/03-page.html
 - voiceover: « Vous avez votre propre page de réservation : vos photos, vos prestations, vos avis. » (débute à 0.3s ; « vos photos » ≈ 2.75s, « vos prestations » ≈ 3.3s, « vos avis » ≈ 4.2s)
 
@@ -97,7 +97,7 @@ Scene 4 (4.0–5.2s) : une petite pastille crème « ★ 4,9 · avis Google » �
 - focal: assets/reservation-mobile-creneaux.png
 - roles: reservation-mobile-creneaux = cutout (grande carte inclinée) · reservation-mobile-coordonnees = supporting (carte qui pivote en avant)
 - asset_candidates: assets/reservation-mobile-creneaux.png, assets/reservation-mobile-coordonnees.png
-- status: outline
+- status: animated
 - src: compositions/frames/04-creneau.html
 - voiceover: (aucune) — à l'écran : « Elles réservent seules, 24h/24. »
 
@@ -118,7 +118,7 @@ Scene 4 (3.4–4.5s) : une pastille verte-poudrée « ✓ Réservation confirmé
 - focal: assets/app-agenda.png
 - roles: app-agenda = cutout (grand écran desktop incliné, 2880×1756)
 - asset_candidates: assets/app-agenda.png
-- status: outline
+- status: animated
 - src: compositions/frames/05-agenda.html
 - voiceover: « Et tout arrive directement dans votre agenda. » (débute à 0.2s ; « agenda » ≈ 2.1s)
 
@@ -138,7 +138,7 @@ Scene 3 (2.6–4.0s) : une notification « Nouvelle réservation · Julie Martin
 - focal: assets/app-dashboard-activite.png
 - roles: app-dashboard-activite = cutout (grande carte, 2240×1000 : tuiles + graphique) · app-dashboard = background (écran complet très flou en profondeur, « Bonjour Camille »)
 - asset_candidates: assets/app-dashboard-activite.png, assets/app-dashboard.png
-- status: outline
+- status: animated
 - src: compositions/frames/055-tableau.html
 - voiceover: « Votre tableau de bord vous montre vos rendez-vous, vos revenus, votre remplissage… en un coup d'œil. » (débute à 0.3s ; « rendez-vous » ≈ 2.0s, « revenus » ≈ 2.8s, « remplissage » ≈ 3.7s, « coup d'œil » ≈ 4.8s)
 
@@ -158,7 +158,7 @@ Scene 3 (4.4–6.0s) : la caméra recule pour montrer tout le tableau ; les barr
 - focal: nœud reso + 3 cartes emails (HTML)
 - roles: emails-mobile-haut = background (grande carte inclinée floutée, ~35 %) · emails-mobile-avis = supporting (petite carte nette, en bas à droite)
 - asset_candidates: assets/emails-mobile-haut.png, assets/emails-mobile-avis.png
-- status: outline
+- status: animated
 - src: compositions/frames/06-emails.html
 - voiceover: (aucune) — à l'écran : « Confirmation, rappel, avis. Automatiques. »
 
@@ -178,7 +178,7 @@ Scene 3 (3.0–4.5s) : « Automatiques. » arrive en accent lavande ; la caméra
 - focal: bouton « Créer ma page » (HTML) puis assets/logo-reso-creme.svg
 - roles: dashboard-tablette-bonjour = background (tablette inclinée très floue derrière le titre, ~25 %) · logo-reso-creme = cutout (signature finale)
 - asset_candidates: assets/logo-reso-creme.svg, assets/dashboard-tablette-bonjour.png
-- status: outline
+- status: animated
 - src: compositions/frames/07-cta.html
 - voiceover: (aucune) — à l'écran : « Envie d'essayer ? » · « 7 jours offerts, sans carte bancaire » · « Créer ma page » · reso® Beauty business simplified
 
