@@ -327,3 +327,7 @@ until the script supplies them. Directional chips require a real comparison from
 - **Outfit + Outfit via Google Fonts.** CJK pairing (Noto Sans SC 700 display / Noto Serif SC 400 body) carries over; the eyebrow's uppercase+tracking signal weakens in CJK — pair it with the accent-line.
 - **9:16 / 1:1 are guidance**; verify the floor and that the diagonal panel reflows to a band.
 - Diagonal panel (clip-path), dot grid, concentric rings, and bars are CSS-only; no external imagery is required.
+
+## Fonts (local files — do not load from the network)
+
+Use `@font-face` with these project files: `assets/fonts/outfit.woff2` (Outfit, weights 100–900), `assets/fonts/manrope.woff2` (Manrope, 200–800), `assets/fonts/jetbrainsmono.woff2` (JetBrains Mono, 100–800). Paths are relative to the project root (`../../assets/fonts/…` from `compositions/frames/`).
