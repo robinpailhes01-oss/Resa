@@ -284,6 +284,7 @@ export const pricing = {
       features: [
         "Création de stories Instagram personnalisées",
         "Relances aidées par l’IA",
+        "Agent IA intégré pour répondre aux questions",
         "Carte de fidélité automatisée",
         "Cartes cadeaux",
         "Et bien plus encore",
