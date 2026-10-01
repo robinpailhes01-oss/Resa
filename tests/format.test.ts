@@ -15,5 +15,6 @@ describe("formatPrice", () => {
   it("accorde le nombre de praticiens", () => {
     expect(formatPractitioners(3)).toBe(`jusqu’à 3${NBSP}praticiens`);
     expect(formatPractitioners(1)).toBe(`jusqu’à 1${NBSP}praticien`);
+    expect(formatPractitioners(null)).toBe("agendas illimités");
   });
 });

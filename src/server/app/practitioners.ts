@@ -24,7 +24,7 @@ const map = (r: Row): Practitioner => ({
   sortOrder: r.sort_order,
 });
 
-/** Praticiens actifs inclus dans l'offre (RESO_PRACTITIONER_LIMIT, 3 par défaut). */
+/** Praticiens actifs inclus dans l'offre (RESO_PRACTITIONER_LIMIT) ; null = illimité. */
 export const PRACTITIONER_LIMIT = offer.practitionerLimit;
 
 export async function listPractitioners(establishmentId: string, includeInactive = false): Promise<Practitioner[]> {

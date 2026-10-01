@@ -32,7 +32,7 @@ export default function CgvPage() {
       <h2>3. Prix</h2>
       <p>
         L’abonnement est proposé à {formatEuros(amounts.exVatCents)} hors taxes par mois et par établissement, pour un
-        établissement et jusqu’à {offer.practitionerLimit} praticiens
+        établissement et {offer.practitionerLimit === null ? "un nombre illimité de praticiens (même prix quel que soit le nombre d’agendas)" : `jusqu’à ${offer.practitionerLimit} praticiens`}
         {amounts.vatRate > 0 ? `, soit ${formatEuros(amounts.totalCents)} toutes taxes comprises (TVA ${amounts.vatRate.toLocaleString("fr-FR")} %)` : " (TVA non applicable, article 293 B du CGI)"}
         . {brand} ne prélève aucune commission sur les réservations
         {offer.platformFeePercent > 0

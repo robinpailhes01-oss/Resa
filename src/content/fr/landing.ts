@@ -19,6 +19,10 @@ const price = formatMonthlyPriceExVat(offer.monthlyPriceExVat, offer.currency);
 const priceAmount = formatPrice(offer.monthlyPriceExVat, offer.currency);
 const priceCompact = formatMonthlyPriceExVatCompact(offer.monthlyPriceExVat, offer.currency);
 const practitioners = formatPractitioners(offer.practitionerLimit);
+const unlimitedAgendas = offer.practitionerLimit === null;
+/** Message clé du tarif : le prix ne dépend pas du nombre d'agendas. */
+const samePrice = "Même prix, quel que soit le nombre d’agendas";
+const teamScope = unlimitedAgendas ? "quel que soit le nombre de praticiens" : `pour ${practitioners}`;
 const brand = offer.brandName;
 
 type ByMode<T> = Record<LaunchMode, T>;
@@ -193,10 +197,10 @@ export const twoSides = {
     deposit: "Acompte de 30 % à la réservation",
     filters: ["Tout", "Visage", "Ongles", "Regard"],
     services: [
-      { name: "Soin visage éclat", text: "Nettoyage, gommage, masque et modelage.", meta: "1 h · 65 €", image: "/brand/outils.webp" },
-      { name: "Pose semi-permanent", text: "Sur ongles naturels, tenue trois semaines.", meta: "1 h · 40 €", image: "/brand/nature-morte.webp" },
-      { name: "Beauté des mains", text: "Limage, cuticules, soin et vernis.", meta: "45 min · 30 €", image: "/brand/ciseaux.webp" },
-      { name: "Rehaussement de cils", text: "Avec teinture, regard ouvert.", meta: "1 h 15 · 55 €", image: null },
+      { name: "Soin visage éclat", text: "Nettoyage, gommage, masque et modelage.", meta: "1 h · 65 €", image: "/demo/soin-visage.webp" },
+      { name: "Pose semi-permanent", text: "Sur ongles naturels, tenue trois semaines.", meta: "1 h · 40 €", image: "/demo/ongles.webp" },
+      { name: "Beauté des mains", text: "Limage, cuticules, soin et vernis.", meta: "45 min · 30 €", image: "/demo/mains.webp" },
+      { name: "Rehaussement de cils", text: "Avec teinture, regard ouvert.", meta: "1 h 15 · 55 €", image: "/demo/cils.webp" },
     ],
     add: "Ajouter",
   },
@@ -237,8 +241,12 @@ export const pricing = {
   index: "[006]",
   label: "Une offre simple",
   title: ["Tout l’essentiel.", "Un prix clair."],
-  intro: "Un seul tarif, quel que soit votre profil. Choisissez le vôtre pour voir ce que Reso vous apporte au quotidien.",
+  intro: unlimitedAgendas
+    ? "Un seul tarif, quel que soit votre profil et le nombre d’agendas : seule ou à dix praticiens, vous payez le même prix."
+    : "Un seul tarif, quel que soit votre profil. Choisissez le vôtre pour voir ce que Reso vous apporte au quotidien.",
   selectorLabel: "Votre profil",
+  /** Pastille au-dessus de la carte : le prix ne dépend pas du nombre d'agendas (null si plafonné). */
+  samePriceBadge: unlimitedAgendas ? "1 agenda ou 10 agendas : même prix" : null,
   /** Même offre, même prix : seule la présentation change selon le profil. */
   profiles: [
     {
@@ -262,7 +270,7 @@ export const pricing = {
       name: "Vous êtes plusieurs au salon",
       description: "Chaque praticien a son agenda, vous gardez la vue d’ensemble, et vos clients choisissent avec qui réserver.",
       features: [
-        `Agenda pour ${practitioners}, au même prix`,
+        unlimitedAgendas ? "Un agenda par praticien, autant que vous voulez, au même prix" : `Agenda pour ${practitioners}, au même prix`,
         "Un agenda par praticien et une vue d’ensemble",
         "Prestations réalisées par un ou plusieurs praticiens",
         "Vos clients choisissent avec qui réserver",
@@ -276,18 +284,18 @@ export const pricing = {
   price: priceAmount,
   priceUnit: `HT${NBSP}/${NBSP}mois`,
   billing: { prelaunch: "Un établissement, facturé chaque mois", live: "Facturé chaque mois, sans engagement de durée" } satisfies ByMode<string>,
-  scope: `Un établissement${NBSP}· ${capitalize(practitioners)}`,
+  scope: unlimitedAgendas ? `Un établissement${NBSP}· ${samePrice}` : `Un établissement${NBSP}· ${capitalize(practitioners)}`,
   highlights: [
     "Agenda et réservation en ligne",
     "Confirmations, rappels et demandes d’avis par email",
-    capitalize(practitioners),
+    unlimitedAgendas ? samePrice : capitalize(practitioners),
     `Sans commission de réservation prélevée par ${brand}`,
   ],
   badge: { prelaunch: "Tout inclus", live: offer.trialDays ? trialLabel : "Tout inclus" } satisfies ByMode<string>,
   inclusionsTitle: "Ce qui est inclus",
   inclusions: [
     "Page de réservation et lien à partager",
-    `Agenda pour ${practitioners}`,
+    unlimitedAgendas ? "Agendas illimités : un par praticien, au même prix" : `Agenda pour ${practitioners}`,
     "Fichier clients et historique des rendez-vous",
     "Confirmations de réservation par email",
     "Rappels de rendez-vous par email",
@@ -315,11 +323,11 @@ export interface FaqItem {
 const faqPrelaunch: FaqItem[] = [
   {
     question: `À qui s’adresse ${brand} ?`,
-    answer: `${brand} est conçu pour les professionnels de la beauté et du bien-être qui travaillent seuls ou en petite équipe : instituts, ongleries, spécialistes du regard et salons de soins notamment. L’offre prévue couvre un établissement et ${practitioners}.`,
+    answer: `${brand} est conçu pour les professionnels de la beauté et du bien-être qui travaillent seuls ou en petite équipe : instituts, ongleries, spécialistes du regard et salons de soins notamment. L’offre prévue couvre un établissement, ${unlimitedAgendas ? "avec autant d’agendas que de praticiens, au même prix" : practitioners}.`,
   },
   {
     question: `Combien coûtera ${brand} ?`,
-    answer: `Le tarif prévu est de ${price.replace(`${NBSP}/${NBSP}`, ` par `)} et par établissement, pour ${practitioners}. L’offre et ses conditions définitives seront confirmées lors de l’ouverture. Aucun paiement n’est demandé pour être informé du lancement.`,
+    answer: `Le tarif prévu est de ${price.replace(`${NBSP}/${NBSP}`, ` par `)} et par établissement, ${teamScope}. L’offre et ses conditions définitives seront confirmées lors de l’ouverture. Aucun paiement n’est demandé pour être informé du lancement.`,
   },
   {
     question: "Que comprennent les emails automatiques ?",
@@ -353,11 +361,11 @@ const faqPrelaunch: FaqItem[] = [
 const faqLive: FaqItem[] = [
   {
     question: `À qui s’adresse ${brand} ?`,
-    answer: `${brand} est conçu pour les professionnels de la beauté et du bien-être qui travaillent seuls ou en petite équipe : instituts, ongleries, spécialistes du regard et salons de soins notamment. L’offre couvre un établissement et ${practitioners}.`,
+    answer: `${brand} est conçu pour les professionnels de la beauté et du bien-être qui travaillent seuls ou en petite équipe : instituts, ongleries, spécialistes du regard et salons de soins notamment. L’offre couvre un établissement, ${unlimitedAgendas ? "avec autant d’agendas que de praticiens, au même prix" : practitioners}.`,
   },
   {
     question: `Combien coûte ${brand} ?`,
-    answer: `Le tarif est de ${price.replace(`${NBSP}/${NBSP}`, ` par `)} et par établissement, pour ${practitioners}. Les conditions commerciales sont indiquées avant la création de votre compte.`,
+    answer: `Le tarif est de ${price.replace(`${NBSP}/${NBSP}`, ` par `)} et par établissement, ${teamScope}. Que vous travailliez seule ou à dix, le prix est le même. Les conditions commerciales sont indiquées avant la création de votre compte.`,
   },
   {
     question: "Que comprennent les emails automatiques ?",

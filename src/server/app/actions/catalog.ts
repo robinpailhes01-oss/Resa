@@ -79,7 +79,7 @@ export async function createPractitionerAction(_prev: FormState, fd: FormData): 
   const { establishment } = await requireEstablishment();
   const parsed = practitionerSchema.safeParse({ name: fd.get("name"), roleTitle: fd.get("roleTitle") ?? "", color: fd.get("color") ?? "soft", active: true });
   if (!parsed.success) return fieldErrors(parsed.error);
-  if ((await countActivePractitioners(establishment.id)) >= PRACTITIONER_LIMIT) {
+  if (PRACTITIONER_LIMIT !== null && (await countActivePractitioners(establishment.id)) >= PRACTITIONER_LIMIT) {
     return { error: `Votre offre comprend jusqu’à ${PRACTITIONER_LIMIT} praticiens actifs.` };
   }
   try {
@@ -100,7 +100,7 @@ export async function updatePractitionerAction(_prev: FormState, fd: FormData): 
   if (parsed.data.active) {
     const active = await countActivePractitioners(establishment.id);
     const current = await import("../practitioners").then((m) => m.getPractitioner(establishment.id, id));
-    if (current && !current.active && active >= PRACTITIONER_LIMIT) {
+    if (PRACTITIONER_LIMIT !== null && current && !current.active && active >= PRACTITIONER_LIMIT) {
       return { error: `Votre offre comprend jusqu’à ${PRACTITIONER_LIMIT} praticiens actifs.` };
     }
   }

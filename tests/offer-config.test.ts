@@ -14,7 +14,9 @@ describe("configuration commerciale", () => {
     expect(() => buildConfig({ MOLLIE_PLATFORM_FEE_PERCENT: "25" })).toThrow(/entre 0 et 10/);
     expect(config.launchMode).toBe("prelaunch");
     expect(config.monthlyPriceExVat).toBe(39);
-    expect(config.practitionerLimit).toBe(3);
+    expect(config.practitionerLimit).toBeNull();
+    expect(buildConfig({ RESO_PRACTITIONER_LIMIT: "3" }).practitionerLimit).toBe(3);
+    expect(buildConfig({ RESO_PRACTITIONER_LIMIT: "illimité" }).practitionerLimit).toBeNull();
     expect(config.signupUrl).toBeNull();
     expect(config.loginUrl).toBeNull();
     expect(config.trialDays).toBe(7);

@@ -16,7 +16,8 @@ export interface OfferConfig {
   launchMode: LaunchMode;
   monthlyPriceExVat: number;
   currency: "EUR";
-  practitionerLimit: number;
+  /** Praticiens (agendas) inclus ; null = illimité, même prix quel que soit leur nombre. */
+  practitionerLimit: number | null;
   /** Durée de l'essai gratuit en jours (7 par défaut ; RESO_TRIAL_DAYS=0 la désactive). */
   trialDays: number | null;
   /** URL réelle de création de compte. `null` tant qu'elle n'est pas validée. */
@@ -132,6 +133,13 @@ function readSocialUrl(value: string | undefined, name: string): string | null {
   throw new Error(`${name} doit être une adresse https (reçu : "${raw}").`);
 }
 
+/** Vide, 0 ou « illimite » : agendas illimités. Sinon, nombre maximum de praticiens actifs. */
+function readPractitionerLimit(value: string | undefined): number | null {
+  const raw = (value ?? "").trim().toLowerCase();
+  if (!raw || raw === "0" || raw.startsWith("illimit") || raw === "unlimited") return null;
+  return readInt(raw, null);
+}
+
 function readWhatsapp(value: string | undefined): string | null {
   const digits = (value ?? "").replace(/[^0-9]/g, "");
   if (!digits) return null;
@@ -165,7 +173,7 @@ function buildConfig(env: Env): OfferConfig {
     launchMode: readLaunchMode(env.RESO_LAUNCH_MODE),
     monthlyPriceExVat: readPrice(env.RESO_MONTHLY_PRICE_EX_VAT, 39),
     currency: "EUR",
-    practitionerLimit: readInt(env.RESO_PRACTITIONER_LIMIT, 3) ?? 3,
+    practitionerLimit: readPractitionerLimit(env.RESO_PRACTITIONER_LIMIT),
     trialDays: readInt(env.RESO_TRIAL_DAYS, 7, { allowZero: true }),
     signupUrl: readHttpsUrl(env.RESO_SIGNUP_URL, "RESO_SIGNUP_URL"),
     loginUrl: readHttpsUrl(env.RESO_LOGIN_URL, "RESO_LOGIN_URL"),

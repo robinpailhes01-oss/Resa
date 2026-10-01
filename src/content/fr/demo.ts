@@ -5,6 +5,9 @@ import type { Practitioner } from "@/server/app/practitioners";
 import type { Service } from "@/server/app/services";
 
 /**
+ * Photos : Pexels (licence libre, usage commercial autorisé) — intérieur 7750099,
+ * soin du visage 3738349, ongles 22668324, cils 5128220, mains 14267564.
+ *
  * Page de démonstration (/demo) : un établissement fictif, présenté exactement
  * comme la page de réservation d'un vrai salon. Toutes les données sont inventées.
  */
@@ -56,9 +59,9 @@ export const demoEstablishment: Establishment = {
 };
 
 export const demoPhotos: EstablishmentPhoto[] = [
-  { id: "p1", url: "/brand/nature-morte.webp", source: "manual", sortOrder: 0 },
-  { id: "p2", url: "/brand/outils.webp", source: "manual", sortOrder: 1 },
-  { id: "p3", url: "/brand/ciseaux.webp", source: "manual", sortOrder: 2 },
+  { id: "p1", url: "/demo/salon.webp", source: "manual", sortOrder: 0 },
+  { id: "p2", url: "/demo/soin-visage.webp", source: "manual", sortOrder: 1 },
+  { id: "p3", url: "/demo/ongles.webp", source: "manual", sortOrder: 2 },
 ];
 
 const service = (id: string, name: string, description: string, durationMin: number, priceCents: number, photoUrl: string | null, sortOrder: number): Service => ({
@@ -76,10 +79,10 @@ const service = (id: string, name: string, description: string, durationMin: num
 });
 
 export const demoServices: Service[] = [
-  service("s1", "Soin visage éclat", "Nettoyage, gommage, masque et modelage relaxant.", 60, 6500, "/brand/outils.webp", 0),
-  service("s2", "Pose semi-permanent", "Sur ongles naturels, tenue trois semaines.", 60, 4000, "/brand/nature-morte.webp", 1),
-  service("s3", "Rehaussement de cils", "Avec teinture, pour un regard ouvert sans mascara.", 75, 5500, null, 2),
-  service("s4", "Beauté des mains", "Limage, cuticules, soin hydratant et vernis.", 45, 3000, "/brand/ciseaux.webp", 3),
+  service("s1", "Soin visage éclat", "Nettoyage, gommage, masque et modelage relaxant.", 60, 6500, "/demo/soin-visage.webp", 0),
+  service("s2", "Pose semi-permanent", "Sur ongles naturels, tenue trois semaines.", 60, 4000, "/demo/ongles.webp", 1),
+  service("s3", "Rehaussement de cils", "Avec teinture, pour un regard ouvert sans mascara.", 75, 5500, "/demo/cils.webp", 2),
+  service("s4", "Beauté des mains", "Limage, cuticules, soin hydratant et vernis.", 45, 3000, "/demo/mains.webp", 3),
 ];
 
 export const demoPractitioners: Practitioner[] = [

@@ -1,4 +1,4 @@
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Users } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { PricingSwitch } from "@/components/ui/pricing-switch";
 import { Section, SectionKicker } from "@/components/ui/Section";
@@ -20,6 +20,11 @@ export function Pricing() {
           {pricing.title[1]}
         </h2>
         <p className="max-w-xl text-[16px] leading-7 text-ink-muted md:text-[17px]">{pricing.intro}</p>
+        {pricing.samePriceBadge ? (
+          <p className="inline-flex items-center gap-2 rounded-full bg-success-tint px-4 py-1.5 text-[14px] font-semibold text-success">
+            <Users aria-hidden="true" className="size-4" /> {pricing.samePriceBadge}
+          </p>
+        ) : null}
       </div>
       <div className="reveal mt-10" style={{ "--d": "80ms" } as React.CSSProperties}>
         <PricingSwitch
