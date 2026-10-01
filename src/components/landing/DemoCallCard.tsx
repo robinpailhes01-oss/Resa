@@ -1,13 +1,11 @@
 import { MessageCircle } from "lucide-react";
-import { offer } from "@/config/offer";
+import { teamContactHref } from "@/lib/contact";
 import { demoCall } from "@/content/fr/landing";
 import { cn } from "@/lib/cn";
 
-/** Lien de la démo en visio : WhatsApp si un numéro est configuré, sinon email de contact. */
+/** Lien de la démo en visio : WhatsApp, sinon téléphone, sinon email de contact. */
 export function demoCallHref(): string | null {
-  if (offer.demoWhatsapp) return `https://wa.me/${offer.demoWhatsapp}?text=${encodeURIComponent(demoCall.whatsappMessage)}`;
-  if (offer.supportEmail) return `mailto:${offer.supportEmail}?subject=${encodeURIComponent(demoCall.emailSubject)}`;
-  return null;
+  return teamContactHref(demoCall.whatsappMessage, demoCall.emailSubject);
 }
 
 /** « Vous préférez qu'on vous montre ? » : démo de 20 minutes en visio avec Ludivine. */

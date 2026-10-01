@@ -9,6 +9,7 @@ import { Pricing } from "@/components/landing/Pricing";
 import { ProductShowcase } from "@/components/landing/ProductShowcase";
 import { Testimonials } from "@/components/landing/Testimonials";
 import { TwoSides } from "@/components/landing/TwoSides";
+import { SetupCall } from "@/components/landing/SetupCall";
 import { RevealObserver } from "@/components/landing/Reveal";
 import { offer } from "@/config/offer";
 import { formatMonthlyPriceExVatCompact } from "@/lib/format";
@@ -50,6 +51,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         <Features />
         <TwoSides />
         <HowItWorks />
+        <SetupCall />
         <Pricing />
         <Testimonials />
         <Faq />

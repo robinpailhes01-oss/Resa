@@ -207,6 +207,18 @@ export const twoSides = {
   caption: "Aperçu avec des données fictives.",
 };
 
+/** Section « On vous installe tout » : un appel avec l'équipe pour démarrer. */
+export const setupCall = {
+  eyebrow: "Installation offerte",
+  title: "Pas le temps ? On vous installe tout.",
+  text: "Un appel de 20 minutes avec l’équipe : on crée votre page, on importe vos prestations, vos horaires et vos photos, on règle vos rappels et votre lien de réservation. Ensuite, on reste joignables.",
+  points: ["Votre page prête en un appel", "Vos prestations et horaires importés", "Un contact à Montpellier, pas un robot"],
+  button: "Prendre un appel avec l’équipe",
+  note: "Gratuit, sans engagement.",
+  whatsappMessage: `Bonjour, j’aimerais un appel pour qu’on m’aide à installer ${brand}.`,
+  emailSubject: `Appel pour installer ${brand}`,
+};
+
 /** Carte « Vous préférez qu'on vous montre ? » : démo en visio WhatsApp. */
 export const demoCall = {
   title: "Vous préférez qu’on vous montre ?",

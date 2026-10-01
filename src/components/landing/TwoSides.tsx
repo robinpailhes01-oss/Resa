@@ -59,7 +59,7 @@ export function TwoSides() {
 
           <p className="mt-4 text-center text-[12px] text-ink-muted">{t.caption}</p>
           <div className="mt-3 flex justify-center">
-            <Button href="/demo" variant="secondary" size="compact">
+            <Button href={side === "pro" ? "/demo" : "/demo/reservation"} variant="secondary" size="compact">
               {t.demo} <ArrowUpRight aria-hidden="true" />
             </Button>
           </div>
