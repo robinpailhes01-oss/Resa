@@ -1,0 +1,541 @@
+<template>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <style>
+    @font-face {
+      font-family: "Outfit";
+      src: url("assets/fonts/outfit.woff2") format("woff2");
+      font-weight: 100 900;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "Manrope";
+      src: url("assets/fonts/manrope.woff2") format("woff2");
+      font-weight: 200 800;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "JetBrains Mono";
+      src: url("assets/fonts/jetbrainsmono.woff2") format("woff2");
+      font-weight: 100 800;
+      font-style: normal;
+    }
+
+    #root {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: "Outfit", sans-serif;
+      color: #fbf6ea;
+    }
+
+    /* ---------- ground (full-bleed clip) ---------- */
+    .f01-accroche-bg {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: radial-gradient(ellipse 75% 80% at 50% 44%, #617990 0%, #566d84 42%, #3e5166 100%);
+    }
+    .f01-accroche-bg-inner {
+      position: absolute;
+      inset: -60px;
+      transform-origin: 50% 59%;
+    }
+    .f01-accroche-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(251, 246, 234, 0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(251, 246, 234, 0.06) 1px, transparent 1px);
+      background-size: 96px 96px;
+      background-position: 12px 18px;
+      -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 30%, transparent 100%);
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, #000 30%, transparent 100%);
+    }
+    .f01-accroche-arcs {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 2040px;
+      height: 1200px;
+    }
+    .f01-accroche-vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 85% 85% at 50% 48%, transparent 55%, rgba(31, 39, 51, 0.42) 100%);
+    }
+
+    /* ---------- 3D stage ---------- */
+    .f01-accroche-persp {
+      position: absolute;
+      inset: 0;
+      perspective: 1400px;
+      perspective-origin: 960px 640px;
+    }
+    .f01-accroche-world {
+      position: absolute;
+      inset: 0;
+      transform-style: preserve-3d;
+    }
+    .f01-accroche-ghosts {
+      position: absolute;
+      left: -340px;
+      top: -240px;
+      width: 2600px;
+      height: 1560px;
+      transform-style: preserve-3d;
+    }
+    .f01-accroche-ghost {
+      position: absolute;
+      border-radius: 26px;
+      background: rgba(255, 253, 248, 0.9);
+      border: 1px solid rgba(255, 253, 248, 1);
+      box-shadow: 0 60px 120px -40px rgba(31, 39, 51, 0.55);
+      overflow: hidden;
+    }
+    .f01-accroche-ghost i {
+      position: absolute;
+      left: 9%;
+      height: 7%;
+      border-radius: 100px;
+      background: rgba(74, 97, 121, 0.35);
+    }
+
+    /* ---------- kicker ---------- */
+    .f01-accroche-kicker {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 112px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 26px;
+    }
+    .f01-accroche-kicker-rule {
+      width: 60px;
+      height: 1.5px;
+      background: rgba(251, 246, 234, 0.55);
+    }
+    .f01-accroche-kicker-wrap {
+      display: inline-flex;
+      align-items: center;
+      min-width: 236px;
+      white-space: pre;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(251, 246, 234, 0.72);
+    }
+    .f01-accroche-kicker-caret {
+      display: inline-block;
+      width: 12px;
+      height: 24px;
+      margin-left: 2px;
+      background: rgba(251, 246, 234, 0.72);
+    }
+
+    /* ---------- headline ---------- */
+    .f01-accroche-title {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 178px;
+      text-align: center;
+      font-family: "Outfit", sans-serif;
+      font-weight: 500;
+      font-size: 104px;
+      line-height: 1.04;
+      letter-spacing: -0.03em;
+      color: #fbf6ea;
+    }
+    .f01-accroche-line {
+      display: block;
+      white-space: nowrap;
+    }
+    .f01-accroche-w {
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: top;
+      padding: 0 0.03em 0.12em;
+      margin: 0 -0.03em -0.12em;
+    }
+    .f01-accroche-wi {
+      display: inline-block;
+    }
+
+    /* ---------- search bar ---------- */
+    .f01-accroche-search {
+      position: absolute;
+      left: 432px;
+      top: 588px;
+      width: 1056px;
+      height: 104px;
+    }
+    .f01-accroche-pill {
+      position: absolute;
+      inset: 0;
+      border-radius: 100px;
+      background: #fffdf8;
+      border: 1px solid #e7dfd0;
+      box-shadow:
+        0 60px 120px -40px rgba(31, 39, 51, 0.55),
+        0 0 0 6px rgba(251, 246, 234, 0.12);
+      display: flex;
+      align-items: center;
+    }
+    .f01-accroche-loupe {
+      position: absolute;
+      left: 40px;
+      top: 32px;
+      width: 40px;
+      height: 40px;
+    }
+    .f01-accroche-mic {
+      position: absolute;
+      right: 40px;
+      top: 33px;
+      width: 38px;
+      height: 38px;
+    }
+    .f01-accroche-query {
+      position: absolute;
+      left: 104px;
+      top: 0;
+      height: 104px;
+      display: inline-flex;
+      align-items: center;
+      white-space: pre;
+      font-family: "Manrope", sans-serif;
+      font-weight: 500;
+      font-size: 38px;
+      letter-spacing: -0.01em;
+      color: #1f2733;
+      min-width: 720px;
+    }
+    .f01-accroche-caret {
+      display: inline-block;
+      width: 4px;
+      height: 46px;
+      margin-left: 3px;
+      border-radius: 2px;
+      background: #b6a6d8;
+      box-shadow: 0 0 14px rgba(182, 166, 216, 0.9);
+    }
+
+    /* ---------- suggestions ---------- */
+    .f01-accroche-drop {
+      position: absolute;
+      left: 28px;
+      right: 28px;
+      top: 116px;
+      padding: 10px;
+      border-radius: 28px;
+      background: #fffdf8;
+      border: 1px solid #e7dfd0;
+      box-shadow: 0 60px 120px -40px rgba(31, 39, 51, 0.55);
+      transform-origin: 50% 0%;
+    }
+    .f01-accroche-row {
+      position: relative;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 0 26px;
+      border-radius: 18px;
+      font-family: "Manrope", sans-serif;
+      font-size: 27px;
+      font-weight: 500;
+      color: #1f2733;
+      transform-origin: 50% 0%;
+    }
+    .f01-accroche-row-hl {
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      background: rgba(97, 121, 144, 0.24);
+      transform-origin: 0% 50%;
+    }
+    .f01-accroche-row svg {
+      position: relative;
+      width: 24px;
+      height: 24px;
+      flex: none;
+    }
+    .f01-accroche-row span {
+      position: relative;
+    }
+    .f01-accroche-row b {
+      font-weight: 700;
+    }
+    .f01-accroche-row .f01-accroche-arrow {
+      margin-left: auto;
+    }
+  </style>
+
+  <div id="root" data-composition-id="01-accroche" data-start="0" data-duration="4.5" data-width="1920" data-height="1080">
+    <!-- full-bleed ground -->
+    <div id="f01-accroche-bg-clip" class="f01-accroche-bg clip" data-start="0" data-duration="4.5" data-track-index="0">
+      <div class="f01-accroche-bg-inner" data-layout-allow-overflow>
+        <div class="f01-accroche-grid"></div>
+        <svg class="f01-accroche-arcs" data-layout-allow-overflow viewBox="0 0 2040 1200" fill="none">
+          <defs>
+            <linearGradient id="f01-accroche-arcgrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#FBF6EA" stop-opacity="0" />
+              <stop offset="0.45" stop-color="#FBF6EA" stop-opacity="0.25" />
+              <stop offset="1" stop-color="#FBF6EA" stop-opacity="0" />
+            </linearGradient>
+          </defs>
+          <g class="f01-accroche-arcset" style="transform-origin: 1020px 1500px">
+            <circle cx="1020" cy="1500" r="1180" stroke="url(#f01-accroche-arcgrad)" stroke-width="1.5" />
+            <circle cx="1020" cy="1500" r="1420" stroke="url(#f01-accroche-arcgrad)" stroke-width="1.2" />
+            <circle cx="1020" cy="1500" r="980" stroke="url(#f01-accroche-arcgrad)" stroke-width="1" />
+          </g>
+        </svg>
+        <div class="f01-accroche-vignette"></div>
+      </div>
+    </div>
+
+    <!-- 3D scene -->
+    <div id="f01-accroche-scene" class="f01-accroche-persp clip" data-start="0" data-duration="4.5" data-track-index="1">
+      <div class="f01-accroche-world">
+        <div class="f01-accroche-ghosts"></div>
+
+        <div class="f01-accroche-kicker">
+          <span class="f01-accroche-kicker-rule f01-accroche-kicker-rule-l"></span>
+          <span class="f01-accroche-kicker-wrap"
+            ><span class="f01-accroche-kicker-text"></span><span class="f01-accroche-kicker-caret"></span
+          ></span>
+          <span class="f01-accroche-kicker-rule f01-accroche-kicker-rule-r"></span>
+        </div>
+
+        <h1 class="f01-accroche-title">
+          <span class="f01-accroche-line"
+            ><span class="f01-accroche-w" data-layout-allow-overflow><span class="f01-accroche-wi">Vos</span></span>
+            <span class="f01-accroche-w" data-layout-allow-overflow><span class="f01-accroche-wi">clientes</span></span>
+            <span class="f01-accroche-w" data-layout-allow-overflow><span class="f01-accroche-wi">vous</span></span>
+            <span class="f01-accroche-w" data-layout-allow-overflow><span class="f01-accroche-wi">cherchent</span></span></span
+          >
+          <span class="f01-accroche-line"
+            ><span class="f01-accroche-w" data-layout-allow-overflow><span class="f01-accroche-wi">en</span></span>
+            <span class="f01-accroche-w" data-layout-allow-overflow><span class="f01-accroche-wi">ligne.</span></span></span
+          >
+        </h1>
+
+        <div class="f01-accroche-search">
+          <div class="f01-accroche-pill">
+            <svg class="f01-accroche-loupe" viewBox="0 0 24 24" fill="none" stroke="#4A6179" stroke-width="2.2" stroke-linecap="round">
+              <circle cx="10.5" cy="10.5" r="6.5" />
+              <path d="M15.5 15.5 L21 21" />
+            </svg>
+            <span class="f01-accroche-query"
+              ><span class="f01-accroche-query-text"></span><span class="f01-accroche-caret"></span
+            ></span>
+            <svg class="f01-accroche-mic" viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" stroke-width="1.8" stroke-linecap="round">
+              <rect x="9" y="3" width="6" height="11" rx="3" />
+              <path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" />
+            </svg>
+          </div>
+
+          <div class="f01-accroche-drop">
+            <div class="f01-accroche-row f01-accroche-row-1">
+              <div class="f01-accroche-row-hl"></div>
+              <svg viewBox="0 0 24 24" fill="none" stroke="#4A6179" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.5 15.5 L21 21" /></svg>
+              <span>esthéticienne <b>près de chez moi</b></span>
+              <svg class="f01-accroche-arrow" viewBox="0 0 24 24" fill="none" stroke="#4A6179" stroke-width="2" stroke-linecap="round"><path d="M7 17 L17 7M9 7h8v8" /></svg>
+            </div>
+            <div class="f01-accroche-row f01-accroche-row-2">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.5 15.5 L21 21" /></svg>
+              <span>soin du visage <b>Lyon</b></span>
+            </div>
+            <div class="f01-accroche-row f01-accroche-row-3">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.5 15.5 L21 21" /></svg>
+              <span>pose semi-permanent <b>ce soir</b></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var FRAME = "01-accroche";
+      var DUR = 4.5;
+      window.__timelines = window.__timelines || {};
+      var hosts = document.querySelectorAll('[data-composition-id="' + FRAME + '"]');
+      var R = hosts[hosts.length - 1];
+      var $ = function (s) { return R.querySelector(s); };
+      var $$ = function (s) { return Array.prototype.slice.call(R.querySelectorAll(s)); };
+
+      var tl = gsap.timeline({ paused: true });
+
+      // ---------- ghost cards (deterministic field, depth-of-field) ----------
+      // [x, y, w, h, z, rotZ, opacity, blur]
+      var GHOSTS = [
+        [250, 300, 360, 560, -260, -6, 0.13, 10],
+        [690, 180, 520, 330, -520, 3, 0.09, 16],
+        [1560, 260, 400, 600, -300, 7, 0.14, 9],
+        [2020, 420, 330, 500, -620, -4, 0.08, 18],
+        [120, 960, 560, 340, -180, 4, 0.12, 8],
+        [1880, 1000, 520, 320, -200, -5, 0.13, 8],
+        [980, 1080, 460, 300, -700, 2, 0.08, 20],
+        [1290, 120, 300, 200, -820, -3, 0.08, 22],
+        [520, 640, 280, 420, -880, 5, 0.1, 22],
+        [1660, 760, 260, 380, -760, -6, 0.09, 20]
+      ];
+      var gWrap = $(".f01-accroche-ghosts");
+      gsap.set(gWrap, { rotationX: 24, z: -380, transformOrigin: "50% 50%" });
+      var ghostEls = GHOSTS.map(function (g, i) {
+        var el = document.createElement("div");
+        el.className = "f01-accroche-ghost";
+        el.style.left = g[0] + "px";
+        el.style.top = g[1] + "px";
+        el.style.width = g[2] + "px";
+        el.style.height = g[3] + "px";
+        el.style.filter = "blur(" + g[7] + "px)";
+        var rows = [[12, 38], [26, 62], [40, 50], [54, 70], [68, 44]];
+        rows.forEach(function (r, k) {
+          if ((i + k) % 4 === 3) return;
+          var bar = document.createElement("i");
+          bar.style.top = r[0] + "%";
+          bar.style.width = r[1] + "%";
+          el.appendChild(bar);
+        });
+        gWrap.appendChild(el);
+        gsap.set(el, { z: g[4], rotation: g[5], opacity: g[6] * 0.8 });
+        return el;
+      });
+      // slow parallax drift of the ghost field (deeper = slower)
+      ghostEls.forEach(function (el, i) {
+        var g = GHOSTS[i];
+        var depth = 1 - Math.min(1, -g[4] / 1000);
+        tl.fromTo(el, { y: 26 * depth + 8 }, { y: -30 * depth - 6, duration: DUR, ease: "none" }, 0);
+      });
+      // ghosts settle in from a touch more transparent
+      tl.fromTo(gWrap, { opacity: 0.4 }, { opacity: 1, duration: 1.2, ease: "power2.out" }, 0);
+
+      // ---------- background parallax + arcs ----------
+      tl.fromTo($(".f01-accroche-bg-inner"), { scale: 1.06, y: 24 }, { scale: 1, y: 0, duration: 1.2, ease: "expo.out" }, 0);
+      tl.to($(".f01-accroche-bg-inner"), { scale: 1.07, duration: 0.4, ease: "power3.in" }, 4.1);
+      tl.fromTo($(".f01-accroche-arcset"), { rotation: -4 }, { rotation: 3, duration: DUR, ease: "none" }, 0);
+
+      // ---------- camera (Scene 1 straighten → drift → Scene 4 push) ----------
+      var world = $(".f01-accroche-world");
+      gsap.set(world, { transformOrigin: "960px 640px" });
+      tl.fromTo(world, { rotationX: 16, y: 70, scale: 1.06 }, { rotationX: 0, y: 0, scale: 1, duration: 1.2, ease: "expo.out" }, 0);
+      tl.fromTo(world, { z: 0 }, { z: 50, duration: 2.9, ease: "none", immediateRender: false }, 1.2);
+      tl.to(world, { z: 560, duration: 0.4, ease: "power3.in" }, 4.1);
+
+      // ---------- kicker « AUJOURD'HUI » (smooth-slice typing) ----------
+      var KICK = "Aujourd'hui";
+      var kText = $(".f01-accroche-kicker-text");
+      var kCaret = $(".f01-accroche-kicker-caret");
+      var kLen = { v: 0 };
+      tl.fromTo(kLen, { v: 0 }, {
+        v: KICK.length, duration: 0.66, ease: "none",
+        onUpdate: function () { kText.textContent = KICK.substring(0, Math.floor(kLen.v + 0.0001)); }
+      }, 0.12);
+      tl.fromTo($$(".f01-accroche-kicker-rule"), { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.8, ease: "expo.out" }, 0.55);
+      gsap.set($(".f01-accroche-kicker-rule-l"), { transformOrigin: "100% 50%" });
+      gsap.set($(".f01-accroche-kicker-rule-r"), { transformOrigin: "0% 50%" });
+      var kBlink = { t: 0 };
+      tl.fromTo(kBlink, { t: 0 }, {
+        t: DUR, duration: DUR, ease: "none",
+        onUpdate: function () {
+          var t = kBlink.t, on;
+          if (t < 0.06) on = 0;
+          else if (t < 0.8) on = 1;
+          else if (t < 1.75) on = Math.sin((t - 0.8) * Math.PI * 2 / 0.6 + Math.PI / 2) > 0 ? 1 : 0;
+          else on = 0;
+          kCaret.style.opacity = on ? "1" : "0";
+        }
+      }, 0);
+
+      // ---------- headline: word-by-word masked rise (dynamic-content-sequencing) ----------
+      var words = $$(".f01-accroche-wi");
+      var BASE = 0.1, SEC_PER_CHAR = 0.012, cursor = 0.6;
+      var WORD_TL = words.map(function (w) {
+        var start = cursor;
+        cursor += BASE + w.textContent.length * SEC_PER_CHAR;
+        return { el: w, start: start };
+      });
+      WORD_TL.forEach(function (e) {
+        tl.fromTo(e.el, { yPercent: 118, rotation: 4 }, { yPercent: 0, rotation: 0, duration: 0.85, ease: "expo.out" }, e.start);
+      });
+      tl.fromTo($(".f01-accroche-title"), { y: 18 }, { y: 0, duration: 1.6, ease: "power3.out" }, 0.6);
+
+      // ---------- search bar: slides forward from depth (Scene 3) ----------
+      var search = $(".f01-accroche-search");
+      gsap.set(search, { transformOrigin: "528px 52px" });
+      tl.fromTo(search,
+        { z: -1300, y: 40, rotationX: 24, opacity: 0, filter: "blur(16px)" },
+        { z: 0, y: 0, rotationX: 12, opacity: 1, filter: "blur(0px)", duration: 1.0, ease: "expo.out" },
+        1.6);
+
+      // typed query (discrete-text-sequence: clusters, word pauses, a typo + backspace)
+      var SEQ = [
+        { t: 0, text: "" },
+        { t: 2.0, text: "e" },
+        { t: 2.06, text: "est" },
+        { t: 2.12, text: "esthé" },
+        { t: 2.19, text: "esthéti" },
+        { t: 2.25, text: "esthétici" },
+        { t: 2.31, text: "esthéticien" },
+        { t: 2.37, text: "esthéticienne" },
+        { t: 2.52, text: "esthéticienne p" },
+        { t: 2.58, text: "esthéticienne prs" },
+        { t: 2.74, text: "esthéticienne pr" },
+        { t: 2.81, text: "esthéticienne prè" },
+        { t: 2.87, text: "esthéticienne près" },
+        { t: 2.97, text: "esthéticienne près de" },
+        { t: 3.05, text: "esthéticienne près de ch" },
+        { t: 3.11, text: "esthéticienne près de chez" },
+        { t: 3.19, text: "esthéticienne près de chez m" },
+        { t: 3.25, text: "esthéticienne près de chez moi" }
+      ];
+      function textAt(time) {
+        for (var i = SEQ.length - 1; i >= 0; i--) if (time >= SEQ[i].t) return SEQ[i].text;
+        return "";
+      }
+      var qText = $(".f01-accroche-query-text");
+      var qCaret = $(".f01-accroche-caret");
+      var drv = { t: 0 };
+      var lastQ = null;
+      tl.fromTo(drv, { t: 0 }, {
+        t: DUR, duration: DUR, ease: "none",
+        onUpdate: function () {
+          var t = drv.t;
+          var s = textAt(t);
+          if (s !== lastQ) { qText.textContent = s; lastQ = s; }
+          // solid while typing, square-wave blink at rest (0.6s cycle)
+          var on = (t >= 1.95 && t <= 3.35) ? 1 : (Math.sin(t * Math.PI * 2 / 0.6) > 0 ? 1 : 0);
+          if (t < 1.85) on = 0;
+          qCaret.style.opacity = on ? "1" : "0";
+        }
+      }, 0);
+
+      // ---------- suggestions fall in cascade (Scene 4) ----------
+      var drop = $(".f01-accroche-drop");
+      tl.fromTo(drop,
+        { opacity: 0, scaleY: 0.55, y: -14 },
+        { opacity: 1, scaleY: 1, y: 0, duration: 0.5, ease: "power3.out" }, 3.0);
+      $$(".f01-accroche-row").forEach(function (row, i) {
+        tl.fromTo(row,
+          { opacity: 0, y: -26, rotationX: -55 },
+          { opacity: 1, y: 0, rotationX: 0, duration: 0.55, ease: "expo.out" },
+          3.06 + i * 0.16);
+      });
+      tl.fromTo($(".f01-accroche-row-hl"), { scaleX: 0.15, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 0.45, ease: "power3.out" }, 3.5);
+
+      // pad timeline to the exact frame length
+      tl.set({}, {}, DUR);
+
+      window.__timelines[FRAME] = tl;
+    })();
+  </script>
+</template>

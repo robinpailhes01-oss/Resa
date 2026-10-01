@@ -1,0 +1,526 @@
+<template id="07-cta-template">
+  <style>
+    @font-face {
+      font-family: "Outfit";
+      src: url("assets/fonts/outfit.woff2") format("woff2");
+      font-weight: 100 900;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "Manrope";
+      src: url("assets/fonts/manrope.woff2") format("woff2");
+      font-weight: 200 800;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "JetBrains Mono";
+      src: url("assets/fonts/jetbrainsmono.woff2") format("woff2");
+      font-weight: 100 800;
+      font-style: normal;
+    }
+
+    #root {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: "Outfit", sans-serif;
+      color: #fbf6ea;
+    }
+
+    /* ---------- ground (full-bleed clip, lowest track) ---------- */
+    .cta07-ground {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse 70% 75% at 50% 38%, #6f88a0 0%, #617990 38%, #4c6178 72%, #3e5166 100%);
+    }
+    .cta07-vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 85% 80% at 50% 42%, rgba(31, 39, 51, 0) 55%, rgba(31, 39, 51, 0.42) 100%);
+    }
+    .cta07-floor {
+      position: absolute;
+      left: -480px;
+      width: 2880px;
+      top: 560px;
+      height: 1100px;
+      transform-origin: 50% 0%;
+      transform: perspective(1400px) rotateX(72deg);
+      background-image:
+        linear-gradient(rgba(251, 246, 234, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(251, 246, 234, 0.06) 1px, transparent 1px);
+      background-size: 96px 96px;
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0.6) 100%);
+      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0.6) 100%);
+    }
+    .cta07-arcs {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+    }
+
+    /* ---------- world (3D camera) ---------- */
+    #cta07-content {
+      position: absolute;
+      inset: 0;
+    }
+    #cta07-world {
+      position: absolute;
+      inset: 0;
+      perspective: 1800px;
+      perspective-origin: 50% 42%;
+      transform-origin: 50% 45%;
+    }
+
+    /* blurred tablet behind the title (depth of field) */
+    #cta07-tablet-rig {
+      position: absolute;
+      left: 1010px;
+      top: 70px;
+      width: 600px;
+      height: 820px;
+      transform-style: preserve-3d;
+      transform-origin: 50% 50%;
+    }
+    .cta07-tablet {
+      position: absolute;
+      inset: 0;
+      border-radius: 28px;
+      background: #fffdf8;
+      border: 1px solid #e7dfd0;
+      padding: 18px;
+      box-shadow: 0 60px 120px -40px rgba(31, 39, 51, 0.55);
+      transform: rotateY(-26deg) rotateX(12deg) rotateZ(-5deg);
+      filter: blur(16px) brightness(0.82);
+      opacity: 0.38;
+    }
+    .cta07-tablet img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 50% 0%;
+      border-radius: 14px;
+    }
+    #cta07-tablet-ghost {
+      position: absolute;
+      left: 250px;
+      top: 300px;
+      width: 360px;
+      height: 480px;
+      border-radius: 26px;
+      background: rgba(251, 246, 234, 0.1);
+      transform: rotateY(22deg) rotateX(10deg) rotateZ(6deg);
+      filter: blur(22px);
+    }
+
+    /* ---------- CTA card ---------- */
+    #cta07-stack {
+      position: absolute;
+      inset: 0;
+      transform-origin: 960px 470px;
+    }
+    #cta07-title {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 236px;
+      text-align: center;
+      font-family: "Outfit", sans-serif;
+      font-weight: 500;
+      font-size: 140px;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: #fbf6ea;
+      white-space: nowrap;
+    }
+    .cta07-mask {
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: top;
+      padding: 0 0.04em 0.12em;
+      margin: 0 0.06em;
+    }
+    .cta07-word {
+      display: inline-block;
+    }
+    .cta07-word-accent {
+      color: #d9cfee;
+    }
+    #cta07-offer {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 448px;
+      text-align: center;
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 500;
+      font-size: 30px;
+      letter-spacing: 0.06em;
+      color: rgba(251, 246, 234, 0.88);
+    }
+    #cta07-offer .cta07-dot {
+      color: #b6a6d8;
+      padding: 0 0.35em;
+    }
+
+    #cta07-btn-glow {
+      position: absolute;
+      left: 560px;
+      top: 452px;
+      width: 800px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(150, 128, 200, 0.95) 0%, rgba(150, 128, 200, 0.45) 40%, rgba(150, 128, 200, 0) 72%);
+      filter: blur(24px);
+      z-index: 1;
+    }
+    #cta07-btn-burst {
+      position: absolute;
+      left: 700px;
+      top: 552px;
+      width: 520px;
+      height: 120px;
+      border-radius: 100px;
+      background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(182, 166, 216, 0.9) 0%, rgba(182, 166, 216, 0) 75%);
+      filter: blur(30px);
+      opacity: 0;
+      z-index: 1;
+    }
+    #cta07-btn {
+      position: absolute;
+      left: 690px;
+      top: 548px;
+      width: 540px;
+      height: 128px;
+      border-radius: 100px;
+      background: #fffdf8;
+      border: 1px solid #e7dfd0;
+      box-shadow: 0 40px 80px -30px rgba(31, 39, 51, 0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 22px;
+      font-family: "Outfit", sans-serif;
+      font-weight: 600;
+      font-size: 46px;
+      letter-spacing: -0.02em;
+      color: #1f2733;
+      transform-origin: 50% 50%;
+      z-index: 2;
+    }
+    .cta07-btn-arrow {
+      width: 36px;
+      height: 36px;
+    }
+
+    .cta07-ripple {
+      position: absolute;
+      left: 910px;
+      top: 562px;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 2px solid rgba(214, 203, 238, 0.95);
+      opacity: 0;
+      transform-origin: 50% 50%;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    #cta07-cursor {
+      position: absolute;
+      left: -6px;
+      top: -4px;
+      width: 64px;
+      height: 76px;
+      transform-origin: 6px 4px;
+      z-index: 10;
+      pointer-events: none;
+      filter: drop-shadow(0 10px 16px rgba(31, 39, 51, 0.35));
+    }
+
+    /* ---------- signature card ---------- */
+    #cta07-sig {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+    }
+    #cta07-sig-glow {
+      position: absolute;
+      left: 460px;
+      top: 200px;
+      width: 1000px;
+      height: 520px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(251, 246, 234, 0.55) 0%, rgba(251, 246, 234, 0.12) 45%, rgba(251, 246, 234, 0) 72%);
+      filter: blur(30px);
+      opacity: 0;
+    }
+    #cta07-logo {
+      position: absolute;
+      left: 654px;
+      top: 270px;
+      width: 680px;
+      height: 200px;
+      transform-origin: 50% 50%;
+    }
+    #cta07-logo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    #cta07-rule {
+      position: absolute;
+      left: 840px;
+      top: 530px;
+      width: 240px;
+      height: 1px;
+      background: rgba(251, 246, 234, 0.7);
+      transform-origin: 50% 50%;
+    }
+    #cta07-tagline {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 566px;
+      text-align: center;
+      font-family: "Outfit", sans-serif;
+      font-weight: 500;
+      font-size: 28px;
+      letter-spacing: 0.34em;
+      padding-left: 0.34em;
+      color: #fbf6ea;
+    }
+    #cta07-price {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 660px;
+      text-align: center;
+      font-family: "Manrope", sans-serif;
+      font-weight: 500;
+      font-size: 26px;
+      letter-spacing: 0.01em;
+      color: rgba(251, 246, 234, 0.72);
+    }
+    #cta07-price .cta07-dot {
+      color: rgba(251, 246, 234, 0.45);
+      padding: 0 0.4em;
+    }
+  </style>
+
+  <div
+    id="root"
+    data-composition-id="07-cta"
+    data-start="0"
+    data-duration="5.5"
+    data-width="1920"
+    data-height="1080"
+  >
+    <!-- Ground: powder-blue stage, floor grid, luminous arcs -->
+    <div id="cta07-ground" class="clip cta07-ground" data-start="0" data-duration="5.5" data-track-index="0">
+      <div class="cta07-floor"></div>
+      <svg class="cta07-arcs" viewBox="0 0 1920 1080" fill="none">
+        <path d="M -200 860 C 300 420, 1200 180, 2140 300" stroke="rgba(251,246,234,0.25)" stroke-width="1.6" />
+        <path d="M -160 1000 C 520 620, 1360 520, 2120 700" stroke="rgba(251,246,234,0.14)" stroke-width="1.2" />
+      </svg>
+      <div class="cta07-vignette"></div>
+    </div>
+
+    <!-- Content: CTA card, then signature card -->
+    <div id="cta07-content" class="clip" data-start="0" data-duration="5.5" data-track-index="1">
+      <div id="cta07-world">
+        <div id="cta07-tablet-ghost"></div>
+        <div id="cta07-tablet-rig">
+          <div class="cta07-tablet">
+            <img src="assets/dashboard-tablette-bonjour.png" alt="" />
+          </div>
+        </div>
+
+        <div id="cta07-stack">
+          <div id="cta07-title">
+            <span class="cta07-mask"><span class="cta07-word">Envie</span></span><span class="cta07-mask"><span class="cta07-word cta07-word-accent">d’essayer&nbsp;?</span></span>
+          </div>
+
+          <div id="cta07-offer">7 jours offerts<span class="cta07-dot">·</span>sans carte bancaire</div>
+
+          <div id="cta07-btn-glow"></div>
+          <div id="cta07-btn-burst"></div>
+          <div id="cta07-btn">
+            <span>Créer ma page</span>
+            <svg class="cta07-btn-arrow" viewBox="0 0 24 24" fill="none" stroke="#1F2733" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </div>
+
+          <div class="cta07-ripple" id="cta07-ripple-1"></div>
+          <div class="cta07-ripple" id="cta07-ripple-2"></div>
+
+          <svg id="cta07-cursor" viewBox="0 0 32 38">
+            <path
+              d="M3 2 L3 30 L10.5 23.2 L15.4 34.4 L20.4 32.2 L15.6 21.2 L25.5 21.2 Z"
+              fill="#B6A6D8"
+              stroke="#1F2733"
+              stroke-width="1.8"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+
+        <div id="cta07-sig">
+          <div id="cta07-sig-glow"></div>
+          <div id="cta07-logo"><img src="assets/logo-reso-creme.svg" alt="reso" /></div>
+          <div id="cta07-rule"></div>
+          <div id="cta07-tagline">BEAUTY BUSINESS SIMPLIFIED</div>
+          <div id="cta07-price">puis 39&nbsp;€ HT/mois<span class="cta07-dot">·</span>sans engagement</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    (function () {
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // Click target: visual centre of the button (690 + 270, 548 + 64)
+      const CLICK_X = 960;
+      const CLICK_Y = 612;
+
+      // ── Camera: a single settling push-in on the stage (expo, no drift after) ──
+      tl.fromTo("#cta07-world", { scale: 1.06, y: 18 }, { scale: 1, y: 0, duration: 2.4, ease: "expo.out" }, 0);
+
+      // ── Scene 1 (0.0–1.4): blurred tablet in depth + title word by word ──
+      tl.fromTo(
+        "#cta07-tablet-rig",
+        { opacity: 0, z: -260, x: 60 },
+        { opacity: 1, z: 0, x: 0, duration: 1.6, ease: "expo.out" },
+        0,
+      );
+      tl.fromTo("#cta07-tablet-ghost", { opacity: 0 }, { opacity: 1, duration: 1.2, ease: "power2.out" }, 0.1);
+
+      tl.fromTo(
+        "#cta07-title .cta07-word",
+        { yPercent: 110, opacity: 0, filter: "blur(10px)" },
+        { yPercent: 0, opacity: 1, filter: "blur(0px)", duration: 0.95, ease: "power3.out", stagger: 0.18 },
+        0.12,
+      );
+
+      // ── Scene 2 (1.2–2.6): offer line, then cream pill with lavender bloom ──
+      tl.fromTo(
+        "#cta07-offer",
+        { y: 22, opacity: 0, filter: "blur(6px)" },
+        { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.8, ease: "power3.out" },
+        1.2,
+      );
+      tl.fromTo(
+        "#cta07-btn",
+        { y: 46, scale: 0.9, opacity: 0 },
+        { y: 0, scale: 1, opacity: 1, duration: 0.9, ease: "expo.out" },
+        1.6,
+      );
+      // ambient-glow-bloom: lands on the button's settle (1.5 + 1.0 ≈ 2.5)
+      tl.fromTo(
+        "#cta07-btn-glow",
+        { opacity: 0, scale: 0.82 },
+        { opacity: 0.3, scale: 1, duration: 1.0, ease: "power2.out" },
+        1.5,
+      );
+
+      // ── Scene 3 (2.4–3.3): cursor enters, clicks; press + ripple ──
+      const MOVE_START = 2.3;
+      const MOVE_DUR = 0.5;
+      const CLICK_AT = 2.88;
+      tl.fromTo(
+        "#cta07-cursor",
+        { x: 1360, y: 860, opacity: 0 },
+        { x: CLICK_X + 6, y: CLICK_Y + 4, opacity: 1, duration: MOVE_DUR, ease: "power3.out" },
+        MOVE_START,
+      );
+      // cursor depress + return (two adjacent tweens, no yoyo)
+      tl.to("#cta07-cursor", { scale: 0.84, duration: 0.08, ease: "power2.in" }, CLICK_AT);
+      tl.to("#cta07-cursor", { scale: 1, duration: 0.14, ease: "power2.out" }, CLICK_AT + 0.08);
+      // press-release: linear-ish press, smooth release (house rule: no bounce)
+      tl.to(
+        "#cta07-btn",
+        { scale: 0.93, boxShadow: "0 14px 30px -16px rgba(31,39,51,0.55)", duration: 0.1, ease: "power1.in" },
+        CLICK_AT,
+      );
+      tl.to(
+        "#cta07-btn",
+        { scale: 1, boxShadow: "0 40px 80px -30px rgba(31,39,51,0.55)", duration: 0.42, ease: "expo.out" },
+        CLICK_AT + 0.1,
+      );
+      // burst behind the button on release
+      tl.fromTo(
+        "#cta07-btn-burst",
+        { opacity: 0, scale: 1 },
+        { opacity: 0.85, scale: 1.7, duration: 0.3, ease: "power2.out" },
+        CLICK_AT + 0.1,
+      );
+      tl.to("#cta07-btn-burst", { opacity: 0, duration: 0.3, ease: "power2.in" }, CLICK_AT + 0.4);
+      tl.to("#cta07-btn-glow", { opacity: 0.42, scale: 1.06, duration: 0.3, ease: "power2.out" }, CLICK_AT + 0.1);
+      // cursor-click-ripple: two lavender rings from the click point
+      tl.fromTo(
+        ["#cta07-ripple-1", "#cta07-ripple-2"],
+        { scale: 0.3, opacity: 0.95 },
+        { scale: 4.6, opacity: 0, duration: 0.62, ease: "power2.out", stagger: 0.09, immediateRender: false },
+        CLICK_AT + 0.02,
+      );
+
+      // ── Scene 4 (3.3–5.5): scale-swap to the signature, then held still ──
+      const TRIGGER = 3.3;
+      const EXIT_DUR = 0.4;
+      tl.to(
+        "#cta07-stack",
+        { scale: 0.74, opacity: 0, filter: "blur(10px)", duration: EXIT_DUR, ease: "power2.in" },
+        TRIGGER,
+      );
+      tl.to("#cta07-tablet-rig", { opacity: 0.22, z: -220, duration: 0.9, ease: "power2.inOut" }, TRIGGER);
+      tl.to("#cta07-tablet-ghost", { opacity: 0.4, duration: 0.9, ease: "power2.inOut" }, TRIGGER);
+
+      const ENTER_AT = TRIGGER + EXIT_DUR - 0.25; // 3.45 — on the sonic logo
+      tl.fromTo(
+        "#cta07-logo",
+        { scale: 0.78, opacity: 0, filter: "blur(14px)" },
+        { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.95, ease: "expo.out" },
+        ENTER_AT,
+      );
+      tl.fromTo(
+        "#cta07-sig-glow",
+        { opacity: 0, scale: 0.85 },
+        { opacity: 0.22, scale: 1, duration: 1.0, ease: "power2.out" },
+        ENTER_AT,
+      );
+      tl.fromTo(
+        "#cta07-rule",
+        { scaleX: 0, opacity: 0 },
+        { scaleX: 1, opacity: 1, duration: 0.7, ease: "expo.out" },
+        3.78,
+      );
+      tl.fromTo(
+        "#cta07-tagline",
+        { opacity: 0, y: 12, filter: "blur(6px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.8, ease: "power3.out" },
+        3.9,
+      );
+      tl.fromTo(
+        "#cta07-price",
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" },
+        4.15,
+      );
+      // hold, still, to the last frame
+      tl.set({}, {}, 5.5);
+
+      window.__timelines["07-cta"] = tl;
+    })();
+  </script>
+</template>

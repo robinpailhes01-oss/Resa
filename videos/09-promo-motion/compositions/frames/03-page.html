@@ -1,0 +1,359 @@
+<template>
+  <div
+    id="root"
+    data-composition-id="03-page"
+    data-start="0"
+    data-duration="4.5"
+    data-width="1920"
+    data-height="1080"
+  >
+    <style>
+      @font-face {
+        font-family: "Outfit";
+        src: url("assets/fonts/outfit.woff2") format("woff2");
+        font-weight: 100 900;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "JetBrains Mono";
+        src: url("assets/fonts/jetbrainsmono.woff2") format("woff2");
+        font-weight: 100 800;
+        font-display: block;
+      }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+      }
+      #p03-bg {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse 85% 95% at 62% 42%, #6f88a0 0%, #617990 38%, #3e5166 100%);
+        overflow: hidden;
+      }
+      #p03-grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(251, 246, 234, 0.06) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(251, 246, 234, 0.06) 1px, transparent 1px);
+        background-size: 96px 96px;
+        background-position: 0 0;
+      }
+      #p03-arcs {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1920px;
+        height: 1080px;
+      }
+      #p03-vignette {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse 75% 70% at 55% 45%, transparent 55%, rgba(31, 39, 51, 0.42) 100%);
+      }
+
+      /* ---------- title column (left 40%) ---------- */
+      #p03-copy {
+        position: absolute;
+        left: 128px;
+        top: 214px;
+        width: 640px;
+        height: 520px;
+      }
+      #p03-kicker {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 19px;
+        font-weight: 500;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: rgba(251, 246, 234, 0.9);
+      }
+      #p03-kicker-line {
+        display: block;
+        width: 56px;
+        height: 2px;
+        border-radius: 2px;
+        background: rgba(251, 246, 234, 0.7);
+        transform-origin: 0 50%;
+      }
+      #p03-title {
+        margin-top: 34px;
+        font-family: "Outfit", sans-serif;
+        font-weight: 500;
+        font-size: 92px;
+        line-height: 1.04;
+        letter-spacing: -0.03em;
+        color: #fbf6ea;
+      }
+      .p03-line {
+        display: block;
+        overflow: hidden;
+        padding-bottom: 0.08em;
+        margin-bottom: -0.08em;
+      }
+      .p03-w {
+        display: inline-block;
+        will-change: transform;
+      }
+
+      /* ---------- 3D stage ---------- */
+      #p03-stage {
+        position: absolute;
+        inset: 0;
+      }
+      #p03-world {
+        position: absolute;
+        inset: 0;
+        transform-origin: 1230px 330px;
+      }
+      .p03-persp {
+        position: absolute;
+        inset: 0;
+        perspective: 1900px;
+        perspective-origin: 62% 44%;
+      }
+      #p03-floor {
+        position: absolute;
+        left: 1010px;
+        top: 838px;
+        width: 520px;
+        height: 54px;
+        border-radius: 50%;
+        background: radial-gradient(ellipse at 50% 50%, rgba(31, 39, 51, 0.55) 0%, rgba(31, 39, 51, 0.22) 45%, transparent 72%);
+        filter: blur(14px);
+      }
+
+      /* back card — prestations + horaires (depth, defocused) */
+      #p03-back {
+        --dof: 0px;
+        position: absolute;
+        left: 1440px;
+        top: 34px;
+        width: 380px;
+        height: 640px;
+        border-radius: 26px;
+        background: #fffdf8;
+        border: 1px solid #e7dfd0;
+        overflow: hidden;
+        box-shadow: 0 60px 120px -40px rgba(31, 39, 51, 0.55);
+        filter: blur(var(--dof));
+        will-change: filter, transform;
+      }
+      #p03-back img {
+        position: absolute;
+        left: 0;
+        top: -96px;
+        width: 380px;
+        height: auto;
+        display: block;
+      }
+
+      /* phone (hero) */
+      #p03-phone {
+        position: absolute;
+        left: 1038px;
+        top: 86px;
+        width: 384px;
+        height: 744px;
+        border-radius: 56px;
+        background: #fffdf8;
+        border: 1px solid #e7dfd0;
+        padding: 12px;
+        box-shadow:
+          60px 70px 120px -40px rgba(31, 39, 51, 0.6),
+          18px 22px 40px -18px rgba(31, 39, 51, 0.35),
+          inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+      }
+      #p03-screen {
+        position: relative;
+        width: 360px;
+        height: 720px;
+        border-radius: 45px;
+        overflow: hidden;
+        background: #faf6ec;
+      }
+      #p03-page {
+        position: absolute;
+        left: 0;
+        top: 34px;
+        width: 360px;
+      }
+      #p03-page img {
+        display: block;
+        width: 360px;
+        height: auto;
+      }
+      /* lifted copy of the real CTA pixels (rebuild only the moving component) */
+      #p03-cta {
+        position: absolute;
+        left: 13px;
+        top: 180px;
+        width: 186px;
+        height: 47px;
+        border-radius: 100px;
+        background-image: url("assets/page-publique-mobile-haut.png");
+        background-size: 360px auto;
+        background-position: -13px -180px;
+        transform-origin: 50% 50%;
+      }
+      #p03-halo {
+        position: absolute;
+        left: 13px;
+        top: 180px;
+        width: 186px;
+        height: 47px;
+        border-radius: 100px;
+        opacity: 0;
+        box-shadow:
+          0 0 0 3px rgba(182, 166, 216, 1),
+          0 0 30px 12px rgba(182, 166, 216, 0.9),
+          0 0 90px 34px rgba(182, 166, 216, 0.5);
+        transform-origin: 50% 50%;
+      }
+      #p03-island {
+        position: absolute;
+        left: 50%;
+        top: 12px;
+        width: 96px;
+        height: 26px;
+        margin-left: -48px;
+        border-radius: 100px;
+        background: #1f2733;
+      }
+      #p03-sheen {
+        position: absolute;
+        inset: 0;
+        border-radius: 45px;
+        background: linear-gradient(115deg, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0.16) 46%, rgba(255, 255, 255, 0) 60%);
+        pointer-events: none;
+      }
+    </style>
+
+    <!-- full-bleed ground -->
+    <div id="p03-bg" class="clip" data-start="0" data-duration="4.5" data-track-index="0">
+      <div id="p03-grid" data-layout-allow-overflow></div>
+      <svg id="p03-arcs" data-layout-allow-overflow viewBox="0 0 1920 1080" fill="none">
+        <path id="p03-arc1" d="M -120 980 C 420 640, 1120 600, 2060 140" stroke="rgba(251,246,234,0.25)" stroke-width="1.5" />
+        <path id="p03-arc2" d="M -60 1120 C 620 820, 1380 760, 2040 420" stroke="rgba(251,246,234,0.14)" stroke-width="1.2" />
+      </svg>
+      <div id="p03-vignette"></div>
+    </div>
+
+    <!-- 3D stage: back card + phone -->
+    <div id="p03-stage" class="clip" data-start="0" data-duration="4.5" data-track-index="1">
+      <div id="p03-world">
+        <div class="p03-persp">
+          <div id="p03-back">
+            <img src="assets/page-publique-mobile-horaires.png" alt="" data-layout-allow-overflow />
+          </div>
+        </div>
+        <div id="p03-floor"></div>
+        <div class="p03-persp">
+        <div id="p03-phone">
+          <div id="p03-screen">
+            <div id="p03-page" data-layout-allow-overflow>
+              <img src="assets/page-publique-mobile-haut.png" alt="" />
+              <div id="p03-halo"></div>
+              <div id="p03-cta"></div>
+            </div>
+            <div id="p03-island"></div>
+            <div id="p03-sheen" data-layout-allow-overflow></div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- title column -->
+    <div id="p03-copy" class="clip" data-start="0" data-duration="4.5" data-track-index="2">
+      <div id="p03-kicker"><span id="p03-kicker-line"></span><span id="p03-kicker-txt">Page publique</span></div>
+      <div id="p03-title">
+        <span class="p03-line"><span class="p03-w">On</span> <span class="p03-w">crée</span> <span class="p03-w">votre</span></span>
+        <span class="p03-line"><span class="p03-w">page</span> <span class="p03-w">de</span></span>
+        <span class="p03-line"><span class="p03-w">réservation.</span></span>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (function () {
+        const R = document.querySelector('[data-composition-id="03-page"]');
+        const q = (s) => R.querySelector(s);
+        const qa = (s) => Array.from(R.querySelectorAll(s));
+        const tl = gsap.timeline({ paused: true });
+        const D = 4.5;
+
+        /* ---- ground: slow arc drift (finite, linear) ---- */
+        tl.fromTo("#p03-grid", { x: 0, y: 0 }, { x: -48, y: -24, duration: D, ease: "none" }, 0);
+        tl.fromTo("#p03-arcs", { x: 40, opacity: 0.6 }, { x: -40, opacity: 1, duration: D, ease: "none" }, 0);
+
+        /* ---- Scene 1 (0.0–1.2): kicker + word-by-word masked title ---- */
+        tl.fromTo("#p03-kicker-line", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "expo.out" }, 0.0);
+        tl.fromTo("#p03-kicker-txt", { opacity: 0, x: -14 }, { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, 0.08);
+        tl.fromTo(
+          qa(".p03-w"),
+          { yPercent: 115, rotation: 4 },
+          { yPercent: 0, rotation: 0, duration: 0.85, ease: "expo.out", stagger: 0.075 },
+          0.05,
+        );
+
+        /* ---- Scene 2 (0.8–2.4): phone arrives from right + depth ---- */
+        tl.fromTo(
+          "#p03-phone",
+          { x: 560, y: 40, z: -900, rotationY: -30, rotationX: 6, rotationZ: 2, opacity: 0 },
+          { x: 0, y: 0, z: 0, rotationY: -18, rotationX: 4, rotationZ: 0, opacity: 1, duration: 1.55, ease: "power3.out" },
+          0.8,
+        );
+        tl.fromTo("#p03-floor", { opacity: 0, scaleX: 0.4, x: 260 }, { opacity: 1, scaleX: 1, x: 0, duration: 1.55, ease: "power3.out" }, 0.8);
+        tl.fromTo("#p03-sheen", { xPercent: -60 }, { xPercent: 60, duration: 1.8, ease: "power2.inOut" }, 1.0);
+
+        /* ---- Scene 3 (2.2–3.6): back card slides in, in depth, defocused ---- */
+        tl.fromTo(
+          "#p03-back",
+          { x: 260, y: -40, z: -700, rotationY: -14, opacity: 0, "--dof": "14px" },
+          { x: 0, y: 0, z: -320, rotationY: -12, opacity: 0.85, "--dof": "4px", duration: 1.35, ease: "power3.out" },
+          2.2,
+        );
+
+        /* ---- macro camera: slow push toward the CTA under everything ---- */
+        tl.fromTo("#p03-world", { scale: 1, x: 0, y: 0 }, { scale: 1.03, x: -9, y: 5, duration: 2.7, ease: "none" }, 0.8);
+        tl.to("#p03-world", { scale: 1.075, x: -26, y: 18, duration: 1.0, ease: "power2.inOut" }, 3.5);
+
+        /* ---- Scene 4 (3.2–4.5): gentle page scroll to the CTA + lavender halo ---- */
+        tl.fromTo("#p03-page", { y: 0 }, { y: -58, duration: 1.1, ease: "power3.out" }, 3.2);
+        tl.fromTo("#p03-cta", { scale: 1 }, { scale: 1.06, duration: 0.6, ease: "power3.out" }, 3.6);
+
+        /* asr-keyword-glow: one linear driver, attack → sustain envelope on the CTA */
+        const halo = q("#p03-halo");
+        const ATTACK = 0.25, START = 3.6, END = D;
+        const drv = { t: 0 };
+        tl.fromTo(
+          drv,
+          { t: 0 },
+          {
+            t: D,
+            duration: D,
+            ease: "none",
+            onUpdate: () => {
+              const t = drv.t;
+              let env = 0;
+              if (t >= START) env = Math.min((t - START) / ATTACK, 1);
+              if (t >= START + ATTACK && t < END) env *= 1 + Math.sin((t - START) * 7) * 0.08;
+              halo.style.opacity = String(Math.min(env, 1));
+              halo.style.transform = "scale(" + (1 + 0.06 * env) + ")";
+            },
+          },
+          0,
+        );
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["03-page"] = tl;
+      })();
+    </script>
+  </div>
+</template>

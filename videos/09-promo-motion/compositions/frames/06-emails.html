@@ -1,0 +1,602 @@
+<template id="f06-emails-template">
+  <style>
+    @font-face {
+      font-family: "Outfit";
+      src: url("assets/fonts/outfit.woff2") format("woff2");
+      font-weight: 100 900;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Manrope";
+      src: url("assets/fonts/manrope.woff2") format("woff2");
+      font-weight: 200 800;
+      font-display: block;
+    }
+
+    #root {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: "Outfit", sans-serif;
+      color: #fbf6ea;
+    }
+
+    /* ---------- ground ---------- */
+    .e06-bg {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: radial-gradient(120% 95% at 40% 42%, #6f879d 0%, #617990 38%, #3e5166 100%);
+    }
+    .e06-grid {
+      position: absolute;
+      inset: -60px;
+      background-image:
+        linear-gradient(rgba(251, 246, 234, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(251, 246, 234, 0.06) 1px, transparent 1px);
+      background-size: 96px 96px;
+    }
+    .e06-bg-arcs {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+    }
+    .e06-bg-arcs path {
+      fill: none;
+      stroke: rgba(251, 246, 234, 0.25);
+      stroke-width: 1.5;
+    }
+    .e06-vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(85% 80% at 45% 45%, rgba(31, 39, 51, 0) 55%, rgba(31, 39, 51, 0.42) 100%);
+    }
+
+    /* ---------- scene ---------- */
+    .e06-scene {
+      position: absolute;
+      inset: 0;
+      perspective: 1800px;
+      perspective-origin: 50% 45%;
+    }
+
+    /* background screenshot, big tilted + blurred */
+    .e06-shot-layer {
+      position: absolute;
+      inset: 0;
+      transform-style: preserve-3d;
+    }
+    .e06-shot {
+      position: absolute;
+      left: 1060px;
+      top: -150px;
+      width: 640px;
+      height: 1385px;
+      border-radius: 34px;
+      background: #fffdf8;
+      border: 1px solid #e7dfd0;
+      padding: 14px;
+      box-shadow: 0 60px 120px -40px rgba(31, 39, 51, 0.55);
+      filter: blur(7px);
+      will-change: transform, filter, opacity;
+    }
+    .e06-shot img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      border-radius: 22px;
+    }
+
+    /* camera world */
+    .e06-world {
+      position: absolute;
+      inset: 0;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+
+    .e06-links {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1920px;
+      height: 1080px;
+      z-index: 1;
+      overflow: visible;
+    }
+    .e06-links .e06-arc {
+      fill: none;
+      stroke: #fbf6ea;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      opacity: 0.9;
+    }
+    .e06-links .e06-arc-glow {
+      fill: none;
+      stroke: #b6a6d8;
+      stroke-width: 10;
+      stroke-linecap: round;
+      opacity: 0.35;
+      filter: blur(6px);
+    }
+    .e06-links .e06-ring {
+      fill: none;
+      stroke: #fbf6ea;
+    }
+    .e06-spark {
+      fill: #fbf6ea;
+    }
+    .e06-spark-halo {
+      fill: #b6a6d8;
+      opacity: 0.55;
+    }
+
+    /* hub */
+    .e06-hub {
+      --dof: 0px;
+      position: absolute;
+      left: 370px;
+      top: 500px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      z-index: 5;
+      background: radial-gradient(70% 70% at 35% 30%, #3b4f66 0%, #26313f 60%, #1f2733 100%);
+      border: 1px solid rgba(251, 246, 234, 0.18);
+      box-shadow:
+        0 40px 90px -30px rgba(31, 39, 51, 0.75),
+        0 0 0 10px rgba(251, 246, 234, 0.05),
+        inset 0 1px 0 rgba(251, 246, 234, 0.16);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: blur(var(--dof));
+      will-change: transform, filter, opacity;
+    }
+    .e06-hub img {
+      width: 118px;
+      height: auto;
+      display: block;
+      margin-top: 6px;
+    }
+
+    /* email cards */
+    .e06-card {
+      --dof: 0px;
+      position: absolute;
+      width: 600px;
+      height: 140px;
+      z-index: 3;
+      border-radius: 24px;
+      background: #fffdf8;
+      border: 1px solid #e7dfd0;
+      box-shadow: 0 60px 120px -40px rgba(31, 39, 51, 0.55);
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 0 30px 0 26px;
+      color: #1f2733;
+      filter: blur(var(--dof));
+      will-change: transform, filter, opacity;
+    }
+    .e06-card-1 { left: 960px; top: 300px; }
+    .e06-card-2 { left: 1000px; top: 500px; }
+    .e06-card-3 { left: 960px; top: 700px; z-index: 4; }
+
+    .e06-card-glow {
+      position: absolute;
+      inset: -2px;
+      border-radius: 26px;
+      border: 2px solid #b6a6d8;
+      box-shadow: 0 0 46px 6px rgba(182, 166, 216, 0.55);
+      pointer-events: none;
+    }
+    .e06-icon {
+      flex: 0 0 auto;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: rgba(74, 97, 121, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .e06-icon svg {
+      width: 34px;
+      height: 34px;
+      fill: none;
+      stroke: #4a6179;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .e06-card-txt {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+    .e06-card-title {
+      font-family: "Outfit", sans-serif;
+      font-weight: 600;
+      font-size: 27px;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: #1f2733;
+      white-space: nowrap;
+    }
+    .e06-card-sub {
+      margin-top: 6px;
+      font-family: "Manrope", sans-serif;
+      font-weight: 500;
+      font-size: 21px;
+      line-height: 1.3;
+      color: #5f6672;
+      white-space: nowrap;
+    }
+    .e06-toggle {
+      position: relative;
+      flex: 0 0 auto;
+      width: 70px;
+      height: 40px;
+      border-radius: 100px;
+      background: #d9d2c4;
+    }
+    .e06-toggle-on {
+      position: absolute;
+      inset: 0;
+      border-radius: 100px;
+      background: #4a6179;
+    }
+    .e06-knob {
+      position: absolute;
+      left: 5px;
+      top: 5px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #fffdf8;
+      box-shadow: 0 2px 6px rgba(31, 39, 51, 0.25);
+    }
+
+    /* supporting phone card (sharp) */
+    .e06-phone {
+      position: absolute;
+      left: 1630px;
+      top: 270px;
+      width: 262px;
+      height: 567px;
+      z-index: 4;
+      border-radius: 30px;
+      background: #fffdf8;
+      border: 1px solid #e7dfd0;
+      padding: 10px;
+      box-shadow: 0 60px 120px -40px rgba(31, 39, 51, 0.6);
+      will-change: transform, opacity;
+    }
+    .e06-phone img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      border-radius: 21px;
+    }
+
+    /* title HUD (outside camera) */
+    .e06-title {
+      position: absolute;
+      left: 120px;
+      top: 78px;
+      z-index: 10;
+      font-family: "Outfit", sans-serif;
+      font-weight: 500;
+      font-size: 86px;
+      line-height: 1.04;
+      letter-spacing: -0.03em;
+      color: #fbf6ea;
+    }
+    .e06-line {
+      display: block;
+      white-space: nowrap;
+    }
+    .e06-mask {
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: top;
+      padding: 0 0.04em 0.12em 0;
+      margin-bottom: -0.12em;
+    }
+    .e06-word {
+      display: inline-block;
+      will-change: transform;
+    }
+    .e06-pill {
+      background: #b6a6d8;
+      border-radius: 100px;
+      padding: 0.02em 0.34em 0.1em 0.3em;
+      margin: 0.1em 0 0 -0.06em;
+      box-shadow: 0 0 60px 4px rgba(182, 166, 216, 0.35);
+    }
+    .e06-accent {
+      color: #1f2733;
+    }
+  </style>
+
+  <div id="root" data-composition-id="06-emails" data-start="0" data-duration="4.5" data-width="1920" data-height="1080">
+    <!-- full-bleed ground -->
+    <div class="clip e06-bg" id="f06-emails-bg" data-start="0" data-duration="4.5" data-track-index="0">
+      <div class="e06-grid" id="f06-emails-grid" data-layout-allow-overflow></div>
+      <svg class="e06-bg-arcs" data-layout-allow-overflow viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+        <path class="e06-bgarc" d="M -120 980 C 380 560, 1100 420, 2040 640" />
+        <path class="e06-bgarc" d="M -80 220 C 520 40, 1260 120, 2020 -40" />
+      </svg>
+      <div class="e06-vignette"></div>
+    </div>
+
+    <!-- scene -->
+    <div class="clip e06-scene" id="f06-emails-scene" data-start="0" data-duration="4.5" data-track-index="1">
+      <div class="e06-shot-layer" id="f06-emails-shotlayer">
+        <div class="e06-shot" id="f06-emails-shot" data-layout-allow-overflow>
+          <img src="assets/emails-mobile-haut.png" alt="" />
+        </div>
+      </div>
+
+      <div class="e06-world" id="f06-emails-world">
+        <svg class="e06-links" id="f06-emails-links" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+          <circle class="e06-ring" id="f06-emails-ring-1" cx="470" cy="600" r="140" stroke-width="1.5" stroke-opacity="0.35" />
+          <circle class="e06-ring" id="f06-emails-ring-2" cx="470" cy="600" r="195" stroke-width="1.2" stroke-opacity="0.2" />
+          <circle class="e06-ring" id="f06-emails-ring-3" cx="470" cy="600" r="260" stroke-width="1" stroke-opacity="0.1" />
+
+          <path class="e06-arc-glow" id="f06-emails-glow-1" d="M 470 600 C 660 600, 760 370, 960 370" />
+          <path class="e06-arc-glow" id="f06-emails-glow-2" d="M 470 600 C 700 600, 810 570, 1000 570" />
+          <path class="e06-arc-glow" id="f06-emails-glow-3" d="M 470 600 C 660 600, 760 770, 960 770" />
+          <path class="e06-arc" id="f06-emails-arc-1" d="M 470 600 C 660 600, 760 370, 960 370" />
+          <path class="e06-arc" id="f06-emails-arc-2" d="M 470 600 C 700 600, 810 570, 1000 570" />
+          <path class="e06-arc" id="f06-emails-arc-3" d="M 470 600 C 660 600, 760 770, 960 770" />
+
+          <g id="f06-emails-spark-1" opacity="0"><circle class="e06-spark-halo" r="14" /><circle class="e06-spark" r="6" /></g>
+          <g id="f06-emails-spark-2" opacity="0"><circle class="e06-spark-halo" r="14" /><circle class="e06-spark" r="6" /></g>
+          <g id="f06-emails-spark-3" opacity="0"><circle class="e06-spark-halo" r="14" /><circle class="e06-spark" r="6" /></g>
+        </svg>
+
+        <div class="e06-hub" id="f06-emails-hub">
+          <img src="assets/logo-reso-creme.svg" alt="reso" />
+        </div>
+
+        <div class="e06-card e06-card-1" id="f06-emails-card-1">
+          <div class="e06-card-glow" id="f06-emails-cglow-1"></div>
+          <div class="e06-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2.5" /><path d="M3.5 7l8.5 6 8.5-6" /></svg>
+          </div>
+          <div class="e06-card-txt">
+            <div class="e06-card-title">Confirmation de réservation</div>
+            <div class="e06-card-sub">envoyée tout de suite</div>
+          </div>
+          <div class="e06-toggle"><div class="e06-toggle-on" id="f06-emails-ton-1"></div><div class="e06-knob" id="f06-emails-knob-1"></div></div>
+        </div>
+
+        <div class="e06-card e06-card-2" id="f06-emails-card-2">
+          <div class="e06-card-glow" id="f06-emails-cglow-2"></div>
+          <div class="e06-icon">
+            <svg viewBox="0 0 24 24"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15z" /><path d="M10 20.5a2 2 0 0 0 4 0" /></svg>
+          </div>
+          <div class="e06-card-txt">
+            <div class="e06-card-title">Rappel</div>
+            <div class="e06-card-sub">la veille du rendez-vous</div>
+          </div>
+          <div class="e06-toggle"><div class="e06-toggle-on" id="f06-emails-ton-2"></div><div class="e06-knob" id="f06-emails-knob-2"></div></div>
+        </div>
+
+        <div class="e06-card e06-card-3" id="f06-emails-card-3">
+          <div class="e06-card-glow" id="f06-emails-cglow-3"></div>
+          <div class="e06-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 3.6l2.5 5.2 5.6.7-4.1 3.9 1 5.6-5-2.7-5 2.7 1-5.6-4.1-3.9 5.6-.7z" /></svg>
+          </div>
+          <div class="e06-card-txt">
+            <div class="e06-card-title">Demande d’avis Google</div>
+            <div class="e06-card-sub">après la visite</div>
+          </div>
+          <div class="e06-toggle"><div class="e06-toggle-on" id="f06-emails-ton-3"></div><div class="e06-knob" id="f06-emails-knob-3"></div></div>
+        </div>
+
+        <div class="e06-phone" id="f06-emails-phone">
+          <img src="assets/emails-mobile-avis.png" alt="" />
+        </div>
+      </div>
+
+      <div class="e06-title" id="f06-emails-title">
+        <span class="e06-line">
+          <span class="e06-mask"><span class="e06-word" id="f06-emails-w1">Confirmation,</span></span>
+          <span class="e06-mask"><span class="e06-word" id="f06-emails-w2">rappel,</span></span>
+          <span class="e06-mask"><span class="e06-word" id="f06-emails-w3">avis.</span></span>
+        </span>
+        <span class="e06-line">
+          <span class="e06-mask e06-pill" id="f06-emails-pill"><span class="e06-word e06-accent" id="f06-emails-w4">Automatiques.</span></span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    (function () {
+      var FID = "06-emails";
+      var root = document.querySelector('[data-composition-id="' + FID + '"]');
+      var $ = function (id) {
+        return root.querySelector('[id="f' + FID + "-" + id + '"]');
+      };
+      var tl = gsap.timeline({ paused: true });
+
+      var shot = $("shot");
+      var shotLayer = $("shotlayer");
+      var world = $("world");
+      var hub = $("hub");
+      var phone = $("phone");
+      var cards = [$("card-1"), $("card-2"), $("card-3")];
+      var glows = [$("cglow-1"), $("cglow-2"), $("cglow-3")];
+      var arcs = [$("arc-1"), $("arc-2"), $("arc-3")];
+      var arcGlows = [$("glow-1"), $("glow-2"), $("glow-3")];
+      var sparks = [$("spark-1"), $("spark-2"), $("spark-3")];
+      var tons = [$("ton-1"), $("ton-2"), $("ton-3")];
+      var knobs = [$("knob-1"), $("knob-2"), $("knob-3")];
+      var words = [$("w1"), $("w2"), $("w3"), $("w4")];
+      var rings = [$("ring-1"), $("ring-2"), $("ring-3")];
+
+      // ---- setup: measured stroke lengths (svg-path-draw) ----
+      var lens = arcs.map(function (p) {
+        return p.getTotalLength();
+      });
+      arcs.forEach(function (p, i) {
+        p.style.strokeDasharray = lens[i] + " " + (lens[i] + 10);
+        arcGlows[i].style.strokeDasharray = lens[i] + " " + (lens[i] + 10);
+      });
+      rings.forEach(function (c) {
+        var L = c.getTotalLength();
+        c.style.strokeDasharray = L + " " + (L + 10);
+      });
+
+      // ---- ground: slow arc + grid drift (camera parallax underneath) ----
+      tl.fromTo($("grid"), { x: 0, y: 0 }, { x: -40, y: -18, duration: 4.5, ease: "none" }, 0);
+
+      // ---- Scene 1 (0.0–1.0): background capture + hub ----
+      tl.fromTo(
+        shotLayer,
+        { scale: 1.0, x: 40 },
+        { scale: 1.07, x: -30, duration: 4.5, ease: "power1.inOut", transformOrigin: "60% 40%" },
+        0
+      );
+      tl.fromTo(
+        shot,
+        { rotationY: -28, rotationX: 10, rotationZ: 6, z: -260, opacity: 0, filter: "blur(10px)" },
+        { rotationY: -22, rotationX: 8, rotationZ: 5, z: -220, opacity: 0.35, filter: "blur(6px)", duration: 1.0, ease: "power3.out" },
+        0
+      );
+
+      tl.fromTo(hub, { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: "power3.out" }, 0.05);
+      rings.forEach(function (c, i) {
+        var L = c.getTotalLength();
+        tl.fromTo(
+          c,
+          { strokeDashoffset: L, rotation: -90, svgOrigin: "470 600" },
+          { strokeDashoffset: 0, rotation: -90, svgOrigin: "470 600", duration: 0.8, ease: "power2.out" },
+          0.18 + i * 0.12
+        );
+      });
+
+      // ghost cards settle into their slots (unlit, recessed)
+      cards.forEach(function (c, i) {
+        tl.fromTo(
+          c,
+          { opacity: 0, z: -260, rotationY: -16, "--dof": "8px", transformOrigin: "0% 50%" },
+          { opacity: 0.3, z: -120, rotationY: -12, "--dof": "4px", duration: 0.7, ease: "power3.out", transformOrigin: "0% 50%" },
+          0.3 + i * 0.08
+        );
+        tl.set(glows[i], { opacity: 0 }, 0);
+        tl.set(tons[i], { opacity: 0 }, 0);
+        tl.set(knobs[i], { x: 0 }, 0);
+      });
+
+      // phone card initial (hidden until scene 2 end)
+      tl.set(phone, { opacity: 0 }, 0);
+
+      // ---- Scene 2 (0.8–3.2): word -> arc -> card lights up ----
+      var WORD_AT = [0.8, 1.55, 2.3];
+      words.forEach(function (w) {
+        tl.set(w, { yPercent: 115 }, 0);
+      });
+
+      WORD_AT.forEach(function (t, i) {
+        // masked word rise
+        tl.fromTo(words[i], { yPercent: 115 }, { yPercent: 0, duration: 0.55, ease: "power3.out" }, t);
+
+        // arc draws hub -> card, a spark rides the pen tip
+        var L = lens[i];
+        var arc = arcs[i];
+        var spark = sparks[i];
+        var drawAt = t + 0.08;
+        var DRAW = 0.55;
+        tl.fromTo(arc, { strokeDashoffset: L }, { strokeDashoffset: 0, duration: DRAW, ease: "power2.inOut" }, drawAt);
+        tl.fromTo(arcGlows[i], { strokeDashoffset: L }, { strokeDashoffset: 0, duration: DRAW, ease: "power2.inOut" }, drawAt);
+        var proxy = { p: 0 };
+        tl.fromTo(
+          proxy,
+          { p: 0 },
+          {
+            p: 1,
+            duration: DRAW,
+            ease: "power2.inOut",
+            onUpdate: function () {
+              var pt = arc.getPointAtLength(L * proxy.p);
+              spark.setAttribute("transform", "translate(" + pt.x + "," + pt.y + ")");
+            },
+          },
+          drawAt
+        );
+        tl.fromTo(spark, { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power1.out" }, drawAt);
+        tl.to(spark, { opacity: 0, duration: 0.18, ease: "power1.in" }, drawAt + DRAW - 0.06);
+        // glow stroke settles to a soft trace
+        tl.to(arcGlows[i], { opacity: 0.18, duration: 0.5, ease: "power1.out" }, drawAt + DRAW);
+
+        // card lights up as the pen lands
+        var lit = drawAt + DRAW - 0.1;
+        tl.fromTo(
+          cards[i],
+          { opacity: 0.3, z: -120, rotationY: -12, "--dof": "4px" },
+          { opacity: 1, z: 0, rotationY: -6, "--dof": "0px", duration: 0.6, ease: "expo.out", transformOrigin: "0% 50%" },
+          lit
+        );
+        tl.fromTo(glows[i], { opacity: 0 }, { opacity: 1, duration: 0.18, ease: "power2.out" }, lit);
+        tl.to(glows[i], { opacity: i === 2 ? 0.55 : 0, duration: 0.7, ease: "power2.out" }, lit + 0.25);
+        tl.fromTo(tons[i], { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, lit + 0.12);
+        tl.fromTo(knobs[i], { x: 0 }, { x: 30, duration: 0.35, ease: "power3.out" }, lit + 0.12);
+      });
+
+      // supporting phone card (avis) arrives with the 3rd card
+      tl.fromTo(
+        phone,
+        { opacity: 0, x: 120, z: -200, rotationY: -26, rotationZ: 4 },
+        { opacity: 1, x: 0, z: 0, rotationY: -14, rotationZ: 2, duration: 0.8, ease: "power3.out", transformOrigin: "50% 50%" },
+        2.55
+      );
+
+      // ---- Scene 3 (3.0–4.5): "Automatiques." + push-in with DOF on card 3 ----
+      var pill = $("pill");
+      tl.fromTo(
+        pill,
+        { clipPath: "inset(0% 100% 0% 0% round 100px)" },
+        { clipPath: "inset(0% 0% 0% 0% round 100px)", duration: 0.5, ease: "expo.out" },
+        3.0
+      );
+      tl.fromTo(words[3], { yPercent: 115 }, { yPercent: 0, duration: 0.6, ease: "power3.out" }, 3.08);
+
+      var PUSH_AT = 3.05;
+      var PUSH_DUR = 1.4;
+      tl.fromTo(
+        world,
+        { scale: 1, x: 0, y: 0, transformOrigin: "1230px 770px" },
+        { scale: 1.16, x: -70, y: -40, duration: PUSH_DUR, ease: "power2.inOut", transformOrigin: "1230px 770px" },
+        PUSH_AT
+      );
+      // depth-of-field: off-focus layers blur + dim, focal card 3 stays sharp
+      [
+        [cards[0], 6],
+        [cards[1], 5],
+      ].forEach(function (pair) {
+        tl.to(pair[0], { "--dof": pair[1] + "px", opacity: 0.55, duration: 1.0, ease: "power2.inOut" }, PUSH_AT + 0.05);
+      });
+      tl.to(hub, { "--dof": "7px", opacity: 0.6, duration: 1.0, ease: "power2.inOut" }, PUSH_AT + 0.05);
+      tl.to([arcs[0], arcs[1]], { opacity: 0.35, duration: 1.0, ease: "power2.inOut" }, PUSH_AT + 0.05);
+      tl.to(rings, { opacity: 0.4, duration: 1.0, ease: "power2.inOut" }, PUSH_AT + 0.05);
+      tl.to(shot, { filter: "blur(10px)", opacity: 0.25, duration: 1.0, ease: "power2.inOut" }, PUSH_AT + 0.05);
+      // card 3 turns to face camera as focus lands
+      tl.to(cards[2], { rotationY: 0, duration: PUSH_DUR, ease: "power2.inOut" }, PUSH_AT);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines[FID] = tl;
+    })();
+  </script>
+</template>
