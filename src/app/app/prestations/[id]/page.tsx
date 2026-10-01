@@ -6,6 +6,7 @@ import { ServiceForm } from "@/components/app/ServiceForm";
 import { requireEstablishment } from "@/server/auth/guards";
 import { deleteServiceAction, updateServiceAction } from "@/server/app/actions/catalog";
 import { listPractitioners } from "@/server/app/practitioners";
+import { listCategories } from "@/server/app/categories";
 import { getService } from "@/server/app/services";
 import { PhotoUploader } from "@/components/app/PhotoUploader";
 import { pageEditor } from "@/content/fr/app";
@@ -16,7 +17,7 @@ export const metadata: Metadata = { title: "Prestation" };
 export default async function PrestationPage({ params }: { params: Promise<{ id: string }> }) {
   const { establishment } = await requireEstablishment();
   const { id } = await params;
-  const [service, practitioners] = await Promise.all([getService(establishment.id, id), listPractitioners(establishment.id)]);
+  const [service, practitioners, categories] = await Promise.all([getService(establishment.id, id), listPractitioners(establishment.id), listCategories(establishment.id)]);
   if (!service) notFound();
   const remove = deleteServiceAction.bind(null, service.id);
   return (
@@ -62,7 +63,7 @@ export default async function PrestationPage({ params }: { params: Promise<{ id:
         </div>
       </Card>
       <Card>
-        <ServiceForm action={updateServiceAction} service={service} practitioners={practitioners} submitLabel="Enregistrer" />
+        <ServiceForm action={updateServiceAction} service={service} practitioners={practitioners} categories={categories} submitLabel="Enregistrer" />
       </Card>
     </div>
   );
