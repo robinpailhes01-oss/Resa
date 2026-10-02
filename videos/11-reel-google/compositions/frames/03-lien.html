@@ -1,0 +1,1020 @@
+<template>
+  <script src="assets/gsap.min.js"></script>
+  <style>
+    @font-face {
+      font-family: "Outfit";
+      src: url("assets/fonts/outfit.woff2") format("woff2");
+      font-weight: 100 900;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Manrope";
+      src: url("assets/fonts/manrope.woff2") format("woff2");
+      font-weight: 200 800;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "JetBrains Mono";
+      src: url("assets/fonts/jetbrainsmono.woff2") format("woff2");
+      font-weight: 100 800;
+      font-display: block;
+    }
+
+    #root {
+      position: absolute;
+      inset: 0;
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      font-family: "Manrope", sans-serif;
+      color: #1f2733;
+    }
+
+    [data-composition-id="03-lien"] .f03-layer {
+      position: absolute;
+      inset: 0;
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+    }
+
+    /* ---------- ground ---------- */
+    [data-composition-id="03-lien"] .f03-bg {
+      background: radial-gradient(120% 85% at 50% 42%, #fbf6ea 0%, #f9f3e6 52%, #f4eddf 100%);
+    }
+    [data-composition-id="03-lien"] .f03-grain {
+      position: absolute;
+      inset: 0;
+      width: 1080px;
+      height: 1920px;
+      opacity: 0.045;
+      mix-blend-mode: multiply;
+    }
+
+    /* ---------- label ---------- */
+    [data-composition-id="03-lien"] .f03-label {
+      position: absolute;
+      left: 72px;
+      top: 206px;
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      color: #4a6179;
+    }
+    [data-composition-id="03-lien"] .f03-label-num {
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 500;
+      font-size: 28px;
+      letter-spacing: 0.14em;
+    }
+    [data-composition-id="03-lien"] .f03-label-rule {
+      width: 64px;
+      height: 2px;
+      background: #4a6179;
+      transform-origin: left center;
+    }
+    [data-composition-id="03-lien"] .f03-label-text {
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 500;
+      font-size: 26px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    /* ---------- link pill ---------- */
+    [data-composition-id="03-lien"] .f03-pill-wrap {
+      position: absolute;
+      left: 80px;
+      top: 736px;
+      width: 920px;
+      height: 128px;
+    }
+    [data-composition-id="03-lien"] .f03-pill {
+      position: absolute;
+      inset: 0;
+      border-radius: 64px;
+      background: #fffdf8;
+      border: 2px solid #e7dfd0;
+      box-shadow: 0 30px 60px -24px rgba(31, 39, 51, 0.22), 0 2px 4px rgba(31, 39, 51, 0.04);
+      display: flex;
+      align-items: center;
+      padding: 0 20px 0 22px;
+      gap: 20px;
+      overflow: hidden;
+    }
+    [data-composition-id="03-lien"] .f03-pill-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 40px;
+      background: #eef2f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    [data-composition-id="03-lien"] .f03-url {
+      flex: 1;
+      font-size: 37px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      color: #1f2733;
+    }
+    [data-composition-id="03-lien"] .f03-url span {
+      color: #5f6672;
+      font-weight: 500;
+    }
+    [data-composition-id="03-lien"] .f03-copy {
+      position: relative;
+      width: 206px;
+      height: 88px;
+      flex-shrink: 0;
+    }
+    [data-composition-id="03-lien"] .f03-copy-face {
+      position: absolute;
+      inset: 0;
+      border-radius: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 30px;
+      font-weight: 600;
+      color: #ffffff;
+      overflow: hidden;
+    }
+    [data-composition-id="03-lien"] .f03-copy-a {
+      background: #1f2733;
+    }
+    [data-composition-id="03-lien"] .f03-copy-b {
+      background: #2f7d5b;
+    }
+    [data-composition-id="03-lien"] .f03-sheen {
+      position: absolute;
+      top: -20px;
+      left: 0;
+      width: 160px;
+      height: 170px;
+      background: linear-gradient(100deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.85) 50%, rgba(255, 255, 255, 0) 100%);
+      mix-blend-mode: soft-light;
+    }
+
+    /* ---------- stage / camera ---------- */
+    [data-composition-id="03-lien"] .f03-cam {
+      position: absolute;
+      inset: 0;
+      width: 1080px;
+      height: 1920px;
+      transform-origin: 540px 760px;
+    }
+    [data-composition-id="03-lien"] .f03-socle {
+      position: absolute;
+      left: 110px;
+      top: 840px;
+      width: 860px;
+      height: 900px;
+      border-radius: 44px;
+      background: linear-gradient(180deg, #e9e0d0 0%, #e6dccb 60%, #e1d6c3 100%);
+      box-shadow: 0 40px 80px rgba(31, 39, 51, 0.1);
+    }
+    [data-composition-id="03-lien"] .f03-persp {
+      position: absolute;
+      inset: 0;
+      perspective: 2200px;
+      perspective-origin: 540px 900px;
+    }
+    [data-composition-id="03-lien"] .f03-phone {
+      position: absolute;
+      left: 240px;
+      top: 470px;
+      width: 600px;
+      height: 1200px;
+      transform-style: preserve-3d;
+    }
+    [data-composition-id="03-lien"] .f03-shadow {
+      position: absolute;
+      left: 40px;
+      top: 120px;
+      width: 520px;
+      height: 1080px;
+      border-radius: 80px;
+      background: rgba(31, 39, 51, 0.32);
+      filter: blur(46px);
+      transform: translate(0, 50px);
+    }
+    [data-composition-id="03-lien"] .f03-rim {
+      position: absolute;
+      inset: 0;
+      border-radius: 64px;
+      padding: 4px;
+      background: linear-gradient(135deg, #f5f3ef 0%, #c9c6c0 28%, #8e8b86 52%, #c9c6c0 74%, #f5f3ef 100%);
+      box-shadow: 0 0 0 1px rgba(142, 139, 134, 0.45), 0 2px 0 rgba(255, 255, 255, 0.6) inset;
+    }
+    [data-composition-id="03-lien"] .f03-bezel {
+      position: absolute;
+      inset: 4px;
+      border-radius: 60px;
+      background: #12151a;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+    }
+    [data-composition-id="03-lien"] .f03-btn {
+      position: absolute;
+      width: 6px;
+      border-radius: 3px;
+      background: linear-gradient(90deg, #8e8b86, #c9c6c0 50%, #8e8b86);
+    }
+    [data-composition-id="03-lien"] .f03-screen {
+      position: absolute;
+      left: 14px;
+      top: 14px;
+      width: 572px;
+      height: 1172px;
+      border-radius: 50px;
+      overflow: hidden;
+      background: #fbf6ea;
+    }
+    [data-composition-id="03-lien"] .f03-glare {
+      position: absolute;
+      inset: 0;
+      border-radius: 50px;
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0) 32%);
+      pointer-events: none;
+    }
+
+    /* ---------- app (390 CSS px wide, scaled ×1.46667) ---------- */
+    [data-composition-id="03-lien"] .f03-app {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 390px;
+      height: 799px;
+      transform: scale(1.466667);
+      transform-origin: 0 0;
+      font-family: "Manrope", sans-serif;
+      color: #1f2733;
+    }
+    [data-composition-id="03-lien"] .f03-status {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 390px;
+      height: 44px;
+      background: #fefbf5;
+      z-index: 5;
+    }
+    [data-composition-id="03-lien"] .f03-time {
+      position: absolute;
+      left: 34px;
+      top: 13px;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    [data-composition-id="03-lien"] .f03-island {
+      position: absolute;
+      left: 136px;
+      top: 9px;
+      width: 118px;
+      height: 32px;
+      border-radius: 16px;
+      background: #0b0d10;
+    }
+    [data-composition-id="03-lien"] .f03-sicons {
+      position: absolute;
+      right: 26px;
+      top: 15px;
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    [data-composition-id="03-lien"] .f03-vp {
+      position: absolute;
+      left: 0;
+      top: 44px;
+      width: 390px;
+      height: 755px;
+      overflow: hidden;
+    }
+    [data-composition-id="03-lien"] .f03-scr {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 390px;
+      height: 755px;
+      background: #fbf6ea;
+      overflow: hidden;
+    }
+
+    /* screen A — real capture + service list */
+    [data-composition-id="03-lien"] .f03-a-scroll {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 390px;
+      height: 1100px;
+    }
+    [data-composition-id="03-lien"] .f03-a-img {
+      position: absolute;
+      left: 0;
+      top: -1px;
+      width: 390px;
+      height: 729.33px;
+      display: block;
+    }
+    [data-composition-id="03-lien"] .f03-svc {
+      position: absolute;
+      left: 16px;
+      top: 710px;
+      width: 358px;
+      border-radius: 20px;
+      background: #fffdf8;
+      box-shadow: 0 0 0 1px #e7dfd0;
+    }
+    [data-composition-id="03-lien"] .f03-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      border-top: 1px solid #e7dfd0;
+    }
+    [data-composition-id="03-lien"] .f03-row:first-child {
+      border-top: 0;
+    }
+    [data-composition-id="03-lien"] .f03-row-main {
+      flex: 1;
+      min-width: 0;
+    }
+    [data-composition-id="03-lien"] .f03-row-name {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 20px;
+    }
+    [data-composition-id="03-lien"] .f03-row-desc {
+      margin-top: 2px;
+      font-size: 13.5px;
+      line-height: 20px;
+      color: #5f6672;
+    }
+    [data-composition-id="03-lien"] .f03-row-meta {
+      margin-top: 4px;
+      font-size: 13.5px;
+      color: #5f6672;
+    }
+    [data-composition-id="03-lien"] .f03-row-meta b {
+      font-weight: 600;
+      color: #1f2733;
+    }
+    [data-composition-id="03-lien"] .f03-pick {
+      position: relative;
+      flex-shrink: 0;
+      height: 40px;
+      padding: 0 16px;
+      border-radius: 999px;
+      background: #1f2733;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+    }
+
+    /* shell (screens B / C / D) */
+    [data-composition-id="03-lien"] .f03-head {
+      height: 45px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fefcf7;
+      border-bottom: 1px solid #e7dfd0;
+    }
+    [data-composition-id="03-lien"] .f03-head-t {
+      font-size: 13px;
+      color: #5f6672;
+    }
+    [data-composition-id="03-lien"] .f03-logo {
+      display: block;
+      width: 61px;
+      height: 18px;
+      background: url("assets/logo-reso.svg") no-repeat center / contain;
+    }
+    [data-composition-id="03-lien"] .f03-main {
+      padding: 32px 16px 0;
+    }
+    [data-composition-id="03-lien"] .f03-h1 {
+      font-family: "Outfit", sans-serif;
+      font-weight: 500;
+      font-size: 28px;
+      line-height: 36px;
+      letter-spacing: -0.025em;
+    }
+    [data-composition-id="03-lien"] .f03-sub {
+      margin-top: 4px;
+      font-size: 15px;
+      line-height: 24px;
+      color: #5f6672;
+    }
+    [data-composition-id="03-lien"] .f03-steps {
+      margin-top: 32px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    [data-composition-id="03-lien"] .f03-dot {
+      position: relative;
+      width: 24px;
+      height: 24px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fffdf8;
+      color: #5f6672;
+      box-shadow: 0 0 0 1px #e7dfd0;
+    }
+    [data-composition-id="03-lien"] .f03-dot.on {
+      background: #4a6179;
+      color: #ffffff;
+      box-shadow: none;
+    }
+    [data-composition-id="03-lien"] .f03-dot-fill {
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      background: #4a6179;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    [data-composition-id="03-lien"] .f03-dash {
+      width: 16px;
+      height: 1px;
+      background: #e7dfd0;
+    }
+    [data-composition-id="03-lien"] .f03-card {
+      border-radius: 20px;
+      background: #fffdf8;
+      box-shadow: 0 0 0 1px #e7dfd0;
+      padding: 20px;
+    }
+    [data-composition-id="03-lien"] .f03-h2 {
+      font-family: "Outfit", sans-serif;
+      font-weight: 500;
+      font-size: 22px;
+      line-height: 28px;
+      letter-spacing: -0.025em;
+    }
+    [data-composition-id="03-lien"] .f03-pros {
+      margin-top: 16px;
+      display: flex;
+      gap: 8px;
+    }
+    [data-composition-id="03-lien"] .f03-pro {
+      position: relative;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+      background: #fffdf8;
+      box-shadow: 0 0 0 1px #e7dfd0;
+    }
+    [data-composition-id="03-lien"] .f03-pro-on {
+      position: absolute;
+      inset: 0;
+      border-radius: 999px;
+      background: #4a6179;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    [data-composition-id="03-lien"] .f03-hint {
+      margin-top: 16px;
+      font-size: 14px;
+      color: #5f6672;
+    }
+    [data-composition-id="03-lien"] .f03-sum {
+      margin-top: 24px;
+    }
+    [data-composition-id="03-lien"] .f03-sum-h {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    [data-composition-id="03-lien"] .f03-sum-h b {
+      font-family: "Outfit", sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+    }
+    [data-composition-id="03-lien"] .f03-sum-h span {
+      font-size: 13px;
+      font-weight: 500;
+      color: #4a6179;
+    }
+    [data-composition-id="03-lien"] .f03-dl {
+      margin-top: 12px;
+      font-size: 14px;
+      line-height: 20px;
+    }
+    [data-composition-id="03-lien"] .f03-dl > div {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 6px;
+    }
+    [data-composition-id="03-lien"] .f03-dl dt {
+      color: #5f6672;
+    }
+    [data-composition-id="03-lien"] .f03-dl dd {
+      font-weight: 500;
+      text-align: right;
+    }
+    [data-composition-id="03-lien"] .f03-dl .f03-tot {
+      border-top: 1px solid #e7dfd0;
+      padding-top: 8px;
+    }
+    [data-composition-id="03-lien"] .f03-dl .f03-tot dd {
+      font-size: 16px;
+      font-weight: 700;
+      color: #4a6179;
+    }
+    [data-composition-id="03-lien"] .f03-onsite {
+      margin-top: 12px;
+      font-size: 12px;
+      color: #5f6672;
+    }
+    [data-composition-id="03-lien"] .f03-daterow {
+      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    [data-composition-id="03-lien"] .f03-daterow b {
+      font-size: 15px;
+      font-weight: 600;
+    }
+    [data-composition-id="03-lien"] .f03-chev {
+      display: flex;
+      gap: 4px;
+    }
+    [data-composition-id="03-lien"] .f03-chev i {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      box-shadow: 0 0 0 1px #e7dfd0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    [data-composition-id="03-lien"] .f03-strip {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+    }
+    [data-composition-id="03-lien"] .f03-day {
+      border-radius: 8px;
+      padding: 8px 0;
+      text-align: center;
+      font-size: 12px;
+      line-height: 1.25;
+      background: #fffdf8;
+      box-shadow: 0 0 0 1px #e7dfd0;
+    }
+    [data-composition-id="03-lien"] .f03-day b {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    [data-composition-id="03-lien"] .f03-day.sel {
+      background: #4a6179;
+      color: #ffffff;
+      box-shadow: 0 0 0 1px #4a6179;
+    }
+    [data-composition-id="03-lien"] .f03-day.off {
+      opacity: 0.35;
+    }
+    [data-composition-id="03-lien"] .f03-h3 {
+      margin-top: 24px;
+      font-family: "Outfit", sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+    }
+    [data-composition-id="03-lien"] .f03-slots {
+      margin-top: 8px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    [data-composition-id="03-lien"] .f03-slot {
+      position: relative;
+      border-radius: 8px;
+      padding: 10px 0;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 20px;
+      background: #fffdf8;
+      box-shadow: 0 0 0 1px #e7dfd0;
+    }
+    [data-composition-id="03-lien"] .f03-slot-on {
+      position: absolute;
+      inset: 0;
+      border-radius: 8px;
+      background: #4a6179;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* screen D — confirmation (rdv/[token]) */
+    [data-composition-id="03-lien"] .f03-ok {
+      position: relative;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(31, 122, 77, 0.3);
+      background: #dcefe3;
+      color: #1f7a4d;
+      padding: 12px 16px;
+      font-size: 15px;
+      line-height: 24px;
+    }
+    [data-composition-id="03-lien"] .f03-ok svg {
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+    [data-composition-id="03-lien"] .f03-ok-halo {
+      position: absolute;
+      inset: -1px;
+      border-radius: 12px;
+      box-shadow: 0 0 0 2px rgba(31, 122, 77, 0.45);
+    }
+    [data-composition-id="03-lien"] .f03-rdl {
+      margin-top: 16px;
+      font-size: 15px;
+      line-height: 22px;
+    }
+    [data-composition-id="03-lien"] .f03-rdl > div {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 8px;
+    }
+    [data-composition-id="03-lien"] .f03-rdl dt {
+      color: #5f6672;
+    }
+    [data-composition-id="03-lien"] .f03-rdl dd {
+      font-weight: 500;
+      text-align: right;
+    }
+
+    /* tap */
+    [data-composition-id="03-lien"] .f03-tap {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 34px;
+      height: 34px;
+      margin: -17px 0 0 -17px;
+      border-radius: 17px;
+      background: rgba(251, 246, 234, 0.92);
+      box-shadow: 0 0 0 1.5px rgba(74, 97, 121, 0.55), 0 6px 14px rgba(31, 39, 51, 0.22);
+      pointer-events: none;
+      z-index: 4;
+    }
+  </style>
+
+  <div id="root" data-composition-id="03-lien" data-start="0" data-duration="3.8" data-width="1080" data-height="1920">
+    <!-- ground -->
+    <div id="f03-ground" class="clip f03-layer f03-bg" data-start="0" data-duration="3.8" data-track-index="0">
+      <svg class="f03-grain" viewBox="0 0 1080 1920" preserveAspectRatio="none">
+        <filter id="f03-noise">
+          <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="7" stitchTiles="stitch" />
+          <feColorMatrix type="saturate" values="0" />
+        </filter>
+        <rect width="1080" height="1920" filter="url(#f03-noise)" />
+      </svg>
+    </div>
+
+    <!-- phone stage -->
+    <div id="f03-stage" class="clip f03-layer" data-start="0" data-duration="3.8" data-track-index="1" data-layout-allow-overflow>
+      <div class="f03-cam" data-layout-allow-overflow>
+        <div class="f03-socle"></div>
+        <div class="f03-persp" data-layout-allow-overflow>
+          <div class="f03-phone" data-layout-allow-overflow>
+            <div class="f03-shadow"></div>
+            <div class="f03-btn" style="left: -4px; top: 250px; height: 70px"></div>
+            <div class="f03-btn" style="left: -4px; top: 340px; height: 110px"></div>
+            <div class="f03-btn" style="left: -4px; top: 470px; height: 110px"></div>
+            <div class="f03-btn" style="right: -4px; top: 360px; height: 160px"></div>
+            <div class="f03-rim"><div class="f03-bezel"></div></div>
+            <div class="f03-screen">
+              <div class="f03-app">
+                <div class="f03-status">
+                  <div class="f03-time">9:41</div>
+                  <div class="f03-island"></div>
+                  <div class="f03-sicons">
+                    <svg width="17" height="11" viewBox="0 0 17 11" fill="#1f2733"><rect x="0" y="7" width="3" height="4" rx="1" /><rect x="4.5" y="5" width="3" height="6" rx="1" /><rect x="9" y="2.5" width="3" height="8.5" rx="1" /><rect x="13.5" y="0" width="3" height="11" rx="1" /></svg>
+                    <svg width="15" height="11" viewBox="0 0 15 11" fill="#1f2733"><path d="M7.5 2.2c2 0 3.8.8 5.2 2.1l1.1-1.1A8.9 8.9 0 0 0 7.5.6 8.9 8.9 0 0 0 1.2 3.2l1.1 1.1A7.3 7.3 0 0 1 7.5 2.2Zm0 3.2c1.1 0 2.1.4 2.9 1.1l1.1-1.1a5.8 5.8 0 0 0-8 0l1.1 1.1c.8-.7 1.8-1.1 2.9-1.1Zm0 3.1-1.6 1.6L7.5 11l1.6-1.6-1.6-.9Z" /></svg>
+                    <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3.2" stroke="#1f2733" opacity="0.4" /><rect x="2" y="2" width="16" height="8" rx="2" fill="#1f2733" /><path d="M23 4v4c.8-.3 1.3-1.1 1.3-2S23.8 4.3 23 4Z" fill="#1f2733" opacity="0.4" /></svg>
+                  </div>
+                </div>
+
+                <div class="f03-vp" data-layout-allow-overflow>
+                  <!-- A : real public page -->
+                  <div id="f03-scr-a" class="f03-scr" data-layout-allow-overflow>
+                    <div class="f03-a-scroll" data-layout-allow-overflow>
+                      <img class="f03-a-img" src="assets/page-publique-mobile.png" alt="" />
+                      <div class="f03-svc">
+                        <div class="f03-row">
+                          <div class="f03-row-main">
+                            <div class="f03-row-name">Soin visage éclat</div>
+                            <div class="f03-row-desc">Nettoyage, gommage, masque et modelage relaxant.</div>
+                            <div class="f03-row-meta">1 h · <b>65 €</b></div>
+                          </div>
+                          <div id="f03-pick" class="f03-pick" data-layout-allow-overlap>Choisir<div id="f03-tap1" class="f03-tap"></div></div>
+                        </div>
+                        <div class="f03-row">
+                          <div class="f03-row-main">
+                            <div class="f03-row-name">Soin express hydratant</div>
+                            <div class="f03-row-desc">Nettoyage, sérum et masque en 30 minutes.</div>
+                            <div class="f03-row-meta">30 min · <b>35 €</b></div>
+                          </div>
+                          <div class="f03-pick">Choisir</div>
+                        </div>
+                        <div class="f03-row">
+                          <div class="f03-row-main">
+                            <div class="f03-row-name">Pose semi-permanent</div>
+                            <div class="f03-row-desc">Sur ongles naturels, tenue trois semaines.</div>
+                            <div class="f03-row-meta">1 h · <b>40 €</b></div>
+                          </div>
+                          <div class="f03-pick">Choisir</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- B : praticienne -->
+                  <div id="f03-scr-b" class="f03-scr">
+                    <div class="f03-head"><span class="f03-head-t">Votre rendez-vous chez</span><i class="f03-logo"></i></div>
+                    <div class="f03-main">
+                      <div class="f03-h1">Maison Alba</div>
+                      <div class="f03-sub">Institut de beauté · Montpellier</div>
+                      <div class="f03-steps">
+                        <div class="f03-dot on">1</div><div class="f03-dash"></div>
+                        <div class="f03-dot" data-layout-allow-overlap>2<div id="f03-dot2" class="f03-dot-fill">2</div></div><div class="f03-dash"></div>
+                        <div class="f03-dot">3</div><div class="f03-dash"></div>
+                        <div class="f03-dot">4</div>
+                      </div>
+                      <div class="f03-card">
+                        <div class="f03-h2">Choisissez votre créneau</div>
+                        <div class="f03-pros">
+                          <div class="f03-pro" data-layout-allow-overlap>Camille<div id="f03-camille-on" class="f03-pro-on">Camille</div><div id="f03-tap2" class="f03-tap"></div></div>
+                          <div class="f03-pro">Inès</div>
+                        </div>
+                        <div class="f03-hint">Choisissez d’abord une praticienne.</div>
+                      </div>
+                      <div class="f03-card f03-sum">
+                        <div class="f03-sum-h"><b>Votre réservation</b><span>Modifier</span></div>
+                        <dl class="f03-dl">
+                          <div><dt>Prestation</dt><dd>Soin visage éclat</dd></div>
+                          <div><dt>Durée</dt><dd>1 h</dd></div>
+                          <div class="f03-tot"><dt>Total</dt><dd>65 €</dd></div>
+                        </dl>
+                        <div class="f03-onsite">Paiement sur place.</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- C : créneaux (same screen, Camille selected) -->
+                  <div id="f03-scr-c" class="f03-scr">
+                    <div class="f03-head"><span class="f03-head-t">Votre rendez-vous chez</span><i class="f03-logo"></i></div>
+                    <div class="f03-main">
+                      <div class="f03-h1">Maison Alba</div>
+                      <div class="f03-sub">Institut de beauté · Montpellier</div>
+                      <div class="f03-steps">
+                        <div class="f03-dot on">1</div><div class="f03-dash"></div>
+                        <div class="f03-dot on">2</div><div class="f03-dash"></div>
+                        <div class="f03-dot">3</div><div class="f03-dash"></div>
+                        <div class="f03-dot">4</div>
+                      </div>
+                      <div class="f03-card">
+                        <div class="f03-h2">Choisissez votre créneau</div>
+                        <div class="f03-pros">
+                          <div class="f03-pro" style="background: #4a6179; color: #fff; box-shadow: 0 0 0 1px #4a6179">Camille</div>
+                          <div class="f03-pro">Inès</div>
+                        </div>
+                        <div class="f03-c-in f03-daterow">
+                          <b>vendredi 2 octobre 2026</b>
+                          <div class="f03-chev">
+                            <i><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1f2733" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6" /></svg></i>
+                            <i><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1f2733" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6" /></svg></i>
+                          </div>
+                        </div>
+                        <div class="f03-c-in f03-strip">
+                          <div class="f03-day sel">Ven.<b>02</b></div>
+                          <div class="f03-day">Sam.<b>03</b></div>
+                          <div class="f03-day off">Dim.<b>04</b></div>
+                          <div class="f03-day">Lun.<b>05</b></div>
+                          <div class="f03-day">Mar.<b>06</b></div>
+                          <div class="f03-day">Mer.<b>07</b></div>
+                          <div class="f03-day">Jeu.<b>08</b></div>
+                        </div>
+                        <div class="f03-c-in f03-h3">Créneaux disponibles</div>
+                        <div class="f03-slots">
+                          <div class="f03-slot">09:00</div><div class="f03-slot">09:15</div><div class="f03-slot">09:30</div><div class="f03-slot">09:45</div>
+                          <div class="f03-slot">10:00</div><div class="f03-slot">10:15</div>
+                          <div class="f03-slot" data-layout-allow-overlap>10:30<div id="f03-slot-on" class="f03-slot-on">10:30</div><div id="f03-tap3" class="f03-tap"></div></div>
+                          <div class="f03-slot">10:45</div>
+                          <div class="f03-slot">11:00</div><div class="f03-slot">11:15</div><div class="f03-slot">11:30</div><div class="f03-slot">11:45</div>
+                          <div class="f03-slot">12:00</div><div class="f03-slot">12:15</div><div class="f03-slot">12:30</div><div class="f03-slot">12:45</div>
+                          <div class="f03-slot">14:00</div><div class="f03-slot">14:15</div><div class="f03-slot">14:30</div><div class="f03-slot">14:45</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- D : confirmation -->
+                  <div id="f03-scr-d" class="f03-scr">
+                    <div class="f03-head"><span class="f03-head-t">Votre rendez-vous chez</span><i class="f03-logo"></i></div>
+                    <div class="f03-main">
+                      <div class="f03-h1">Maison Alba</div>
+                      <div class="f03-sub">Institut de beauté · Montpellier</div>
+                      <div style="height: 32px"></div>
+                      <div id="f03-ok" class="f03-ok">
+                        <svg id="f03-ok-ico" width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16Zm3.7 6.2-4.4 4.6a.9.9 0 0 1-1.3 0L6.3 11a.9.9 0 1 1 1.3-1.3l1.1 1.1 3.7-3.9a.9.9 0 1 1 1.3 1.3Z" /></svg>
+                        <div>Votre rendez-vous est confirmé. Un email de confirmation est envoyé à julie.martin@example.com.</div>
+                        <div id="f03-ok-halo" class="f03-ok-halo"></div>
+                      </div>
+                      <div id="f03-rdv" class="f03-card">
+                        <div class="f03-h2">Votre rendez-vous</div>
+                        <dl class="f03-rdl">
+                          <div class="f03-r"><dt>Prestation</dt><dd>Soin visage éclat</dd></div>
+                          <div class="f03-r"><dt>Date</dt><dd>vendredi 2 octobre à 10:30</dd></div>
+                          <div class="f03-r"><dt>Durée</dt><dd>1 h</dd></div>
+                          <div class="f03-r"><dt>Avec</dt><dd>Camille</dd></div>
+                          <div class="f03-r"><dt>Prix</dt><dd>65 € · paiement sur place</dd></div>
+                          <div class="f03-r"><dt>Adresse</dt><dd>12 rue de l’Aiguillerie, 34000 Montpellier</dd></div>
+                        </dl>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="f03-glare"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- label + link pill -->
+    <div id="f03-top" class="clip f03-layer" data-start="0" data-duration="3.8" data-track-index="2" data-layout-allow-overflow>
+      <div id="f03-label" class="f03-label">
+        <span class="f03-label-num">03</span>
+        <span id="f03-rule" class="f03-label-rule"></span>
+        <span class="f03-label-text">Partagez votre lien</span>
+      </div>
+      <div id="f03-pill-wrap" class="f03-pill-wrap" data-layout-allow-overflow>
+        <div class="f03-pill">
+          <div class="f03-pill-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#4a6179" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" /><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" /></svg>
+          </div>
+          <div class="f03-url"><span>reso-app.fr/r/</span>maison-alba</div>
+          <div id="f03-copy" class="f03-copy" data-layout-allow-overlap data-layout-allow-occlusion>
+            <div id="f03-copy-a" class="f03-copy-face f03-copy-a"><span id="f03-copy-t">Copier</span></div>
+            <div id="f03-copy-b" class="f03-copy-face f03-copy-b">
+              <span id="f03-copied">Copié</span>
+              <svg id="f03-copied-ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5 10 17.5 19 7.5" /></svg>
+            </div>
+          </div>
+          <div id="f03-sheen" class="f03-sheen"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const R = document.querySelector('[data-composition-id="03-lien"]');
+      const q = (s) => R.querySelector(s);
+      const qa = (s) => Array.from(R.querySelectorAll(s));
+      const tl = gsap.timeline({ paused: true });
+
+      const tap = (el, t) => {
+        tl.fromTo(el, { scale: 0.2, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.08, ease: "power2.out" }, t - 0.08);
+        tl.fromTo(el, { scale: 1 }, { scale: 2.6, opacity: 0, duration: 0.42, ease: "power2.out", immediateRender: false }, t);
+      };
+      const press = (el, t) => {
+        tl.fromTo(el, { scale: 1 }, { scale: 0.93, duration: 0.07, ease: "power2.in" }, t);
+        tl.to(el, { scale: 1, duration: 0.2, ease: "power3.out" }, t + 0.07);
+      };
+
+      // ---- Scene 1 (0.0–0.8): label + link pill, Copier → Copié on « page de réservation »
+      tl.fromTo("#f03-label", { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.55, ease: "power3.out" }, 0.0);
+      tl.fromTo("#f03-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "expo.out" }, 0.12);
+      tl.fromTo(
+        "#f03-pill-wrap",
+        { opacity: 0, y: 70, scale: 0.94, filter: "blur(10px)" },
+        { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.6, ease: "expo.out" },
+        0.0,
+      );
+      press(q("#f03-copy"), 0.6);
+      tl.fromTo("#f03-copy-b", { opacity: 0 }, { opacity: 1, duration: 0.16, ease: "power2.out" }, 0.66);
+      tl.fromTo("#f03-copy-t", { y: 0, opacity: 1 }, { y: -26, opacity: 0, duration: 0.07, ease: "power2.in" }, 0.64);
+      tl.fromTo("#f03-copied", { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, ease: "power3.out" }, 0.68);
+      tl.fromTo("#f03-copied-ico", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "power3.out" }, 0.74);
+      tl.fromTo("#f03-sheen", { x: -220 }, { x: 1000, duration: 0.6, ease: "power2.inOut" }, 0.68);
+
+      // ---- Scene 2 (0.6–1.6): pill rises, phone climbs from below, light scroll
+      tl.fromTo("#f03-pill-wrap", { y: 0, scale: 1 }, { y: -440, scale: 0.8, duration: 0.8, ease: "power3.inOut", immediateRender: false }, 0.86);
+      tl.fromTo(
+        ".f03-socle",
+        { opacity: 0, y: 120, scale: 0.96 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.9, ease: "expo.out" },
+        0.9,
+      );
+      tl.fromTo(
+        ".f03-phone",
+        { y: 1520, rotationX: 16, rotationY: -6 },
+        { y: 0, rotationX: 0, rotationY: -3, duration: 1.0, ease: "expo.out" },
+        0.82,
+      );
+      tl.to(".f03-phone", { rotationY: 2, duration: 1.98, ease: "sine.inOut" }, 1.82);
+      tl.fromTo(".f03-a-scroll", { y: 0 }, { y: -262, duration: 0.6, ease: "power3.inOut" }, 1.22);
+
+      // ---- Scene 3 (1.5–3.0): prestation → praticienne → créneau
+      tl.set(["#f03-scr-b", "#f03-scr-c", "#f03-scr-d"], { xPercent: 100 }, 0);
+      tl.set(["#f03-scr-b", "#f03-scr-c", "#f03-scr-d"], { autoAlpha: 0 }, 0);
+      tl.set("#f03-scr-b", { autoAlpha: 1 }, 1.99);
+      tl.set("#f03-scr-a", { autoAlpha: 0 }, 2.26);
+      tl.set("#f03-scr-b", { autoAlpha: 0 }, 2.5);
+      tl.set("#f03-scr-d", { autoAlpha: 1 }, 2.85);
+      tl.set("#f03-scr-c", { autoAlpha: 0 }, 3.12);
+      tl.set("#f03-copy-a", { autoAlpha: 0 }, 0.72);
+      tl.set(["#f03-dot2", "#f03-camille-on", "#f03-slot-on"], { opacity: 0 }, 0);
+      tl.set(["#f03-tap1", "#f03-tap2", "#f03-tap3"], { opacity: 0 }, 0);
+
+      tap(q("#f03-tap1"), 1.88);
+      press(q("#f03-pick"), 1.88);
+      tl.to("#f03-scr-a", { xPercent: -32, opacity: 0.5, duration: 0.25, ease: "power3.inOut" }, 2.0);
+      tl.to("#f03-scr-b", { xPercent: 0, duration: 0.25, ease: "power3.inOut" }, 2.0);
+      tl.fromTo("#f03-dot2", { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.22, ease: "power3.out", immediateRender: false }, 2.16);
+
+      tap(q("#f03-tap2"), 2.3);
+      tl.fromTo("#f03-camille-on", { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power2.out", immediateRender: false }, 2.31);
+      tl.set("#f03-scr-c", { xPercent: 0 }, 2.4);
+      tl.fromTo("#f03-scr-c", { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.08, ease: "none", immediateRender: false }, 2.4);
+      tl.fromTo(
+        qa("#f03-scr-c .f03-c-in"),
+        { opacity: 0, y: -10 },
+        { opacity: 1, y: 0, duration: 0.24, ease: "power3.out", stagger: 0.04, immediateRender: false },
+        2.4,
+      );
+      tl.fromTo(
+        qa("#f03-scr-c .f03-slot"),
+        { opacity: 0, y: -8 },
+        { opacity: 1, y: 0, duration: 0.18, ease: "power3.out", stagger: 0.008, immediateRender: false },
+        2.44,
+      );
+
+      tap(q("#f03-tap3"), 2.72);
+      tl.fromTo("#f03-slot-on", { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power2.out", immediateRender: false }, 2.73);
+
+      // ---- Scene 4 (2.9–3.8): confirmation blooms on « partagée », camera push, hold
+      tl.to("#f03-scr-c", { xPercent: -32, opacity: 0.5, duration: 0.25, ease: "power3.inOut" }, 2.86);
+      tl.to("#f03-scr-d", { xPercent: 0, duration: 0.25, ease: "power3.inOut" }, 2.86);
+      tl.fromTo(
+        "#f03-ok",
+        { opacity: 0, scale: 0.9, y: 8 },
+        { opacity: 1, scale: 1, y: 0, duration: 0.45, ease: "expo.out", immediateRender: false },
+        3.0,
+      );
+      tl.set("#f03-ok", { opacity: 0 }, 0);
+      tl.fromTo("#f03-ok-ico", { scale: 0, rotation: -40 }, { scale: 1, rotation: 0, duration: 0.4, ease: "power3.out" }, 3.08);
+      tl.fromTo("#f03-ok-halo", { opacity: 0.9, scale: 1 }, { opacity: 0, scale: 1.08, duration: 0.6, ease: "power2.out" }, 3.1);
+      tl.fromTo("#f03-rdv .f03-h2", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 3.1);
+      tl.fromTo(
+        qa("#f03-rdv .f03-r"),
+        { opacity: 0, y: 8 },
+        { opacity: 1, y: 0, duration: 0.32, ease: "power3.out", stagger: 0.04 },
+        3.16,
+      );
+      tl.fromTo(".f03-cam", { scale: 1, y: 0 }, { scale: 1.07, y: -24, duration: 0.85, ease: "power2.out" }, 2.95);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["03-lien"] = tl;
+    })();
+  </script>
+</template>
