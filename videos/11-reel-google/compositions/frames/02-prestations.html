@@ -1,0 +1,529 @@
+<template>
+  <script src="assets/gsap.min.js"></script>
+  <style>
+    @font-face {
+      font-family: "Outfit";
+      src: url("assets/fonts/outfit.woff2") format("woff2");
+      font-weight: 100 900;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "Manrope";
+      src: url("assets/fonts/manrope.woff2") format("woff2");
+      font-weight: 200 800;
+      font-display: block;
+    }
+    @font-face {
+      font-family: "JetBrains Mono";
+      src: url("assets/fonts/jetbrainsmono.woff2") format("woff2");
+      font-weight: 100 800;
+      font-display: block;
+    }
+
+    #root {
+      position: absolute;
+      inset: 0;
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      font-family: "Manrope", sans-serif;
+      color: #1f2733;
+    }
+
+    [data-composition-id="02-prestations"] .f02-layer {
+      position: absolute;
+      inset: 0;
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+    }
+
+    /* ---------- ground ---------- */
+    [data-composition-id="02-prestations"] .f02-bg {
+      background: radial-gradient(120% 80% at 50% 38%, #fbf6ea 0%, #f9f3e6 55%, #f4eddf 100%);
+    }
+    [data-composition-id="02-prestations"] .f02-bgshot {
+      position: absolute;
+      left: -420px;
+      top: 120px;
+      width: 1920px;
+      height: 1130px;
+      background: url("assets/app-prestations.png") 0 0 / 100% 100% no-repeat;
+      filter: blur(22px) saturate(0.8);
+      opacity: 0.16;
+    }
+    [data-composition-id="02-prestations"] .f02-wash {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(70% 55% at 50% 45%, rgba(251, 246, 234, 0.55) 0%, rgba(251, 246, 234, 0) 70%),
+        linear-gradient(180deg, rgba(244, 237, 223, 0) 70%, rgba(244, 237, 223, 0.8) 100%);
+    }
+    [data-composition-id="02-prestations"] .f02-grain {
+      position: absolute;
+      inset: 0;
+      width: 1080px;
+      height: 1920px;
+      opacity: 0.045;
+      mix-blend-mode: multiply;
+    }
+
+    /* ---------- world ---------- */
+    [data-composition-id="02-prestations"] .f02-cam {
+      position: absolute;
+      inset: 0;
+      transform-origin: 540px 860px;
+      perspective: 2400px;
+      perspective-origin: 540px 900px;
+    }
+
+    [data-composition-id="02-prestations"] .f02-label {
+      position: absolute;
+      left: 76px;
+      top: 214px;
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 500;
+      font-size: 27px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #4a6179;
+      white-space: nowrap;
+    }
+    [data-composition-id="02-prestations"] .f02-label-rule {
+      width: 64px;
+      height: 2px;
+      background: #4a6179;
+      opacity: 0.55;
+      transform-origin: 0 50%;
+    }
+
+    /* stone plinth + onboarding card */
+    [data-composition-id="02-prestations"] .f02-socle {
+      position: absolute;
+      left: 64px;
+      top: 290px;
+      width: 952px;
+      padding: 26px;
+      border-radius: 44px;
+      background: #e6dccb;
+      box-shadow: 0 40px 80px rgba(31, 39, 51, 0.12), 0 6px 18px rgba(31, 39, 51, 0.05);
+      transform-origin: 476px 0px;
+      transform-style: preserve-3d;
+    }
+    [data-composition-id="02-prestations"] .f02-card {
+      position: relative;
+      border-radius: 30px;
+      background: #fffdf8;
+      border: 2px solid #e7dfd0;
+      padding: 44px 40px;
+    }
+    [data-composition-id="02-prestations"] .f02-title {
+      height: 50px;
+      font-family: "Outfit", sans-serif;
+      font-weight: 600;
+      font-size: 44px;
+      line-height: 50px;
+      letter-spacing: -0.02em;
+      color: #1f2733;
+      white-space: nowrap;
+    }
+    [data-composition-id="02-prestations"] .f02-sub {
+      height: 78px;
+      margin-top: 12px;
+      font-size: 26.5px;
+      line-height: 39px;
+      color: #5f6672;
+    }
+    [data-composition-id="02-prestations"] .f02-list {
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    [data-composition-id="02-prestations"] .f02-row {
+      position: relative;
+      height: 112px;
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      padding: 0 28px;
+      border-radius: 22px;
+      border: 2px solid #e7dfd0;
+      background: #fffdf8;
+    }
+    [data-composition-id="02-prestations"] .f02-row.f02-dim {
+      opacity: 0.6;
+    }
+    [data-composition-id="02-prestations"] .f02-box {
+      position: relative;
+      flex: none;
+      width: 38px;
+      height: 38px;
+      border-radius: 9px;
+      border: 2.5px solid #8b929d;
+      background: #fffdf8;
+    }
+    [data-composition-id="02-prestations"] .f02-box svg {
+      position: absolute;
+      left: -2.5px;
+      top: -2.5px;
+      width: 38px;
+      height: 38px;
+    }
+    [data-composition-id="02-prestations"] .f02-name {
+      font-size: 31px;
+      line-height: 40px;
+      font-weight: 500;
+      color: #1f2733;
+      white-space: nowrap;
+    }
+    [data-composition-id="02-prestations"] .f02-meta {
+      margin-top: 4px;
+      font-size: 25px;
+      line-height: 30px;
+      color: #5f6672;
+      white-space: nowrap;
+    }
+    [data-composition-id="02-prestations"] .f02-btn {
+      margin-top: 32px;
+      height: 92px;
+      width: 548px;
+      border-radius: 999px;
+      background: #1f2733;
+      color: #ffffff;
+      font-size: 29px;
+      font-weight: 600;
+      line-height: 92px;
+      text-align: center;
+      white-space: nowrap;
+      box-shadow: 0 14px 30px rgba(31, 39, 51, 0.22);
+      transform-origin: 50% 50%;
+    }
+    [data-composition-id="02-prestations"] .f02-hours {
+      margin-top: 24px;
+      height: 108px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 0 28px;
+      border-radius: 22px;
+      background: #eef2f6;
+      border: 2px solid #d5dee8;
+    }
+    [data-composition-id="02-prestations"] .f02-hours-ico {
+      flex: none;
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: #4a6179;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    [data-composition-id="02-prestations"] .f02-hours-k {
+      font-size: 27px;
+      line-height: 34px;
+      font-weight: 600;
+      color: #1f2733;
+      white-space: nowrap;
+    }
+    [data-composition-id="02-prestations"] .f02-hours-v {
+      font-size: 24px;
+      line-height: 32px;
+      color: #4a6179;
+      white-space: nowrap;
+    }
+
+    /* cursor */
+    [data-composition-id="02-prestations"] .f02-cursor {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 56px;
+      height: 64px;
+      transform-origin: 0 0;
+    }
+    [data-composition-id="02-prestations"] .f02-ripple {
+      position: absolute;
+      left: -40px;
+      top: -40px;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 3px solid rgba(74, 97, 121, 0.55);
+    }
+
+    /* team plinth (real capture, cropped to the two cards) */
+    [data-composition-id="02-prestations"] .f02-team {
+      position: absolute;
+      left: 92px;
+      top: 1004px;
+      width: 896px;
+      padding: 20px;
+      border-radius: 40px;
+      background: #e6dccb;
+      box-shadow: 0 50px 90px rgba(31, 39, 51, 0.2), 0 10px 24px rgba(31, 39, 51, 0.08);
+      transform-origin: 448px 212px;
+    }
+    [data-composition-id="02-prestations"] .f02-member {
+      width: 856px;
+      height: 183px;
+      border-radius: 30px;
+      overflow: hidden;
+      background-image: url("assets/app-equipe.png");
+      background-repeat: no-repeat;
+      background-size: 2308.3px 1357.7px;
+      box-shadow: 0 2px 6px rgba(31, 39, 51, 0.05);
+    }
+    [data-composition-id="02-prestations"] .f02-member + .f02-member {
+      margin-top: 18px;
+    }
+    [data-composition-id="02-prestations"] .f02-m1 {
+      background-position: -495.3px -269.3px;
+    }
+    [data-composition-id="02-prestations"] .f02-m2 {
+      background-position: -1373.8px -269.3px;
+    }
+    [data-composition-id="02-prestations"] .f02-sheen {
+      position: absolute;
+      left: 20px;
+      top: 20px;
+      width: 856px;
+      height: 384px;
+      border-radius: 30px;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    [data-composition-id="02-prestations"] .f02-sheen-bar {
+      position: absolute;
+      top: -60px;
+      left: 0;
+      width: 220px;
+      height: 520px;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.55) 50%, rgba(255, 255, 255, 0) 100%);
+      transform: rotate(14deg);
+    }
+  </style>
+
+  <div
+    id="root"
+    data-composition-id="02-prestations"
+    data-start="0"
+    data-duration="3.6"
+    data-width="1080"
+    data-height="1920"
+  >
+    <!-- ground -->
+    <div id="f02-ground" class="clip f02-layer f02-bg" data-start="0" data-duration="3.6" data-track-index="0">
+      <div class="f02-bgshot" data-layout-allow-overflow></div>
+      <div class="f02-wash"></div>
+      <svg class="f02-grain" viewBox="0 0 1080 1920" preserveAspectRatio="none">
+        <filter id="f02-noise">
+          <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" stitchTiles="stitch" />
+          <feColorMatrix type="saturate" values="0" />
+        </filter>
+        <rect width="1080" height="1920" filter="url(#f02-noise)" />
+      </svg>
+    </div>
+
+    <!-- world -->
+    <div id="f02-world" class="clip f02-layer" data-start="0" data-duration="3.6" data-track-index="1">
+      <div id="f02-cam" class="f02-cam" data-layout-allow-overflow>
+        <div id="f02-label" class="f02-label">
+          <span id="f02-label-num">02</span>
+          <span id="f02-label-rule" class="f02-label-rule"></span>
+          <span id="f02-label-txt">Ajoutez vos prestations</span>
+        </div>
+
+        <div id="f02-socle" class="f02-socle">
+          <div class="f02-card">
+            <div id="f02-title" class="f02-title">Démarrez avec des prestations types</div>
+            <div id="f02-sub" class="f02-sub">
+              Cochez celles que vous proposez : durées et prix indicatifs, modifiables ensuite en un clic.
+            </div>
+            <div class="f02-list">
+              <div id="f02-row1" class="f02-row">
+                <div id="f02-box1" class="f02-box">
+                  <svg viewBox="0 0 38 38" fill="none">
+                    <path id="f02-chk1" d="M10.5 19.5l5.6 5.6L27.8 13" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="30" stroke-dashoffset="30" />
+                  </svg>
+                </div>
+                <div><div class="f02-name">Soin du visage</div><div class="f02-meta">1 h · 60 €</div></div>
+              </div>
+              <div id="f02-row2" class="f02-row">
+                <div id="f02-box2" class="f02-box">
+                  <svg viewBox="0 0 38 38" fill="none">
+                    <path id="f02-chk2" d="M10.5 19.5l5.6 5.6L27.8 13" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="30" stroke-dashoffset="30" />
+                  </svg>
+                </div>
+                <div><div class="f02-name">Manucure</div><div class="f02-meta">45 min · 30 €</div></div>
+              </div>
+              <div id="f02-row3" class="f02-row">
+                <div id="f02-box3" class="f02-box">
+                  <svg viewBox="0 0 38 38" fill="none">
+                    <path id="f02-chk3" d="M10.5 19.5l5.6 5.6L27.8 13" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="30" stroke-dashoffset="30" />
+                  </svg>
+                </div>
+                <div><div class="f02-name">Épilation sourcils</div><div class="f02-meta">15 min · 12 €</div></div>
+              </div>
+              <div id="f02-row4" class="f02-row f02-dim">
+                <div class="f02-box"></div>
+                <div><div class="f02-name">Épilation demi-jambes</div><div class="f02-meta">30 min · 25 €</div></div>
+              </div>
+              <div id="f02-row5" class="f02-row f02-dim">
+                <div class="f02-box"></div>
+                <div><div class="f02-name">Modelage relaxant</div><div class="f02-meta">1 h · 65 €</div></div>
+              </div>
+            </div>
+            <div id="f02-btn" class="f02-btn" data-layout-allow-occlusion>Ajouter les prestations cochées</div>
+            <div id="f02-hours" class="f02-hours">
+              <div id="f02-hours-ico" class="f02-hours-ico">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fffdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M12 7.5V12l3 2" />
+                </svg>
+              </div>
+              <div>
+                <div class="f02-hours-k">Horaires</div>
+                <div class="f02-hours-v">Lundi au vendredi 9 h 30 – 19 h · samedi 9 h 30 – 17 h</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- team: real "Équipe" capture, two cards -->
+        <div id="f02-team" class="f02-team">
+          <div id="f02-m1" class="f02-member f02-m1"></div>
+          <div id="f02-m2" class="f02-member f02-m2"></div>
+          <div class="f02-sheen"><div id="f02-sheen-bar" class="f02-sheen-bar" data-layout-allow-overflow></div></div>
+        </div>
+
+        <!-- cursor -->
+        <div id="f02-cursor" class="f02-cursor">
+          <div id="f02-ripple" class="f02-ripple" data-layout-allow-overflow></div>
+          <svg width="56" height="64" viewBox="0 0 28 32" fill="none">
+            <path d="M2 2 L2 24.5 L8 19 L12 28.5 L16 26.8 L12 17.6 L20.2 17.6 Z" fill="#FBF6EA" stroke="#1F2733" stroke-width="1.6" stroke-linejoin="round" />
+            <path d="M2 2 L2 9 L7 6.5 Z" fill="#1F2733" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const R = document.querySelector('[data-composition-id="02-prestations"]');
+      const q = (s) => R.querySelector(s);
+      const tl = gsap.timeline({ paused: true });
+
+      // Checkbox centres (px, frame coords) — fixed layout heights
+      // rows start at y=530, pitch 124, checkbox centre offset 56; x = 181
+      const BOX = [
+        { x: 181, y: 586 },
+        { x: 181, y: 710 },
+        { x: 181, y: 834 },
+      ];
+      const BTN = { x: 360, y: 1218 };
+      const CHECK_T = [0.9, 1.22, 1.54];
+      const CLICK_T = 1.96;
+
+      // ---- Scene 1 (0.0–0.5): label + list card arrives on its stone plinth
+      tl.fromTo(q("#f02-label-num"), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 0.02);
+      tl.fromTo(q("#f02-label-rule"), { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "expo.out" }, 0.1);
+      tl.fromTo(q("#f02-label-txt"), { opacity: 0, x: -16 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out" }, 0.16);
+      tl.fromTo(
+        q("#f02-socle"),
+        { opacity: 0, y: 90, scale: 0.965, rotationX: 7 },
+        { opacity: 1, y: 0, scale: 1, rotationX: 0, duration: 0.75, ease: "expo.out" },
+        0.0,
+      );
+      tl.fromTo(q("#f02-title"), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.12);
+      tl.fromTo(q("#f02-sub"), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.18);
+      ["#f02-row1", "#f02-row2", "#f02-row3", "#f02-row4", "#f02-row5"].forEach((id, i) => {
+        const dim = i >= 3 ? 0.6 : 1;
+        tl.fromTo(q(id), { opacity: 0, y: 26 }, { opacity: dim, y: 0, duration: 0.5, ease: "power3.out" }, 0.22 + i * 0.055);
+      });
+      tl.fromTo(q("#f02-btn"), { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 0.5);
+      tl.set(q("#f02-hours"), { opacity: 0 }, 0);
+
+      // slow camera push under the whole shot
+      tl.fromTo(q("#f02-cam"), { scale: 1 }, { scale: 1.025, duration: 2.5, ease: "power1.inOut" }, 0);
+
+      // ---- cursor path (cream body, ink tip)
+      const cur = q("#f02-cursor");
+      const rip = q("#f02-ripple");
+      tl.set(rip, { opacity: 0, scale: 0.3 }, 0);
+      tl.fromTo(cur, { x: 470, y: 900, opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" }, 0.5);
+      tl.fromTo(cur, { x: 470, y: 900 }, { x: BOX[0].x, y: BOX[0].y, duration: 0.36, ease: "power3.inOut", immediateRender: false }, 0.5);
+
+      // ---- Scene 2 (0.4–1.9): three ticks land, one by one
+      CHECK_T.forEach((t, i) => {
+        const n = i + 1;
+        if (i > 0) {
+          tl.to(cur, { x: BOX[i].x, y: BOX[i].y, duration: 0.2, ease: "power3.inOut" }, t - 0.24);
+        }
+        // press
+        tl.to(cur, { scale: 0.86, duration: 0.06, ease: "power2.out" }, t - 0.03);
+        tl.to(cur, { scale: 1, duration: 0.16, ease: "power2.out" }, t + 0.04);
+        tl.fromTo(rip, { opacity: 0.9, scale: 0.3 }, { opacity: 0, scale: 1.25, duration: 0.4, ease: "power2.out", immediateRender: false }, t);
+        // row lights up
+        tl.fromTo(
+          q("#f02-row" + n),
+          { backgroundColor: "#FFFDF8", borderColor: "#E7DFD0" },
+          { backgroundColor: "#EEF2F6", borderColor: "#4A6179", duration: 0.22, ease: "power2.out", immediateRender: false },
+          t,
+        );
+        tl.fromTo(
+          q("#f02-box" + n),
+          { backgroundColor: "#FFFDF8", borderColor: "#8B929D" },
+          { backgroundColor: "#4A6179", borderColor: "#4A6179", duration: 0.14, ease: "power2.out", immediateRender: false },
+          t,
+        );
+        tl.fromTo(q("#f02-box" + n), { scale: 0.82 }, { scale: 1, duration: 0.3, ease: "power3.out", immediateRender: false }, t);
+        tl.fromTo(q("#f02-chk" + n), { strokeDashoffset: 30 }, { strokeDashoffset: 0, duration: 0.24, ease: "power2.out", immediateRender: false }, t + 0.04);
+      });
+
+      // ---- Scene 3 (1.8–2.6): click "Ajouter les prestations cochées" → Horaires on "disponibilités"
+      tl.to(cur, { x: BTN.x, y: BTN.y, duration: 0.3, ease: "power3.inOut" }, CLICK_T - 0.34);
+      tl.to(cur, { scale: 0.86, duration: 0.06, ease: "power2.out" }, CLICK_T - 0.03);
+      tl.to(cur, { scale: 1, duration: 0.16, ease: "power2.out" }, CLICK_T + 0.04);
+      tl.fromTo(rip, { opacity: 0.9, scale: 0.3 }, { opacity: 0, scale: 1.4, duration: 0.45, ease: "power2.out", immediateRender: false }, CLICK_T);
+      tl.fromTo(q("#f02-btn"), { scale: 1 }, { scale: 0.965, duration: 0.07, ease: "power2.out", immediateRender: false }, CLICK_T - 0.02);
+      tl.to(q("#f02-btn"), { scale: 1, duration: 0.25, ease: "power3.out" }, CLICK_T + 0.06);
+      tl.to(q("#f02-btn"), { backgroundColor: "#4A6179", duration: 0.18, ease: "power2.out" }, CLICK_T);
+      tl.fromTo(
+        q("#f02-hours"),
+        { opacity: 0, y: 20, clipPath: "inset(0% 100% 0% 0% round 22px)" },
+        { opacity: 1, y: 0, clipPath: "inset(0% 0% 0% 0% round 22px)", duration: 0.5, ease: "expo.out", immediateRender: false },
+        2.08,
+      );
+      tl.fromTo(q("#f02-hours-ico"), { scale: 0.6 }, { scale: 1, duration: 0.4, ease: "power3.out" }, 2.12);
+      tl.to(cur, { opacity: 0, duration: 0.22, ease: "power2.in" }, 2.3);
+
+      // ---- Scene 4 (2.5–3.6): list card recedes + pivots; real Équipe cards glide in front
+      tl.to(
+        q("#f02-socle"),
+        { scale: 0.86, y: -26, rotationX: 9, rotationY: -7, duration: 0.95, ease: "power3.inOut" },
+        2.48,
+      );
+      tl.to(q("#f02-socle"), { opacity: 0.82, duration: 0.8, ease: "power2.out" }, 2.6);
+      tl.fromTo(
+        q("#f02-team"),
+        { y: 420, scale: 0.9, rotationX: 22, rotationY: 0, rotation: 0 },
+        { y: 0, scale: 1, rotationX: 5, rotationY: 7, rotation: -1.6, duration: 0.85, ease: "expo.out" },
+        2.58,
+      );
+      tl.fromTo(q("#f02-team"), { opacity: 0 }, { opacity: 1, duration: 0.18, ease: "power1.out" }, 2.58);
+      tl.fromTo(q("#f02-m1"), { y: 40 }, { y: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.fromTo(q("#f02-m2"), { y: 70 }, { y: 0, duration: 0.7, ease: "power3.out" }, 2.6);
+      tl.fromTo(q("#f02-sheen-bar"), { x: -300 }, { x: 1000, duration: 0.6, ease: "power2.inOut" }, 2.95);
+      // hold: quiet settle
+      tl.to(q("#f02-team"), { y: -8, rotationY: 5, duration: 0.17, ease: "power1.out" }, 3.43);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["02-prestations"] = tl;
+    })();
+  </script>
+</template>

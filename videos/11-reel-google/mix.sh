@@ -34,7 +34,7 @@ SFX=(
   "tick 13.40 0.4"
   "tick 13.80 0.4"
   "ding 14.20 0.45"    # rendez-vous confirmé
-  "ding 15.30 0.6"     # nouveau rendez-vous
+  "ding 15.50 0.6"     # nouveau rendez-vous
   "logo 17.50 0.7"     # signature
 )
 

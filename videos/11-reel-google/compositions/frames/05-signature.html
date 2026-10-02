@@ -1,0 +1,290 @@
+<template id="05-signature-template">
+  <style>
+    @font-face {
+      font-family: "Outfit";
+      src: url("assets/fonts/outfit.woff2") format("woff2");
+      font-weight: 100 900;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "JetBrains Mono";
+      src: url("assets/fonts/jetbrainsmono.woff2") format("woff2");
+      font-weight: 100 800;
+      font-style: normal;
+    }
+
+    #root {
+      position: absolute;
+      inset: 0;
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      font-family: "Outfit", sans-serif;
+      color: #fbf6ea;
+    }
+
+    /* ---------- ground: ivory, then the powder panel sweeps up from the bottom ---------- */
+    #f05-ground {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: radial-gradient(ellipse 85% 60% at 50% 44%, #fbf6ea 0%, #f9f3e6 52%, #f4eddf 100%);
+    }
+    #f05-panel {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: radial-gradient(ellipse 100% 64% at 50% 40%, #6c849c 0%, #617990 40%, #546b83 72%, #4a6179 100%);
+    }
+    #f05-panel-edge {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 2px;
+      background: rgba(251, 246, 234, 0.35);
+    }
+    #f05-vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 120% 85% at 50% 42%, rgba(31, 39, 51, 0) 55%, rgba(31, 39, 51, 0.28) 100%);
+    }
+    #f05-grain {
+      position: absolute;
+      inset: 0;
+      width: 1080px;
+      height: 1920px;
+      opacity: 0.06;
+      mix-blend-mode: soft-light;
+    }
+
+    /* ---------- lockup ---------- */
+    #f05-glow {
+      position: absolute;
+      left: 140px;
+      top: 470px;
+      width: 800px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(251, 246, 234, 0.42) 0%, rgba(251, 246, 234, 0.1) 46%, rgba(251, 246, 234, 0) 72%);
+      filter: blur(26px);
+    }
+    #f05-logo {
+      position: absolute;
+      left: 280px;
+      top: 644px;
+      width: 520px;
+      height: 153px;
+    }
+    #f05-logo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    #f05-logo-reveal {
+      position: absolute;
+      inset: -10px -14px;
+      padding: 10px 14px;
+    }
+    #f05-sheen {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      -webkit-mask-image: url("assets/logo-reso-creme.svg");
+      mask-image: url("assets/logo-reso-creme.svg");
+      -webkit-mask-size: 100% 100%;
+      mask-size: 100% 100%;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+    }
+    #f05-sheen-band {
+      position: absolute;
+      left: 0;
+      top: -20px;
+      width: 260px;
+      height: 193px;
+      background: linear-gradient(
+        105deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(201, 198, 192, 0.55) 30%,
+        rgba(255, 255, 255, 1) 50%,
+        rgba(142, 139, 134, 0.45) 66%,
+        rgba(255, 255, 255, 0) 100%
+      );
+    }
+
+    #f05-tagline {
+      position: absolute;
+      left: 72px;
+      right: 72px;
+      top: 872px;
+      text-align: center;
+      font-family: "Outfit", sans-serif;
+      font-weight: 500;
+      font-size: 56px;
+      line-height: 1.14;
+      letter-spacing: -0.02em;
+      color: #fbf6ea;
+    }
+    .f05-mask {
+      display: block;
+      overflow: hidden;
+      padding-bottom: 0.12em;
+      margin-bottom: -0.12em;
+    }
+    .f05-line {
+      display: inline-block;
+      white-space: nowrap;
+    }
+    .f05-soft {
+      color: rgba(251, 246, 234, 0.78);
+    }
+
+    #f05-halo {
+      position: absolute;
+      left: 170px;
+      top: 1090px;
+      width: 740px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(251, 246, 234, 0.5) 0%, rgba(251, 246, 234, 0.12) 48%, rgba(251, 246, 234, 0) 72%);
+      filter: blur(22px);
+    }
+    #f05-pill {
+      position: absolute;
+      left: 260px;
+      top: 1170px;
+      width: 560px;
+      height: 120px;
+      border-radius: 60px;
+      background: linear-gradient(180deg, #fffdf8 0%, #fbf6ea 100%);
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.9) inset,
+        0 30px 60px -24px rgba(31, 39, 51, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding-left: 8px;
+      font-family: "Outfit", sans-serif;
+      font-weight: 500;
+      font-size: 42px;
+      letter-spacing: -0.02em;
+      color: #1f2733;
+      transform-origin: 50% 50%;
+    }
+    #f05-pill svg {
+      width: 34px;
+      height: 34px;
+    }
+    #f05-url {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 1362px;
+      text-align: center;
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 500;
+      font-size: 30px;
+      line-height: 1.2;
+      letter-spacing: 0.06em;
+      color: rgba(251, 246, 234, 0.7);
+    }
+  </style>
+
+  <div id="root" data-composition-id="05-signature" data-start="0" data-duration="2.8" data-width="1080" data-height="1920">
+    <!-- Ground: ivory + powder panel sweep + grain -->
+    <div id="f05-ground" class="clip" data-start="0" data-duration="2.8" data-track-index="0">
+      <div id="f05-panel">
+        <div id="f05-panel-edge"></div>
+        <div id="f05-vignette"></div>
+        <svg id="f05-grain" viewBox="0 0 1080 1920" preserveAspectRatio="none">
+          <filter id="f05-noise" x="0" y="0" width="100%" height="100%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" stitchTiles="stitch" />
+            <feColorMatrix type="saturate" values="0" />
+          </filter>
+          <rect width="1080" height="1920" filter="url(#f05-noise)" />
+        </svg>
+      </div>
+    </div>
+
+    <!-- Content: logo lockup → tagline → CTA pill → URL -->
+    <div id="f05-content" class="clip" data-start="0" data-duration="2.8" data-track-index="1">
+      <div id="f05-glow"></div>
+      <div id="f05-logo">
+        <div id="f05-logo-reveal" data-layout-allow-overflow>
+          <img src="assets/logo-reso-creme.svg" alt="reso" />
+        </div>
+        <div id="f05-sheen" data-layout-allow-overflow><div id="f05-sheen-band"></div></div>
+      </div>
+
+      <div id="f05-tagline">
+        <span class="f05-mask" data-layout-allow-overflow><span class="f05-line">Votre métier.</span></span>
+        <span class="f05-mask" data-layout-allow-overflow><span class="f05-line f05-soft">Sans la gestion qui va avec.</span></span>
+      </div>
+
+      <div id="f05-halo"></div>
+      <div id="f05-pill">
+        <span>Essayez gratuitement</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1F2733" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M13 6l6 6-6 6" />
+        </svg>
+      </div>
+      <div id="f05-url">reso-app.fr</div>
+    </div>
+  </div>
+
+  <script src="assets/gsap.min.js"></script>
+  <script>
+    (function () {
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // ── Scene 1 (0.0–0.8): powder panel sweeps up from the bottom; logo revealed left→right + one chrome sheen ──
+      tl.fromTo(
+        "#f05-panel",
+        { clipPath: "inset(100% 0% 0% 0%)" },
+        { clipPath: "inset(0% 0% 0% 0%)", duration: 0.72, ease: "expo.out" },
+        0,
+      );
+      tl.fromTo("#f05-panel-edge", { opacity: 1 }, { opacity: 0, duration: 0.5, ease: "power2.out" }, 0.3);
+
+      tl.fromTo(
+        "#f05-logo-reveal",
+        { clipPath: "inset(0% 100% 0% 0%)", x: -10, filter: "blur(6px)" },
+        { clipPath: "inset(0% 0% 0% 0%)", x: 0, filter: "blur(0px)", duration: 0.85, ease: "expo.out" },
+        0.22,
+      );
+      tl.fromTo("#f05-glow", { opacity: 0, scale: 0.85 }, { opacity: 0.55, scale: 1, duration: 1.0, ease: "power2.out" }, 0.25);
+      // the single chrome sheen, trailing the reveal edge
+      tl.fromTo("#f05-sheen-band", { x: -280 }, { x: 560, duration: 0.8, ease: "power2.inOut" }, 0.5);
+
+      // ── Scene 2 (0.6–1.6): tagline, line by line ──
+      tl.fromTo(
+        "#f05-tagline .f05-line",
+        { yPercent: 105, opacity: 0 },
+        { yPercent: 0, opacity: 1, duration: 0.7, ease: "power3.out", stagger: 0.16 },
+        0.66,
+      );
+
+      // ── Scene 3 (1.4–2.8): cream pill with a soft halo, then the URL; held still to the end ──
+      tl.fromTo(
+        "#f05-pill",
+        { y: 46, scale: 0.94, opacity: 0 },
+        { y: 0, scale: 1, opacity: 1, duration: 0.8, ease: "expo.out" },
+        1.42,
+      );
+      tl.fromTo("#f05-halo", { opacity: 0, scale: 0.8 }, { opacity: 0.5, scale: 1, duration: 0.9, ease: "power2.out" }, 1.48);
+      tl.fromTo(
+        "#f05-url",
+        { y: 14, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.55, ease: "power3.out" },
+        1.72,
+      );
+
+      // dead-still hold to the last frame
+      tl.set({}, {}, 2.8);
+      window.__timelines["05-signature"] = tl;
+    })();
+  </script>
+</template>
