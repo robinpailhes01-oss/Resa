@@ -28,8 +28,9 @@ SFX=(
   "tick 5.60 0.45"     # fiche choisie
   "paper 5.95 0.35"    # fiche importée
   "tick 8.50 0.4"      # coches
-  "tick 8.90 0.4"
-  "tick 9.30 0.4"
+  "tick 8.82 0.4"
+  "tick 9.14 0.4"
+  "tick 9.56 0.45"     # Ajouter les prestations cochées
   "tick 12.90 0.4"     # taps du parcours cliente
   "tick 13.40 0.4"
   "tick 13.80 0.4"
