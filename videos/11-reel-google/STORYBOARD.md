@@ -25,7 +25,7 @@ Voir `frame.md` (charte « éditorial ivoire »). Résumé : fond ivoire très �
 - focal: titre d'accroche
 - roles: aucun asset image (texte + champ HTML)
 - asset_candidates: none
-- status: outline
+- status: animated
 - src: compositions/frames/00-hook-a.html
 - voiceover: variante A « Et si votre agenda en ligne était prêt en quelques minutes ? » (0.1s ; « agenda » 0.77s ; « quelques minutes » 2.4–3.35s) · variante B « Vous pensez qu'installer un logiciel de réservation prend des heures ? » (0.1s ; « logiciel » 1.24s ; « des heures » 2.57–3.06s) · variante C « Votre fiche Google, quelques minutes, et votre agenda est prêt. » (0.1s ; « fiche Google » 0.53–1.66s ; « quelques minutes » 1.66–2.69s ; « votre agenda est prêt » 2.79–3.84s)
 
@@ -48,7 +48,7 @@ Scene 3 (2.4–3.4s) : le champ crème (pilule 920×116, icône lien à gauche, 
 - focal: bloc import Google (reproduction fidèle de `src/components/app/GoogleImport.tsx`)
 - roles: photo-1..4 = supporting (vignettes qui arrivent une à une sous le formulaire, coins 18px) · app-parametres = background (très flou, 20 %, profondeur)
 - asset_candidates: assets/photo-1.png, assets/photo-2.png, assets/photo-3.png, assets/photo-4.png, assets/app-parametres.png
-- status: outline
+- status: animated
 - src: compositions/frames/01-google.html
 - voiceover: « Collez simplement le lien de votre fiche Google. » (0.5s ; « lien » ≈1.6s ; « fiche Google » 2.24–3.0s)
 
@@ -69,7 +69,7 @@ Scene 4 (2.4–4.2s) : la caméra recule doucement : le formulaire se remplit en
 - focal: liste des prestations types (reproduction fidèle de l'onboarding, voir textes ci-dessous)
 - roles: app-equipe = supporting (capture réelle de la page Équipe, recadrée sur les deux cartes Camille / Inès, posée en carte inclinée) · app-prestations = background (flou)
 - asset_candidates: assets/app-equipe.png, assets/app-prestations.png
-- status: outline
+- status: animated
 - src: compositions/frames/02-prestations.html
 - voiceover: « Ajoutez vos prestations et vos disponibilités. » (0.2s ; « prestations » 0.89–1.48s ; « disponibilités » 2.0–2.98s)
 
@@ -90,7 +90,7 @@ Scene 4 (2.5–3.6s) : la carte recule et pivote légèrement ; la capture réel
 - focal: téléphone avec la page publique réelle (assets/page-publique-mobile.png, 1170×2188)
 - roles: page-publique-mobile = cutout (écran du téléphone, étape 1) · page-publique-mobile-long = supporting (même page plus longue pour un défilement)
 - asset_candidates: assets/page-publique-mobile.png, assets/page-publique-mobile-long.png
-- status: outline
+- status: animated
 - src: compositions/frames/03-lien.html
 - voiceover: « Et votre page de réservation est prête à être partagée. » (0.15s ; « page de réservation » 0.68–1.87s ; « prête » 2.23s ; « partagée » 2.96–3.6s)
 
@@ -111,7 +111,7 @@ Scene 4 (2.9–3.8s) : écran de confirmation, le bandeau vert éclot ; la camé
 - focal: la phrase de promesse
 - roles: aucun asset image
 - asset_candidates: none
-- status: outline
+- status: animated
 - src: compositions/frames/04-promesse.html
 - voiceover: (la voix de fin commence à 1.2s : « Essayez Réso gratuitement… »)
 
@@ -129,7 +129,7 @@ Scene 2 (0.7–2.2s) : la notification s'éloigne vers le haut et se fond ; « D
 - focal: assets/logo-reso-creme.svg
 - roles: logo-reso-creme = cutout
 - asset_candidates: assets/logo-reso-creme.svg
-- status: outline
+- status: animated
 - src: compositions/frames/05-signature.html
 - voiceover: suite de « …gratuitement pendant sept jours. Sans carte bancaire. » (« sans carte bancaire » 1.95–2.75s)
 

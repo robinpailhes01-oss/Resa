@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #000;
+      }
+      #root {
+        position: relative;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #FFFDF8;
+      }
+      .scene {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="20"
+      data-width="1080"
+      data-height="1920"
+    >
+      <div
+        id="el-00-hook-b"
+        class="scene"
+        data-composition-id="00-hook-b"
+        data-composition-src="compositions/frames/00-hook-b.html"
+        data-start="0"
+        data-duration="3.8"
+        data-track-index="0"
+      ></div>
+
+      <div
+        id="el-01-google"
+        class="scene"
+        data-composition-id="01-google"
+        data-composition-src="compositions/frames/01-google.html"
+        data-start="3.4"
+        data-duration="4.7"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-02-prestations"
+        class="scene"
+        data-composition-id="02-prestations"
+        data-composition-src="compositions/frames/02-prestations.html"
+        data-start="7.6"
+        data-duration="4.1"
+        data-track-index="0"
+      ></div>
+
+      <div
+        id="el-03-lien"
+        class="scene"
+        data-composition-id="03-lien"
+        data-composition-src="compositions/frames/03-lien.html"
+        data-start="11.2"
+        data-duration="4.3"
+        data-track-index="1"
+      ></div>
+
+      <div
+        id="el-04-promesse"
+        class="scene"
+        data-composition-id="04-promesse"
+        data-composition-src="compositions/frames/04-promesse.html"
+        data-start="15"
+        data-duration="2.7"
+        data-track-index="0"
+      ></div>
+
+      <div
+        id="el-05-signature"
+        class="scene"
+        data-composition-id="05-signature"
+        data-composition-src="compositions/frames/05-signature.html"
+        data-start="17.2"
+        data-duration="2.8"
+        data-track-index="1"
+      ></div>
+
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+      // ── frame transitions (injected by transitions.mjs) ──
+      (function () { var tl = window.__timelines["main"];
+        tl.to("#el-00-hook-b", { scale: 2.5, opacity: 0, filter: "blur(8px)", duration: 0.4, ease: "power3.in" }, 3.4);
+        tl.fromTo("#el-01-google", { scale: 0.5, opacity: 0, filter: "blur(8px)" }, { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.4, ease: "power3.out" }, 3.4);
+        tl.to("#el-01-google", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 7.6);
+        tl.fromTo("#el-02-prestations", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 7.6);
+        tl.to("#el-02-prestations", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 11.2);
+        tl.fromTo("#el-03-lien", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 11.2);
+        tl.to("#el-03-lien", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 15);
+        tl.fromTo("#el-04-promesse", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 15);
+        tl.to("#el-04-promesse", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 17.2);
+        tl.fromTo("#el-05-signature", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 17.2);
+        tl.to({}, { duration: 20 }, 0); // full-span anchor — main.duration() == composition total (Studio master duration)
+      })();
+    </script>
+  </body>
+</html>

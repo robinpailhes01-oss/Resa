@@ -111,7 +111,7 @@
       left: 74px;
       top: 236px;
       width: 932px;
-      height: 1522px;
+      height: 1478px;
       border-radius: 44px;
       background: #e6dccb;
       box-shadow: 0 40px 80px rgba(31, 39, 51, 0.12);
@@ -120,7 +120,7 @@
       left: 90px;
       top: 252px;
       width: 900px;
-      height: 1490px;
+      height: 1446px;
       border-radius: 32px;
       background: #fffdf8;
       border: 2px solid #e7dfd0;
@@ -131,7 +131,7 @@
       left: 130px;
       top: 292px;
       width: 820px;
-      height: 514px;
+      height: 470px;
       border-radius: 32px;
       background: #f6f7f6;
       border: 2px solid #e7dfd0;
@@ -147,7 +147,7 @@
     }
     #f01-sec-intro {
       left: 160px;
-      top: 418px;
+      top: 374px;
       width: 760px;
       font-size: 27px;
       line-height: 40px;
@@ -157,7 +157,7 @@
     /* the search input (the hook pill lands here) */
     #f01-input {
       left: 160px;
-      top: 568px;
+      top: 524px;
       width: 760px;
       height: 96px;
       border-radius: 24px;
@@ -216,7 +216,7 @@
     }
     #f01-pasted {
       left: 176px;
-      top: 530px;
+      top: 503px;
       height: 40px;
       padding: 0 16px 0 12px;
       border-radius: 999px;
@@ -238,7 +238,7 @@
     /* Rechercher (pill ink) */
     #f01-btn {
       left: 160px;
-      top: 680px;
+      top: 636px;
       width: 760px;
       height: 96px;
       border-radius: 999px;
@@ -264,7 +264,7 @@
     /* result card */
     #f01-result {
       left: 160px;
-      top: 800px;
+      top: 756px;
       width: 760px;
       height: 129px;
       border-radius: 24px;
@@ -299,7 +299,7 @@
     /* applied banner */
     #f01-banner {
       left: 160px;
-      top: 568px;
+      top: 524px;
       width: 760px;
       height: 180px;
       border-radius: 24px;
@@ -346,7 +346,7 @@
     /* onboarding fields */
     #f01-fields {
       left: 130px;
-      top: 846px;
+      top: 802px;
       width: 820px;
       height: 884px;
     }
@@ -395,7 +395,7 @@
     /* photos */
     #f01-photos {
       left: 130px;
-      top: 1772px;
+      top: 1728px;
       width: 820px;
       height: 152px;
     }
@@ -451,8 +451,8 @@
       left: 0;
       top: 0;
       width: 1080px;
-      height: 350px;
-      background: linear-gradient(180deg, #fbf6ea 0%, #fbf6ea 70%, rgba(251, 246, 234, 0) 100%);
+      height: 340px;
+      background: linear-gradient(180deg, #fbf6ea 0%, #fbf6ea 80%, rgba(251, 246, 234, 0) 100%);
     }
     #f01-label {
       position: absolute;
@@ -478,9 +478,9 @@
     }
   </style>
 
-  <div id="root" data-composition-id="01-google" data-start="0" data-duration="4.2" data-width="1080" data-height="1920">
+  <div id="root" data-composition-id="01-google" data-start="0" data-duration="4.7" data-width="1080" data-height="1920">
     <!-- Ground: ivory, very blurred real settings screen for depth, static grain -->
-    <div id="f01-ground" class="clip" data-start="0" data-duration="4.2" data-track-index="0">
+    <div id="f01-ground" class="clip" data-start="0" data-duration="4.7" data-track-index="0">
       <div id="f01-depth" data-layout-allow-overflow><img src="assets/app-parametres.png" alt="" /></div>
       <svg id="f01-grain" viewBox="0 0 1080 1920" preserveAspectRatio="none">
         <filter id="f01-noise" x="0" y="0" width="100%" height="100%">
@@ -491,7 +491,7 @@
       </svg>
     </div>
 
-    <div id="f01-stage" class="clip" data-start="0" data-duration="4.2" data-track-index="1">
+    <div id="f01-stage" class="clip" data-start="0" data-duration="4.7" data-track-index="1">
       <div id="f01-world" data-layout-allow-overflow>
         <!-- PageHeader -->
         <div id="f01-h-title" class="f01-abs">Bienvenue, Camille</div>
@@ -601,13 +601,13 @@
       const tl = gsap.timeline({ paused: true });
 
       // Camera: single wrapper, origin 0 0 → screen = (x, y) + s · world.
-      // Handoff: the input (world 160..920 × 568..664, centre 540,616) sits at (540,1180), 920×116 at t=0.
+      // Handoff: the input (world 160..920 × 524..620, centre 540,572) sits at (540,1180), 920×116 at t=0.
       const S0 = 920 / 760;
       const cam = (s, cx, cy, sx, sy) => ({ scale: s, x: sx - cx * s, y: sy - cy * s });
-      const C0 = cam(S0, 540, 616, 540, 1180);
-      const C1 = cam(1.17, 540, 616, 540, 1150);
-      const C2 = cam(1.14, 540, 640, 540, 1150);
-      const C3 = cam(0.88, 540, 568, 540, 380);
+      const C0 = cam(S0, 540, 572, 540, 1180);
+      const C1 = cam(1.17, 540, 572, 540, 1150);
+      const C2 = cam(1.14, 540, 596, 540, 1150);
+      const C3 = cam(0.88, 540, 524, 540, 352);
 
       gsap.set("#f01-world", { transformOrigin: "0 0" });
 
@@ -616,7 +616,7 @@
       gsap.set("#f01-depth", { scale: 1.12, y: 40, opacity: 0.2 });
       gsap.set("#f01-input", { borderRadius: 48, borderColor: "rgba(142,135,120,0)", boxShadow: "0 0 0 0px rgba(74,97,121,0)", opacity: 1, scale: 1, filter: "blur(0px)" });
       gsap.set(["#f01-plinth", "#f01-card"], { opacity: 0, scale: 0.985 });
-      gsap.set("#f01-sec-bg", { opacity: 0, height: 514 });
+      gsap.set("#f01-sec-bg", { opacity: 0, height: 470 });
       gsap.set(["#f01-h-title", "#f01-h-intro", "#f01-sec-title", "#f01-sec-intro"], { opacity: 0, y: 26, filter: "blur(6px)" });
       gsap.set("#f01-h-rule", { scaleX: 0, transformOrigin: "0 50%" });
       gsap.set("#f01-btn", { opacity: 0, y: 30, scale: 1, filter: "blur(0px)" });
@@ -629,7 +629,7 @@
       gsap.set("#f01-caret-b", { opacity: 0 });
       gsap.set("#f01-pasted", { opacity: 0, y: 10, scale: 0.92 });
       gsap.set("#f01-cursor", { x: 1060, y: 1000, scale: 1, opacity: 1 });
-      gsap.set("#f01-ripple", { x: 600, y: 736, scale: 0.3, opacity: 0 });
+      gsap.set("#f01-ripple", { x: 600, y: 692, scale: 0.3, opacity: 0 });
       gsap.set("#f01-btn-a", { opacity: 1 });
       gsap.set("#f01-btn-b", { opacity: 0 });
       gsap.set("#f01-result", { opacity: 0, y: -24, scale: 1, borderColor: "#e7dfd0", filter: "blur(0px)" });
@@ -677,7 +677,7 @@
       tl.to("#f01-pasted", { opacity: 0, y: -8, duration: 0.25, ease: "power2.in" }, 1.18);
 
       // cursor glides in and presses Rechercher
-      tl.to("#f01-cursor", { x: 600, y: 736, duration: 0.5, ease: "power3.inOut" }, 0.72);
+      tl.to("#f01-cursor", { x: 600, y: 692, duration: 0.5, ease: "power3.inOut" }, 0.72);
       tl.to("#f01-cursor", { scale: 0.86, duration: 0.08, ease: "power2.out" }, 1.24);
       tl.to("#f01-cursor", { scale: 1, duration: 0.18, ease: "power2.out" }, 1.32);
       tl.to("#f01-btn", { scale: 0.96, duration: 0.08, ease: "power2.out" }, 1.24);
@@ -692,15 +692,15 @@
 
       // ── Scene 3 (1.6–2.5): the "Maison Alba" result slides in, gets clicked, block folds to the green banner ──
       tl.to("#f01-result", { opacity: 1, y: 0, duration: 0.45, ease: "expo.out" }, 1.6);
-      tl.to("#f01-sec-bg", { height: 667, duration: 0.45, ease: "expo.out" }, 1.6);
+      tl.to("#f01-sec-bg", { height: 623, duration: 0.45, ease: "expo.out" }, 1.6);
       tl.to("#f01-fields", { y: 153, duration: 0.45, ease: "expo.out" }, 1.6);
 
-      tl.to("#f01-cursor", { x: 470, y: 872, duration: 0.36, ease: "power3.inOut" }, 1.66);
+      tl.to("#f01-cursor", { x: 470, y: 828, duration: 0.36, ease: "power3.inOut" }, 1.66);
       tl.to("#f01-cursor", { scale: 0.86, duration: 0.08, ease: "power2.out" }, 2.02);
       tl.to("#f01-cursor", { scale: 1, duration: 0.16, ease: "power2.out" }, 2.1);
       tl.to("#f01-result", { borderColor: "#4a6179", duration: 0.12, ease: "power2.out" }, 1.9);
       tl.to("#f01-result", { scale: 0.985, duration: 0.08, ease: "power2.out" }, 2.02);
-      tl.set("#f01-ripple", { x: 470, y: 872, scale: 0.3, opacity: 1 }, 2.04);
+      tl.set("#f01-ripple", { x: 470, y: 828, scale: 0.3, opacity: 1 }, 2.04);
       tl.to("#f01-ripple", { scale: 1.6, opacity: 0, duration: 0.42, ease: "power2.out" }, 2.04);
 
       // fold: input / button / result give way to the applied banner
@@ -708,13 +708,14 @@
       tl.to("#f01-cursor", { opacity: 0, duration: 0.25, ease: "power2.out" }, 2.2);
       tl.to("#f01-banner", { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "expo.out" }, 2.22);
       tl.to("#f01-check", { scale: 1, rotation: 0, duration: 0.38, ease: "power3.out" }, 2.3);
-      tl.to("#f01-sec-bg", { height: 486, duration: 0.6, ease: "expo.out" }, 2.2);
+      tl.to("#f01-sec-bg", { height: 442, duration: 0.6, ease: "expo.out" }, 2.2);
       tl.to("#f01-fields", { y: -28, duration: 0.6, ease: "expo.out" }, 2.2);
 
       // ── Scene 4 (2.4–4.2): camera pulls back; the form fills itself in cascade; the 4 photos rise ──
       tl.to("#f01-world", { ...C3, duration: 1.15, ease: "power3.inOut" }, 2.3);
+      tl.to("#f01-world", { y: C3.y - 10, duration: 0.75, ease: "sine.out" }, 3.45);
       // what scrolls under the step label recedes (sticky-header feel)
-      tl.to(["#f01-h-title", "#f01-h-intro", "#f01-h-rule", "#f01-sec-title", "#f01-sec-intro"], { opacity: 0, filter: "blur(5px)", duration: 0.5, ease: "power2.out", stagger: 0.04 }, 2.42);
+      tl.to(["#f01-h-title", "#f01-h-intro", "#f01-h-rule", "#f01-sec-title", "#f01-sec-intro"], { opacity: 0, filter: "blur(5px)", duration: 0.45, ease: "power2.inOut", stagger: 0.05 }, 2.62);
 
       vals.forEach((v, i) => {
         const t = 2.5 + i * 0.12;

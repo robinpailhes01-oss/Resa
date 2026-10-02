@@ -24,9 +24,9 @@ VO=(
 # Bruitages : fichier, instant (s), gain.
 SFX=(
   "whoosh 3.30 0.35"   # zoom à travers le champ
-  "tick 4.85 0.5"      # Rechercher
-  "tick 5.60 0.45"     # fiche choisie
-  "paper 5.95 0.35"    # fiche importée
+  "tick 4.55 0.5"      # Rechercher
+  "tick 5.40 0.45"     # fiche choisie
+  "paper 5.70 0.35"    # fiche importée
   "tick 8.50 0.4"      # coches
   "tick 8.82 0.4"
   "tick 9.14 0.4"
