@@ -7,17 +7,17 @@
  */
 import { offer, type LaunchMode } from "@/config/offer";
 import {
-  formatMonthlyPriceExVat,
-  formatMonthlyPriceExVatCompact,
+  formatMonthlyPrice,
+  formatMonthlyPriceCompact,
   formatPractitioners,
   formatPrice,
   NBSP,
 } from "@/lib/format";
 
-/** « 39 € HT / mois » (phrases) et « 39 € » (affichage grand format, unité séparée). */
-const price = formatMonthlyPriceExVat(offer.monthlyPriceExVat, offer.currency);
-const priceAmount = formatPrice(offer.monthlyPriceExVat, offer.currency);
-const priceCompact = formatMonthlyPriceExVatCompact(offer.monthlyPriceExVat, offer.currency);
+/** « 29 € TTC / mois » (phrases) et « 29 € » (affichage grand format, unité séparée). */
+const price = formatMonthlyPrice(offer.monthlyPriceInclVat, offer.currency);
+const priceAmount = formatPrice(offer.monthlyPriceInclVat, offer.currency);
+const priceCompact = formatMonthlyPriceCompact(offer.monthlyPriceInclVat, offer.currency);
 const practitioners = formatPractitioners(offer.practitionerLimit);
 const unlimitedAgendas = offer.practitionerLimit === null;
 /** Message clé du tarif : le prix ne dépend pas du nombre d'agendas. */
@@ -293,7 +293,7 @@ export const pricing = {
   ] satisfies PricingProfile[],
   priceCaption: { prelaunch: "Tarif prévu au lancement", live: null } satisfies ByMode<string | null>,
   price: priceAmount,
-  priceUnit: `HT${NBSP}/${NBSP}mois`,
+  priceUnit: `TTC${NBSP}/${NBSP}mois`,
   billing: { prelaunch: "Un établissement, facturé chaque mois", live: "Facturé chaque mois, sans engagement de durée" } satisfies ByMode<string>,
   scope: unlimitedAgendas ? `Un établissement${NBSP}· ${samePrice}` : `Un établissement${NBSP}· ${capitalize(practitioners)}`,
   highlights: [

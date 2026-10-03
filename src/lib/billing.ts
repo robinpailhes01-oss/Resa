@@ -8,10 +8,15 @@ export interface SubscriptionAmounts {
 }
 
 /** Montants en centimes à partir du prix HT et du taux de TVA (arrondi au centime). */
-export function subscriptionAmounts(priceExVat: number, vatRate: number): SubscriptionAmounts {
-  const exVatCents = Math.round(priceExVat * 100);
-  const vatCents = Math.round((exVatCents * vatRate) / 100);
-  return { exVatCents, vatCents, totalCents: exVatCents + vatCents, vatRate };
+/** Montants d'un prix fixé TTC : le total ne bouge pas, le HT et la TVA en sont déduits. */
+export function subscriptionAmounts(priceInclVat: number, vatRate: number): SubscriptionAmounts {
+  return splitTotal(Math.round(priceInclVat * 100), vatRate);
+}
+
+/** Décompose un montant TTC encaissé (en centimes) en HT et TVA. */
+export function splitTotal(totalCents: number, vatRate: number): SubscriptionAmounts {
+  const exVatCents = Math.round((totalCents * 100) / (100 + vatRate));
+  return { exVatCents, vatCents: totalCents - exVatCents, totalCents, vatRate };
 }
 
 export function formatEuros(cents: number): string {

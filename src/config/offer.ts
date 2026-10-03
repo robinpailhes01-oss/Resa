@@ -14,7 +14,8 @@ export type LaunchMode = "prelaunch" | "live";
 export interface OfferConfig {
   brandName: string;
   launchMode: LaunchMode;
-  monthlyPriceExVat: number;
+  /** Prix mensuel de l'abonnement, toutes taxes comprises (le HT et la TVA en sont déduits). */
+  monthlyPriceInclVat: number;
   currency: "EUR";
   /** Praticiens (agendas) inclus ; null = illimité, même prix quel que soit leur nombre. */
   practitionerLimit: number | null;
@@ -109,7 +110,7 @@ function readPrice(value: string | undefined, fallback: number): number {
   if (!value) return fallback;
   const parsed = Number(value.replace(",", "."));
   if (!Number.isFinite(parsed) || parsed <= 0) {
-    throw new Error(`RESO_MONTHLY_PRICE_EX_VAT invalide : "${value}".`);
+    throw new Error(`RESO_MONTHLY_PRICE_TTC invalide : "${value}".`);
   }
   return parsed;
 }
@@ -171,7 +172,8 @@ function buildConfig(env: Env): OfferConfig {
   const config: OfferConfig = {
     brandName: "Reso",
     launchMode: readLaunchMode(env.RESO_LAUNCH_MODE),
-    monthlyPriceExVat: readPrice(env.RESO_MONTHLY_PRICE_EX_VAT, 39),
+    // Ancienne variable RESO_MONTHLY_PRICE_EX_VAT ignorée : le prix est désormais fixé TTC.
+    monthlyPriceInclVat: readPrice(env.RESO_MONTHLY_PRICE_TTC, 29),
     currency: "EUR",
     practitionerLimit: readPractitionerLimit(env.RESO_PRACTITIONER_LIMIT),
     trialDays: readInt(env.RESO_TRIAL_DAYS, 7, { allowZero: true }),
@@ -231,7 +233,7 @@ export function assertLaunchRules(config: OfferConfig): void {
  */
 const runtimeEnv: Env = {
   RESO_LAUNCH_MODE: process.env.RESO_LAUNCH_MODE,
-  RESO_MONTHLY_PRICE_EX_VAT: process.env.RESO_MONTHLY_PRICE_EX_VAT,
+  RESO_MONTHLY_PRICE_TTC: process.env.RESO_MONTHLY_PRICE_TTC,
   RESO_PRACTITIONER_LIMIT: process.env.RESO_PRACTITIONER_LIMIT,
   RESO_TRIAL_DAYS: process.env.RESO_TRIAL_DAYS,
   RESO_SIGNUP_URL: process.env.RESO_SIGNUP_URL,

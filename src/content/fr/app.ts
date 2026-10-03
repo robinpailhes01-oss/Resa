@@ -1,9 +1,9 @@
 import { offer } from "@/config/offer";
 
 const fee = `${offer.platformFeePercent.toLocaleString("fr-FR")} %`;
-import { formatMonthlyPriceExVatCompact } from "@/lib/format";
+import { formatMonthlyPriceCompact } from "@/lib/format";
 
-const price = formatMonthlyPriceExVatCompact(offer.monthlyPriceExVat);
+const price = formatMonthlyPriceCompact(offer.monthlyPriceInclVat);
 
 /**
  * Bandeau d'accès de l'espace pro (essai gratuit, abonnement).

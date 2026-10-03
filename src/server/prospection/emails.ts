@@ -26,7 +26,7 @@ export function prospectionEmailInput(p: ProspectForEmail): ProspectionEmailInpu
     // Lien nu, lisible : le nom de domaine seul.
     trialUrl: offer.siteUrl,
     unsubscribeUrl: `${offer.siteUrl}/ne-plus-me-contacter?token=${encodeURIComponent(p.unsubscribeToken)}`,
-    priceLabel: Number.isInteger(offer.monthlyPriceExVat) ? `${offer.monthlyPriceExVat} € HT` : `${formatEuros(Math.round(offer.monthlyPriceExVat * 100))} HT`,
+    priceLabel: Number.isInteger(offer.monthlyPriceInclVat) ? `${offer.monthlyPriceInclVat} € TTC` : `${formatEuros(Math.round(offer.monthlyPriceInclVat * 100))} TTC`,
     trialDays: offer.trialDays,
     senderName: prospectionContent.senderName,
     brandName: offer.brandName,

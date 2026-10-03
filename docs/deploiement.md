@@ -1,6 +1,6 @@
 # Mettre Reso en ligne : Supabase + Vercel
 
-Ce guide met le site `resa-lemon.vercel.app` en mode lancement : inscription ouverte, essai gratuit de 7 jours sans carte bancaire, abonnement à 39 € HT / mois activé à la main tant que le paiement en ligne n’est pas branché.
+Ce guide met le site `resa-lemon.vercel.app` en mode lancement : inscription ouverte, essai gratuit de 7 jours sans carte bancaire, abonnement à 29 € TTC / mois activé à la main tant que le paiement en ligne n’est pas branché.
 
 Durée : environ 20 minutes. Rien à installer sur votre ordinateur.
 

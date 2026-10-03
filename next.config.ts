@@ -34,7 +34,7 @@ const nextConfig: NextConfig = {
   // deux rendus soient identiques (sinon erreur d'hydratation en mode live).
   env: {
     RESO_LAUNCH_MODE: process.env.RESO_LAUNCH_MODE ?? "",
-    RESO_MONTHLY_PRICE_EX_VAT: process.env.RESO_MONTHLY_PRICE_EX_VAT ?? "",
+    RESO_MONTHLY_PRICE_TTC: process.env.RESO_MONTHLY_PRICE_TTC ?? "",
     RESO_PRACTITIONER_LIMIT: process.env.RESO_PRACTITIONER_LIMIT ?? "",
     RESO_TRIAL_DAYS: process.env.RESO_TRIAL_DAYS ?? "",
     RESO_SIGNUP_URL: process.env.RESO_SIGNUP_URL ?? "",

@@ -12,7 +12,7 @@ import { TwoSides } from "@/components/landing/TwoSides";
 import { SetupCall } from "@/components/landing/SetupCall";
 import { RevealObserver } from "@/components/landing/Reveal";
 import { offer } from "@/config/offer";
-import { formatMonthlyPriceExVatCompact } from "@/lib/format";
+import { formatMonthlyPriceCompact } from "@/lib/format";
 
 const WAITLIST_STATES = ["ok", "email", "limite", "erreur"] as const;
 
@@ -37,7 +37,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         name: offer.brandName,
         url: offer.siteUrl,
         inLanguage: "fr",
-        description: `Réservation en ligne, agenda partagé et emails automatiques pour les pros de la beauté. ${formatMonthlyPriceExVatCompact(offer.monthlyPriceExVat)}.`,
+        description: `Réservation en ligne, agenda partagé et emails automatiques pour les pros de la beauté. ${formatMonthlyPriceCompact(offer.monthlyPriceInclVat)}.`,
       },
     ],
   };
