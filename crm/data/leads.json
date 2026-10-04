@@ -1,504 +1,1004 @@
 {
- "leads": [
-  {
-   "name": "L'Alchymie",
-   "type": "Coiffure",
-   "address": "Rue de la Levée, 05200 Embrun",
-   "city": "Embrun",
-   "phone": "",
-   "planity": "Fiche annuaire Planity seulement (pas de RDV)",
-   "maps": "https://www.google.com/maps/search/?api=1&query=L%27Alchymie+Rue+de+la+Lev%C3%A9e%2C+05200+Embrun",
-   "notes": "Lot Embrun – Gap"
-  },
-  {
-   "name": "Imagine Coiffure",
-   "type": "Coiffure mixte",
-   "address": "96 rue de la Liberté, 05200 Embrun",
-   "city": "Embrun",
-   "phone": "04 92 43 03 28",
-   "planity": "Absent de Planity",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Imagine+Coiffure+96+rue+de+la+Libert%C3%A9%2C+05200+Embrun",
-   "notes": "Lot Embrun – Gap"
-  },
-  {
-   "name": "Laure Benceny",
-   "type": "Esthétique",
-   "address": "48 boulevard Pasteur, 05200 Embrun",
-   "city": "Embrun",
-   "phone": "",
-   "planity": "Fiche annuaire Planity seulement",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Laure+Benceny+48+boulevard+Pasteur%2C+05200+Embrun",
-   "notes": "Lot Embrun – Gap"
-  },
-  {
-   "name": "Beauty Nails by LuLu",
-   "type": "Onglerie",
-   "address": "4 rue Chaffuel, 05200 Embrun",
-   "city": "Embrun",
-   "phone": "",
-   "planity": "Fiche annuaire Planity seulement",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Beauty+Nails+by+LuLu+4+rue+Chaffuel%2C+05200+Embrun",
-   "notes": "Lot Embrun – Gap"
-  },
-  {
-   "name": "Regarde mes ongles",
-   "type": "Onglerie",
-   "address": "13 place de la Mazelière, 05200 Embrun",
-   "city": "Embrun",
-   "phone": "",
-   "planity": "Fiche annuaire Planity seulement",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Regarde+mes+ongles+13+place+de+la+Mazeli%C3%A8re%2C+05200+Embrun",
-   "notes": "Lot Embrun – Gap"
-  },
-  {
-   "name": "Just-Beauty-05",
-   "type": "Institut de beauté",
-   "address": "30 rue Édouard Przybylski, 05200 Embrun",
-   "city": "Embrun",
-   "phone": "09 55 08 44 34",
-   "planity": "Absent de Planity (créé en 2022)",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Just-Beauty-05+30+rue+%C3%89douard+Przybylski%2C+05200+Embrun",
-   "notes": "Lot Embrun – Gap"
-  },
-  {
-   "name": "Secrets de Coiffure (ex-Insolite Coiffure)",
-   "type": "Coiffure",
-   "address": "41 Les Aubergeries, 05380 Châteauroux-les-Alpes",
-   "city": "Châteauroux-les-Alpes",
-   "phone": "04 92 43 82 26",
-   "planity": "Fiche annuaire Planity seulement",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Secrets+de+Coiffure+%28ex-Insolite+Coiffure%29+41+Les+Aubergeries%2C+05380+Ch%C3%A2teauroux-les-Alpes",
-   "notes": "Lot Embrun – Gap"
-  },
-  {
-   "name": "Coiff'Relax",
-   "type": "Coiffure",
-   "address": "12 avenue de la Gare, 05380 Châteauroux-les-Alpes",
-   "city": "Châteauroux-les-Alpes",
-   "phone": "",
-   "planity": "Absent de Planity, à vérifier (fait aussi du domicile)",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Coiff%27Relax+12+avenue+de+la+Gare%2C+05380+Ch%C3%A2teauroux-les-Alpes",
-   "notes": "Lot Embrun – Gap"
-  },
-  {
-   "name": "L'Atelier K",
-   "type": "Coiffure",
-   "address": "1 impasse Champ Raoux, 05160 Savines-le-Lac",
-   "city": "Savines-le-Lac",
-   "phone": "",
-   "planity": "Fiche annuaire Planity seulement",
-   "maps": "https://www.google.com/maps/search/?api=1&query=L%27Atelier+K+1+impasse+Champ+Raoux%2C+05160+Savines-le-Lac",
-   "notes": "Lot Embrun – Gap"
-  },
-  {
-   "name": "Coiff'Émoi",
-   "type": "Coiffure",
-   "address": "65 Grand Rue, 05230 Chorges",
-   "city": "Chorges",
-   "phone": "",
-   "planity": "Fiche annuaire Planity seulement",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Coiff%27%C3%89moi+65+Grand+Rue%2C+05230+Chorges",
-   "notes": "Lot Embrun – Gap"
-  },
-  {
-   "name": "Coiffure Odile",
-   "type": "Coiffure mixte",
-   "address": "48 Grande Rue, 05230 Chorges",
-   "city": "Chorges",
-   "phone": "04 92 50 63 12",
-   "planity": "Fiche annuaire Planity seulement",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Coiffure+Odile+48+Grande+Rue%2C+05230+Chorges",
-   "notes": "Lot Embrun – Gap"
-  },
-  {
-   "name": "Flor Isa",
-   "type": "Coiffure",
-   "address": "Rue des Écoles, 05230 Chorges",
-   "city": "Chorges",
-   "phone": "04 92 55 10 16",
-   "planity": "Fiche annuaire Planity seulement",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Flor+Isa+Rue+des+%C3%89coles%2C+05230+Chorges",
-   "notes": "Lot Embrun – Gap"
-  },
-  {
-   "name": "Beverly Coiffure",
-   "type": "Coiffure mixte",
-   "address": "68 rue du Moulin, 05230 La Bâtie-Neuve",
-   "city": "La Bâtie-Neuve",
-   "phone": "04 92 53 68 51",
-   "planity": "Absent de Planity",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Beverly+Coiffure+68+rue+du+Moulin%2C+05230+La+B%C3%A2tie-Neuve",
-   "notes": "Lot Embrun – Gap"
-  },
-  {
-   "name": "Cindy Coiffure",
-   "type": "Coiffure",
-   "address": "69 La Grand Rue, 05230 La Bâtie-Neuve",
-   "city": "La Bâtie-Neuve",
-   "phone": "04 92 50 27 56",
-   "planity": "Absent de Planity",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Cindy+Coiffure+69+La+Grand+Rue%2C+05230+La+B%C3%A2tie-Neuve",
-   "notes": "Lot Embrun – Gap"
-  },
-  {
-   "name": "L'Atelier des Vilains Garçons",
-   "type": "Barbier",
-   "address": "1 impasse du Cheval Blanc, 05000 Gap",
-   "city": "Gap",
-   "phone": "04 92 54 90 80",
-   "planity": "Fiche annuaire Planity seulement (RDV et sans RDV)",
-   "maps": "https://www.google.com/maps/search/?api=1&query=L%27Atelier+des+Vilains+Gar%C3%A7ons+1+impasse+du+Cheval+Blanc%2C+05000+Gap",
-   "notes": "Lot Embrun – Gap"
-  },
-  {
-   "name": "Dz Coiffure",
-   "type": "Barbier",
-   "address": "21 rue du Mazel, 05000 Gap",
-   "city": "Gap",
-   "phone": "09 56 01 58 31",
-   "planity": "Fiche annuaire Planity seulement",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Dz+Coiffure+21+rue+du+Mazel%2C+05000+Gap",
-   "notes": "Lot Embrun – Gap"
-  },
-  {
-   "name": "Le Studio 5",
-   "type": "Coiffure / beauté",
-   "address": "5 rue du Mazel, 05000 Gap",
-   "city": "Gap",
-   "phone": "06 52 84 88 30",
-   "planity": "Pas sur Planity, utilise Fresha",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Le+Studio+5+5+rue+du+Mazel%2C+05000+Gap",
-   "notes": "Lot Embrun – Gap"
-  },
-  {
-   "name": "BMA Venus",
-   "type": "Barbier",
-   "address": "76 route de Grenoble (domaine Napoléon), 05000 Gap",
-   "city": "Gap",
-   "phone": "",
-   "planity": "Fiche annuaire Planity seulement, à vérifier",
-   "maps": "https://www.google.com/maps/search/?api=1&query=BMA+Venus+76+route+de+Grenoble+%28domaine+Napol%C3%A9on%29%2C+05000+Gap",
-   "notes": "Lot Embrun – Gap"
-  },
-  {
-   "name": "Bar à ongles Gelissima",
-   "type": "Onglerie",
-   "address": "28 boulevard d'Orient, 05000 Gap",
-   "city": "Gap",
-   "phone": "04 13 38 55 90",
-   "planity": "Pas sur Planity, utilise booking.page",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Bar+%C3%A0+ongles+Gelissima+28+boulevard+d%27Orient%2C+05000+Gap",
-   "notes": "Lot Embrun – Gap"
-  },
-  {
-   "name": "Onglerie Joail-ongles",
-   "type": "Onglerie",
-   "address": "9 D route des Eyssagnières, 05000 Gap",
-   "city": "Gap",
-   "phone": "",
-   "planity": "Absent de Planity",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Onglerie+Joail-ongles+9+D+route+des+Eyssagni%C3%A8res%2C+05000+Gap",
-   "notes": "Lot Embrun – Gap"
-  },
-  {
-   "name": "Corinne Coiffure",
-   "type": "Coiffure",
-   "address": "1335 avenue de Maurin, 34070 Montpellier",
-   "city": "Montpellier",
-   "phone": "04 67 27 86 52",
-   "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Corinne+Coiffure+1335+avenue+de+Maurin%2C+34070+Montpellier",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "Delphes Coiffure",
-   "type": "Coiffure",
-   "address": "118 avenue de Toulouse, 34070 Montpellier",
-   "city": "Montpellier",
-   "phone": "04 67 47 37 45",
-   "planity": "Absent de Planity, aucun outil de réservation trouvé",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Delphes+Coiffure+118+avenue+de+Toulouse%2C+34070+Montpellier",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "Abracadabra",
-   "type": "Coiffure mixte",
-   "address": "3 rue des Catalpas, 34070 Montpellier",
-   "city": "Montpellier",
-   "phone": "04 67 92 36 96",
-   "planity": "Absent de Planity, aucun outil de réservation trouvé",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Abracadabra+3+rue+des+Catalpas%2C+34070+Montpellier",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "Mosson Coiffure",
-   "type": "Coiffure",
-   "address": "Centre commercial Paillade, 545 avenue de l'Europe, 34080 Montpellier",
-   "city": "Montpellier",
-   "phone": "04 67 52 48 04",
-   "planity": "Absent de Planity, aucun outil de réservation trouvé",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Mosson+Coiffure+Centre+commercial+Paillade%2C+545+avenue+de+l%27Europe%2C+34080+Montpellier",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "Coiffure-Chic",
-   "type": "Coiffure",
-   "address": "2 rue d'Oxford, 34080 Montpellier",
-   "city": "Montpellier",
-   "phone": "04 67 75 42 05",
-   "planity": "Absent de Planity, aucun outil de réservation trouvé",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Coiffure-Chic+2+rue+d%27Oxford%2C+34080+Montpellier",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "Adam Coiffure",
-   "type": "Barbier",
-   "address": "3 rue du Faubourg Figuerolles, 34070 Montpellier",
-   "city": "Montpellier",
-   "phone": "07 67 06 09 28",
-   "planity": "Absent de Planity, aucun outil de réservation trouvé",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Adam+Coiffure+3+rue+du+Faubourg+Figuerolles%2C+34070+Montpellier",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "R Color",
-   "type": "Coiffure",
-   "address": "2 avenue les Hameaux du Golf, 34990 Juvignac",
-   "city": "Juvignac",
-   "phone": "04 99 77 09 24",
-   "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
-   "maps": "https://www.google.com/maps/search/?api=1&query=R+Color+2+avenue+les+Hameaux+du+Golf%2C+34990+Juvignac",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "YLB Coiffure",
-   "type": "Coiffure",
-   "address": "23 route de Saint-Georges-d'Orques, 34990 Juvignac",
-   "city": "Juvignac",
-   "phone": "04 67 40 19 44",
-   "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
-   "maps": "https://www.google.com/maps/search/?api=1&query=YLB+Coiffure+23+route+de+Saint-Georges-d%27Orques%2C+34990+Juvignac",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "L'Ilosens",
-   "type": "Coiffure",
-   "address": "Centre commercial Les Portes du Soleil, route de Saint-Georges-d'Orques, 34990 Juvignac",
-   "city": "Juvignac",
-   "phone": "04 67 75 73 72",
-   "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
-   "maps": "https://www.google.com/maps/search/?api=1&query=L%27Ilosens+Centre+commercial+Les+Portes+du+Soleil%2C+route+de+Saint-Georges-d%27Orques%2C+34990+Juvignac",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "Semm Coiffure",
-   "type": "Coiffure",
-   "address": "14 rue Gaston Bazille, 34470 Pérols",
-   "city": "Pérols",
-   "phone": "04 67 64 59 70",
-   "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne), à confirmer",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Semm+Coiffure+14+rue+Gaston+Bazille%2C+34470+P%C3%A9rols",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "Saloon Barber & Girls",
-   "type": "Barbier",
-   "address": "10 rue de la République, 34470 Pérols",
-   "city": "Pérols",
-   "phone": "04 11 75 15 90",
-   "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Saloon+Barber+%26+Girls+10+rue+de+la+R%C3%A9publique%2C+34470+P%C3%A9rols",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "Institut Création",
-   "type": "Institut de beauté",
-   "address": "3 rue de la Guette, 34470 Pérols",
-   "city": "Pérols",
-   "phone": "",
-   "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Institut+Cr%C3%A9ation+3+rue+de+la+Guette%2C+34470+P%C3%A9rols",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "L'Hair du Temps",
-   "type": "Coiffure",
-   "address": "22 avenue Frédéric Mistral, 34110 Frontignan",
-   "city": "Frontignan",
-   "phone": "04 67 48 22 09",
-   "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
-   "maps": "https://www.google.com/maps/search/?api=1&query=L%27Hair+du+Temps+22+avenue+Fr%C3%A9d%C3%A9ric+Mistral%2C+34110+Frontignan",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "Oz Coiffure",
-   "type": "Coiffure",
-   "address": "5 boulevard Gambetta, 34110 Frontignan",
-   "city": "Frontignan",
-   "phone": "04 67 48 18 65",
-   "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Oz+Coiffure+5+boulevard+Gambetta%2C+34110+Frontignan",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "JF Coiffure",
-   "type": "Coiffure",
-   "address": "21 avenue du Général de Gaulle, 34110 Frontignan",
-   "city": "Frontignan",
-   "phone": "04 67 48 45 43",
-   "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
-   "maps": "https://www.google.com/maps/search/?api=1&query=JF+Coiffure+21+avenue+du+G%C3%A9n%C3%A9ral+de+Gaulle%2C+34110+Frontignan",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "Beauté Coiffure Maria",
-   "type": "Coiffure mixte",
-   "address": "126 cours Gabriel Péri, 34400 Lunel",
-   "city": "Lunel",
-   "phone": "04 67 71 24 88",
-   "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Beaut%C3%A9+Coiffure+Maria+126+cours+Gabriel+P%C3%A9ri%2C+34400+Lunel",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "Labo Esthétique",
-   "type": "Institut de beauté",
-   "address": "83 rue André Rebuffat, 34400 Lunel",
-   "city": "Lunel",
-   "phone": "06 14 94 31 98",
-   "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Labo+Esth%C3%A9tique+83+rue+Andr%C3%A9+Rebuffat%2C+34400+Lunel",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "Golden Touch Coiffure",
-   "type": "Coiffure",
-   "address": "197 avenue Victor Hugo, 34400 Lunel",
-   "city": "Lunel",
-   "phone": "",
-   "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Golden+Touch+Coiffure+197+avenue+Victor+Hugo%2C+34400+Lunel",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "Le Salon (Claire Graille)",
-   "type": "Coiffure",
-   "address": "103 boulevard Lafayette, 34400 Lunel",
-   "city": "Lunel",
-   "phone": "",
-   "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Le+Salon+%28Claire+Graille%29+103+boulevard+Lafayette%2C+34400+Lunel",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "Coiffure Patricia",
-   "type": "Coiffure",
-   "address": "19 Grand-Rue Jean Jaurès, 30220 Aigues-Mortes",
-   "city": "Aigues-Mortes",
-   "phone": "04 66 53 84 44",
-   "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Coiffure+Patricia+19+Grand-Rue+Jean+Jaur%C3%A8s%2C+30220+Aigues-Mortes",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "Coiffure Florence Création",
-   "type": "Coiffure",
-   "address": "14 rue du Faubourg du 12 Avril, 30220 Aigues-Mortes",
-   "city": "Aigues-Mortes",
-   "phone": "04 66 53 80 82",
-   "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Coiffure+Florence+Cr%C3%A9ation+14+rue+du+Faubourg+du+12+Avril%2C+30220+Aigues-Mortes",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "Paola Coiffure",
-   "type": "Coiffure",
-   "address": "296 route de Nîmes, 30220 Aigues-Mortes",
-   "city": "Aigues-Mortes",
-   "phone": "06 60 10 54 91",
-   "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Paola+Coiffure+296+route+de+N%C3%AEmes%2C+30220+Aigues-Mortes",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "Ciseaux & Co",
-   "type": "Coiffure",
-   "address": "81 rue Denfert-Rochereau, 30220 Aigues-Mortes",
-   "city": "Aigues-Mortes",
-   "phone": "",
-   "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Ciseaux+%26+Co+81+rue+Denfert-Rochereau%2C+30220+Aigues-Mortes",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "Le Salon d'Émi",
-   "type": "Coiffure",
-   "address": "65 route de Nîmes, 30220 Aigues-Mortes",
-   "city": "Aigues-Mortes",
-   "phone": "",
-   "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Le+Salon+d%27%C3%89mi+65+route+de+N%C3%AEmes%2C+30220+Aigues-Mortes",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "Stardust Coiffure",
-   "type": "Coiffure",
-   "address": "Centre commercial Port Royal, 30240 Le Grau-du-Roi",
-   "city": "Le Grau-du-Roi",
-   "phone": "09 54 75 10 82",
-   "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Stardust+Coiffure+Centre+commercial+Port+Royal%2C+30240+Le+Grau-du-Roi",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "L'Instant Coiffure",
-   "type": "Coiffure",
-   "address": "964 avenue de Camargue, 30240 Le Grau-du-Roi",
-   "city": "Le Grau-du-Roi",
-   "phone": "04 66 53 16 27",
-   "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
-   "maps": "https://www.google.com/maps/search/?api=1&query=L%27Instant+Coiffure+964+avenue+de+Camargue%2C+30240+Le+Grau-du-Roi",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "Salon Nefertiti",
-   "type": "Coiffure mixte",
-   "address": "11 rue Alsace-Lorraine, 30240 Le Grau-du-Roi",
-   "city": "Le Grau-du-Roi",
-   "phone": "",
-   "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Salon+Nefertiti+11+rue+Alsace-Lorraine%2C+30240+Le+Grau-du-Roi",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "O Tour d'Ailes",
-   "type": "Coiffure",
-   "address": "33 rue Alsace-Lorraine, 30240 Le Grau-du-Roi",
-   "city": "Le Grau-du-Roi",
-   "phone": "",
-   "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
-   "maps": "https://www.google.com/maps/search/?api=1&query=O+Tour+d%27Ailes+33+rue+Alsace-Lorraine%2C+30240+Le+Grau-du-Roi",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "Concept Coiffure",
-   "type": "Coiffure",
-   "address": "1 rue du Général Bruyère, 30250 Sommières",
-   "city": "Sommières",
-   "phone": "04 66 53 42 27",
-   "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Concept+Coiffure+1+rue+du+G%C3%A9n%C3%A9ral+Bruy%C3%A8re%2C+30250+Sommi%C3%A8res",
-   "notes": "Lot Hérault – Gard"
-  },
-  {
-   "name": "Coiffure Tendance",
-   "type": "Coiffure",
-   "address": "17 rue Antonin Paris, 30250 Sommières",
-   "city": "Sommières",
-   "phone": "",
-   "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
-   "maps": "https://www.google.com/maps/search/?api=1&query=Coiffure+Tendance+17+rue+Antonin+Paris%2C+30250+Sommi%C3%A8res",
-   "notes": "Lot Hérault – Gard"
-  }
- ]
+  "leads": [
+    {
+      "name": "L'Alchymie",
+      "type": "Coiffure",
+      "address": "Rue de la Levée, 05200 Embrun",
+      "city": "Embrun",
+      "phone": "",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=L%27Alchymie+Rue+de+la+Lev%C3%A9e%2C+05200+Embrun",
+      "notes": "Lot Embrun – Gap"
+    },
+    {
+      "name": "Imagine Coiffure",
+      "type": "Coiffure mixte",
+      "address": "96 rue de la Liberté, 05200 Embrun",
+      "city": "Embrun",
+      "phone": "04 92 43 03 28",
+      "planity": "Absent de Planity",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Imagine+Coiffure+96+rue+de+la+Libert%C3%A9%2C+05200+Embrun",
+      "notes": "Lot Embrun – Gap"
+    },
+    {
+      "name": "Laure Benceny",
+      "type": "Esthétique",
+      "address": "48 boulevard Pasteur, 05200 Embrun",
+      "city": "Embrun",
+      "phone": "",
+      "planity": "Fiche annuaire Planity seulement",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Laure+Benceny+48+boulevard+Pasteur%2C+05200+Embrun",
+      "notes": "Lot Embrun – Gap"
+    },
+    {
+      "name": "Beauty Nails by LuLu",
+      "type": "Onglerie",
+      "address": "4 rue Chaffuel, 05200 Embrun",
+      "city": "Embrun",
+      "phone": "",
+      "planity": "Fiche annuaire Planity seulement",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Beauty+Nails+by+LuLu+4+rue+Chaffuel%2C+05200+Embrun",
+      "notes": "Lot Embrun – Gap"
+    },
+    {
+      "name": "Regarde mes ongles",
+      "type": "Onglerie",
+      "address": "13 place de la Mazelière, 05200 Embrun",
+      "city": "Embrun",
+      "phone": "",
+      "planity": "Fiche annuaire Planity seulement",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Regarde+mes+ongles+13+place+de+la+Mazeli%C3%A8re%2C+05200+Embrun",
+      "notes": "Lot Embrun – Gap"
+    },
+    {
+      "name": "Just-Beauty-05",
+      "type": "Institut de beauté",
+      "address": "30 rue Édouard Przybylski, 05200 Embrun",
+      "city": "Embrun",
+      "phone": "09 55 08 44 34",
+      "planity": "Absent de Planity (créé en 2022)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Just-Beauty-05+30+rue+%C3%89douard+Przybylski%2C+05200+Embrun",
+      "notes": "Lot Embrun – Gap"
+    },
+    {
+      "name": "Secrets de Coiffure (ex-Insolite Coiffure)",
+      "type": "Coiffure",
+      "address": "41 Les Aubergeries, 05380 Châteauroux-les-Alpes",
+      "city": "Châteauroux-les-Alpes",
+      "phone": "04 92 43 82 26",
+      "planity": "Fiche annuaire Planity seulement",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Secrets+de+Coiffure+%28ex-Insolite+Coiffure%29+41+Les+Aubergeries%2C+05380+Ch%C3%A2teauroux-les-Alpes",
+      "notes": "Lot Embrun – Gap"
+    },
+    {
+      "name": "Coiff'Relax",
+      "type": "Coiffure",
+      "address": "12 avenue de la Gare, 05380 Châteauroux-les-Alpes",
+      "city": "Châteauroux-les-Alpes",
+      "phone": "",
+      "planity": "Absent de Planity, à vérifier (fait aussi du domicile)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Coiff%27Relax+12+avenue+de+la+Gare%2C+05380+Ch%C3%A2teauroux-les-Alpes",
+      "notes": "Lot Embrun – Gap"
+    },
+    {
+      "name": "L'Atelier K",
+      "type": "Coiffure",
+      "address": "1 impasse Champ Raoux, 05160 Savines-le-Lac",
+      "city": "Savines-le-Lac",
+      "phone": "",
+      "planity": "Fiche annuaire Planity seulement",
+      "maps": "https://www.google.com/maps/search/?api=1&query=L%27Atelier+K+1+impasse+Champ+Raoux%2C+05160+Savines-le-Lac",
+      "notes": "Lot Embrun – Gap"
+    },
+    {
+      "name": "Coiff'Émoi",
+      "type": "Coiffure",
+      "address": "65 Grand Rue, 05230 Chorges",
+      "city": "Chorges",
+      "phone": "",
+      "planity": "Fiche annuaire Planity seulement",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Coiff%27%C3%89moi+65+Grand+Rue%2C+05230+Chorges",
+      "notes": "Lot Embrun – Gap"
+    },
+    {
+      "name": "Coiffure Odile",
+      "type": "Coiffure mixte",
+      "address": "48 Grande Rue, 05230 Chorges",
+      "city": "Chorges",
+      "phone": "04 92 50 63 12",
+      "planity": "Fiche annuaire Planity seulement",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Coiffure+Odile+48+Grande+Rue%2C+05230+Chorges",
+      "notes": "Lot Embrun – Gap"
+    },
+    {
+      "name": "Flor Isa",
+      "type": "Coiffure",
+      "address": "Rue des Écoles, 05230 Chorges",
+      "city": "Chorges",
+      "phone": "04 92 55 10 16",
+      "planity": "Fiche annuaire Planity seulement",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Flor+Isa+Rue+des+%C3%89coles%2C+05230+Chorges",
+      "notes": "Lot Embrun – Gap"
+    },
+    {
+      "name": "Beverly Coiffure",
+      "type": "Coiffure mixte",
+      "address": "68 rue du Moulin, 05230 La Bâtie-Neuve",
+      "city": "La Bâtie-Neuve",
+      "phone": "04 92 53 68 51",
+      "planity": "Absent de Planity",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Beverly+Coiffure+68+rue+du+Moulin%2C+05230+La+B%C3%A2tie-Neuve",
+      "notes": "Lot Embrun – Gap"
+    },
+    {
+      "name": "Cindy Coiffure",
+      "type": "Coiffure",
+      "address": "69 La Grand Rue, 05230 La Bâtie-Neuve",
+      "city": "La Bâtie-Neuve",
+      "phone": "04 92 50 27 56",
+      "planity": "Absent de Planity",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Cindy+Coiffure+69+La+Grand+Rue%2C+05230+La+B%C3%A2tie-Neuve",
+      "notes": "Lot Embrun – Gap"
+    },
+    {
+      "name": "L'Atelier des Vilains Garçons",
+      "type": "Barbier",
+      "address": "1 impasse du Cheval Blanc, 05000 Gap",
+      "city": "Gap",
+      "phone": "04 92 54 90 80",
+      "planity": "Fiche annuaire Planity seulement (RDV et sans RDV)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=L%27Atelier+des+Vilains+Gar%C3%A7ons+1+impasse+du+Cheval+Blanc%2C+05000+Gap",
+      "notes": "Lot Embrun – Gap"
+    },
+    {
+      "name": "Dz Coiffure",
+      "type": "Barbier",
+      "address": "21 rue du Mazel, 05000 Gap",
+      "city": "Gap",
+      "phone": "09 56 01 58 31",
+      "planity": "Fiche annuaire Planity seulement",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Dz+Coiffure+21+rue+du+Mazel%2C+05000+Gap",
+      "notes": "Lot Embrun – Gap"
+    },
+    {
+      "name": "Le Studio 5",
+      "type": "Coiffure / beauté",
+      "address": "5 rue du Mazel, 05000 Gap",
+      "city": "Gap",
+      "phone": "06 52 84 88 30",
+      "planity": "Pas sur Planity, utilise Fresha",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Le+Studio+5+5+rue+du+Mazel%2C+05000+Gap",
+      "notes": "Lot Embrun – Gap"
+    },
+    {
+      "name": "BMA Venus",
+      "type": "Barbier",
+      "address": "76 route de Grenoble (domaine Napoléon), 05000 Gap",
+      "city": "Gap",
+      "phone": "",
+      "planity": "Fiche annuaire Planity seulement, à vérifier",
+      "maps": "https://www.google.com/maps/search/?api=1&query=BMA+Venus+76+route+de+Grenoble+%28domaine+Napol%C3%A9on%29%2C+05000+Gap",
+      "notes": "Lot Embrun – Gap"
+    },
+    {
+      "name": "Bar à ongles Gelissima",
+      "type": "Onglerie",
+      "address": "28 boulevard d'Orient, 05000 Gap",
+      "city": "Gap",
+      "phone": "04 13 38 55 90",
+      "planity": "Pas sur Planity, utilise booking.page",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Bar+%C3%A0+ongles+Gelissima+28+boulevard+d%27Orient%2C+05000+Gap",
+      "notes": "Lot Embrun – Gap"
+    },
+    {
+      "name": "Onglerie Joail-ongles",
+      "type": "Onglerie",
+      "address": "9 D route des Eyssagnières, 05000 Gap",
+      "city": "Gap",
+      "phone": "",
+      "planity": "Absent de Planity",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Onglerie+Joail-ongles+9+D+route+des+Eyssagni%C3%A8res%2C+05000+Gap",
+      "notes": "Lot Embrun – Gap"
+    },
+    {
+      "name": "Corinne Coiffure",
+      "type": "Coiffure",
+      "address": "1335 avenue de Maurin, 34070 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 27 86 52",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Corinne+Coiffure+1335+avenue+de+Maurin%2C+34070+Montpellier",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "Delphes Coiffure",
+      "type": "Coiffure",
+      "address": "118 avenue de Toulouse, 34070 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 47 37 45",
+      "planity": "Absent de Planity, aucun outil de réservation trouvé",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Delphes+Coiffure+118+avenue+de+Toulouse%2C+34070+Montpellier",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "Abracadabra",
+      "type": "Coiffure mixte",
+      "address": "3 rue des Catalpas, 34070 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 92 36 96",
+      "planity": "Absent de Planity, aucun outil de réservation trouvé",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Abracadabra+3+rue+des+Catalpas%2C+34070+Montpellier",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "Mosson Coiffure",
+      "type": "Coiffure",
+      "address": "Centre commercial Paillade, 545 avenue de l'Europe, 34080 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 52 48 04",
+      "planity": "Absent de Planity, aucun outil de réservation trouvé",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Mosson+Coiffure+Centre+commercial+Paillade%2C+545+avenue+de+l%27Europe%2C+34080+Montpellier",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "Coiffure-Chic",
+      "type": "Coiffure",
+      "address": "2 rue d'Oxford, 34080 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 75 42 05",
+      "planity": "Absent de Planity, aucun outil de réservation trouvé",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Coiffure-Chic+2+rue+d%27Oxford%2C+34080+Montpellier",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "Adam Coiffure",
+      "type": "Barbier",
+      "address": "3 rue du Faubourg Figuerolles, 34070 Montpellier",
+      "city": "Montpellier",
+      "phone": "07 67 06 09 28",
+      "planity": "Absent de Planity, aucun outil de réservation trouvé",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Adam+Coiffure+3+rue+du+Faubourg+Figuerolles%2C+34070+Montpellier",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "R Color",
+      "type": "Coiffure",
+      "address": "2 avenue les Hameaux du Golf, 34990 Juvignac",
+      "city": "Juvignac",
+      "phone": "04 99 77 09 24",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=R+Color+2+avenue+les+Hameaux+du+Golf%2C+34990+Juvignac",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "YLB Coiffure",
+      "type": "Coiffure",
+      "address": "23 route de Saint-Georges-d'Orques, 34990 Juvignac",
+      "city": "Juvignac",
+      "phone": "04 67 40 19 44",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=YLB+Coiffure+23+route+de+Saint-Georges-d%27Orques%2C+34990+Juvignac",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "L'Ilosens",
+      "type": "Coiffure",
+      "address": "Centre commercial Les Portes du Soleil, route de Saint-Georges-d'Orques, 34990 Juvignac",
+      "city": "Juvignac",
+      "phone": "04 67 75 73 72",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=L%27Ilosens+Centre+commercial+Les+Portes+du+Soleil%2C+route+de+Saint-Georges-d%27Orques%2C+34990+Juvignac",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "Semm Coiffure",
+      "type": "Coiffure",
+      "address": "14 rue Gaston Bazille, 34470 Pérols",
+      "city": "Pérols",
+      "phone": "04 67 64 59 70",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne), à confirmer",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Semm+Coiffure+14+rue+Gaston+Bazille%2C+34470+P%C3%A9rols",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "Saloon Barber & Girls",
+      "type": "Barbier",
+      "address": "10 rue de la République, 34470 Pérols",
+      "city": "Pérols",
+      "phone": "04 11 75 15 90",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Saloon+Barber+%26+Girls+10+rue+de+la+R%C3%A9publique%2C+34470+P%C3%A9rols",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "Institut Création",
+      "type": "Institut de beauté",
+      "address": "3 rue de la Guette, 34470 Pérols",
+      "city": "Pérols",
+      "phone": "",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Institut+Cr%C3%A9ation+3+rue+de+la+Guette%2C+34470+P%C3%A9rols",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "L'Hair du Temps",
+      "type": "Coiffure",
+      "address": "22 avenue Frédéric Mistral, 34110 Frontignan",
+      "city": "Frontignan",
+      "phone": "04 67 48 22 09",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=L%27Hair+du+Temps+22+avenue+Fr%C3%A9d%C3%A9ric+Mistral%2C+34110+Frontignan",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "Oz Coiffure",
+      "type": "Coiffure",
+      "address": "5 boulevard Gambetta, 34110 Frontignan",
+      "city": "Frontignan",
+      "phone": "04 67 48 18 65",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Oz+Coiffure+5+boulevard+Gambetta%2C+34110+Frontignan",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "JF Coiffure",
+      "type": "Coiffure",
+      "address": "21 avenue du Général de Gaulle, 34110 Frontignan",
+      "city": "Frontignan",
+      "phone": "04 67 48 45 43",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=JF+Coiffure+21+avenue+du+G%C3%A9n%C3%A9ral+de+Gaulle%2C+34110+Frontignan",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "Beauté Coiffure Maria",
+      "type": "Coiffure mixte",
+      "address": "126 cours Gabriel Péri, 34400 Lunel",
+      "city": "Lunel",
+      "phone": "04 67 71 24 88",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Beaut%C3%A9+Coiffure+Maria+126+cours+Gabriel+P%C3%A9ri%2C+34400+Lunel",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "Labo Esthétique",
+      "type": "Institut de beauté",
+      "address": "83 rue André Rebuffat, 34400 Lunel",
+      "city": "Lunel",
+      "phone": "06 14 94 31 98",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Labo+Esth%C3%A9tique+83+rue+Andr%C3%A9+Rebuffat%2C+34400+Lunel",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "Golden Touch Coiffure",
+      "type": "Coiffure",
+      "address": "197 avenue Victor Hugo, 34400 Lunel",
+      "city": "Lunel",
+      "phone": "",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Golden+Touch+Coiffure+197+avenue+Victor+Hugo%2C+34400+Lunel",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "Le Salon (Claire Graille)",
+      "type": "Coiffure",
+      "address": "103 boulevard Lafayette, 34400 Lunel",
+      "city": "Lunel",
+      "phone": "",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Le+Salon+%28Claire+Graille%29+103+boulevard+Lafayette%2C+34400+Lunel",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "Coiffure Patricia",
+      "type": "Coiffure",
+      "address": "19 Grand-Rue Jean Jaurès, 30220 Aigues-Mortes",
+      "city": "Aigues-Mortes",
+      "phone": "04 66 53 84 44",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Coiffure+Patricia+19+Grand-Rue+Jean+Jaur%C3%A8s%2C+30220+Aigues-Mortes",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "Coiffure Florence Création",
+      "type": "Coiffure",
+      "address": "14 rue du Faubourg du 12 Avril, 30220 Aigues-Mortes",
+      "city": "Aigues-Mortes",
+      "phone": "04 66 53 80 82",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Coiffure+Florence+Cr%C3%A9ation+14+rue+du+Faubourg+du+12+Avril%2C+30220+Aigues-Mortes",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "Paola Coiffure",
+      "type": "Coiffure",
+      "address": "296 route de Nîmes, 30220 Aigues-Mortes",
+      "city": "Aigues-Mortes",
+      "phone": "06 60 10 54 91",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Paola+Coiffure+296+route+de+N%C3%AEmes%2C+30220+Aigues-Mortes",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "Ciseaux & Co",
+      "type": "Coiffure",
+      "address": "81 rue Denfert-Rochereau, 30220 Aigues-Mortes",
+      "city": "Aigues-Mortes",
+      "phone": "",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Ciseaux+%26+Co+81+rue+Denfert-Rochereau%2C+30220+Aigues-Mortes",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "Le Salon d'Émi",
+      "type": "Coiffure",
+      "address": "65 route de Nîmes, 30220 Aigues-Mortes",
+      "city": "Aigues-Mortes",
+      "phone": "",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Le+Salon+d%27%C3%89mi+65+route+de+N%C3%AEmes%2C+30220+Aigues-Mortes",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "Stardust Coiffure",
+      "type": "Coiffure",
+      "address": "Centre commercial Port Royal, 30240 Le Grau-du-Roi",
+      "city": "Le Grau-du-Roi",
+      "phone": "09 54 75 10 82",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Stardust+Coiffure+Centre+commercial+Port+Royal%2C+30240+Le+Grau-du-Roi",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "L'Instant Coiffure",
+      "type": "Coiffure",
+      "address": "964 avenue de Camargue, 30240 Le Grau-du-Roi",
+      "city": "Le Grau-du-Roi",
+      "phone": "04 66 53 16 27",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=L%27Instant+Coiffure+964+avenue+de+Camargue%2C+30240+Le+Grau-du-Roi",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "Salon Nefertiti",
+      "type": "Coiffure mixte",
+      "address": "11 rue Alsace-Lorraine, 30240 Le Grau-du-Roi",
+      "city": "Le Grau-du-Roi",
+      "phone": "",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Salon+Nefertiti+11+rue+Alsace-Lorraine%2C+30240+Le+Grau-du-Roi",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "O Tour d'Ailes",
+      "type": "Coiffure",
+      "address": "33 rue Alsace-Lorraine, 30240 Le Grau-du-Roi",
+      "city": "Le Grau-du-Roi",
+      "phone": "",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=O+Tour+d%27Ailes+33+rue+Alsace-Lorraine%2C+30240+Le+Grau-du-Roi",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "Concept Coiffure",
+      "type": "Coiffure",
+      "address": "1 rue du Général Bruyère, 30250 Sommières",
+      "city": "Sommières",
+      "phone": "04 66 53 42 27",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Concept+Coiffure+1+rue+du+G%C3%A9n%C3%A9ral+Bruy%C3%A8re%2C+30250+Sommi%C3%A8res",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "Coiffure Tendance",
+      "type": "Coiffure",
+      "address": "17 rue Antonin Paris, 30250 Sommières",
+      "city": "Sommières",
+      "phone": "",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV en ligne)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Coiffure+Tendance+17+rue+Antonin+Paris%2C+30250+Sommi%C3%A8res",
+      "notes": "Lot Hérault – Gard"
+    },
+    {
+      "name": "Hair Love",
+      "type": "Coiffure",
+      "address": "1044, Avenue de l'Europe, 34170 Castelnau-le-Lez",
+      "city": "Castelnau-le-Lez",
+      "phone": "09 73 88 01 34",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/hair-love-34170-castelnau-le-lez",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Hair+Love+1044%2C+Avenue+de+l%27Europe%2C+34170+Castelnau-le-Lez",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "MC Coiffure",
+      "type": "Barbier",
+      "address": "1613 avenue de l'Europe, Résidence Jardin Royal (Bât B), 34170 Castelnau-le-Lez",
+      "city": "Castelnau-le-Lez",
+      "phone": "04 49 07 40 99",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/mc-coiffure-34170-castelnau-le-lez",
+      "maps": "https://www.google.com/maps/search/?api=1&query=MC+Coiffure+1613+avenue+de+l%27Europe%2C+R%C3%A9sidence+Jardin+Royal+%28B%C3%A2t+B%29%2C+34170+Castelnau-le-Lez",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "MBeauté - Côté Coiffure",
+      "type": "Coiffure",
+      "address": "1189, Av. de l'Europe, 34170 Castelnau-le-Lez",
+      "city": "Castelnau-le-Lez",
+      "phone": "09 86 45 82 17",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/mbeaute-cote-coiffure-34170-castelnau-le-lez",
+      "maps": "https://www.google.com/maps/search/?api=1&query=MBeaut%C3%A9+-+C%C3%B4t%C3%A9+Coiffure+1189%2C+Av.+de+l%27Europe%2C+34170+Castelnau-le-Lez",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Sofia Beauty",
+      "type": "Coiffure",
+      "address": "547, Av. du Montpellieret, 34970 Lattes",
+      "city": "Lattes",
+      "phone": "06 19 95 65 78",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/sofia-beauty-34970-lattes",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Sofia+Beauty+547%2C+Av.+du+Montpellieret%2C+34970+Lattes",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Be You by Perrine",
+      "type": "Coiffure",
+      "address": "92, Rue Pythagore, 34130 Mauguio",
+      "city": "Mauguio",
+      "phone": "06 40 44 28 22",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/be-you-by-perrine-34130-mauguio",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Be+You+by+Perrine+92%2C+Rue+Pythagore%2C+34130+Mauguio",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Le Salon de Fanny",
+      "type": "Coiffure",
+      "address": "Rue de la Portette, 34130 Mauguio",
+      "city": "Mauguio",
+      "phone": "04 11 75 24 88",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/le-salon-de-fanny-34130-mauguio",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Le+Salon+de+Fanny+Rue+de+la+Portette%2C+34130+Mauguio",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "by flo createur coiffeur",
+      "type": "Coiffure",
+      "address": "86, Rue André Malraux, 34130 Mauguio",
+      "city": "Mauguio",
+      "phone": "07 50 89 22 37",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/by-flo-createur-coiffeur-34130-mauguio",
+      "maps": "https://www.google.com/maps/search/?api=1&query=by+flo+createur+coiffeur+86%2C+Rue+Andr%C3%A9+Malraux%2C+34130+Mauguio",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Cindy Ribeill - Coiffure",
+      "type": "Coiffure",
+      "address": "86, Rue Pierre et Marie Curie, 34430 Saint-Jean-de-Védas",
+      "city": "Saint-Jean-de-Védas",
+      "phone": "06 68 23 80 73",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/cindy-ribeill-coiffure-34430-saint-jean-de-vedas",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Cindy+Ribeill+-+Coiffure+86%2C+Rue+Pierre+et+Marie+Curie%2C+34430+Saint-Jean-de-V%C3%A9das",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "L'inspiration Coiffure - (chez L'institut Concept)",
+      "type": "Coiffure",
+      "address": "86, Rue Pierre et Marie Curie, 34430 Saint-Jean-de-Védas",
+      "city": "Saint-Jean-de-Védas",
+      "phone": "07 61 92 33 36",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/linspiration-coiffure-chez-linstitut-concept-34430-saint-jean-de-vedas",
+      "maps": "https://www.google.com/maps/search/?api=1&query=L%27inspiration+Coiffure+-+%28chez+L%27institut+Concept%29+86%2C+Rue+Pierre+et+Marie+Curie%2C+34430+Saint-Jean-de-V%C3%A9das",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "L’Art de Plaire",
+      "type": "Coiffure",
+      "address": "90, Avenue de Librilla, 34430 Saint-Jean-de-Védas",
+      "city": "Saint-Jean-de-Védas",
+      "phone": "04 34 22 63 99",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/lart-de-plaire-34430-saint-jean-de-vedas",
+      "maps": "https://www.google.com/maps/search/?api=1&query=L%E2%80%99Art+de+Plaire+90%2C+Avenue+de+Librilla%2C+34430+Saint-Jean-de-V%C3%A9das",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Nathalie et Geoffrey",
+      "type": "Coiffure",
+      "address": "56 Esplanade de l'Ortet, 34430 Saint-Jean-de-Védas",
+      "city": "Saint-Jean-de-Védas",
+      "phone": "04 67 42 88 46",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/nathalie-et-geoffrey-34430-saint-jean-de-vedas",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Nathalie+et+Geoffrey+56+Esplanade+de+l%27Ortet%2C+34430+Saint-Jean-de-V%C3%A9das",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "N'en faire qu'à sa tete",
+      "type": "Coiffure",
+      "address": "650 rue Théophraste Renaudot, 34430 Saint-Jean-de-Védas",
+      "city": "Saint-Jean-de-Védas",
+      "phone": "06 66 73 68 68",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/nen-faire-qua-sa-tete-34430-saint-jean-de-vedas",
+      "maps": "https://www.google.com/maps/search/?api=1&query=N%27en+faire+qu%27%C3%A0+sa+tete+650+rue+Th%C3%A9ophraste+Renaudot%2C+34430+Saint-Jean-de-V%C3%A9das",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Heidi Farge",
+      "type": "Coiffure",
+      "address": "650, Rue Théophraste Renaudot, 34430 Saint-Jean-de-Védas",
+      "city": "Saint-Jean-de-Védas",
+      "phone": "06 40 64 60 06",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/heidi-farge-34430-saint-jean-de-vedas",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Heidi+Farge+650%2C+Rue+Th%C3%A9ophraste+Renaudot%2C+34430+Saint-Jean-de-V%C3%A9das",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Isa’tiff Coiffure",
+      "type": "Coiffure",
+      "address": "12, Avenue des Chasseurs, 34920 Le Crès",
+      "city": "Le Crès",
+      "phone": "04 67 70 02 86",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/isatiff-coiffure-34920-le-cres-8s3",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Isa%E2%80%99tiff+Coiffure+12%2C+Avenue+des+Chasseurs%2C+34920+Le+Cr%C3%A8s",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "KPL",
+      "type": "Coiffure",
+      "address": "2 Rue des Écureuils, 34920 Le Crès",
+      "city": "Le Crès",
+      "phone": "04 67 72 51 45",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/kpl-34920-le-cres",
+      "maps": "https://www.google.com/maps/search/?api=1&query=KPL+2+Rue+des+%C3%89cureuils%2C+34920+Le+Cr%C3%A8s",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Blond Hair",
+      "type": "Coiffure",
+      "address": "2, Av. Monteroni d'Arbia, 34920 Le Crès",
+      "city": "Le Crès",
+      "phone": "06 09 88 96 10",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/blond-hair-34920-le-cres",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Blond+Hair+2%2C+Av.+Monteroni+d%27Arbia%2C+34920+Le+Cr%C3%A8s",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "LNK coiffure",
+      "type": "Coiffure",
+      "address": "4, Rue Maumarin, 34920 Le Crès",
+      "city": "Le Crès",
+      "phone": "09 84 22 15 91",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/lnk-coiffure-34920-le-cres-4y3",
+      "maps": "https://www.google.com/maps/search/?api=1&query=LNK+coiffure+4%2C+Rue+Maumarin%2C+34920+Le+Cr%C3%A8s",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Espace id.coiff",
+      "type": "Coiffure",
+      "address": "13 Avenue de Sommières, 34160 Castries",
+      "city": "Castries",
+      "phone": "04 67 45 41 09",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/espace-idcoiff-34160-castries",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Espace+id.coiff+13+Avenue+de+Sommi%C3%A8res%2C+34160+Castries",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Coms Coiffure",
+      "type": "Coiffure",
+      "address": "5 Avenue du 8 Mai 1945, 34160 Castries",
+      "city": "Castries",
+      "phone": "04 67 70 03 55",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/coms-34160-castries",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Coms+Coiffure+5+Avenue+du+8+Mai+1945%2C+34160+Castries",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Frimousse",
+      "type": "Coiffure",
+      "address": "Place du Cartel, 34160 Castries",
+      "city": "Castries",
+      "phone": "04 67 70 85 30",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/frimousse-34160-castries",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Frimousse+Place+du+Cartel%2C+34160+Castries",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "L’instant d’une coupe",
+      "type": "Barbier",
+      "address": "20 Rue Louis Breguet, 34830 Jacou",
+      "city": "Jacou",
+      "phone": "04 67 59 87 90",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/l-instant-d-une-coupe-34830-jacou",
+      "maps": "https://www.google.com/maps/search/?api=1&query=L%E2%80%99instant+d%E2%80%99une+coupe+20+Rue+Louis+Breguet%2C+34830+Jacou",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Apparence Coiffure",
+      "type": "Coiffure",
+      "address": "3, Pl. Max Leenhardt, 34830 Clapiers",
+      "city": "Clapiers",
+      "phone": "04 67 59 20 01",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/apparence-coiffure-34830-clapiers",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Apparence+Coiffure+3%2C+Pl.+Max+Leenhardt%2C+34830+Clapiers",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Les maitres coiffeurs",
+      "type": "Coiffure",
+      "address": "4 Rue de l'Orée du Bois, 34830 Clapiers",
+      "city": "Clapiers",
+      "phone": "04 67 59 20 33",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/les-maitres-coiffeurs-34830-clapiers",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Les+maitres+coiffeurs+4+Rue+de+l%27Or%C3%A9e+du+Bois%2C+34830+Clapiers",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "L'Effet Salon - Salon de Coiffure Privé",
+      "type": "Coiffure",
+      "address": "2, Rue de Celestynów, 34830 Clapiers",
+      "city": "Clapiers",
+      "phone": "06 22 15 39 48",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/leffet-salon-salon-de-coiffure-prive-34830-clapiers",
+      "maps": "https://www.google.com/maps/search/?api=1&query=L%27Effet+Salon+-+Salon+de+Coiffure+Priv%C3%A9+2%2C+Rue+de+Celestyn%C3%B3w%2C+34830+Clapiers",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Mens Care",
+      "type": "Coiffure",
+      "address": "7, Rue de Valene, 34980 Saint-Gély-du-Fesc",
+      "city": "Saint-Gély-du-Fesc",
+      "phone": "04 67 84 48 88",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/mens-care-34980-saint-gely-du-fesc",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Mens+Care+7%2C+Rue+de+Valene%2C+34980+Saint-G%C3%A9ly-du-Fesc",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "C au carre",
+      "type": "Coiffure",
+      "address": "1015, Av. du Clapas, 34980 Saint-Gély-du-Fesc",
+      "city": "Saint-Gély-du-Fesc",
+      "phone": "04 67 63 20 53",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/c-au-carre-34980-saint-gely-du-fesc",
+      "maps": "https://www.google.com/maps/search/?api=1&query=C+au+carre+1015%2C+Av.+du+Clapas%2C+34980+Saint-G%C3%A9ly-du-Fesc",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Parten'hair",
+      "type": "Coiffure",
+      "address": "77 Rue de la Tour, 34980 Saint-Gély-du-Fesc",
+      "city": "Saint-Gély-du-Fesc",
+      "phone": "04 67 57 30 85",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/partenhair-34980-saint-gely-du-fesc",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Parten%27hair+77+Rue+de+la+Tour%2C+34980+Saint-G%C3%A9ly-du-Fesc",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Kasia taddio",
+      "type": "Coiffure",
+      "address": "1 Rue de l'Église, 34790 Grabels",
+      "city": "Grabels",
+      "phone": "04 67 75 23 00",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/kasia-34790-grabels",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Kasia+taddio+1+Rue+de+l%27%C3%89glise%2C+34790+Grabels",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Coiffure carine",
+      "type": "Coiffure",
+      "address": "Rue des Écoles, 34790 Grabels",
+      "city": "Grabels",
+      "phone": "04 67 75 50 93",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/coiffure-carine-34790-grabels",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Coiffure+carine+Rue+des+%C3%89coles%2C+34790+Grabels",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Excel Coiffure",
+      "type": "Coiffure",
+      "address": "Rue Nicolas Appert, 34790 Grabels",
+      "city": "Grabels",
+      "phone": "04 67 60 28 12",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/excel-coiffure-34790-grabels",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Excel+Coiffure+Rue+Nicolas+Appert%2C+34790+Grabels",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "KLV coiffure",
+      "type": "Coiffure",
+      "address": "2, Rue Nicolas Appert, 34790 Grabels",
+      "city": "Grabels",
+      "phone": "04 67 72 97 10",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/klv-coiffure-34790-grabels",
+      "maps": "https://www.google.com/maps/search/?api=1&query=KLV+coiffure+2%2C+Rue+Nicolas+Appert%2C+34790+Grabels",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Marc Coiffure",
+      "type": "Coiffure",
+      "address": "11ter, Rue de l'Enclos, 34570 Pignan",
+      "city": "Pignan",
+      "phone": "04 67 47 72 95",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/marc-coiffure-34570-pignan",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Marc+Coiffure+11ter%2C+Rue+de+l%27Enclos%2C+34570+Pignan",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Campillo Sonia",
+      "type": "Coiffure",
+      "address": "3, Plan de la Chapelle, 34570 Pignan",
+      "city": "Pignan",
+      "phone": "06 60 95 90 38",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/campillo-sonia-34570-pignan",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Campillo+Sonia+3%2C+Plan+de+la+Chapelle%2C+34570+Pignan",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Hair by Elsa",
+      "type": "Coiffure",
+      "address": "16, Rue Daniel Balavoine, 34570 Pignan",
+      "city": "Pignan",
+      "phone": "04 99 53 74 05",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/hair-stylist-by-elsa-34570-pignan",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Hair+by+Elsa+16%2C+Rue+Daniel+Balavoine%2C+34570+Pignan",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Les Ciseaux d’Alexandra",
+      "type": "Coiffure",
+      "address": "1, Rue Jeanne d'Arc, 34690 Fabrègues",
+      "city": "Fabrègues",
+      "phone": "09 88 44 82 33",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/mj-coiffure-et-esthetique-34690-fabregues",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Les+Ciseaux+d%E2%80%99Alexandra+1%2C+Rue+Jeanne+d%27Arc%2C+34690+Fabr%C3%A8gues",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "L'instant c",
+      "type": "Coiffure",
+      "address": "26 Avenue Charles de Gaulle, 34690 Fabrègues",
+      "city": "Fabrègues",
+      "phone": "04 67 22 40 69",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/linstant-c-34690-fabregues",
+      "maps": "https://www.google.com/maps/search/?api=1&query=L%27instant+c+26+Avenue+Charles+de+Gaulle%2C+34690+Fabr%C3%A8gues",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "L’éclat reflets",
+      "type": "Coiffure",
+      "address": "560, Rue des Genêts, 34750 Villeneuve-lès-Maguelone",
+      "city": "Villeneuve-lès-Maguelone",
+      "phone": "09 84 37 29 96",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/leclat-reflets-34750-villeneuve-les-maguelone",
+      "maps": "https://www.google.com/maps/search/?api=1&query=L%E2%80%99%C3%A9clat+reflets+560%2C+Rue+des+Gen%C3%AAts%2C+34750+Villeneuve-l%C3%A8s-Maguelone",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Ligne",
+      "type": "Coiffure",
+      "address": "Avenue Colonel Guizard, 34880 Lavérune",
+      "city": "Lavérune",
+      "phone": "04 67 47 40 08",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/selectifs-gec-coiffure-34880-laverune",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Ligne+Avenue+Colonel+Guizard%2C+34880+Lav%C3%A9rune",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Sandra & Sylvie - Coiffure & Esthétique",
+      "type": "Coiffure",
+      "address": "9 Rue des Capriers, 34880 Lavérune",
+      "city": "Lavérune",
+      "phone": "06 85 28 17 81",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/sandra-sylvie-coiffure-esthetique-34880-laverune",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Sandra+%26+Sylvie+-+Coiffure+%26+Esth%C3%A9tique+9+Rue+des+Capriers%2C+34880+Lav%C3%A9rune",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Men's Barber",
+      "type": "Barbier",
+      "address": "753, Route de la Pompignane, 34170 Castelnau-le-Lez",
+      "city": "Castelnau-le-Lez",
+      "phone": "06 99 45 66 12",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/mens-barber-34170-castelnau-le-lez",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Men%27s+Barber+753%2C+Route+de+la+Pompignane%2C+34170+Castelnau-le-Lez",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Barber Shups",
+      "type": "Barbier",
+      "address": "44, Rue Antoine-Jérôme Balard, 34790 Grabels",
+      "city": "Grabels",
+      "phone": "09 87 48 48 55",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/barber-shups-34790-grabels",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Barber+Shups+44%2C+Rue+Antoine-J%C3%A9r%C3%B4me+Balard%2C+34790+Grabels",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Institut Beauty House",
+      "type": "Institut de beauté",
+      "address": "3, Pl. Charles de Gaulle, 34170 Castelnau-le-Lez",
+      "city": "Castelnau-le-Lez",
+      "phone": "06 67 86 60 97",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/institut-beauty-house-34170-castelnau-le-lez",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Institut+Beauty+House+3%2C+Pl.+Charles+de+Gaulle%2C+34170+Castelnau-le-Lez",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Institut Daphné",
+      "type": "Institut de beauté",
+      "address": "Pl. Jacques d’Aragon, 34970 Lattes",
+      "city": "Lattes",
+      "phone": "04 67 65 65 24",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/institut-daphne-34970-lattes-yyv",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Institut+Daphn%C3%A9+Pl.+Jacques+d%E2%80%99Aragon%2C+34970+Lattes",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Estelle Esthetique",
+      "type": "Onglerie",
+      "address": "16, Gd Rue François Mitterrand, 34130 Mauguio",
+      "city": "Mauguio",
+      "phone": "04 48 79 00 23",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/estelle-esthetique-34130-mauguio",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Estelle+Esthetique+16%2C+Gd+Rue+Fran%C3%A7ois+Mitterrand%2C+34130+Mauguio",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Lauriane Beauté",
+      "type": "Onglerie",
+      "address": "20 Rue du Général Berthezene, 34740 Vendargues",
+      "city": "Vendargues",
+      "phone": "04 67 52 09 45",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/lauriane-beaute-34740-vendargues",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Lauriane+Beaut%C3%A9+20+Rue+du+G%C3%A9n%C3%A9ral+Berthezene%2C+34740+Vendargues",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Ophelia Institut",
+      "type": "Onglerie",
+      "address": "Avenue de Vendargue Espace Commercial Bocaud, 34830 Jacou",
+      "city": "Jacou",
+      "phone": "04 67 06 92 01",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/ophelia-institut-jacou-34830",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Ophelia+Institut+Avenue+de+Vendargue+Espace+Commercial+Bocaud%2C+34830+Jacou",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "A 7 Institut",
+      "type": "Onglerie",
+      "address": "Centre Commercial La Croisée, 1 Avenue de L'Europe, 34830 Clapiers",
+      "city": "Clapiers",
+      "phone": "04 99 67 72 23",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/a-7-institut-34830-clapiers",
+      "maps": "https://www.google.com/maps/search/?api=1&query=A+7+Institut+Centre+Commercial+La+Crois%C3%A9e%2C+1+Avenue+de+L%27Europe%2C+34830+Clapiers",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "L’Institut",
+      "type": "Onglerie",
+      "address": "321 Grand-Rue, 34980 Saint-Gély-du-Fesc",
+      "city": "Saint-Gély-du-Fesc",
+      "phone": "04 67 91 23 74",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/linstitut-saint-gely-du-fesc-34980",
+      "maps": "https://www.google.com/maps/search/?api=1&query=L%E2%80%99Institut+321+Grand-Rue%2C+34980+Saint-G%C3%A9ly-du-Fesc",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Amazonite Beauté",
+      "type": "Institut de beauté",
+      "address": "138, Av. de la Royale, 34160 Castries",
+      "city": "Castries",
+      "phone": "09 88 51 05 04",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/amazonite-beaute-34170-castelnau-le-lez",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Amazonite+Beaut%C3%A9+138%2C+Av.+de+la+Royale%2C+34160+Castries",
+      "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Melya Garden",
+      "type": "Onglerie",
+      "address": "475, Rte de Nîmes, 34170 Castelnau-le-Lez",
+      "city": "Castelnau-le-Lez",
+      "phone": "04 34 40 48 80",
+      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/melya-garden-34170-castelnau-le-lez",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Melya+Garden+475%2C+Rte+de+N%C3%AEmes%2C+34170+Castelnau-le-Lez",
+      "notes": "Lot Métropole Montpellier"
+    }
+  ]
 }

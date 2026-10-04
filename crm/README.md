@@ -19,7 +19,7 @@ Changer `CRM_PASSWORD` puis redéployer coupe l'accès à ceux qui ne connaissen
 
 ## Importer des leads
 
-`crm/data/leads.json` contient les lots déjà repérés (Embrun – Gap, Hérault – Gard). Pour les charger dans le CRM déployé, sans doublon :
+`crm/data/leads.json` contient les lots déjà repérés (Embrun – Gap, Hérault – Gard, Métropole Montpellier). Pour les charger dans le CRM déployé, sans doublon :
 
 ```bash
 CRM_URL=https://<url-du-crm> CRM_PASSWORD=<mot de passe> node crm/scripts/import.mjs
