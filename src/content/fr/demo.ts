@@ -2,6 +2,7 @@ import type { Establishment } from "@/server/auth/guards";
 import type { OpeningHourRow } from "@/server/app/hours";
 import type { EstablishmentPhoto } from "@/server/app/photos";
 import type { Practitioner } from "@/server/app/practitioners";
+import type { ServiceCategory } from "@/server/app/categories";
 import type { Service } from "@/server/app/services";
 
 /**
@@ -62,9 +63,11 @@ export const demoPhotos: EstablishmentPhoto[] = [
   { id: "p1", url: "/demo/salon.webp", source: "manual", sortOrder: 0 },
   { id: "p2", url: "/demo/soin-visage.webp", source: "manual", sortOrder: 1 },
   { id: "p3", url: "/demo/ongles.webp", source: "manual", sortOrder: 2 },
+  { id: "p4", url: "/demo/cils.webp", source: "manual", sortOrder: 3 },
+  { id: "p5", url: "/demo/mains.webp", source: "manual", sortOrder: 4 },
 ];
 
-const service = (id: string, name: string, description: string, durationMin: number, priceCents: number, photoUrl: string | null, sortOrder: number): Service => ({
+const service = (id: string, name: string, description: string, durationMin: number, priceCents: number, photoUrl: string | null, sortOrder: number, categoryId: string): Service => ({
   id,
   establishmentId: E,
   name,
@@ -76,13 +79,30 @@ const service = (id: string, name: string, description: string, durationMin: num
   sortOrder,
   practitionerIds: [],
   photoUrl,
+  categoryId,
 });
 
+/** Rubriques écrites par le salon fictif, comme le ferait un vrai établissement. */
+export const demoCategories: ServiceCategory[] = [
+  {
+    id: "c0",
+    title: "📌 À lire avant de réserver",
+    description:
+      "Merci d’arriver 5 minutes avant votre rendez-vous. En cas d’empêchement, prévenez-nous 24 h à l’avance : l’acompte est alors remboursé. Au-delà de 10 minutes de retard, le soin peut être écourté.",
+    sortOrder: 0,
+  },
+  { id: "c1", title: "✨ Soins du visage", description: null, sortOrder: 1 },
+  { id: "c2", title: "💅 Mains & ongles", description: "Dépose comprise dans toutes nos poses.", sortOrder: 2 },
+  { id: "c3", title: "👁 Regard", description: null, sortOrder: 3 },
+];
+
 export const demoServices: Service[] = [
-  service("s1", "Soin visage éclat", "Nettoyage, gommage, masque et modelage relaxant.", 60, 6500, "/demo/soin-visage.webp", 0),
-  service("s2", "Pose semi-permanent", "Sur ongles naturels, tenue trois semaines.", 60, 4000, "/demo/ongles.webp", 1),
-  service("s3", "Rehaussement de cils", "Avec teinture, pour un regard ouvert sans mascara.", 75, 5500, "/demo/cils.webp", 2),
-  service("s4", "Beauté des mains", "Limage, cuticules, soin hydratant et vernis.", 45, 3000, "/demo/mains.webp", 3),
+  service("s1", "Soin visage éclat", "Nettoyage, gommage, masque et modelage relaxant.", 60, 6500, "/demo/soin-visage.webp", 0, "c1"),
+  service("s5", "Soin express hydratant", "Nettoyage, sérum et masque en 30 minutes.", 30, 3500, null, 1, "c1"),
+  service("s2", "Pose semi-permanent", "Sur ongles naturels, tenue trois semaines.", 60, 4000, "/demo/ongles.webp", 2, "c2"),
+  service("s4", "Beauté des mains", "Limage, cuticules, soin hydratant et vernis.", 45, 3000, "/demo/mains.webp", 3, "c2"),
+  service("s3", "Rehaussement de cils", "Avec teinture, pour un regard ouvert sans mascara.", 75, 5500, "/demo/cils.webp", 4, "c3"),
+  service("s6", "Restructuration sourcils", "Épilation à la cire et au fil, avec teinture.", 30, 2500, null, 5, "c3"),
 ];
 
 export const demoPractitioners: Practitioner[] = [

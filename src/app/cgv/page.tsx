@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 /** CGV de l'abonnement Reso : essai, prix, paiement, durée, résiliation, suspension, données. */
 export default function CgvPage() {
-  const amounts = subscriptionAmounts(offer.monthlyPriceExVat, offer.vatRate);
+  const amounts = subscriptionAmounts(offer.monthlyPriceInclVat, offer.vatRate);
   const brand = offer.brandName;
   return (
     <SimplePage title="Conditions générales de vente" intro="Version du 30 septembre 2026. Elles s’appliquent à tout établissement qui crée un compte sur Reso.">
@@ -31,9 +31,9 @@ export default function CgvPage() {
 
       <h2>3. Prix</h2>
       <p>
-        L’abonnement est proposé à {formatEuros(amounts.exVatCents)} hors taxes par mois et par établissement, pour un
+        L’abonnement est proposé à {formatEuros(amounts.totalCents)} toutes taxes comprises par mois et par établissement, pour un
         établissement et {offer.practitionerLimit === null ? "un nombre illimité de praticiens (même prix quel que soit le nombre d’agendas)" : `jusqu’à ${offer.practitionerLimit} praticiens`}
-        {amounts.vatRate > 0 ? `, soit ${formatEuros(amounts.totalCents)} toutes taxes comprises (TVA ${amounts.vatRate.toLocaleString("fr-FR")} %)` : " (TVA non applicable, article 293 B du CGI)"}
+        {amounts.vatRate > 0 ? `, soit ${formatEuros(amounts.exVatCents)} hors taxes et ${formatEuros(amounts.vatCents)} de TVA (${amounts.vatRate.toLocaleString("fr-FR")} %)` : " (TVA non applicable, article 293 B du CGI)"}
         . {brand} ne prélève aucune commission sur les réservations
         {offer.platformFeePercent > 0
           ? `, hors encaissement en ligne facultatif décrit à l’article 4 (commission de ${offer.platformFeePercent.toLocaleString("fr-FR")} % des sommes encaissées)`

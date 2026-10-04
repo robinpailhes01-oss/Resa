@@ -3,7 +3,7 @@ export const NNBSP = " ";
 export const NBSP = " ";
 
 /**
- * Formate un montant en euros à la française : « 39 € » avec espace
+ * Formate un montant en euros à la française : « 29 € » avec espace
  * insécable, sans décimales inutiles (« 39,50 € » si nécessaire).
  */
 export function formatPrice(amount: number, currency: "EUR" = "EUR"): string {
@@ -18,14 +18,14 @@ export function formatPrice(amount: number, currency: "EUR" = "EUR"): string {
   return formatted.replace(/\s/g, NBSP);
 }
 
-/** « 39 € HT / mois » avec espaces insécables. */
-export function formatMonthlyPriceExVat(amount: number, currency: "EUR" = "EUR"): string {
-  return `${formatPrice(amount, currency)}${NBSP}HT${NBSP}/${NBSP}mois`;
+/** « 29 € TTC / mois » avec espaces insécables. */
+export function formatMonthlyPrice(amount: number, currency: "EUR" = "EUR"): string {
+  return `${formatPrice(amount, currency)}${NBSP}TTC${NBSP}/${NBSP}mois`;
 }
 
-/** « 39 € HT/mois » : version compacte pour les métadonnées. */
-export function formatMonthlyPriceExVatCompact(amount: number, currency: "EUR" = "EUR"): string {
-  return `${formatPrice(amount, currency)}${NBSP}HT/mois`;
+/** « 29 € TTC/mois » : version compacte pour les métadonnées. */
+export function formatMonthlyPriceCompact(amount: number, currency: "EUR" = "EUR"): string {
+  return `${formatPrice(amount, currency)}${NBSP}TTC/mois`;
 }
 
 /** Formate le nombre de praticiens : « jusqu'à 3 praticiens ». */

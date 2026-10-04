@@ -1,6 +1,6 @@
 import "server-only";
 import { offer } from "@/config/offer";
-import { GRACE_DAYS, RENEWAL_NOTICE_DAYS, addOneMonth, formatEuros, nextPeriod, paymentReference, subscriptionAmounts } from "@/lib/billing";
+import { GRACE_DAYS, RENEWAL_NOTICE_DAYS, addOneMonth, formatEuros, nextPeriod, paymentReference, splitTotal, subscriptionAmounts } from "@/lib/billing";
 import { getEmailSender } from "@/server/email";
 import { getSql } from "@/server/db";
 import * as mollie from "@/server/mollie";
@@ -113,7 +113,7 @@ export function billingProvider(): BillingProvider | null {
 }
 
 export function amounts() {
-  return subscriptionAmounts(offer.monthlyPriceExVat, offer.vatRate);
+  return subscriptionAmounts(offer.monthlyPriceInclVat, offer.vatRate);
 }
 
 export async function listPayments(establishmentId: string): Promise<Payment[]> {
@@ -233,7 +233,8 @@ async function applyPaid(row: Row, now: Date, extra: { transactionCode: string |
       mollie_mandate_id = coalesce(${extra.mandateId ?? null}, e.mollie_mandate_id)
     from users u where e.id = ${row.establishment_id} and u.id = e.owner_user_id
     returning e.name, u.email as owner_email, e.paid_until`;
-  const a = amounts();
+  // Montants réellement encaissés (un ancien abonnement peut porter l'ancien tarif).
+  const a = { exVatCents: paid.amount_cents - paid.vat_cents, vatCents: paid.vat_cents, totalCents: paid.amount_cents, vatRate: offer.vatRate };
   if (est) {
     const invoiceRow = await loadInvoiceRow(paid.id);
     const attachment = invoiceRow && paid.invoice_number ? { filename: invoiceFilename(paid.invoice_number), content: renderInvoicePdf(invoiceData(invoiceRow)) } : undefined;
@@ -285,7 +286,10 @@ async function ensureMollieSubscription(establishmentId: string): Promise<void> 
   if (!est || !est.mollie_customer_id || est.cancel_at_period_end || !est.paid_until) return;
   if (est.mollie_subscription_id) {
     const current = await mollie.getSubscription(est.mollie_customer_id, est.mollie_subscription_id).catch(() => null);
-    if (current && (current.status === "active" || current.status === "pending")) return;
+    if (current && (current.status === "active" || current.status === "pending")) {
+      await alignSubscriptionAmount(est.mollie_customer_id, current);
+      return;
+    }
   }
   const description = `${offer.brandName} · abonnement ${est.name}`;
   const existing = await findMollieSubscription(est.mollie_customer_id, description);
@@ -315,6 +319,31 @@ async function ensureMollieSubscription(establishmentId: string): Promise<void> 
     subscriptionId = raced.id;
   }
   await getSql()`update establishments set mollie_subscription_id = ${subscriptionId} where id = ${est.id}`;
+}
+
+/** Abonnement Mollie créé à un ancien tarif : les prochains prélèvements passent au tarif actuel. */
+async function alignSubscriptionAmount(customerId: string, subscription: mollie.MollieSubscription): Promise<boolean> {
+  const target = amounts().totalCents;
+  if (subscription.amountCents == null || subscription.amountCents === target) return false;
+  await mollie.updateSubscriptionAmount(customerId, subscription.id, target);
+  return true;
+}
+
+/** Tâche quotidienne : aligne tous les abonnements automatiques sur le tarif actuel. */
+async function alignAllSubscriptionAmounts(): Promise<number> {
+  const rows = await getSql()<Array<{ id: string; mollie_customer_id: string; mollie_subscription_id: string }>>`
+    select id, mollie_customer_id, mollie_subscription_id from establishments
+    where mollie_customer_id is not null and mollie_subscription_id is not null and not cancel_at_period_end`;
+  let updated = 0;
+  for (const r of rows) {
+    try {
+      const sub = await mollie.getSubscription(r.mollie_customer_id, r.mollie_subscription_id);
+      if (sub && (sub.status === "active" || sub.status === "pending") && (await alignSubscriptionAmount(r.mollie_customer_id, sub))) updated += 1;
+    } catch (error) {
+      console.error("[billing] tarif abonnement", r.id, error instanceof Error ? error.message : error);
+    }
+  }
+  return updated;
 }
 
 async function findMollieSubscription(customerId: string, description: string): Promise<{ id: string } | null> {
@@ -375,10 +404,11 @@ export async function handleMolliePayment(paymentId: string, now = new Date()): 
       : [];
   if (!est) return "ignored";
   const period = nextPeriod(est.paid_until ? new Date(est.paid_until) : null, now);
-  const a = amounts();
+  // TVA calculée sur le montant réellement prélevé (un ancien abonnement peut encore porter l'ancien tarif).
+  const a = payment.amountCents ? splitTotal(payment.amountCents, offer.vatRate) : amounts();
   const [row] = await sql<Row[]>`
     insert into payments (establishment_id, provider, checkout_id, checkout_reference, amount_cents, vat_cents, period_start, period_end, status)
-    values (${est.id}, 'mollie', ${payment.id}, ${paymentReference(est.id, period.start)}, ${payment.amountCents || a.totalCents}, ${a.vatCents}, ${period.start}, ${period.end}, 'pending')
+    values (${est.id}, 'mollie', ${payment.id}, ${paymentReference(est.id, period.start)}, ${a.totalCents}, ${a.vatCents}, ${period.start}, ${period.end}, 'pending')
     on conflict (checkout_id) do update set last_checked_at = ${now} returning *`;
   if (payment.status === "paid") {
     await applyPaid(row, now, { transactionCode: payment.id, mandateId: payment.mandateId, method: payment.method });
@@ -395,9 +425,9 @@ export async function handleMolliePayment(paymentId: string, now = new Date()): 
  * Tâche quotidienne : vérification des paiements en attente, résiliations en
  * fin de période, relances (SumUp) et suspension après le délai de tolérance.
  */
-export async function runBillingCycle(now = new Date()): Promise<{ reminders: number; pastDue: number; cancelled: number; confirmed: number; invoices: number }> {
+export async function runBillingCycle(now = new Date()): Promise<{ reminders: number; pastDue: number; cancelled: number; confirmed: number; invoices: number; repriced: number }> {
   const sql = getSql();
-  const summary = { reminders: 0, pastDue: 0, cancelled: 0, confirmed: 0, invoices: 0 };
+  const summary = { reminders: 0, pastDue: 0, cancelled: 0, confirmed: 0, invoices: 0, repriced: 0 };
   const provider = billingProvider();
 
   summary.invoices = await issueMissingInvoices(now);
@@ -412,6 +442,8 @@ export async function runBillingCycle(now = new Date()): Promise<{ reminders: nu
   summary.cancelled = cancelled.length;
 
   if (!provider) return summary;
+
+  if (provider === "mollie") summary.repriced = await alignAllSubscriptionAmounts();
 
   if (provider === "sumup") {
     const due = await sql<Array<{ id: string; name: string; paid_until: Date; owner_email: string }>>`

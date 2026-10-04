@@ -15,7 +15,7 @@ export interface ProspectionEmailInput {
   trialUrl: string;
   /** Lien de désinscription en un clic. */
   unsubscribeUrl: string;
-  /** Prix mensuel affiché (« 39 € HT »). */
+  /** Prix mensuel affiché (« 29 € TTC »). */
   priceLabel: string;
   /** Durée d'essai en jours, ou null si désactivée. */
   trialDays: number | null;

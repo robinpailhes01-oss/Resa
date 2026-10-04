@@ -75,7 +75,7 @@ tests                      tests unitaires et d'intégration
 
 Toutes les valeurs affichées (prix, nombre de praticiens, CTA, métadonnées) dérivent de `src/config/offer.ts`, alimenté par les variables `RESO_*` (voir `.env.example`).
 
-- **Changer le prix** : `RESO_MONTHLY_PRICE_EX_VAT=39` puis rebuild. Le format français avec espaces insécables est appliqué partout.
+- **Changer le prix** : `RESO_MONTHLY_PRICE_TTC=29` (prix toutes taxes comprises ; HT et TVA en sont déduits) puis rebuild. Les abonnements Mollie en cours sont alignés au cycle quotidien. Le format français avec espaces insécables est appliqué partout.
 - **Passer en mode live** : `RESO_LAUNCH_MODE=live`. Les CTA deviennent « Créer mon compte » vers `/inscription`, le lien Connexion vers `/connexion` (surchargeables par `RESO_SIGNUP_URL` et `RESO_LOGIN_URL`, chemins internes ou URLs HTTPS), le formulaire d'attente est remplacé par un bloc CTA et les textes (FAQ, mentions) basculent. `RESO_TRIAL_DAYS` ne doit être renseigné qu'une fois l'essai validé. L'application elle-même (`/inscription`, `/app`, `/r/<slug>`) fonctionne dans les deux modes, avec une base de données.
 - **Pages légales** : `RESO_LEGAL_ENTITY`, `RESO_HOSTING_PROVIDER`, `RESO_SUPPORT_EMAIL`, `RESO_PUBLICATION_DIRECTOR`. Tant qu'elles manquent, les pages affichent un bandeau « préproduction » et n'inventent rien.
 - **Indexation** : `RESO_INDEXABLE=true` uniquement en production validée (sinon `noindex` et `robots.txt` bloquant).

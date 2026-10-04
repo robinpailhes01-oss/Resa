@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatMonthlyPriceExVat, formatMonthlyPriceExVatCompact, formatPractitioners, formatPrice, NBSP } from "@/lib/format";
+import { formatMonthlyPrice, formatMonthlyPriceCompact, formatPractitioners, formatPrice, NBSP } from "@/lib/format";
 
 describe("formatPrice", () => {
   it("formate 39 € avec espace insécable et sans décimales", () => {
@@ -9,8 +9,8 @@ describe("formatPrice", () => {
     expect(formatPrice(39.5)).toBe(`39,50${NBSP}€`);
   });
   it("compose les mentions HT / mois", () => {
-    expect(formatMonthlyPriceExVat(39)).toBe(`39${NBSP}€${NBSP}HT${NBSP}/${NBSP}mois`);
-    expect(formatMonthlyPriceExVatCompact(39)).toBe(`39${NBSP}€${NBSP}HT/mois`);
+    expect(formatMonthlyPrice(29)).toBe(`29${NBSP}€${NBSP}TTC${NBSP}/${NBSP}mois`);
+    expect(formatMonthlyPriceCompact(29)).toBe(`29${NBSP}€${NBSP}TTC/mois`);
   });
   it("accorde le nombre de praticiens", () => {
     expect(formatPractitioners(3)).toBe(`jusqu’à 3${NBSP}praticiens`);

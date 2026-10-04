@@ -116,6 +116,9 @@ export default async function MaPage() {
             <Button href="/app/prestations" size="compact" variant="secondary">
               {t.services.manage}
             </Button>
+            <Button href="/app/prestations#rubriques" size="compact" variant="secondary">
+              {t.services.organize}
+            </Button>
           </div>
         </div>
         {services.length === 0 ? (

@@ -132,7 +132,18 @@ export interface MollieSubscription {
   status: string;
   nextPaymentDate: string | null;
   description?: string | null;
+  /** Montant prélevé à chaque échéance (centimes) ; null si Mollie ne l'a pas renvoyé. */
+  amountCents?: number | null;
 }
+
+type SubscriptionData = { id: string; status: string; nextPaymentDate?: string; description?: string; amount?: { value: string } };
+const subscriptionOf = (s: SubscriptionData): MollieSubscription => ({
+  id: s.id,
+  status: s.status,
+  nextPaymentDate: s.nextPaymentDate ?? null,
+  description: s.description ?? null,
+  amountCents: s.amount ? Math.round(Number(s.amount.value) * 100) : null,
+});
 
 /** Abonnement mensuel : Mollie prélève seul à chaque échéance et prévient le webhook. */
 export async function createSubscription(
@@ -153,8 +164,7 @@ export async function createSubscription(
 
 export async function getSubscription(customerId: string, subscriptionId: string, fetchImpl?: typeof fetch): Promise<MollieSubscription | null> {
   try {
-    const data = await call<{ id: string; status: string; nextPaymentDate?: string }>(`/customers/${encodeURIComponent(customerId)}/subscriptions/${encodeURIComponent(subscriptionId)}`, {}, fetchImpl);
-    return { id: data.id, status: data.status, nextPaymentDate: data.nextPaymentDate ?? null };
+    return subscriptionOf(await call<SubscriptionData>(`/customers/${encodeURIComponent(customerId)}/subscriptions/${encodeURIComponent(subscriptionId)}`, {}, fetchImpl));
   } catch (error) {
     if (error instanceof MollieError && error.status === 404) return null;
     throw error;
@@ -163,12 +173,21 @@ export async function getSubscription(customerId: string, subscriptionId: string
 
 /** Abonnements d'un client (pour retrouver un abonnement déjà créé, p. ex. après une notification simultanée). */
 export async function listSubscriptions(customerId: string, fetchImpl?: typeof fetch): Promise<MollieSubscription[]> {
-  const data = await call<{ _embedded?: { subscriptions?: Array<{ id: string; status: string; nextPaymentDate?: string; description?: string }> } }>(
+  const data = await call<{ _embedded?: { subscriptions?: SubscriptionData[] } }>(
     `/customers/${encodeURIComponent(customerId)}/subscriptions?limit=50`,
     {},
     fetchImpl,
   );
-  return (data._embedded?.subscriptions ?? []).map((s) => ({ id: s.id, status: s.status, nextPaymentDate: s.nextPaymentDate ?? null, description: s.description ?? null }));
+  return (data._embedded?.subscriptions ?? []).map(subscriptionOf);
+}
+
+/** Change le montant des prochains prélèvements (changement de tarif). */
+export async function updateSubscriptionAmount(customerId: string, subscriptionId: string, amountCents: number, fetchImpl?: typeof fetch): Promise<void> {
+  await call(
+    `/customers/${encodeURIComponent(customerId)}/subscriptions/${encodeURIComponent(subscriptionId)}`,
+    { method: "PATCH", body: JSON.stringify({ amount: euros(amountCents) }) },
+    fetchImpl,
+  );
 }
 
 export async function cancelSubscription(customerId: string, subscriptionId: string, fetchImpl?: typeof fetch): Promise<void> {

@@ -27,6 +27,7 @@ import { listReviews } from "@/server/app/reviews";
 import { EstablishmentPage } from "@/components/booking/EstablishmentPage";
 import { listPractitioners } from "@/server/app/practitioners";
 import { listServices } from "@/server/app/services";
+import { listCategories } from "@/server/app/categories";
 import { cn } from "@/lib/cn";
 import { canAcceptOnlineBookings, resolveAccess } from "@/lib/trial";
 
@@ -105,17 +106,19 @@ export default async function ReservationPage({
 
   // Étape 1 : fiche de l'établissement (photos, prestations, équipe, horaires)
   if (!service) {
-    const [hours, photos, paymentLabel, reviews] = await Promise.all([
+    const [categories, hours, photos, paymentLabel, reviews] = await Promise.all([
+      listCategories(establishment.id),
       listOpeningHours(establishment.id, null),
       listPhotos(establishment.id),
       publicPaymentLabel(establishment, formatPriceCents),
       listReviews(establishment.id, { visibleOnly: true }),
     ]);
     return (
-      <BookingShell establishment={establishment} wide hideTitle>
+      <BookingShell establishment={establishment} hideTitle>
         <EstablishmentPage
           establishment={establishment}
           services={services}
+          categories={categories}
           practitioners={practitioners}
           hours={hours}
           photos={photos}

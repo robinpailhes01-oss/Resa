@@ -1,18 +1,25 @@
 import { ActionForm, type FormAction } from "@/components/app/ActionForm";
-import { Checkbox, Grid2, TextArea, TextInput } from "@/components/app/Fields";
+import { Checkbox, Grid2, SelectInput, TextArea, TextInput } from "@/components/app/Fields";
 import { Button } from "@/components/ui/Button";
 import type { Practitioner } from "@/server/app/practitioners";
 import type { Service } from "@/server/app/services";
+import type { ServiceCategory } from "@/server/app/categories";
+import { categoriesEditor } from "@/content/fr/app";
 
 export function ServiceForm({
   action,
   service,
   practitioners,
+  categories = [],
+  defaultCategoryId = null,
   submitLabel,
 }: {
   action: FormAction;
   service?: Service;
   practitioners: Practitioner[];
+  /** Rubriques de la page ; le choix n'apparaît que s'il en existe. */
+  categories?: ServiceCategory[];
+  defaultCategoryId?: string | null;
   submitLabel: string;
 }) {
   return (
@@ -36,6 +43,16 @@ export function ServiceForm({
           maxLength={80}
           defaultValue={service?.name}
         />
+        {categories.length > 0 ? (
+          <SelectInput
+            id="categoryId"
+            name="categoryId"
+            label={categoriesEditor.serviceField}
+            help={categoriesEditor.serviceFieldHelp}
+            defaultValue={service ? (service.categoryId ?? "") : (defaultCategoryId ?? "")}
+            options={[{ value: "", label: categoriesEditor.none }, ...categories.map((c) => ({ value: c.id, label: c.title }))]}
+          />
+        ) : null}
         <Grid2>
           <TextInput
             id="durationMin"

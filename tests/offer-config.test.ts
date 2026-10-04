@@ -4,7 +4,7 @@ import { __internal } from "@/config/offer";
 const { buildConfig } = __internal;
 
 describe("configuration commerciale", () => {
-  it("démarre en pré-lancement par défaut avec 39 € et 3 praticiens (F01, F02)", () => {
+  it("démarre en pré-lancement par défaut avec 29 € TTC et 3 praticiens (F01, F02)", () => {
     const config = buildConfig({});
     expect(config.platformFeePercent).toBe(2);
     expect(config.social).toEqual({ instagram: null, tiktok: null, facebook: null, linkedin: null });
@@ -13,7 +13,7 @@ describe("configuration commerciale", () => {
     expect(buildConfig({ MOLLIE_PLATFORM_FEE_PERCENT: "1,5" }).platformFeePercent).toBe(1.5);
     expect(() => buildConfig({ MOLLIE_PLATFORM_FEE_PERCENT: "25" })).toThrow(/entre 0 et 10/);
     expect(config.launchMode).toBe("prelaunch");
-    expect(config.monthlyPriceExVat).toBe(39);
+    expect(config.monthlyPriceInclVat).toBe(29);
     expect(config.practitionerLimit).toBeNull();
     expect(buildConfig({ RESO_PRACTITIONER_LIMIT: "3" }).practitionerLimit).toBe(3);
     expect(buildConfig({ RESO_PRACTITIONER_LIMIT: "illimité" }).practitionerLimit).toBeNull();
@@ -49,7 +49,9 @@ describe("configuration commerciale", () => {
 
   it("refuse un mode inconnu et un prix invalide", () => {
     expect(() => buildConfig({ RESO_LAUNCH_MODE: "beta" })).toThrow(/inconnu/);
-    expect(() => buildConfig({ RESO_MONTHLY_PRICE_EX_VAT: "gratuit" })).toThrow(/invalide/);
+    expect(() => buildConfig({ RESO_MONTHLY_PRICE_TTC: "gratuit" })).toThrow(/invalide/);
+    // L'ancienne variable HT ne peut plus écraser le tarif TTC.
+    expect(buildConfig({ RESO_MONTHLY_PRICE_EX_VAT: "39" }).monthlyPriceInclVat).toBe(29);
   });
 
   it("refuse une adresse de contact masquée ou invalide, accepte une adresse en clair", () => {

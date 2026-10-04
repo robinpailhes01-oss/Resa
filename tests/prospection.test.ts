@@ -99,7 +99,7 @@ describe("prospection : calendrier et récap", () => {
       providerLabel: "Planity",
       trialUrl: "https://www.reso-app.fr/?utm_source=prospection",
       unsubscribeUrl: "https://www.reso-app.fr/ne-plus-me-contacter?token=abc",
-      priceLabel: "39 € HT",
+      priceLabel: "29 € TTC",
       trialDays: 7,
       senderName: "Robin Pailhes",
       brandName: "Reso",
@@ -107,7 +107,7 @@ describe("prospection : calendrier et récap", () => {
     };
     const first = prospectionContent.first(input).join("\n");
     expect(first).toContain("Barber Club utilise Planity");
-    expect(first).toContain("39 € HT par mois");
+    expect(first).toContain("29 € TTC par mois");
     expect(first).toContain("7 jours gratuits");
     expect(first.length).toBeLessThan(520);
     expect(first).not.toMatch(/SMS|Harmonie/i);

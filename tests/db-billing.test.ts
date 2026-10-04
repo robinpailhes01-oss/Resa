@@ -13,7 +13,7 @@ if (url) {
   process.env.EMAIL_PROVIDER = "console";
 }
 
-const mollieState = { payments: new Map<string, Record<string, unknown>>(), subscriptions: [] as Array<Record<string, unknown>>, cancelled: [] as string[], mandateValid: true };
+const mollieState = { payments: new Map<string, Record<string, unknown>>(), subscriptions: [] as Array<Record<string, unknown>>, cancelled: [] as string[], mandateValid: true, subAmounts: new Map<string, number>() };
 
 vi.mock("@/server/mollie", () => ({
   isMollieConfigured: () => true,
@@ -35,7 +35,10 @@ vi.mock("@/server/mollie", () => ({
     mollieState.subscriptions.push(sub);
     return { id: sub.id, status: "active", nextPaymentDate: input.startDate as string };
   }),
-  getSubscription: vi.fn(async (_c: string, id: string) => (mollieState.cancelled.includes(id) ? null : { id, status: "active", nextPaymentDate: null })),
+  getSubscription: vi.fn(async (_c: string, id: string) => (mollieState.cancelled.includes(id) ? null : { id, status: "active", nextPaymentDate: null, amountCents: mollieState.subAmounts.get(id) ?? null })),
+  updateSubscriptionAmount: vi.fn(async (_c: string, id: string, amountCents: number) => {
+    mollieState.subAmounts.set(id, amountCents);
+  }),
   listSubscriptions: vi.fn(async () => mollieState.subscriptions.filter((s) => !mollieState.cancelled.includes(s.id as string)).map((s) => ({ id: s.id as string, status: "active", nextPaymentDate: null, description: (s.description as string) ?? null }))),
   cancelSubscription: vi.fn(async (_c: string, id: string) => {
     mollieState.cancelled.push(id);
@@ -162,9 +165,20 @@ describe.skipIf(!url)("abonnement Mollie", () => {
     const pdf = await billing.invoicePdf(establishmentId, (await sql`select id from payments where establishment_id = ${establishmentId} order by created_at limit 1`)[0].id);
     expect(pdf?.filename).toMatch(/^facture-reso-/);
     expect(Buffer.from(pdf!.content).toString("latin1").startsWith("%PDF")).toBe(true);
+    // Prélèvement à l'ancien tarif (46,80 €) : TVA calculée sur le montant réellement prélevé.
+    expect(await sql`select amount_cents, vat_cents from payments where checkout_id = 'tr_rec_1'`).toMatchObject([{ amount_cents: 4680, vat_cents: 780 }]);
     // Rejouer le même webhook n'ajoute rien.
     await billing.handleMolliePayment("tr_rec_1", later);
     expect(await sql`select count(*)::int as n from payments where establishment_id = ${establishmentId} and status = 'paid'`).toMatchObject([{ n: 2 }]);
+  });
+
+  it("changement de tarif → les abonnements Mollie en cours passent au nouveau prix TTC", async () => {
+    const billing = await import("@/server/app/billing");
+    mollieState.subAmounts.set("sub_1", 4680);
+    const summary = await billing.runBillingCycle(new Date("2026-11-02T06:00:00Z"));
+    expect(summary.repriced).toBe(1);
+    expect(mollieState.subAmounts.get("sub_1")).toBe(2900);
+    expect((await billing.runBillingCycle(new Date("2026-11-02T07:00:00Z"))).repriced).toBe(0);
   });
 
   it("prélèvement échoué → paiement en échec, période inchangée ; résiliation arrête l'abonnement Mollie", async () => {

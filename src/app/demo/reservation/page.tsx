@@ -5,7 +5,7 @@ import { BookingShell } from "@/components/booking/BookingShell";
 import { EstablishmentPage } from "@/components/booking/EstablishmentPage";
 import { Button } from "@/components/ui/Button";
 import { offer } from "@/config/offer";
-import { demoCopy, demoEstablishment, demoHours, demoPhotos, demoPractitioners, demoReviews, demoServices } from "@/content/fr/demo";
+import { demoCategories, demoCopy, demoEstablishment, demoHours, demoPhotos, demoPractitioners, demoReviews, demoServices } from "@/content/fr/demo";
 import { byMode, cta } from "@/content/fr/landing";
 import { formatPriceCents } from "@/lib/time";
 import { describePaymentRule } from "@/lib/booking-payment";
@@ -25,8 +25,8 @@ export default async function DemoPage({ searchParams }: { searchParams: Promise
 
   return (
     <>
-      <div className="sticky top-0 z-30 bg-ink text-page">
-        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-2.5 text-[13px]">
+      <div className="bg-ink text-page">
+        <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-2.5 text-[13px]">
           <p className="flex items-center gap-2">
             <Sparkles aria-hidden="true" className="size-4 shrink-0 text-accent" />
             {demoCopy.banner}
@@ -36,7 +36,7 @@ export default async function DemoPage({ searchParams }: { searchParams: Promise
           </Link>
         </div>
       </div>
-      <BookingShell establishment={demoEstablishment} wide hideTitle>
+      <BookingShell establishment={demoEstablishment} hideTitle>
         {chosen ? (
           <div className="mx-auto max-w-xl rounded-[24px] bg-card p-6 text-center ring-1 ring-line md:p-8">
             <p className="text-[13px] font-semibold uppercase tracking-[0.12em] text-ink-muted">
@@ -55,6 +55,7 @@ export default async function DemoPage({ searchParams }: { searchParams: Promise
           <EstablishmentPage
             establishment={demoEstablishment}
             services={demoServices}
+            categories={demoCategories}
             practitioners={demoPractitioners}
             hours={demoHours}
             photos={demoPhotos}

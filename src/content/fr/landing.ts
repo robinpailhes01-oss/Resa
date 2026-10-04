@@ -7,17 +7,17 @@
  */
 import { offer, type LaunchMode } from "@/config/offer";
 import {
-  formatMonthlyPriceExVat,
-  formatMonthlyPriceExVatCompact,
+  formatMonthlyPrice,
+  formatMonthlyPriceCompact,
   formatPractitioners,
   formatPrice,
   NBSP,
 } from "@/lib/format";
 
-/** « 39 € HT / mois » (phrases) et « 39 € » (affichage grand format, unité séparée). */
-const price = formatMonthlyPriceExVat(offer.monthlyPriceExVat, offer.currency);
-const priceAmount = formatPrice(offer.monthlyPriceExVat, offer.currency);
-const priceCompact = formatMonthlyPriceExVatCompact(offer.monthlyPriceExVat, offer.currency);
+/** « 29 € TTC / mois » (phrases) et « 29 € » (affichage grand format, unité séparée). */
+const price = formatMonthlyPrice(offer.monthlyPriceInclVat, offer.currency);
+const priceAmount = formatPrice(offer.monthlyPriceInclVat, offer.currency);
+const priceCompact = formatMonthlyPriceCompact(offer.monthlyPriceInclVat, offer.currency);
 const practitioners = formatPractitioners(offer.practitionerLimit);
 const unlimitedAgendas = offer.practitionerLimit === null;
 /** Message clé du tarif : le prix ne dépend pas du nombre d'agendas. */
@@ -277,24 +277,23 @@ export const pricing = {
       ],
     },
     {
-      value: "equipe",
-      label: "Petite équipe",
-      name: "Vous êtes plusieurs au salon",
-      description: "Chaque praticien a son agenda, vous gardez la vue d’ensemble, et vos clients choisissent avec qui réserver.",
+      value: "avenir",
+      label: "À venir",
+      name: "Ce qu’on prépare pour vous",
+      description: "Voici les prochaines nouveautés que nous préparons, pensées pour remplir votre agenda et fidéliser vos clientes.",
       features: [
-        unlimitedAgendas ? "Un agenda par praticien, autant que vous voulez, au même prix" : `Agenda pour ${practitioners}, au même prix`,
-        "Un agenda par praticien et une vue d’ensemble",
-        "Prestations réalisées par un ou plusieurs praticiens",
-        "Vos clients choisissent avec qui réserver",
-        "Confirmations, rappels et demandes d’avis par email",
-        "Acomptes en ligne avec Mollie (facultatif)",
-        `Sans commission de réservation prélevée par ${brand}`,
+        "Création de stories Instagram personnalisées",
+        "Relances aidées par l’IA",
+        "Agent IA intégré pour répondre aux questions",
+        "Carte de fidélité automatisée",
+        "Cartes cadeaux",
+        "Et bien plus encore",
       ],
     },
   ] satisfies PricingProfile[],
   priceCaption: { prelaunch: "Tarif prévu au lancement", live: null } satisfies ByMode<string | null>,
   price: priceAmount,
-  priceUnit: `HT${NBSP}/${NBSP}mois`,
+  priceUnit: `TTC${NBSP}/${NBSP}mois`,
   billing: { prelaunch: "Un établissement, facturé chaque mois", live: "Facturé chaque mois, sans engagement de durée" } satisfies ByMode<string>,
   scope: unlimitedAgendas ? `Un établissement${NBSP}· ${samePrice}` : `Un établissement${NBSP}· ${capitalize(practitioners)}`,
   highlights: [

@@ -1,10 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { addOneMonth, formatEuros, nextPeriod, subscriptionAmounts } from "@/lib/billing";
+import { addOneMonth, formatEuros, nextPeriod, splitTotal, subscriptionAmounts } from "@/lib/billing";
 
 describe("facturation", () => {
   it("calcule HT, TVA et TTC", () => {
-    expect(subscriptionAmounts(39, 20)).toEqual({ exVatCents: 3900, vatCents: 780, totalCents: 4680, vatRate: 20 });
-    expect(subscriptionAmounts(39, 0).totalCents).toBe(3900);
+    // Prix fixé TTC : 29 € TTC = 24,17 € HT + 4,83 € de TVA.
+    expect(subscriptionAmounts(29, 20)).toEqual({ exVatCents: 2417, vatCents: 483, totalCents: 2900, vatRate: 20 });
+    expect(subscriptionAmounts(29, 0)).toEqual({ exVatCents: 2900, vatCents: 0, totalCents: 2900, vatRate: 0 });
+    expect(splitTotal(4680, 20)).toEqual({ exVatCents: 3900, vatCents: 780, totalCents: 4680, vatRate: 20 });
     expect(formatEuros(4680).replace(/ | /g, " ")).toBe("46,80 €");
   });
   it("ajoute un mois calendaire et enchaîne les périodes", () => {
