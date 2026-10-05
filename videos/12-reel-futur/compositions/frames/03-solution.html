@@ -467,12 +467,12 @@
     }
   </style>
 
-  <div id="root" data-composition-id="03-solution" data-start="0" data-duration="9.7" data-width="1920" data-height="1080">
-    <div id="f03-bg" class="clip" data-start="0" data-duration="9.7" data-track-index="0">
+  <div id="root" data-composition-id="03-solution" data-start="0" data-duration="8.9" data-width="1920" data-height="1080">
+    <div id="f03-bg" class="clip" data-start="0" data-duration="8.9" data-track-index="0">
       <div id="f03-halo"></div>
     </div>
 
-    <div id="f03-cam" class="clip" data-layout-allow-overflow data-start="0" data-duration="9.7" data-track-index="1">
+    <div id="f03-cam" class="clip" data-layout-allow-overflow data-start="0" data-duration="8.9" data-track-index="1">
       <!-- scene 1 -->
       <div id="f03-avec">
         <span class="f03-w" id="f03-avec-word"><span class="f03-wi">Avec</span></span>
@@ -569,16 +569,16 @@
     </div>
 
     <!-- countdown chip -->
-    <div id="f03-chip" class="clip" data-start="0" data-duration="9.7" data-track-index="2">
+    <div id="f03-chip" class="clip" data-start="0" data-duration="8.9" data-track-index="2">
       <svg viewBox="0 0 24 24" fill="none" stroke="#FBF6EA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13.5" r="7.5" /><path d="M12 13.5V9.8" /><path d="M9.5 2.8h5" /><path d="M18.4 6.6l1.4-1.4" /></svg>
-      <div id="f03-chip-val">0:32</div>
+      <div id="f03-chip-val">0:30</div>
     </div>
   </div>
 
   <script>
     (function () {
       var ID = "03-solution";
-      var GLOBAL_START = 13.4;
+      var GLOBAL_START = 15.6;
       var CREAM = "#FBF6EA";
       var DIM = "rgba(251, 246, 234, 0.38)";
       var q = function (s) {
@@ -605,8 +605,8 @@
         clock,
         { t: 0 },
         {
-          t: 9.2,
-          duration: 9.2,
+          t: 8.9,
+          duration: 8.9,
           ease: "none",
           onUpdate: function () {
             chipVal.textContent = chipText(clock.t);
@@ -616,8 +616,8 @@
       );
 
       // ---------- camera: slow continuous push ----------
-      tl.fromTo("#f03-cam", { scale: 1 }, { scale: 1.03, duration: 9.2, ease: "sine.inOut" }, 0);
-      tl.fromTo("#f03-halo", { x: -60, opacity: 0.7 }, { x: 60, opacity: 1, duration: 9.2, ease: "sine.inOut" }, 0);
+      tl.fromTo("#f03-cam", { scale: 1 }, { scale: 1.03, duration: 8.9, ease: "sine.inOut" }, 0);
+      tl.fromTo("#f03-halo", { x: -60, opacity: 0.7 }, { x: 60, opacity: 1, duration: 8.9, ease: "sine.inOut" }, 0);
 
       // helpers
       function wordsIn(sel, at) {
@@ -637,72 +637,72 @@
         tl.to(sel, { y: -46, opacity: 0, filter: "blur(10px)", duration: 0.24, ease: "power2.in" }, at);
       }
 
-      // ================= Scene 1 (0.0–0.9) « Avec reso, » =================
+      // ================= Scene 1 (0.0–0.86) « Avec reso, » =================
       tl.fromTo("#f03-avec-word", { y: 60, opacity: 0, scale: 0.9 }, { y: 0, opacity: 1, scale: 1, duration: 0.4, ease: "expo.out" }, 0.02);
-      lit("#f03-avec", 0, 0.1);
+      lit("#f03-avec", 0, 0.13);
       tl.fromTo(
         "#f03-avec-logo",
         { clipPath: "inset(0% 100% 0% 0%)", scale: 1.12, y: 10 },
         { clipPath: "inset(0% 0% 0% 0%)", scale: 1, y: 0, duration: 0.42, ease: "expo.out" },
-        0.3
+        0.33
       );
-      tl.fromTo("#f03-avec-comma", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.2, ease: "power2.out" }, 0.6);
+      tl.fromTo("#f03-avec-comma", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.2, ease: "power2.out" }, 0.62);
       // zoom-through out
-      tl.to("#f03-avec", { scale: 1.35, opacity: 0, filter: "blur(14px)", duration: 0.26, ease: "power2.in" }, 0.8);
+      tl.to("#f03-avec", { scale: 1.35, opacity: 0, filter: "blur(14px)", duration: 0.26, ease: "power2.in" }, 0.86);
 
-      // ================= Scene 2 (0.8–3.8) phone + pill =================
-      wordsIn("#f03-t1", 0.86);
-      lit("#f03-t1", 0, 0.95);
-      lit("#f03-t1", 1, 1.3);
-      lit("#f03-t1", 2, 1.85);
-      lit("#f03-t1", 3, 2.15);
+      // ================= Scene 2 (0.86–4.2) phone + pill =================
+      wordsIn("#f03-t1", 0.92);
+      lit("#f03-t1", 0, 1.0);
+      lit("#f03-t1", 1, 1.38);
+      lit("#f03-t1", 2, 1.89);
+      lit("#f03-t1", 3, 2.2);
 
       tl.fromTo(
         "#f03-phone",
         { y: 940, rotation: 9, scale: 1.04 },
         { y: 0, rotation: -3, scale: 1, duration: 0.7, ease: "expo.out" },
-        0.92
+        1.0
       );
-      tl.to("#f03-phone", { rotation: -1.5, y: -8, duration: 1.4, ease: "sine.inOut" }, 1.62);
-      // tap on « Prendre RDV »
-      tl.fromTo("#f03-tap", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.14, ease: "power2.out" }, 2.5);
-      tl.to("#f03-tap", { scale: 2.6, opacity: 0, duration: 0.4, ease: "power2.out" }, 2.64);
-      tl.to("#f03-phone", { scale: 0.97, duration: 0.1, ease: "power2.out" }, 2.52);
-      tl.to("#f03-phone", { scale: 1, duration: 0.3, ease: "power3.out" }, 2.62);
+      tl.to("#f03-phone", { rotation: -1.5, y: -8, duration: 1.4, ease: "sine.inOut" }, 1.7);
+      // tap on « Prendre RDV » (« en ligne »)
+      tl.fromTo("#f03-tap", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.14, ease: "power2.out" }, 2.8);
+      tl.to("#f03-tap", { scale: 2.6, opacity: 0, duration: 0.4, ease: "power2.out" }, 2.94);
+      tl.to("#f03-phone", { scale: 0.97, duration: 0.1, ease: "power2.out" }, 2.82);
+      tl.to("#f03-phone", { scale: 1, duration: 0.3, ease: "power3.out" }, 2.92);
 
       // pill « Réservé à 22:47 » on « même le soir »
       tl.fromTo(
         "#f03-pill",
         { opacity: 0, x: -70, scale: 0.6, rotation: -4 },
         { opacity: 1, x: 0, scale: 1.04, rotation: 2, duration: 0.3, ease: "expo.out" },
-        3.0
+        3.44
       );
-      tl.to("#f03-pill", { scale: 1, rotation: 0, duration: 0.25, ease: "power2.out" }, 3.3);
-      tl.fromTo("#f03-pill-ring", { opacity: 0, scale: 0.96 }, { opacity: 0.9, scale: 1, duration: 0.06, ease: "none" }, 3.02);
-      tl.to("#f03-pill-ring", { opacity: 0, scale: 1.28, duration: 0.6, ease: "expo.out" }, 3.08);
-      tl.fromTo("#f03-pill-check", { scale: 0, rotation: -40 }, { scale: 1, rotation: 0, duration: 0.32, ease: "expo.out" }, 3.08);
-      tl.fromTo("#f03-pill-moon", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "expo.out" }, 3.2);
+      tl.to("#f03-pill", { scale: 1, rotation: 0, duration: 0.25, ease: "power2.out" }, 3.74);
+      tl.fromTo("#f03-pill-ring", { opacity: 0, scale: 0.96 }, { opacity: 0.9, scale: 1, duration: 0.06, ease: "none" }, 3.46);
+      tl.to("#f03-pill-ring", { opacity: 0, scale: 1.28, duration: 0.6, ease: "expo.out" }, 3.52);
+      tl.fromTo("#f03-pill-check", { scale: 0, rotation: -40 }, { scale: 1, rotation: 0, duration: 0.32, ease: "expo.out" }, 3.52);
+      tl.fromTo("#f03-pill-moon", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "expo.out" }, 3.64);
 
-      // ================= Scene 3 (3.8–6.0) agenda =================
-      titleOut("#f03-t1", 3.72);
-      wordsIn("#f03-t2", 3.86);
-      lit("#f03-t2", 0, 3.9);
-      lit("#f03-t2", 1, 4.12);
-      lit("#f03-t2", 2, 4.38);
-      lit("#f03-t2", 3, 4.58);
-      lit("#f03-t2", 4, 4.9);
+      // ================= Scene 3 (4.2–6.3) agenda =================
+      titleOut("#f03-t1", 4.2);
+      wordsIn("#f03-t2", 4.32);
+      lit("#f03-t2", 0, 4.41);
+      lit("#f03-t2", 1, 4.62);
+      lit("#f03-t2", 2, 4.98);
+      lit("#f03-t2", 3, 5.18);
+      lit("#f03-t2", 4, 5.51);
 
       // phone files left, shrinking
-      tl.to("#f03-phone", { x: -395, y: 6, scale: 0.78, rotation: -5, duration: 0.55, ease: "power3.inOut" }, 3.8);
+      tl.to("#f03-phone", { x: -395, y: 6, scale: 0.78, rotation: -5, duration: 0.55, ease: "power3.inOut" }, 4.26);
       // pill drifts to stay clear, then flies into Inès's 11:00 slot
-      tl.to("#f03-pill", { x: -60, y: -30, duration: 0.6, ease: "power3.inOut" }, 3.8);
+      tl.to("#f03-pill", { x: -60, y: -30, duration: 0.6, ease: "power3.inOut" }, 4.26);
 
       // window arrives from the right, large
       tl.fromTo(
         "#f03-win",
         { x: 820, rotationY: -22, opacity: 0, scale: 0.92 },
         { x: 0, rotationY: 0, opacity: 1, scale: 1, duration: 0.62, ease: "expo.out" },
-        3.86
+        4.32
       );
       tl.fromTo("#f03-veil", { opacity: 0 }, { opacity: 0, duration: 0.01 }, 0);
       // in-window camera: zoom 1 (s = 1260/2880)
@@ -717,70 +717,70 @@
       tl.to(
         "#f03-pill",
         { x: -60 + (bx - 1140), y: -30 + (by - 514), scale: 0.42, opacity: 0, duration: 0.36, ease: "power3.in" },
-        4.52
+        5.14
       );
       // block lands on « agenda »
       tl.fromTo(
         "#f03-block",
         { opacity: 0, scale: 1.18, y: -24 },
         { opacity: 1, scale: 1, y: 0, duration: 0.34, ease: "expo.out" },
-        4.84
+        5.46
       );
-      tl.fromTo("#f03-block-glow", { opacity: 0, scale: 1 }, { opacity: 1, scale: 1, duration: 0.12, ease: "power2.out" }, 4.86);
-      tl.to("#f03-block-glow", { opacity: 0, scale: 1.12, duration: 0.6, ease: "expo.out" }, 5.0);
-      tl.to("#f03-win", { y: 6, duration: 0.08, ease: "power2.out" }, 4.86);
-      tl.to("#f03-win", { y: 0, duration: 0.3, ease: "power3.out" }, 4.94);
+      tl.fromTo("#f03-block-glow", { opacity: 0, scale: 1 }, { opacity: 1, scale: 1, duration: 0.12, ease: "power2.out" }, 5.48);
+      tl.to("#f03-block-glow", { opacity: 0, scale: 1.12, duration: 0.6, ease: "expo.out" }, 5.62);
+      tl.to("#f03-win", { y: 6, duration: 0.08, ease: "power2.out" }, 5.48);
+      tl.to("#f03-win", { y: 0, duration: 0.3, ease: "power3.out" }, 5.56);
 
       // push in on Inès's column (canvas right edge pinned, block centre at y≈300)
       tl.to(
         "#f03-canvas",
-        { scale: S1, x: 1260 - 2880 * S1, y: 300 - 836 * S1, duration: 0.85, ease: "power3.inOut" },
-        5.05
+        { scale: S1, x: 1260 - 2880 * S1, y: 300 - 836 * S1, duration: 0.7, ease: "power3.inOut" },
+        5.64
       );
 
-      // ================= Scene 4 (6.0–9.2) emails =================
-      titleOut("#f03-t2", 5.92);
-      wordsIn("#f03-t3", 6.0);
-      lit("#f03-t3", 0, 6.02);
-      lit("#f03-t3", 1, 6.45);
-      lit("#f03-t3", 2, 6.62);
-      lit("#f03-t3", 3, 7.62);
-      lit("#f03-t3", 4, 8.15);
+      // ================= Scene 4 (6.3–8.9) emails =================
+      titleOut("#f03-t2", 6.26);
+      wordsIn("#f03-t3", 6.34);
+      lit("#f03-t3", 0, 6.4);
+      lit("#f03-t3", 1, 6.74);
+      lit("#f03-t3", 2, 6.88);
+      lit("#f03-t3", 3, 7.98);
+      lit("#f03-t3", 4, 8.35);
 
       // background surfaces step back
-      tl.to("#f03-win", { scale: 0.96, duration: 0.5, ease: "power3.out" }, 6.0);
-      tl.to("#f03-veil", { opacity: 0.15, duration: 0.5, ease: "power2.out" }, 6.0);
-      tl.to("#f03-phone", { x: -430, scale: 0.74, duration: 0.5, ease: "power3.out" }, 6.0);
-      tl.to("#f03-canvas", { y: 120 - 836 * S1, duration: 0.7, ease: "power3.inOut" }, 6.0);
+      tl.to("#f03-win", { scale: 0.96, duration: 0.5, ease: "power3.out" }, 6.34);
+      tl.to("#f03-veil", { opacity: 0.15, duration: 0.5, ease: "power2.out" }, 6.34);
+      tl.to("#f03-phone", { x: -430, scale: 0.74, duration: 0.5, ease: "power3.out" }, 6.34);
+      tl.to("#f03-canvas", { y: 120 - 836 * S1, duration: 0.7, ease: "power3.inOut" }, 6.34);
 
       // card 1 « Rappel · la veille »
       tl.fromTo(
         "#f03-card1",
         { x: -260, y: 520, rotation: -16, scale: 1.04, opacity: 0 },
         { x: 0, y: 0, rotation: -5, scale: 1.04, opacity: 1, duration: 0.42, ease: "expo.out" },
-        6.0
+        6.36
       );
-      tl.to("#f03-card1", { scale: 1, duration: 0.3, ease: "power2.out" }, 6.42);
-      tl.fromTo("#f03-ring1", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power2.out" }, 6.55);
-      tl.to("#f03-ring1", { opacity: 0, scale: 1.35, duration: 0.55, ease: "expo.out" }, 6.78);
+      tl.to("#f03-card1", { scale: 1, duration: 0.3, ease: "power2.out" }, 6.78);
+      tl.fromTo("#f03-ring1", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power2.out" }, 6.88);
+      tl.to("#f03-ring1", { opacity: 0, scale: 1.35, duration: 0.55, ease: "expo.out" }, 7.1);
 
       // card 2 « Demande d'avis Google »
       tl.fromTo(
         "#f03-card2",
         { x: 300, y: 540, rotation: 16, scale: 1.04, opacity: 0 },
         { x: 0, y: 0, rotation: 4, scale: 1.04, opacity: 1, duration: 0.42, ease: "expo.out" },
-        7.3
+        7.62
       );
-      tl.to("#f03-card2", { scale: 1, duration: 0.3, ease: "power2.out" }, 7.72);
+      tl.to("#f03-card2", { scale: 1, duration: 0.3, ease: "power2.out" }, 8.04);
       // card 1 nudged by the impact
-      tl.to("#f03-card1", { x: -18, rotation: -6.5, duration: 0.18, ease: "power2.out" }, 7.36);
-      tl.to("#f03-card1", { x: -10, rotation: -6, duration: 0.4, ease: "power2.out" }, 7.54);
-      tl.fromTo("#f03-ring2", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power2.out" }, 7.85);
-      tl.to("#f03-ring2", { opacity: 0, scale: 1.35, duration: 0.55, ease: "expo.out" }, 8.08);
+      tl.to("#f03-card1", { x: -18, rotation: -6.5, duration: 0.18, ease: "power2.out" }, 7.68);
+      tl.to("#f03-card1", { x: -10, rotation: -6, duration: 0.4, ease: "power2.out" }, 7.86);
+      tl.fromTo("#f03-ring2", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power2.out" }, 7.98);
+      tl.to("#f03-ring2", { opacity: 0, scale: 1.35, duration: 0.55, ease: "expo.out" }, 8.2);
 
       // quiet float on the landed fan
-      tl.to("#f03-card1", { y: -10, duration: 1.4, ease: "sine.inOut" }, 7.8);
-      tl.to("#f03-card2", { y: -14, duration: 1.2, ease: "sine.inOut" }, 8.0);
+      tl.to("#f03-card1", { y: -10, duration: 0.64, ease: "sine.inOut" }, 8.26);
+      tl.to("#f03-card2", { y: -14, duration: 0.56, ease: "sine.inOut" }, 8.34);
 
       window.__timelines = window.__timelines || {};
       window.__timelines[ID] = tl;

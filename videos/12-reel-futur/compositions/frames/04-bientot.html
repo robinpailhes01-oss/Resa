@@ -596,10 +596,10 @@
     }
   </style>
 
-  <div id="root" data-composition-id="04-bientot" data-start="0" data-duration="9.5" data-width="1920" data-height="1080">
-    <div id="f04-ground" class="clip" data-start="0" data-duration="9.5" data-track-index="0"></div>
+  <div id="root" data-composition-id="04-bientot" data-start="0" data-duration="11.9" data-width="1920" data-height="1080">
+    <div id="f04-ground" class="clip" data-start="0" data-duration="11.9" data-track-index="0"></div>
 
-    <div id="f04-stage" class="clip" data-start="0" data-duration="9.5" data-track-index="1">
+    <div id="f04-stage" class="clip" data-start="0" data-duration="11.9" data-track-index="1">
       <!-- titles -->
       <div id="f04-lineA" class="f04-line">
         <span class="f04-w f04-wa">Mais</span><span class="f04-w f04-wa">ce</span><span class="f04-w f04-wa">n'est</span><span class="f04-w f04-wa">pas</span><span class="f04-w f04-wa">tout.</span>
@@ -723,7 +723,7 @@
         <div class="f04-cap" id="f04-c3">Agents IA pour vos publications</div>
       </div>
 
-      <!-- countdown chip (global_start 22.6) -->
+      <!-- countdown chip (global_start 24.5) -->
       <div id="f04-chip">
         <svg viewBox="0 0 26 26" fill="none" stroke="#fbf6ea" stroke-width="2.4" stroke-linecap="round"><circle cx="13" cy="14.5" r="9" /><path d="M13 14.5V9.5M10 2.5h6M20.5 6.5l1.8-1.8" /></svg>
         <div id="f04-chip-num"></div>
@@ -736,8 +736,8 @@
     (function () {
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
-      const DUR = 9;
-      const GLOBAL_START = 22.6;
+      const DUR = 11.9;
+      const GLOBAL_START = 24.5;
       const CREAM = "#fbf6ea";
 
       // ── countdown chip: value = max(0, 45 - floor(t_global)), discrete swaps ──
@@ -783,19 +783,29 @@
         return t0 + chars.length * per;
       }
 
-      // ── Scene 1 (0–1.2): "Mais ce n'est pas tout." karaoke, then becomes "Bientôt sur Reso…" ──
+      // ── continuous gentle motion: slow ground push + card hovers (no dead time) ──
+      tl.fromTo("#f04-ground", { scale: 1 }, { scale: 1.06, duration: DUR, ease: "none" }, 0);
+      function hover(card, t0, t1, amp) {
+        const half = (t1 - t0) / 2;
+        tl.fromTo(card, { y: 0 }, { y: -amp, duration: half, ease: "sine.inOut", yoyo: true, repeat: 1 }, t0);
+      }
+      hover("#f04-search", 2.0, 5.9, 9);
+      hover("#f04-assist", 6.5, 11.9, 8);
+      hover("#f04-agent", 9.1, 11.9, 7);
+
+      // ── Scene 1 (0–1.3): "Mais ce n'est pas tout." karaoke (0.11–1.1), then "Bientôt sur Reso…" (1.31) ──
       const wa = gsap.utils.toArray(".f04-wa");
       const wb = gsap.utils.toArray(".f04-wb");
       tl.fromTo(wa, { opacity: 0, y: 40, scale: 1.08 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "expo.out", stagger: 0.035 }, 0);
-      [0.08, 0.22, 0.34, 0.6, 0.82].forEach((t, i) => {
+      [0.11, 0.3, 0.45, 0.68, 0.9].forEach((t, i) => {
         tl.to(wa[i], { color: CREAM, y: -6, duration: 0.14, ease: "power2.out" }, t);
       });
-      tl.to("#f04-lineA", { y: -300, scale: 0.62, duration: 0.3, ease: "expo.inOut" }, 1.0);
-      tl.to(wa, { opacity: 0, y: -40, filter: "blur(10px)", duration: 0.16, ease: "power2.in", stagger: 0.025 }, 1.14);
-      tl.fromTo(wb, { opacity: 0, y: 30, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.32, ease: "expo.out", stagger: 0.06 }, 1.22);
-      tl.fromTo("#f04-bhl", { scaleX: 0, rotation: 0 }, { scaleX: 1, rotation: -2.5, duration: 0.22, ease: "expo.out", immediateRender: true }, 1.24);
-      tl.to("#f04-bientot", { y: -6, duration: 0.14, ease: "power2.out" }, 1.3);
-      tl.to(wb.slice(1), { color: CREAM, y: -6, duration: 0.14, ease: "power2.out", stagger: 0.12 }, 1.6);
+      tl.to("#f04-lineA", { y: -300, scale: 0.62, duration: 0.3, ease: "expo.inOut" }, 1.1);
+      tl.to(wa, { opacity: 0, y: -40, filter: "blur(10px)", duration: 0.16, ease: "power2.in", stagger: 0.025 }, 1.2);
+      tl.fromTo(wb, { opacity: 0, y: 30, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.32, ease: "expo.out", stagger: 0.06 }, 1.27);
+      tl.fromTo("#f04-bhl", { scaleX: 0, rotation: 0 }, { scaleX: 1, rotation: -2.5, duration: 0.22, ease: "expo.out", immediateRender: true }, 1.29);
+      tl.to("#f04-bientot", { y: -6, duration: 0.14, ease: "power2.out" }, 1.31);
+      tl.to(wb.slice(1), { color: CREAM, y: -6, duration: 0.14, ease: "power2.out", stagger: 0.12 }, 1.62);
 
       // ── stamp helper: scale 1.6 → 1 in 0.18s + card shake ──
       function stamp(st, shake, t) {
@@ -806,37 +816,39 @@
         tl.fromTo(c, { opacity: 0, y: 24, filter: "blur(8px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.34, ease: "expo.out" }, t);
       }
 
-      // ── Scene 2 (1.2–4.8): search card ──
+      // ── Scene 2 (1.5–5.9): search card ; "page de réservation" 2.2–3.1 ; "remonter sur Google" 4.32–5.5 ──
       gsap.set(["#f04-st1", "#f04-st2", "#f04-st3"], { opacity: 0 });
-      tl.fromTo("#f04-g1", { y: 920, rotation: 7, scale: 1.13 }, { y: 0, rotation: -1.2, scale: 1.08, duration: 0.5, ease: "expo.out" }, 1.3);
-      const qEnd = typeInto("f04-query", [["esthéticienne Montpellier", null]], 1.7, 0.03);
+      tl.fromTo("#f04-g1", { y: 920, rotation: 7, scale: 1.13 }, { y: 0, rotation: -1.2, scale: 1.08, duration: 0.55, ease: "expo.out" }, 1.48);
+      const qEnd = typeInto("f04-query", [["esthéticienne Montpellier", null]], 1.95, 0.03);
       tl.set("#f04-qcaret", { opacity: 0 }, qEnd + 0.15);
       // results: rows 0,1 skeletons, Alba third
       const ROW = [0, 90, 180];
       gsap.set("#f04-sk1", { y: ROW[0] });
       gsap.set("#f04-sk2", { y: ROW[1] });
-      tl.fromTo("#f04-searchlbl", { opacity: 0 }, { opacity: 1, duration: 0.2 }, 2.5);
-      tl.fromTo("#f04-sk1", { opacity: 0, x: 30 }, { opacity: 1, x: 0, duration: 0.3, ease: "expo.out" }, 2.6);
-      tl.fromTo("#f04-sk2", { opacity: 0, x: 30 }, { opacity: 1, x: 0, duration: 0.3, ease: "expo.out" }, 2.7);
-      tl.fromTo("#f04-alba", { opacity: 0, x: 30, y: ROW[2] - 6 }, { opacity: 1, x: 0, duration: 0.3, ease: "expo.out" }, 2.8);
+      tl.fromTo("#f04-searchlbl", { opacity: 0 }, { opacity: 1, duration: 0.2 }, 2.8);
+      tl.fromTo("#f04-sk1", { opacity: 0, x: 30 }, { opacity: 1, x: 0, duration: 0.3, ease: "expo.out" }, 2.9);
+      tl.fromTo("#f04-sk2", { opacity: 0, x: 30 }, { opacity: 1, x: 0, duration: 0.3, ease: "expo.out" }, 3.02);
+      tl.fromTo("#f04-alba", { opacity: 0, x: 30, y: ROW[2] - 6 }, { opacity: 1, x: 0, duration: 0.3, ease: "expo.out" }, 3.14);
       gsap.set("#f04-rank", { opacity: 0, scale: 0.6 });
+      // skeleton "loading" breathe while the voice reaches "remonter"
+      tl.fromTo(".f04-sk-bar, .f04-sk-thumb", { opacity: 1 }, { opacity: 0.55, duration: 0.42, ease: "sine.inOut", yoyo: true, repeat: 1 }, 3.45);
       // "remonter sur Google": Alba climbs to first position
-      tl.to("#f04-alba", { y: -6, scale: 1.035, borderColor: "#4a6179", boxShadow: "0 18px 40px rgba(31,39,51,0.22)", duration: 0.5, ease: "expo.inOut" }, 3.4);
-      tl.to("#f04-sk1", { y: ROW[1] + 8, opacity: 0.7, duration: 0.5, ease: "expo.inOut" }, 3.42);
-      tl.to("#f04-sk2", { y: ROW[2] + 8, opacity: 0.55, duration: 0.5, ease: "expo.inOut" }, 3.44);
-      tl.to("#f04-rank", { opacity: 1, scale: 1, duration: 0.3, ease: "expo.out" }, 3.85);
-      stamp("#f04-st1", "#f04-s1", 4.1);
-      caption("#f04-c1", 4.24);
+      tl.to("#f04-alba", { y: -6, scale: 1.035, borderColor: "#4a6179", boxShadow: "0 18px 40px rgba(31,39,51,0.22)", duration: 0.6, ease: "expo.inOut" }, 4.32);
+      tl.to("#f04-sk1", { y: ROW[1] + 8, opacity: 0.7, duration: 0.6, ease: "expo.inOut" }, 4.34);
+      tl.to("#f04-sk2", { y: ROW[2] + 8, opacity: 0.55, duration: 0.6, ease: "expo.inOut" }, 4.36);
+      tl.to("#f04-rank", { opacity: 1, scale: 1, duration: 0.3, ease: "expo.out" }, 4.88);
+      stamp("#f04-st1", "#f04-s1", 5.28);
+      caption("#f04-c1", 5.42);
 
-      // ── Scene 3 (4.8–6.6): search slides left (reduced), assistant card ──
-      tl.to("#f04-g1", { x: -640, y: 70, scale: 0.66, rotation: -5, duration: 0.5, ease: "expo.inOut" }, 4.78);
-      tl.fromTo("#f04-g2", { x: 1500, y: 40, rotation: 10, scale: 1.13 }, { x: 0, y: 0, rotation: 1.2, scale: 1.08, duration: 0.52, ease: "expo.out", immediateRender: true }, 4.9);
-      tl.fromTo("#f04-q", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.3, ease: "expo.out", immediateRender: true }, 5.05);
-      tl.fromTo("#f04-arow", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.25, ease: "expo.out", immediateRender: true }, 5.18);
+      // ── Scene 3 (5.85–8.4): search slides left (reduced), assistant card ; "réponses des IA" 6.29 ; "ChatGPT" 7.69 ──
+      tl.to("#f04-g1", { x: -640, y: 70, scale: 0.66, rotation: -5, duration: 0.5, ease: "expo.inOut" }, 5.85);
+      tl.fromTo("#f04-g2", { x: 1500, y: 40, rotation: 10, scale: 1.13 }, { x: 0, y: 0, rotation: 1.2, scale: 1.08, duration: 0.52, ease: "expo.out", immediateRender: true }, 5.95);
+      tl.fromTo("#f04-q", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.3, ease: "expo.out", immediateRender: true }, 6.1);
+      tl.fromTo("#f04-arow", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.25, ease: "expo.out", immediateRender: true }, 6.22);
       gsap.utils.toArray("#f04-dots i").forEach((d, i) => {
-        tl.fromTo(d, { y: 0 }, { keyframes: [{ y: -6, duration: 0.08 }, { y: 0, duration: 0.08 }], ease: "none" }, 5.2 + i * 0.05);
+        tl.fromTo(d, { y: 0 }, { keyframes: [{ y: -6, duration: 0.08 }, { y: 0, duration: 0.08 }, { y: 0, duration: 0.04 }, { y: -6, duration: 0.08 }, { y: 0, duration: 0.08 }], ease: "none" }, 6.26 + i * 0.05);
       });
-      tl.set("#f04-dots", { display: "none" }, 5.38);
+      tl.set("#f04-dots", { display: "none" }, 6.64);
       const aEnd = typeInto(
         "f04-atext",
         [
@@ -844,49 +856,51 @@
           ["Maison Alba", "b"],
           [", institut de beauté au centre-ville.", null],
         ],
-        5.38,
-        0.0125
+        6.64,
+        0.0145
       );
       tl.set("#f04-acaret", { opacity: 0 }, aEnd + 0.1);
       gsap.set("#f04-acaret", { opacity: 1 });
-      tl.fromTo("#f04-src", { opacity: 0, scale: 0.6, y: 10 }, { opacity: 1, scale: 1, y: 0, duration: 0.32, ease: "expo.out", immediateRender: true }, aEnd + 0.04);
-      stamp("#f04-st2", "#f04-s2", 5.72);
-      caption("#f04-c2", 5.86);
+      tl.fromTo("#f04-src", { opacity: 0, scale: 0.6, y: 10 }, { opacity: 1, scale: 1, y: 0, duration: 0.32, ease: "expo.out", immediateRender: true }, Math.max(aEnd + 0.04, 7.69));
+      stamp("#f04-st2", "#f04-s2", 7.95);
+      caption("#f04-c2", 8.08);
 
-      // ── Scene 4 (6.6–9.0): cards spread apart, agent card in the centre ──
-      tl.to("#f04-g1", { x: -665, y: 90, scale: 0.64, rotation: -6, duration: 0.5, ease: "expo.inOut" }, 6.55);
-      tl.to("#f04-g2", { x: 660, y: 90, scale: 0.64, rotation: 5, duration: 0.5, ease: "expo.inOut" }, 6.55);
-      tl.fromTo("#f04-g3", { y: 1000, rotation: -6, scale: 1.13 }, { y: -14, rotation: -0.8, scale: 1.08, duration: 0.55, ease: "expo.out", immediateRender: true }, 6.66);
+      // ── Scene 4 (8.4–11.9): cards spread apart, agent card in the centre ; "agents IA" 8.58 ; "publications Instagram" 9.83–11.0 ──
+      tl.to("#f04-g1", { x: -665, y: 90, scale: 0.64, rotation: -6, duration: 0.5, ease: "expo.inOut" }, 8.38);
+      tl.to("#f04-g2", { x: 660, y: 90, scale: 0.64, rotation: 5, duration: 0.5, ease: "expo.inOut" }, 8.38);
+      tl.fromTo("#f04-g3", { y: 1000, rotation: -6, scale: 1.13 }, { y: -14, rotation: -0.8, scale: 1.08, duration: 0.55, ease: "expo.out", immediateRender: true }, 8.48);
       // agent picks a salon photo (highlight walks the thumbnails, settles on the salon)
       const RX = [0, 88, 176, 264];
       gsap.set("#f04-ring", { x: RX[1], opacity: 0 });
-      tl.to("#f04-ring", { opacity: 1, duration: 0.12 }, 6.95);
-      [[2, 7.07], [3, 7.17], [0, 7.3]].forEach(([k, t]) => tl.set("#f04-ring", { x: RX[k] }, t));
-      tl.fromTo("#f04-ring", { scale: 1 }, { keyframes: [{ scale: 1.12, duration: 0.08 }, { scale: 1, duration: 0.14 }], ease: "none" }, 7.3);
-      tl.fromTo("#f04-shim", { x: 0 }, { x: 640, duration: 0.6, ease: "none" }, 6.8);
-      tl.fromTo("#f04-post-photo", { opacity: 0, scale: 1.18 }, { opacity: 1, scale: 1, duration: 0.45, ease: "expo.out", immediateRender: true }, 7.38);
-      stamp("#f04-st3", "#f04-s3", 7.22);
-      caption("#f04-c3", 7.36);
+      tl.to("#f04-ring", { opacity: 1, duration: 0.12 }, 8.85);
+      [[2, 9.02], [3, 9.18], [0, 9.36]].forEach(([k, t]) => tl.set("#f04-ring", { x: RX[k] }, t));
+      tl.fromTo("#f04-ring", { scale: 1 }, { keyframes: [{ scale: 1.12, duration: 0.08 }, { scale: 1, duration: 0.14 }], ease: "none" }, 9.36);
+      tl.fromTo("#f04-shim", { x: 0 }, { x: 640, duration: 0.7, ease: "none" }, 8.65);
+      tl.fromTo("#f04-post-photo", { opacity: 0, scale: 1.18 }, { opacity: 1, scale: 1, duration: 0.45, ease: "expo.out", immediateRender: true }, 9.44);
+      // slow Ken Burns on the chosen photo while the caption writes
+      tl.to("#f04-post-photo", { scale: 1.07, duration: 2.0, ease: "sine.inOut" }, 9.9);
       const pEnd = typeInto(
         "f04-ptext",
         [
           ["Nouveau : le soin visage éclat chez Maison Alba. Réservez en ligne, même le soir. ", null],
           ["#Montpellier #soinvisage", null],
         ],
-        7.5,
-        0.0085
+        9.58,
+        0.0105
       );
+      stamp("#f04-st3", "#f04-s3", 9.88);
+      caption("#f04-c3", 10.02);
       // colour the hashtags: wrap last 25 chars
       const pchars = document.querySelectorAll("#f04-ptext span");
       gsap.set(Array.prototype.slice.call(pchars, pchars.length - 25), { color: "#4a6179", fontWeight: 700 });
       tl.set("#f04-pcaret", { opacity: 0 }, pEnd + 0.08);
-      // press "Programmer"
+      // press "Programmer" ("pour vous" 11.07)
       gsap.set("#f04-btn-ok", { opacity: 0 });
       gsap.set("#f04-status-ok", { opacity: 0 });
-      tl.to("#f04-btn", { scale: 0.95, duration: 0.08, ease: "power2.in" }, 8.5);
-      tl.to("#f04-btn", { scale: 1, duration: 0.3, ease: "expo.out" }, 8.58);
-      tl.to("#f04-btn-ok", { opacity: 1, duration: 0.12 }, 8.58);
-      tl.fromTo("#f04-status-ok", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.25, ease: "expo.out", immediateRender: true }, 8.64);
+      tl.to("#f04-btn", { scale: 0.95, duration: 0.08, ease: "power2.in" }, 11.0);
+      tl.to("#f04-btn", { scale: 1, duration: 0.3, ease: "expo.out" }, 11.08);
+      tl.to("#f04-btn-ok", { opacity: 1, duration: 0.12 }, 11.08);
+      tl.fromTo("#f04-status-ok", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.25, ease: "expo.out", immediateRender: true }, 11.14);
 
       // keep groups 2/3 off-stage before their entrances
       gsap.set("#f04-g2", { x: 1500 });
