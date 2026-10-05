@@ -37,16 +37,16 @@ SFX=(
   "paper 32.63 0.5"    # BIENTÔT (GEO)
   "paper 35.08 0.5"    # BIENTÔT (agents)
   "tick 35.50 0.35"    # Programmer
-  "tick 38.60 0.45"    # clic cafetière
-  "buzz 38.85 0.3"     # échec
+  "tick 39.35 0.45"    # clic cafetière
+  "buzz 39.51 0.3"     # échec
   "paper 41.10 0.55"   # PAS ENCORE
   "tick 45.06 0.4"     # 7 jours offerts
   "tick 45.67 0.4"     # sans carte bancaire
   "paper 49.46 0.45"   # 39 € HT/mois
-  "tick 52.00 0.45"    # clic Créer ma page
-  "tick 53.50 0.35"    # bulle Céline
-  "paper 56.55 0.5"    # BIENTÔT (réponse)
-  "logo 57.90 0.7"     # signature
+  "tick 52.22 0.45"    # clic Créer ma page
+  "tick 53.44 0.35"    # bulle Céline
+  "paper 56.78 0.5"    # BIENTÔT (réponse)
+  "logo 57.86 0.7"     # signature
 )
 
 inputs=(-i renders/video.mp4 -i "$A/bed.wav")
