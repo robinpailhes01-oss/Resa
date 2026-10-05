@@ -30,12 +30,13 @@ SFX=(
   "tick 9.82 0.4"      # agenda papier
   "whoosh 11.10 0.5"   # ça part dans tous les sens
   "ding 19.04 0.45"    # réservé à 22:47
-  "tick 21.11 0.45"    # rendez-vous dans l'agenda
-  "tick 22.00 0.4"     # rappel la veille
-  "tick 23.26 0.4"     # demande d'avis
-  "paper 30.10 0.5"    # BIENTÔT (SEO)
-  "paper 32.80 0.5"    # BIENTÔT (GEO)
-  "paper 35.40 0.5"    # BIENTÔT (agents)
+  "tick 21.06 0.45"    # rendez-vous dans l'agenda
+  "tick 21.96 0.4"     # rappel la veille
+  "tick 23.22 0.4"     # demande d'avis
+  "paper 29.96 0.5"    # BIENTÔT (SEO)
+  "paper 32.63 0.5"    # BIENTÔT (GEO)
+  "paper 35.08 0.5"    # BIENTÔT (agents)
+  "tick 35.50 0.35"    # Programmer
   "tick 38.60 0.45"    # clic cafetière
   "buzz 38.85 0.3"     # échec
   "paper 41.10 0.55"   # PAS ENCORE
