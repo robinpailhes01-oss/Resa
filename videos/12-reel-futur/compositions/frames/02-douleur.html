@@ -58,15 +58,15 @@
       box-shadow: 0 30px 80px rgba(31,39,51,0.28);
       font-family: "Manrope", sans-serif; color: #1F2733; padding: 30px 34px;
     }
-    .f02-sms { left: 300px; top: 292px; width: 600px; height: 330px; }
-    .f02-dm { left: 1010px; top: 318px; width: 610px; height: 290px; }
-    .f02-agenda { left: 640px; top: 430px; width: 640px; height: 400px; padding: 0; overflow: visible; }
+    .f02-sms { left: 240px; top: 270px; width: 610px; height: 330px; }
+    .f02-dm { left: 1070px; top: 282px; width: 630px; height: 290px; }
+    .f02-agenda { left: 640px; top: 486px; width: 640px; height: 366px; padding: 0; overflow: visible; }
 
     .f02-head { display: flex; align-items: center; gap: 20px; }
     .f02-ic { width: 66px; height: 66px; border-radius: 18px; background: #4A6179; display: flex; align-items: center; justify-content: center; flex: none; }
     .f02-ic svg { width: 36px; height: 36px; }
-    .f02-ht { font-weight: 800; font-size: 32px; line-height: 1.1; letter-spacing: -0.01em; }
-    .f02-hs { font-weight: 600; font-size: 23px; line-height: 1.3; color: #5F6672; margin-top: 3px; }
+    .f02-ht { font-weight: 800; font-size: 34px; line-height: 1.1; letter-spacing: -0.01em; }
+    .f02-hs { font-weight: 600; font-size: 24px; line-height: 1.3; color: #5F6672; margin-top: 3px; }
     .f02-badge {
       position: absolute; right: -20px; top: -20px; width: 60px; height: 60px; border-radius: 50%;
       background: #D65A4A; color: #FFFDF8; border: 4px solid #FFFDF8;
@@ -103,13 +103,13 @@
 
     /* missed calls pill */
     .f02-miss {
-      position: absolute; left: 650px; top: 640px; width: 620px; height: 112px; border-radius: 56px;
+      position: absolute; left: 600px; top: 630px; width: 720px; height: 128px; border-radius: 64px;
       background: #D65A4A; box-shadow: 0 24px 60px rgba(31,39,51,0.30);
       display: flex; align-items: center; gap: 22px; padding: 0 34px 0 22px;
-      font-family: "Outfit", sans-serif; font-weight: 700; font-size: 50px; letter-spacing: -0.02em; color: #FFFDF8;
+      font-family: "Outfit", sans-serif; font-weight: 700; font-size: 58px; letter-spacing: -0.02em; color: #FFFDF8;
     }
-    .f02-miss-ic { width: 72px; height: 72px; border-radius: 50%; background: rgba(255,253,248,0.2); display: flex; align-items: center; justify-content: center; flex: none; }
-    .f02-miss-ic svg { width: 40px; height: 40px; }
+    .f02-miss-ic { width: 84px; height: 84px; border-radius: 50%; background: rgba(255,253,248,0.2); display: flex; align-items: center; justify-content: center; flex: none; }
+    .f02-miss-ic svg { width: 46px; height: 46px; }
     .f02-miss-n { display: inline-block; min-width: 0.62em; text-align: center; }
 
     /* ---------- countdown chip (identical in every frame) ---------- */
@@ -149,25 +149,25 @@
         <div id="f02-sms" class="f02-card f02-sms" data-layout-allow-overlap>
           <div class="f02-head">
             <div class="f02-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#FBF6EA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.9A8 8 0 1 1 21 12z"/></svg></div>
-            <div><div class="f02-ht">SMS</div><div id="f02-sms-sub" class="f02-hs">3 nouveaux messages</div></div>
+            <div><div class="f02-ht" data-layout-allow-overlap data-layout-allow-occlusion>SMS</div><div id="f02-sms-sub" class="f02-hs" data-layout-allow-overlap data-layout-allow-occlusion>3 nouveaux messages</div></div>
           </div>
           <div class="f02-bubbles">
-            <div id="f02-b1" class="f02-bub">Dispo samedi 14h&nbsp;?</div>
-            <div id="f02-b2" class="f02-bub">Je peux décaler&nbsp;?</div>
+            <div id="f02-b1" class="f02-bub" data-layout-allow-overlap data-layout-allow-occlusion>Dispo samedi 14h&nbsp;?</div>
+            <div id="f02-b2" class="f02-bub" data-layout-allow-overlap data-layout-allow-occlusion>Je peux décaler&nbsp;?</div>
           </div>
-          <div id="f02-sms-badge" class="f02-badge"><span id="f02-sms-n">1</span></div>
+          <div id="f02-sms-badge" class="f02-badge"><span id="f02-sms-n" data-layout-allow-overlap data-layout-allow-occlusion>1</span></div>
         </div>
 
         <div id="f02-dm" class="f02-card f02-dm" data-layout-allow-overlap>
           <div class="f02-head">
             <div class="f02-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#FBF6EA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 3 10.2 14.3"/><path d="M21.5 3 14.6 21l-4.4-6.7L3.5 9.9z"/></svg></div>
-            <div><div class="f02-ht">Messages Insta</div><div class="f02-hs">Demandes de rendez-vous</div></div>
+            <div><div class="f02-ht" data-layout-allow-overlap data-layout-allow-occlusion>Messages Insta</div><div class="f02-hs" data-layout-allow-overlap data-layout-allow-occlusion>Demandes de rendez-vous</div></div>
           </div>
           <div class="f02-bubbles">
-            <div id="f02-b3" class="f02-bub">Bonjour, c’est possible demain&nbsp;?</div>
+            <div id="f02-b3" class="f02-bub" data-layout-allow-overlap data-layout-allow-occlusion>Bonjour, c’est possible demain&nbsp;?</div>
             <div id="f02-sk" class="f02-skel"><div class="f02-av"></div><div class="f02-bar" style="width:300px"></div><div class="f02-bar" style="width:90px"></div></div>
           </div>
-          <div id="f02-dm-badge" class="f02-badge"><span id="f02-dm-n">1</span></div>
+          <div id="f02-dm-badge" class="f02-badge"><span id="f02-dm-n" data-layout-allow-overlap data-layout-allow-occlusion>1</span></div>
         </div>
 
         <div id="f02-agenda" class="f02-card f02-agenda" data-layout-allow-overlap>
@@ -184,7 +184,7 @@
             <svg id="f02-circ" class="f02-circle" style="left:14px;top:280px" width="128" height="74" viewBox="0 0 128 74"><path d="M64 6 C 112 4 126 30 118 48 C 108 70 30 72 12 54 C -2 38 14 10 70 8 C 84 8 96 12 102 16" fill="none" stroke="#D65A4A" stroke-width="4" stroke-linecap="round"/></svg>
             <div id="f02-q" style="position:absolute;left:470px;top:262px;font-family:'Outfit',sans-serif;font-weight:700;font-size:64px;color:#D65A4A;">?</div>
           </div>
-          <div id="f02-ag-badge" class="f02-badge"><span>!</span></div>
+          <div id="f02-ag-badge" class="f02-badge"><span data-layout-allow-overlap>!</span></div>
         </div>
       </div>
 
