@@ -26,7 +26,7 @@ Voir `frame.md` : fond uni bleu poudré, typographie crème très grasse (Outfit
 - focal: « J'ai 45 secondes »
 - roles: aucun asset image
 - asset_candidates: none
-- status: outline
+- status: animated
 - src: compositions/frames/01-defi.html
 - voiceover: « Ok, j'ai quarante-cinq secondes pour vous convaincre que Réso est bien mieux que votre téléphone qui sonne en plein soin. » (« Ok » 0.2s ; « quarante-cinq secondes » 0.8–1.9s ; « Réso » 2.9s ; « téléphone qui sonne » 4.0–4.8s ; « en plein soin » 4.8–5.4s)
 
@@ -46,7 +46,7 @@ Scene 3 (2.2–5.6s) : la phrase « pour vous convaincre que Reso est bien mieux
 - focal: pile de cartes-problèmes
 - roles: aucun asset image (cartes construites, icônes génériques — aucun logo de marque)
 - asset_candidates: none
-- status: outline
+- status: animated
 - src: compositions/frames/02-douleur.html
 - voiceover: « Soyons honnêtes : les rendez-vous par SMS, les messages Insta, l'agenda papier… ça part dans tous les sens. Et pendant un soin, impossible de décrocher. » (« Soyons honnêtes » 0.1–0.9s ; « SMS » 1.6s ; « messages Insta » 2.2–2.8s ; « agenda papier » 3.0–3.8s ; « dans tous les sens » 4.3–5.0s ; « pendant un soin » 5.6–6.3s ; « impossible de décrocher » 6.4–7.5s)
 
@@ -67,7 +67,7 @@ Scene 4 (5.4–7.8s) : « Pendant un soin, impossible de décrocher. » en karao
 - focal: les vraies captures Reso
 - roles: app-page-publique-mobile = cutout (téléphone) · app-agenda = cutout (fenêtre desktop) · emails-mobile-haut, emails-mobile-avis = supporting (cartes emails) · reservation-mobile-creneaux = supporting (option : écran créneaux)
 - asset_candidates: assets/app-page-publique-mobile.png, assets/app-agenda.png, assets/emails-mobile-haut.png, assets/emails-mobile-avis.png, assets/reservation-mobile-creneaux.png
-- status: outline
+- status: animated
 - src: compositions/frames/03-solution.html
 - voiceover: « Avec Réso, vos clientes réservent toutes seules, en ligne, même le soir. Tout arrive dans votre agenda, avec le rappel la veille et la demande d'avis après. » (« Avec Réso » 0.1–0.8s ; « réservent toutes seules » 1.3–2.4s ; « même le soir » 3.0–3.6s ; « agenda » 4.9s ; « rappel la veille » 6.0–6.9s ; « demande d'avis » 7.3–8.1s)
 
@@ -88,7 +88,7 @@ Scene 4 (6.0–9.2s) : deux cartes emails (captures réelles recadrées) se pose
 - focal: les cartes « Bientôt »
 - roles: photo-1..4 = supporting (photo du post) · app-page-publique-mobile = supporting (option : vignette de la page dans le résultat)
 - asset_candidates: assets/photo-1.png, assets/photo-2.png, assets/photo-3.png, assets/photo-4.png, assets/app-page-publique-mobile.png
-- status: outline
+- status: animated
 - src: compositions/frames/04-bientot.html
 - voiceover: « Mais ce n'est pas tout. Bientôt, votre page de réservation sera pensée pour remonter sur Google… et dans les réponses des IA comme ChatGPT. Et des agents IA prépareront vos publications Instagram pour vous. » (« pas tout » 0.6–1.1s ; « Bientôt » 1.3–1.8s ; « remonter sur Google » 3.4–4.6s ; « réponses des IA » 5.0–5.8s ; « agents IA » 6.6–7.3s ; « publications Instagram » 7.6–8.6s)
 
@@ -109,7 +109,7 @@ Scene 4 (6.6–9.0s) : les deux cartes s'écartent ; carte agent IA au centre (p
 - focal: carte café
 - roles: aucun asset image
 - asset_candidates: none
-- status: outline
+- status: animated
 - src: compositions/frames/05-cafe.html
 - voiceover: « Et même… vous faire un café entre deux clientes. Bon ça, j'avoue, on le fait pas encore. » (« Et même » 0.1–0.6s ; « un café » 1.1–1.6s ; « entre deux clientes » 1.6–2.4s ; « Bon ça, j'avoue » 2.5–3.2s ; « pas encore » 3.6–4.2s)
 
@@ -129,7 +129,7 @@ Scene 3 (2.5–4.4s) : bouton qui tremble (oscillation déterministe), devient r
 - focal: bouton « Créer ma page »
 - roles: logo-reso-creme = cutout (petit, au-dessus du titre)
 - asset_candidates: assets/logo-reso-creme.svg
-- status: outline
+- status: animated
 - src: compositions/frames/06-essai.html
 - voiceover: « Mais en attendant, essayez Réso gratuitement pendant sept jours, sans carte bancaire, sur reso-app point f r. Trente-neuf euros hors taxe par mois, et votre page est prête en quelques minutes. » (« en attendant » 0.4–1.0s ; « gratuitement » 1.6–2.3s ; « sept jours » 2.6–3.1s ; « sans carte bancaire » 3.2–4.1s ; « reso-app point f r » 4.3–5.5s ; « trente-neuf euros » 5.7–6.5s ; « quelques minutes » 7.8–8.6s)
 
@@ -150,7 +150,7 @@ Scene 4 (6.6–9.0s) : « Votre page est prête en quelques minutes. » ; le cur
 - focal: bulles de dialogue
 - roles: logo-reso-creme = cutout
 - asset_candidates: assets/logo-reso-creme.svg
-- status: outline
+- status: animated
 - src: compositions/frames/07-chute.html
 - voiceover: Céline « Attends… t'as vraiment annoncé ChatGPT ? » (0.0–1.6s) · narrateur « Bientôt ! Mais avoue que ça donne envie. » (1.8–4.4s)
 
