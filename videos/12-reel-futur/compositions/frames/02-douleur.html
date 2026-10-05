@@ -1,0 +1,360 @@
+<template>
+  <script src="assets/gsap.min.js"></script>
+  <style>
+    @font-face { font-family: "Outfit"; src: url("assets/fonts/outfit.woff2") format("woff2"); font-weight: 100 900; font-style: normal; }
+    @font-face { font-family: "Manrope"; src: url("assets/fonts/manrope.woff2") format("woff2"); font-weight: 200 800; font-style: normal; }
+    @font-face { font-family: "JetBrains Mono"; src: url("assets/fonts/jetbrainsmono.woff2") format("woff2"); font-weight: 100 800; font-style: normal; }
+
+    #root {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: "Outfit", sans-serif;
+      color: #FBF6EA;
+    }
+
+    /* ---------- ground (same as every frame) ---------- */
+    .f02-bg { position: absolute; inset: 0; overflow: hidden; background: #4A6179; }
+    .f02-bg-inner {
+      position: absolute; inset: -60px;
+      background: radial-gradient(ellipse 90% 85% at 50% 0%, #7D93A8 0%, #6A8299 30%, #5F778E 58%, #4A6179 100%);
+    }
+    .f02-glow {
+      position: absolute; left: 560px; top: 40px; width: 800px; height: 800px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(251,246,234,0.08) 0%, rgba(251,246,234,0.03) 42%, rgba(251,246,234,0) 70%);
+    }
+    .f02-vig { position: absolute; inset: 0; background: radial-gradient(ellipse 75% 75% at 50% 45%, rgba(74,97,121,0) 60%, rgba(58,78,99,0.55) 100%); }
+
+    .f02-stage { position: absolute; inset: 0; transform-origin: 960px 520px; }
+
+    /* ---------- karaoke type ---------- */
+    .f02-k { position: relative; display: inline-block; }
+    .f02-kg { color: rgba(251,246,234,0.38); }
+    .f02-kl { position: absolute; left: 0; top: 0; color: #FBF6EA; white-space: nowrap; }
+
+    .f02-t1 {
+      position: absolute; left: 0; top: 360px; width: 1920px; height: 160px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 150px; line-height: 1; letter-spacing: -0.035em; white-space: nowrap;
+      transform-origin: 960px 80px;
+    }
+    .f02-t2 {
+      position: absolute; left: 0; top: 104px; width: 1920px; height: 92px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 72px; line-height: 1; letter-spacing: -0.035em; white-space: nowrap;
+    }
+    .f02-say {
+      position: absolute; left: 60px; width: 1800px; top: 236px;
+      font-weight: 700; font-size: 118px; line-height: 1.12; letter-spacing: -0.035em; text-align: center;
+    }
+    .f02-line { display: block; white-space: nowrap; }
+
+    /* ---------- problem cards ---------- */
+    .f02-pile { position: absolute; inset: 0; transform-origin: 960px 560px; }
+    .f02-card {
+      position: absolute; border-radius: 22px; background: #FFFDF8; border: 1.5px solid #E7DFD0;
+      box-shadow: 0 30px 80px rgba(31,39,51,0.28);
+      font-family: "Manrope", sans-serif; color: #1F2733; padding: 30px 34px;
+    }
+    .f02-sms { left: 300px; top: 292px; width: 600px; height: 330px; }
+    .f02-dm { left: 1010px; top: 318px; width: 610px; height: 290px; }
+    .f02-agenda { left: 640px; top: 430px; width: 640px; height: 400px; padding: 0; overflow: visible; }
+
+    .f02-head { display: flex; align-items: center; gap: 20px; }
+    .f02-ic { width: 66px; height: 66px; border-radius: 18px; background: #4A6179; display: flex; align-items: center; justify-content: center; flex: none; }
+    .f02-ic svg { width: 36px; height: 36px; }
+    .f02-ht { font-weight: 800; font-size: 32px; line-height: 1.1; letter-spacing: -0.01em; }
+    .f02-hs { font-weight: 600; font-size: 23px; line-height: 1.3; color: #5F6672; margin-top: 3px; }
+    .f02-badge {
+      position: absolute; right: -20px; top: -20px; width: 60px; height: 60px; border-radius: 50%;
+      background: #D65A4A; color: #FFFDF8; border: 4px solid #FFFDF8;
+      display: flex; align-items: center; justify-content: center;
+      font-family: "Manrope", sans-serif; font-weight: 800; font-size: 29px; line-height: 1;
+      box-shadow: 0 8px 18px rgba(31,39,51,0.25);
+    }
+    .f02-bubbles { margin-top: 26px; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+    .f02-bub {
+      background: #EFE9DD; border-radius: 24px 24px 24px 8px; padding: 15px 24px;
+      font-weight: 600; font-size: 29px; line-height: 1.2; color: #1F2733; white-space: nowrap;
+    }
+    .f02-skel { display: flex; align-items: center; gap: 14px; }
+    .f02-av { width: 40px; height: 40px; border-radius: 50%; background: #DCD3C3; flex: none; }
+    .f02-bar { height: 16px; border-radius: 8px; background: #E9E2D4; }
+
+    /* paper agenda */
+    .f02-paper {
+      position: absolute; inset: 0; border-radius: 22px; overflow: hidden;
+      background-color: #FFFDF8;
+      background-image: repeating-linear-gradient(180deg, rgba(255,253,248,0) 0px, rgba(255,253,248,0) 59px, #D7E0E8 59px, #D7E0E8 61px);
+      background-position: 0 104px;
+    }
+    .f02-margin { position: absolute; left: 132px; top: 0; bottom: 0; width: 2px; background: rgba(214,90,74,0.45); }
+    .f02-ahead {
+      position: absolute; left: 0; right: 0; top: 0; height: 104px; background: #FFFDF8;
+      display: flex; align-items: center; gap: 20px; padding: 0 34px; border-bottom: 2px solid #E7DFD0;
+    }
+    .f02-row { position: absolute; left: 0; right: 0; height: 60px; }
+    .f02-time { position: absolute; left: 30px; top: 14px; font-weight: 700; font-size: 26px; color: #4A6179; }
+    .f02-scr { position: absolute; left: 156px; top: 10px; height: 40px; overflow: visible; }
+    .f02-strike { position: absolute; left: 148px; height: 5px; border-radius: 3px; background: #1F2733; transform-origin: 0% 50%; }
+    .f02-circle { position: absolute; overflow: visible; }
+
+    /* missed calls pill */
+    .f02-miss {
+      position: absolute; left: 650px; top: 640px; width: 620px; height: 112px; border-radius: 56px;
+      background: #D65A4A; box-shadow: 0 24px 60px rgba(31,39,51,0.30);
+      display: flex; align-items: center; gap: 22px; padding: 0 34px 0 22px;
+      font-family: "Outfit", sans-serif; font-weight: 700; font-size: 50px; letter-spacing: -0.02em; color: #FFFDF8;
+    }
+    .f02-miss-ic { width: 72px; height: 72px; border-radius: 50%; background: rgba(255,253,248,0.2); display: flex; align-items: center; justify-content: center; flex: none; }
+    .f02-miss-ic svg { width: 40px; height: 40px; }
+    .f02-miss-n { display: inline-block; min-width: 0.62em; text-align: center; }
+
+    /* ---------- countdown chip (identical in every frame) ---------- */
+    .f02-chip {
+      position: absolute; left: 1690px; top: 64px; width: 176px; height: 56px; border-radius: 28px;
+      background: rgba(251,246,234,0.16); border: 1.5px solid rgba(251,246,234,0.30);
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      font-family: "JetBrains Mono", monospace; font-weight: 500; font-size: 28px; color: #FBF6EA;
+      transform-origin: 88px 28px;
+    }
+    .f02-chip.f02-over { background: #D65A4A; border-color: #D65A4A; }
+    .f02-chip svg { width: 26px; height: 26px; flex: none; }
+    .f02-chip-v { line-height: 1; padding-top: 2px; }
+  </style>
+
+  <div id="root" data-composition-id="02-douleur" data-start="0" data-duration="7.8" data-width="1920" data-height="1080">
+    <div id="f02-bg" class="f02-bg clip" data-start="0" data-duration="7.8" data-track-index="0">
+      <div id="f02-bg-inner" class="f02-bg-inner" data-layout-allow-overflow></div>
+      <div id="f02-glow" class="f02-glow" data-layout-allow-overflow></div>
+      <div class="f02-vig"></div>
+    </div>
+
+    <div id="f02-stage" class="f02-stage clip" data-layout-allow-overflow data-start="0" data-duration="7.8" data-track-index="1">
+
+      <!-- Scene 1 title -->
+      <div id="f02-t1" class="f02-t1">
+        <span class="f02-k" data-at="0.1"><span class="f02-kg" data-layout-ignore>Soyons</span><span class="f02-kl">Soyons</span></span>&nbsp;<span class="f02-k" data-at="0.42"><span class="f02-kg" data-layout-ignore>honnêtes.</span><span class="f02-kl">honnêtes.</span></span>
+      </div>
+
+      <!-- Scene 3 title -->
+      <div id="f02-t2" class="f02-t2">
+        <span class="f02-k" data-at="3.96"><span class="f02-kg" data-layout-ignore>Ça</span><span class="f02-kl">Ça</span></span>&nbsp;<span class="f02-k" data-at="4.1"><span class="f02-kg" data-layout-ignore>part</span><span class="f02-kl">part</span></span>&nbsp;<span class="f02-k" data-at="4.3"><span class="f02-kg" data-layout-ignore>dans</span><span class="f02-kl">dans</span></span>&nbsp;<span class="f02-k" data-at="4.48"><span class="f02-kg" data-layout-ignore>tous</span><span class="f02-kl">tous</span></span>&nbsp;<span class="f02-k" data-at="4.64"><span class="f02-kg" data-layout-ignore>les</span><span class="f02-kl">les</span></span>&nbsp;<span class="f02-k" data-at="4.78"><span class="f02-kg" data-layout-ignore>sens.</span><span class="f02-kl">sens.</span></span>
+      </div>
+
+      <!-- Scene 2/3: the pile -->
+      <div id="f02-pile" class="f02-pile" data-layout-allow-overflow>
+        <div id="f02-sms" class="f02-card f02-sms" data-layout-allow-overlap>
+          <div class="f02-head">
+            <div class="f02-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#FBF6EA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.9A8 8 0 1 1 21 12z"/></svg></div>
+            <div><div class="f02-ht">SMS</div><div id="f02-sms-sub" class="f02-hs">3 nouveaux messages</div></div>
+          </div>
+          <div class="f02-bubbles">
+            <div id="f02-b1" class="f02-bub">Dispo samedi 14h&nbsp;?</div>
+            <div id="f02-b2" class="f02-bub">Je peux décaler&nbsp;?</div>
+          </div>
+          <div id="f02-sms-badge" class="f02-badge"><span id="f02-sms-n">1</span></div>
+        </div>
+
+        <div id="f02-dm" class="f02-card f02-dm" data-layout-allow-overlap>
+          <div class="f02-head">
+            <div class="f02-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#FBF6EA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 3 10.2 14.3"/><path d="M21.5 3 14.6 21l-4.4-6.7L3.5 9.9z"/></svg></div>
+            <div><div class="f02-ht">Messages Insta</div><div class="f02-hs">Demandes de rendez-vous</div></div>
+          </div>
+          <div class="f02-bubbles">
+            <div id="f02-b3" class="f02-bub">Bonjour, c’est possible demain&nbsp;?</div>
+            <div id="f02-sk" class="f02-skel"><div class="f02-av"></div><div class="f02-bar" style="width:300px"></div><div class="f02-bar" style="width:90px"></div></div>
+          </div>
+          <div id="f02-dm-badge" class="f02-badge"><span id="f02-dm-n">1</span></div>
+        </div>
+
+        <div id="f02-agenda" class="f02-card f02-agenda" data-layout-allow-overlap>
+          <div class="f02-paper">
+            <div class="f02-margin"></div>
+            <div class="f02-ahead">
+              <div class="f02-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#FBF6EA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5z"/><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19"/><path d="M9 7.5h6"/></svg></div>
+              <div><div class="f02-ht">Agenda papier</div><div class="f02-hs">Semaine du 6</div></div>
+            </div>
+            <div class="f02-row" style="top:106px"><div class="f02-time">9h00</div><svg class="f02-scr" width="300" height="40" viewBox="0 0 300 40"><path class="f02-scrp" data-w="250" data-seed="1" fill="none" stroke="#1F2733" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="f02-row" style="top:166px"><div class="f02-time">10h30</div><svg class="f02-scr" width="300" height="40" viewBox="0 0 300 40"><path class="f02-scrp" data-w="200" data-seed="2" fill="none" stroke="#1F2733" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><div id="f02-st1" class="f02-strike" style="top:28px;width:236px"></div></div>
+            <div class="f02-row" style="top:226px"><div class="f02-time">14h00</div><svg class="f02-scr" width="340" height="40" viewBox="0 0 340 40"><path class="f02-scrp" data-w="290" data-seed="3" fill="none" stroke="#1F2733" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><div id="f02-st2" class="f02-strike" style="top:26px;width:320px"></div></div>
+            <div class="f02-row" style="top:286px"><div class="f02-time">14h00</div><svg class="f02-scr" width="300" height="40" viewBox="0 0 300 40"><path class="f02-scrp" data-w="170" data-seed="4" fill="none" stroke="#1F2733" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <svg id="f02-circ" class="f02-circle" style="left:14px;top:280px" width="128" height="74" viewBox="0 0 128 74"><path d="M64 6 C 112 4 126 30 118 48 C 108 70 30 72 12 54 C -2 38 14 10 70 8 C 84 8 96 12 102 16" fill="none" stroke="#D65A4A" stroke-width="4" stroke-linecap="round"/></svg>
+            <div id="f02-q" style="position:absolute;left:470px;top:262px;font-family:'Outfit',sans-serif;font-weight:700;font-size:64px;color:#D65A4A;">?</div>
+          </div>
+          <div id="f02-ag-badge" class="f02-badge"><span>!</span></div>
+        </div>
+      </div>
+
+      <!-- Scene 4 -->
+      <div id="f02-say" class="f02-say">
+        <span id="f02-l0" class="f02-line"><span class="f02-k" data-at="5.6"><span class="f02-kg" data-layout-ignore>Pendant</span><span class="f02-kl">Pendant</span></span> <span class="f02-k" data-at="5.86"><span class="f02-kg" data-layout-ignore>un</span><span class="f02-kl">un</span></span> <span class="f02-k" data-at="6.0"><span class="f02-kg" data-layout-ignore>soin,</span><span class="f02-kl">soin,</span></span></span>
+        <span id="f02-l1" class="f02-line"><span class="f02-k" data-at="6.4"><span class="f02-kg" data-layout-ignore>impossible</span><span class="f02-kl">impossible</span></span> <span class="f02-k" data-at="6.92"><span class="f02-kg" data-layout-ignore>de</span><span class="f02-kl">de</span></span> <span class="f02-k" data-at="7.06"><span class="f02-kg" data-layout-ignore>décrocher.</span><span class="f02-kl">décrocher.</span></span></span>
+      </div>
+
+      <div id="f02-miss" class="f02-miss">
+        <div id="f02-miss-ic" class="f02-miss-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#FFFDF8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4.5l6 6"/><path d="M9 5.5v5H4"/><path d="M14.8 14.2l1.7-1.7a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.5.57a1 1 0 0 1 1 1V17a1 1 0 0 1-1 1A15.5 15.5 0 0 1 6 3.9a1 1 0 0 1 1-1" transform="translate(-1.5 2.5)"/></svg></div>
+        <div><span id="f02-miss-n" class="f02-miss-n">1</span> <span id="f02-miss-l">appel manqué</span></div>
+      </div>
+    </div>
+
+    <div id="f02-chipwrap" class="clip" data-start="0" data-duration="7.8" data-track-index="2" style="position:absolute;inset:0;">
+      <div id="f02-chip" class="f02-chip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#FBF6EA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 13.5V9.8"/><path d="M9.5 2.8h5"/><path d="M18.4 6.6l1.4-1.4"/></svg>
+        <span id="f02-chip-v" class="f02-chip-v">0:40</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var FRAME = "02-douleur";
+      var DUR = 7.8;
+      var GLOBAL_START = 5.6;
+      window.__timelines = window.__timelines || {};
+      var hosts = document.querySelectorAll('[data-composition-id="' + FRAME + '"]');
+      var R = hosts[hosts.length - 1];
+      var $ = function (s) { return R.querySelector(s); };
+      var $$ = function (s) { return Array.prototype.slice.call(R.querySelectorAll(s)); };
+
+      // deterministic handwriting scribbles (prolate cycloid = joined loops)
+      $$(".f02-scrp").forEach(function (p) {
+        var w = parseFloat(p.getAttribute("data-w")), seed = parseFloat(p.getAttribute("data-seed"));
+        var d = "", pen = false, k = 3.1, t = 0;
+        for (var i = 0; i < 400; i++) {
+          t = i * 0.22;
+          var x = 6 + k * t - 5.2 * Math.sin(t);
+          if (x > w) break;
+          var amp = 7 + 4 * Math.sin(t * 0.37 + seed) + 3 * Math.sin(t * 1.3 + seed * 2);
+          var y = 22 - amp * Math.cos(t) * 0.9 - (Math.sin(t * 0.21 + seed) > 0.86 ? 6 : 0);
+          var gap = Math.sin(t * 0.19 + seed * 1.7) > 0.93;
+          if (gap) { pen = false; continue; }
+          d += (pen ? " L" : " M") + x.toFixed(1) + " " + y.toFixed(1);
+          pen = true;
+        }
+        p.setAttribute("d", d);
+      });
+
+      var tl = gsap.timeline({ paused: true });
+
+      // ---------- countdown chip: value derived from global time (deterministic) ----------
+      var chip = $("#f02-chip"), chipV = $("#f02-chip-v");
+      function chipText(tg) {
+        if (tg >= 45) { chip.classList.add("f02-over"); var o = Math.floor(tg - 45); return "+0:" + (o < 10 ? "0" : "") + o; }
+        chip.classList.remove("f02-over");
+        var v = Math.max(0, 45 - Math.floor(tg));
+        return "0:" + (v < 10 ? "0" : "") + v;
+      }
+      // counters (badges, missed calls) driven by the same local clock
+      var smsN = $("#f02-sms-n"), dmN = $("#f02-dm-n"), smsSub = $("#f02-sms-sub");
+      var missN = $("#f02-miss-n"), missL = $("#f02-miss-l");
+      var SMS_T = [1.5, 1.78, 2.02], DM_T = [2.14, 2.3, 2.46, 2.62, 2.78], MISS_T = [6.3, 6.62, 6.94, 7.26];
+      function countAt(arr, t) { var n = 1; for (var i = 1; i < arr.length; i++) if (t >= arr[i]) n = i + 1; return n; }
+      function setText(el, s) { if (el.textContent !== s) el.textContent = s; }
+      var clock = { t: 0 };
+      tl.fromTo(clock, { t: 0 }, { t: DUR, duration: DUR, ease: "none", onUpdate: function () {
+        var t = clock.t;
+        setText(chipV, chipText(GLOBAL_START + t));
+        var s = countAt(SMS_T, t);
+        setText(smsN, String(s));
+        setText(smsSub, s + (s > 1 ? " nouveaux messages" : " nouveau message"));
+        setText(dmN, String(countAt(DM_T, t)));
+        var m = countAt(MISS_T, t);
+        setText(missN, String(m));
+        setText(missL, m > 1 ? "appels manqués" : "appel manqué");
+      } }, 0);
+
+      // ---------- ground ----------
+      tl.fromTo($("#f02-bg-inner"), { x: -30, y: 18 }, { x: 10, y: -10, duration: DUR, ease: "none" }, 0);
+      tl.fromTo($("#f02-glow"), { scale: 1.1, opacity: 0.9 }, { scale: 0.9, opacity: 0.7, duration: DUR, ease: "sine.inOut" }, 0);
+      tl.fromTo($("#f02-stage"), { scale: 1 }, { scale: 1.03, duration: DUR, ease: "none" }, 0);
+
+      // ---------- karaoke helper ----------
+      function karaoke(sel) {
+        $$(sel + " .f02-k").forEach(function (w) {
+          var at = parseFloat(w.getAttribute("data-at"));
+          tl.fromTo(w, { y: 0 }, { y: -6, duration: 0.16, ease: "power2.out" }, at - 0.04);
+          tl.fromTo(w.querySelector(".f02-kl"), { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power1.out" }, at - 0.04);
+        });
+      }
+
+      // ---------- Scene 1: « Soyons honnêtes. » then climbs to a title ----------
+      var t1 = $("#f02-t1");
+      tl.fromTo(t1, { scale: 1.12, opacity: 0, filter: "blur(10px)" }, { scale: 1, opacity: 1, filter: "blur(0px)", duration: 0.32, ease: "expo.out" }, 0);
+      karaoke("#f02-t1");
+      tl.to(t1, { y: -290, scale: 0.48, duration: 0.42, ease: "expo.inOut" }, 0.86);
+
+      // ---------- Scene 2: cards fly in on their word, badges count ----------
+      function cardIn(el, from, rot, at) {
+        tl.fromTo(el, { x: from[0], y: from[1], rotation: rot + from[2], scale: 1, autoAlpha: 0, filter: "blur(16px)" }, {
+          keyframes: [
+            { x: 0, y: 0, rotation: rot, scale: 1.04, autoAlpha: 1, filter: "blur(0px)", duration: 0.38, ease: "expo.out" },
+            { scale: 1, duration: 0.2, ease: "power2.out" }
+          ]
+        }, at);
+      }
+      function pop(el, at, s) {
+        tl.fromTo(el, { scale: s || 1.35 }, { scale: 1, duration: 0.22, ease: "power3.out", immediateRender: false }, at);
+      }
+      var sms = $("#f02-sms"), dm = $("#f02-dm"), ag = $("#f02-agenda");
+      cardIn(sms, [-700, 260, -18], -6, 1.38);
+      tl.fromTo($("#f02-sms-badge"), { scale: 0 }, { scale: 1, duration: 0.24, ease: "expo.out" }, SMS_T[0]);
+      tl.fromTo($("#f02-b1"), { y: 24, autoAlpha: 0, scale: 0.9 }, { y: 0, autoAlpha: 1, scale: 1, duration: 0.26, ease: "expo.out" }, SMS_T[1] - 0.04);
+      tl.fromTo($("#f02-b2"), { y: 24, autoAlpha: 0, scale: 0.9 }, { y: 0, autoAlpha: 1, scale: 1, duration: 0.26, ease: "expo.out" }, SMS_T[2] - 0.04);
+      pop($("#f02-sms-badge"), SMS_T[1]); pop($("#f02-sms-badge"), SMS_T[2]);
+
+      cardIn(dm, [760, -220, 16], 5, 2.02);
+      tl.fromTo($("#f02-dm-badge"), { scale: 0 }, { scale: 1, duration: 0.22, ease: "expo.out" }, DM_T[0]);
+      for (var i = 1; i < DM_T.length; i++) pop($("#f02-dm-badge"), DM_T[i], 1.3);
+      tl.fromTo($("#f02-b3"), { y: 24, autoAlpha: 0, scale: 0.9 }, { y: 0, autoAlpha: 1, scale: 1, duration: 0.26, ease: "expo.out" }, 2.3);
+      tl.fromTo($("#f02-sk"), { y: 20, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.26, ease: "expo.out" }, 2.56);
+
+      cardIn(ag, [120, 700, 14], -2, 2.86);
+      tl.fromTo($("#f02-ag-badge"), { scale: 0 }, { scale: 1, duration: 0.22, ease: "expo.out" }, 3.3);
+      tl.fromTo($("#f02-st1"), { scaleX: 0 }, { scaleX: 1, duration: 0.2, ease: "power2.out" }, 3.18);
+      tl.fromTo($("#f02-st2"), { scaleX: 0 }, { scaleX: 1, duration: 0.2, ease: "power2.out" }, 3.36);
+      tl.fromTo($("#f02-circ"), { autoAlpha: 0, scale: 0.6 }, { autoAlpha: 1, scale: 1, duration: 0.24, ease: "expo.out" }, 3.5);
+      tl.fromTo($("#f02-q"), { autoAlpha: 0, scale: 1.8, rotation: 12 }, { autoAlpha: 1, scale: 1, rotation: 12, duration: 0.2, ease: "power4.out" }, 3.62);
+      // each landing nudges the pile
+      [1.4, 2.06, 2.9].forEach(function (at, i) {
+        var a = 10 - i * 2;
+        tl.to($("#f02-pile"), { keyframes: [ { x: -a, y: a * 0.5, duration: 0.035 }, { x: a * 0.8, y: -a * 0.4, duration: 0.035 }, { x: -a * 0.4, y: 0, duration: 0.035 }, { x: 0, y: 0, duration: 0.04 } ], ease: "none" }, at + 0.14);
+      });
+
+      // ---------- Scene 3: « ça part dans tous les sens » ----------
+      tl.to(t1, { y: -340, opacity: 0, filter: "blur(10px)", duration: 0.2, ease: "power2.in" }, 3.78);
+      tl.fromTo($("#f02-t2"), { y: 40, opacity: 0, filter: "blur(10px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 3.86);
+      karaoke("#f02-t2");
+      // the pile trembles, harder and harder (fixed keyframes)
+      var shake = [];
+      var amps = [3, -4, 5, -6, 7, -8, 9, -10, 11, -12];
+      for (var j = 0; j < amps.length; j++) shake.push({ x: amps[j], y: (j % 3 - 1) * 3, rotation: amps[j] * 0.12, duration: 0.032 });
+      tl.to($("#f02-pile"), { keyframes: shake, ease: "none" }, 3.98);
+      // scatter in every direction with motion blur
+      tl.to(sms, { x: -1150, y: -420, rotation: -31, filter: "blur(18px)", duration: 0.48, ease: "power3.in" }, 4.3);
+      tl.to(dm, { x: 1150, y: -360, rotation: 29, filter: "blur(18px)", duration: 0.48, ease: "power3.in" }, 4.38);
+      tl.to(ag, { x: 380, y: 860, rotation: -25, filter: "blur(18px)", duration: 0.48, ease: "power3.in" }, 4.46);
+      tl.to($("#f02-t2"), { y: -60, opacity: 0, filter: "blur(10px)", duration: 0.24, ease: "power2.in" }, 5.2);
+
+      // ---------- Scene 4: « Pendant un soin, impossible de décrocher. » ----------
+      tl.fromTo($("#f02-l0"), { y: 70, opacity: 0, filter: "blur(12px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.4, ease: "expo.out" }, 5.3);
+      tl.fromTo($("#f02-l1"), { y: 70, opacity: 0, filter: "blur(12px)" }, { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.4, ease: "expo.out" }, 5.38);
+      karaoke("#f02-say");
+
+      var miss = $("#f02-miss");
+      tl.fromTo(miss, { scale: 0.4, y: 60, autoAlpha: 0 }, { keyframes: [
+        { scale: 1.06, y: 0, autoAlpha: 1, duration: 0.26, ease: "expo.out" }, { scale: 1, duration: 0.18, ease: "power2.out" }
+      ] }, MISS_T[0] - 0.1);
+      for (var m = 1; m < MISS_T.length; m++) {
+        pop($("#f02-miss-n"), MISS_T[m], 1.6);
+        tl.to(miss, { keyframes: [ { x: -8, rotation: -1, duration: 0.035 }, { x: 7, rotation: 1, duration: 0.035 }, { x: -4, rotation: -0.5, duration: 0.035 }, { x: 0, rotation: 0, duration: 0.04 } ], ease: "none" }, MISS_T[m]);
+        tl.fromTo($("#f02-miss-ic"), { rotation: 0 }, { keyframes: [ { rotation: -16, duration: 0.04 }, { rotation: 14, duration: 0.04 }, { rotation: -8, duration: 0.04 }, { rotation: 0, duration: 0.05 } ], ease: "none", immediateRender: false }, MISS_T[m]);
+      }
+
+      tl.set({}, {}, DUR);
+      window.__timelines[FRAME] = tl;
+    })();
+  </script>
+</template>

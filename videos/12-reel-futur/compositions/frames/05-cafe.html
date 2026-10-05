@@ -287,9 +287,10 @@
 
       /* ---- countdown: global_start 31.6, value = 45 - floor(t) ---- */
       var cdVals = q("#f05-cd-val span");
-      [0, 0.4, 1.4, 2.4, 3.4].forEach(function (t, i) {
-        tl.set(cdVals, { opacity: 0 }, t);
+      var cdT = [0, 0.4, 1.4, 2.4, 3.4];
+      cdT.forEach(function (t, i) {
         tl.set(cdVals[i], { opacity: 1 }, t);
+        if (i < cdT.length - 1) tl.set(cdVals[i], { opacity: 0 }, cdT[i + 1]);
       });
 
       function lightWord(el, t, color) {
