@@ -1,4 +1,4 @@
-# Frame packet: 01-defi
+# Frame packet: 04-bascule
 
 ## Project inputs
 
@@ -8,28 +8,26 @@
 
 ## Assigned storyboard block
 
-## Frame 1 — Le défi
+## Frame 4 — La bascule
 
-- scene: « Ok, » énorme au centre, puis « J'ai 45 secondes » (le « 45 » en crème plein, gros), puis la phrase complète en karaoké ; la pastille compte à rebours apparaît et commence à 0:45 ; un téléphone qui sonne (carte d'appel entrant « Appel entrant… » qui vibre) traverse sur « téléphone qui sonne ».
-- duration: 5.9s
-- global_start: 0
-- transition_in: cut
-- type: hook
+- scene: « Mais ce n'est pas tout. » en karaoké ; puis tout s'éteint d'un coup (fond qui passe au bleu nuit `#1F2733` presque noir, la pastille compte à rebours reste seule allumée) ; silence ; puis « Et ça… ce n'est que le début. » apparaît en crème, lettres qui se dévoilent avec une lueur, la fin « le début. » plus grosse ; le fond se rallume en bleu poudré par un balayage lumineux vers la frame suivante.
+- duration: 3.9s
+- global_start: 24.5
+- transition_in: crossfade
+- type: reveal
 - blueprint: kinetic-type-beats (Adapt)
-- focal: « J'ai 45 secondes »
+- focal: « ce n'est que le début »
 - roles: aucun asset image
 - asset_candidates: none
-- status: animated
-- src: compositions/frames/01-defi.html
-- voiceover: André (narrateur) : « Ok ! J'ai quarante-cinq secondes pour vous convaincre que Réso est bien mieux que votre téléphone qui sonne en plein soin. » — temps locaux réels : « Ok » 0.18 ; « 45 » 0.82 ; « secondes » 1.23–1.8 ; « Réso » 3.15 ; « téléphone » 4.38 ; « qui sonne » 4.83–5.2 ; « en plein soin » 5.23–5.77
+- status: outline
+- src: compositions/frames/04-bascule.html
+- voiceover: André « Mais ce n'est pas tout. » 0.1–1.1 (« pas tout » 0.69–1.1) · silence 1.25–2.0 · « Et ça… ce n'est que le début. » 2.03–3.5 (« Et ça » 2.03–2.3 ; « ce n'est que » 2.36–2.95 ; « le début » 2.96–3.5)
 
-Scene 1 (0.0–0.7s) : « Ok, » claque au centre (scale 1.25→1, 0.2s), fond qui respire.
-Scene 2 (0.7–2.2s) : « Ok, » glisse en haut ; « J'ai 45 secondes » arrive mot par mot, « 45 » plus gros ; la pastille du compte à rebours se pose en haut à droite à 1.0s (« 0:45 ») et décompte.
-Scene 3 (2.2–5.6s) : la phrase « pour vous convaincre que Reso est bien mieux que votre téléphone qui sonne en plein soin. » en karaoké (2 lignes, ~84px) ; sur « téléphone qui sonne », une carte « Appel entrant · Numéro inconnu » (icône combiné, boutons rouge/vert génériques) entre par la droite en vibrant (oscillation x ±6px déterministe) puis sort.
-- sfx: buzz sur l'appel entrant.
-
-
-**Recalage voix (prioritaire sur les temps des scènes ci-dessus)** : la durée et les temps de voix ont changé ; garder la même mise en scène, décaler chaque beat sur le mot réel indiqué dans `voiceover`.
+Scene 1 (0.0–1.2s) : « Mais ce n'est pas tout. » karaoké centré (110px).
+Scene 2 (1.2–2.0s) : coupure : le texte s'efface en 0.12s, le fond tombe au presque noir, seule la pastille reste (elle pulse une fois) — moment de tension (un « riser » monte dans le son).
+Scene 3 (2.0–3.5s) : « Et ça… ce n'est que le début. » se dévoile mot à mot avec une lueur crème, « le début. » 1.4× plus gros.
+Scene 4 (3.5–3.9s) : balayage de lumière bleu poudré qui rallume le fond (impact sonore) et passe le relais.
+- sfx: riser 1.2–2.0, impact à 3.5.
 
 ## Selected blueprint: kinetic-type-beats
 

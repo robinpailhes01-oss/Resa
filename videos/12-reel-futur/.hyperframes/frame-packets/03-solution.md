@@ -11,23 +11,26 @@
 ## Frame 3 — Avec Reso
 
 - scene: « Avec Reso, » ; un téléphone avec la vraie page de réservation (Maison Alba) : une cliente réserve « même le soir » (pastille « Réservé à 22:47 ») ; puis la vraie capture de l'agenda desktop où le rendez-vous se pose ; puis deux cartes emails réelles « Rappel la veille » et « Demande d'avis » qui se posent devant.
-- duration: 9.2s
-- global_start: 13.4
+- duration: 8.9s
+- global_start: 15.6
 - transition_in: crossfade
 - type: solution
 - blueprint: device-surface-showcase (Adapt)
 - focal: les vraies captures Reso
 - roles: app-page-publique-mobile = cutout (téléphone) · app-agenda = cutout (fenêtre desktop) · emails-mobile-haut, emails-mobile-avis = supporting (cartes emails) · reservation-mobile-creneaux = supporting (option : écran créneaux)
 - asset_candidates: assets/app-page-publique-mobile.png, assets/app-agenda.png, assets/emails-mobile-haut.png, assets/emails-mobile-avis.png, assets/reservation-mobile-creneaux.png
-- status: outline
+- status: animated
 - src: compositions/frames/03-solution.html
-- voiceover: « Avec Réso, vos clientes réservent toutes seules, en ligne, même le soir. Tout arrive dans votre agenda, avec le rappel la veille et la demande d'avis après. » (« Avec Réso » 0.1–0.8s ; « réservent toutes seules » 1.3–2.4s ; « même le soir » 3.0–3.6s ; « agenda » 4.9s ; « rappel la veille » 6.0–6.9s ; « demande d'avis » 7.3–8.1s)
+- voiceover: « Avec Réso, vos clientes réservent toutes seules, en ligne, même le soir. Tout arrive dans votre agenda, avec le rappel la veille, et la demande d'avis après. » — temps locaux réels : « Avec » 0.13 ; « Réso » 0.33 ; « réservent » 1.38 ; « toutes seules » 1.89–2.5 ; « en ligne » 2.8–3.3 ; « même le soir » 3.44–4.1 ; « Tout arrive » 4.41 ; « agenda » 5.51 ; « rappel la veille » 6.4–7.2 ; « demande d'avis » 7.66–8.3 ; « après » 8.35–8.7
 
 Scene 1 (0.0–0.9s) : « Avec Reso, » au centre, logo reso crème qui se forme à côté.
 Scene 2 (0.8–3.8s) : titre en haut « Elles réservent toutes seules. » (karaoké) ; le téléphone (page publique réelle) monte à gauche-centre ; pastille « Réservé à 22:47 · Soin visage éclat » éclot à côté sur « même le soir ».
 Scene 3 (3.8–6.0s) : le téléphone file à gauche en se réduisant ; la fenêtre agenda (capture réelle) arrive à droite, grande ; un bloc « 11:00 · Julie Martin » s'y pose sur « agenda » ; titre « Tout arrive dans votre agenda. ».
 Scene 4 (6.0–9.2s) : deux cartes emails (captures réelles recadrées) se posent devant en éventail : « Rappel · la veille » sur « rappel la veille », « Demande d'avis Google » sur « demande d'avis » ; titre « Rappel la veille. Avis après. ».
 - sfx: ding sur la réservation, tick sur chaque carte.
+
+
+**Recalage voix (prioritaire sur les temps des scènes ci-dessus)** : la durée et les temps de voix ont changé ; garder la même mise en scène, décaler chaque beat sur le mot réel indiqué dans `voiceover`.
 
 ## Selected blueprint: device-surface-showcase
 

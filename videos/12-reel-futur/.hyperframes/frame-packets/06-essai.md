@@ -8,11 +8,11 @@
 
 ## Assigned storyboard block
 
-## Frame 6 — Essayez
+## Frame 8 — « J'ai dépassé » et essayez
 
 - scene: « Mais en attendant… » ; « Essayez Reso gratuitement » en grand ; bouton crème « Créer ma page » ; pastilles « 7 jours offerts » et « sans carte bancaire » ; URL « reso-app.fr » ; pastille prix « 39 € HT/mois » ; « Votre page est prête en quelques minutes. » ; le compte à rebours approche 0:00 et passe en rouge vers 45 s.
-- duration: 9.0s
-- global_start: 36.0
+- duration: 10.2s
+- global_start: 50.8
 - transition_in: crossfade
 - type: cta
 - blueprint: cta-morph-press (Adapt)
@@ -21,13 +21,16 @@
 - asset_candidates: assets/logo-reso-creme.svg
 - status: outline
 - src: compositions/frames/06-essai.html
-- voiceover: « Mais en attendant, essayez Réso gratuitement pendant sept jours, sans carte bancaire, sur reso-app point f r. Trente-neuf euros hors taxe par mois, et votre page est prête en quelques minutes. » (« en attendant » 0.4–1.0s ; « gratuitement » 1.6–2.3s ; « sept jours » 2.6–3.1s ; « sans carte bancaire » 3.2–4.1s ; « reso-app point f r » 4.3–5.5s ; « trente-neuf euros » 5.7–6.5s ; « quelques minutes » 7.8–8.6s)
+- voiceover: André « Bon… j'ai dépassé. Mais ça valait le coup ! En attendant, essayez Réso gratuitement pendant sept jours, sans carte bancaire, sur reso-app.fr. » — temps locaux réels : « Bon » 0.1 ; « j'ai dépassé » 0.53–1.4 ; « Mais ça valait le coup » 1.65–2.7 ; « En attendant » 2.82–3.5 ; « essayez » 3.62 ; « Réso » 4.05 ; « gratuitement » 4.37–4.9 ; « sept jours » 5.17–5.9 ; « sans carte bancaire » 5.92–7.0 ; « reso-app.fr » 7.13–9.1 ; tenue jusqu'à 10.2. (Le prix n'est plus dit mais la pastille « 39 € HT/mois » reste affichée.)
 
 Scene 1 (0.0–1.4s) : « Mais en attendant… » puis logo + « Essayez Reso gratuitement » (karaoké, 104px).
 Scene 2 (1.4–4.2s) : pastilles « 7 jours offerts » et « sans carte bancaire » qui se posent sur leurs mots ; bouton « Créer ma page » qui se pose.
 Scene 3 (4.2–6.6s) : « reso-app.fr » s'écrit sous le bouton (mono crème) ; pastille « 39 € HT/mois » se pose sur « trente-neuf euros ».
 Scene 4 (6.6–9.0s) : « Votre page est prête en quelques minutes. » ; le curseur clique « Créer ma page » (pression) ; tenue.
 - sfx: tick sur chaque pastille, tick au clic.
+
+
+**v2** : nouvelle ouverture « Bon… j'ai dépassé. » — la pastille du compte à rebours (déjà rouge, « +0:06 ») grossit au centre de l'écran en tremblant, puis « Mais ça valait le coup ! » (clin d'œil) ; elle revient en haut à droite et la suite de la frame existante (« Essayez Reso gratuitement », pastilles, bouton, URL, prix, clic) se recale sur « En attendant… » (2.82 s). Supprimer « Mais en attendant… » et la phrase « Votre page est prête en quelques minutes ».
 
 ## Selected blueprint: cta-morph-press
 

@@ -8,11 +8,11 @@
 
 ## Assigned storyboard block
 
-## Frame 7 — La chute
+## Frame 9 — La chute
 
 - scene: Dialogue en bulles de chat (style messagerie générique, sans logo) : bulle gauche (Céline, avatar « C ») « Attends… t'as vraiment annoncé ChatGPT ? » ; bulle droite (narrateur) « Bientôt ! Mais avoue que ça donne envie. » avec un sticker « BIENTÔT » collé ; puis logo reso + bouton « Créer ma page » + reso-app.fr ; le compte à rebours affiche « +0:0N » en rouge.
-- duration: 4.6s
-- global_start: 45.0
+- duration: 6.2s
+- global_start: 61.0
 - transition_in: crossfade
 - type: outro
 - blueprint: titlecard-reveal (Adapt)
@@ -21,12 +21,16 @@
 - asset_candidates: assets/logo-reso-creme.svg
 - status: outline
 - src: compositions/frames/07-chute.html
-- voiceover: Céline « Attends… t'as vraiment annoncé ChatGPT ? » (0.0–1.6s) · narrateur « Bientôt ! Mais avoue que ça donne envie. » (1.8–4.4s)
+- voiceover: Céline « Attends… t'as vraiment annoncé ChatGPT ? » 0.14–2.95 (« ChatGPT » 2.1–2.95) · André « Bientôt ! Mais avoue que ça donne envie. » « Bientôt » 3.2–3.8 ; « Mais avoue que ça donne envie » 4.29–5.4 ; carte finale à partir de ~4.6, tenue immobile jusqu'à 6.2
 
 Scene 1 (0.0–1.7s) : bulle gauche qui s'écrit (indicateur « … » puis texte) sur la voix de Céline.
 Scene 2 (1.7–3.2s) : bulle droite qui arrive, sticker « BIENTÔT » tamponné sur « Bientôt ».
 Scene 3 (3.0–4.6s) : les bulles remontent et se réduisent ; logo reso crème + « Créer ma page » + « reso-app.fr » au centre ; tenue immobile.
 - sfx: tick par bulle, logo sonore final.
+
+**Recalage voix (prioritaire sur les temps des scènes ci-dessus)** : la durée et les temps de voix ont changé ; garder la même mise en scène, décaler chaque beat sur le mot réel indiqué dans `voiceover`.
+
+**v2** : seul le `global_start` change (61.0) : le compte à rebours affiche +0:16 → +0:22. Mêmes temps de voix locaux.
 
 ## Selected blueprint: titlecard-reveal
 

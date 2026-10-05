@@ -23,3 +23,19 @@ Adaptation Reso de la référence analysée dans `ANALYSE.md` : narrateur mascul
 | 8 | Narrateur | Bientôt ! Mais avoue que ça donne envie. | 46,7 – 49,4 s |
 
 Musique : lit discret continu sous la voix (kit sonore Reso), bruitages courts sur les cartes et le sticker.
+
+## v2 (« effet waouh ») — texte dit à partir de 24,5 s
+
+Narrateur : André (ElevenLabs), +12 % ; Céline pour la réplique. Les trois nouveautés sont des fonctionnalités **prévues** (validées par Robin), toujours tamponnées « BIENTÔT ».
+
+| Voix | Texte | Début |
+| --- | --- | --- |
+| André | Mais ce n'est pas tout. | 24,6 s |
+| André | Et ça… ce n'est que le début. | 26,5 s |
+| André | Bientôt, votre page de réservation sera pensée pour remonter sur Google… et pour apparaître dans les réponses des IA, comme ChatGPT. | 28,5 s |
+| André | Un agent IA créera vos Reels et vos publications à partir de vos photos, et les programmera pour vous. Votre community manager… qui ne prend jamais de pause ! | 36,3 s |
+| André | Et une cliente qui n'est pas revenue depuis deux mois ? Réso lui enverra un petit message pour reprendre rendez-vous. | 45,2 s |
+| André | Bon… j'ai dépassé. Mais ça valait le coup ! En attendant, essayez Réso gratuitement pendant sept jours, sans carte bancaire, sur reso-app.fr. | 50,9 s |
+| Céline / André | (chute inchangée) | 61,1 s |
+
+Le gag du café est retiré : le dépassement assumé du chrono le remplace.

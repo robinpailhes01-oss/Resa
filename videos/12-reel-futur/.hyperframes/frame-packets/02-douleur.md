@@ -11,23 +11,26 @@
 ## Frame 2 — Soyons honnêtes
 
 - scene: « Soyons honnêtes. » puis trois cartes-problèmes qui s'empilent en vrac avec badges rouges : « SMS · 3 nouveaux messages » (« Dispo samedi 14h ? », « Je peux décaler ? »), « Messages Insta · 5 » (« Bonjour, c'est possible demain ? »), « Agenda papier » (page griffonnée, rendez-vous rayés) ; puis « ça part dans tous les sens » : les cartes tournent et s'éparpillent ; enfin « Pendant un soin, impossible de décrocher. » avec un compteur rouge « 4 appels manqués ».
-- duration: 7.8s
-- global_start: 5.6
+- duration: 9.7s
+- global_start: 5.9
 - transition_in: crossfade
 - type: problem
 - blueprint: overwhelm-surround (Adapt)
 - focal: pile de cartes-problèmes
 - roles: aucun asset image (cartes construites, icônes génériques — aucun logo de marque)
 - asset_candidates: none
-- status: outline
+- status: animated
 - src: compositions/frames/02-douleur.html
-- voiceover: « Soyons honnêtes : les rendez-vous par SMS, les messages Insta, l'agenda papier… ça part dans tous les sens. Et pendant un soin, impossible de décrocher. » (« Soyons honnêtes » 0.1–0.9s ; « SMS » 1.6s ; « messages Insta » 2.2–2.8s ; « agenda papier » 3.0–3.8s ; « dans tous les sens » 4.3–5.0s ; « pendant un soin » 5.6–6.3s ; « impossible de décrocher » 6.4–7.5s)
+- voiceover: « Soyons honnêtes : les rendez-vous par SMS, les messages Insta, l'agenda papier… ça part dans tous les sens ! Et pendant un soin, impossible de décrocher. » — temps locaux réels : « Soyons » 0.1 ; « honnêtes » 0.45–1.0 ; « SMS » 2.13 ; « messages Insta » 2.7–3.6 ; « agenda papier » 3.92–4.9 ; « ça part dans tous les sens » 5.14–6.9 ; « pendant un soin » 7.1–8.0 ; « impossible de décrocher » 8.23–9.46
 
 Scene 1 (0.0–1.0s) : « Soyons honnêtes. » en karaoké au centre, puis remonte en titre (y≈150, 72px).
 Scene 2 (1.0–4.0s) : les 3 cartes entrent une par une sur leur mot, inclinées, empilées au centre, badges rouges qui comptent (1→3, 1→5).
 Scene 3 (4.0–5.4s) : « ça part dans tous les sens » : les cartes tournent et partent dans des directions différentes (rotations ±25°, flou de mouvement).
 Scene 4 (5.4–7.8s) : « Pendant un soin, impossible de décrocher. » en karaoké ; pastille rouge « 4 appels manqués » qui incrémente.
 - sfx: tick à chaque carte, whoosh sur l'éparpillement.
+
+
+**Recalage voix (prioritaire sur les temps des scènes ci-dessus)** : la durée et les temps de voix ont changé ; garder la même mise en scène, décaler chaque beat sur le mot réel indiqué dans `voiceover`.
 
 ## Selected blueprint: overwhelm-surround
 

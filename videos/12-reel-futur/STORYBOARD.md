@@ -1,8 +1,8 @@
 ---
 format: 1920x1080
-duration: 59.5s
+duration: 67.2s
 message: "J'ai 45 secondes pour vous convaincre que Reso est bien mieux que votre téléphone qui sonne en plein soin."
-arc: Défi (compte à rebours) → douleur → solution (vraies captures) → bientôt (SEO/GEO, agents IA) → gag café → CTA → chute en dialogue
+arc: Défi (compte à rebours) → douleur → solution (vraies captures) → bascule « ce n'est que le début » → 3 nouveautés BIENTÔT plein écran (SEO/GEO, agent IA community manager, relance des clientes) → « j'ai dépassé » + CTA → chute en dialogue
 audience: Pros indépendants de la beauté en France (Reels, Meta Ads)
 mode: autonomous
 music: none
@@ -86,67 +86,102 @@ Scene 4 (6.0–9.2s) : deux cartes emails (captures réelles recadrées) se pose
 
 **Recalage voix (prioritaire sur les temps des scènes ci-dessus)** : la durée et les temps de voix ont changé ; garder la même mise en scène, décaler chaque beat sur le mot réel indiqué dans `voiceover`.
 
-## Frame 4 — Bientôt
+## Frame 4 — La bascule
 
-- scene: « Mais ce n'est pas tout. » ; trois cartes « à venir », chacune tamponnée « BIENTÔT » : (1) un résultat de recherche générique (barre « esthéticienne Montpellier », premier résultat « Maison Alba · Réserver en ligne », étoiles) ; (2) un assistant IA générique (bulle question « Un institut pour un soin visage à Montpellier ? » → réponse qui cite « Maison Alba — réservable en ligne ») ; (3) un agent IA qui prépare une publication (carte post carré avec photo réelle du salon, légende qui s'écrit, bouton « Programmer »). Chaque carte : sticker « BIENTÔT ».
-- duration: 11.9s
+- scene: « Mais ce n'est pas tout. » en karaoké ; puis tout s'éteint d'un coup (fond qui passe au bleu nuit `#1F2733` presque noir, la pastille compte à rebours reste seule allumée) ; silence ; puis « Et ça… ce n'est que le début. » apparaît en crème, lettres qui se dévoilent avec une lueur, la fin « le début. » plus grosse ; le fond se rallume en bleu poudré par un balayage lumineux vers la frame suivante.
+- duration: 3.9s
 - global_start: 24.5
 - transition_in: crossfade
-- type: roadmap
-- blueprint: fixed-anchor-cycle (Adapt)
-- focal: les cartes « Bientôt »
-- roles: photo-1..4 = supporting (photo du post) · app-page-publique-mobile = supporting (option : vignette de la page dans le résultat)
-- asset_candidates: assets/photo-1.png, assets/photo-2.png, assets/photo-3.png, assets/photo-4.png, assets/app-page-publique-mobile.png
-- status: animated
-- src: compositions/frames/04-bientot.html
-- voiceover: « Mais ce n'est pas tout ! Bientôt, votre page de réservation sera pensée pour remonter sur Google… et dans les réponses des IA comme ChatGPT. Et des agents IA prépareront vos publications Instagram pour vous. » — temps locaux réels : « Mais ce n'est pas tout » 0.11–1.1 ; « Bientôt » 1.31 ; « page de réservation » 2.2–3.1 ; « remonter sur Google » 4.32–5.5 ; « réponses des IA » 6.29–7.3 ; « ChatGPT » 7.69–8.2 ; « agents IA » 8.58–9.2 ; « publications Instagram » 9.83–11.0 ; « pour vous » 11.07–11.8
-
-Scene 1 (0.0–1.2s) : « Mais ce n'est pas tout. » karaoké centré, puis remonte (y≈140) et devient « Bientôt sur Reso… ».
-Scene 2 (1.2–4.8s) : carte recherche au centre ; sur « remonter sur Google » le résultat Maison Alba monte en première position ; tampon « BIENTÔT » + légende « Référencement SEO de votre page ».
-Scene 3 (4.8–6.6s) : la carte recherche glisse à gauche (réduite) ; carte assistant IA (bulle de question, réponse qui s'écrit et cite Maison Alba) ; tampon « BIENTÔT » + légende « Visible dans les réponses des IA (GEO) ».
-Scene 4 (6.6–9.0s) : les deux cartes s'écartent ; carte agent IA au centre (post en préparation, légende qui s'écrit, bouton « Programmer ») ; tampon « BIENTÔT » + légende « Agents IA pour vos publications ».
-- sfx: tampon (paper) à chaque sticker.
-
-
-**Recalage voix (prioritaire sur les temps des scènes ci-dessus)** : la durée et les temps de voix ont changé ; garder la même mise en scène, décaler chaque beat sur le mot réel indiqué dans `voiceover`.
-
-## Frame 5 — Le café (gag)
-
-- scene: « Et même… » ; carte action « Préparer un café » (icône tasse, sous-ligne « Entre deux clientes · serré »), bouton « Lancer la cafetière » ; le curseur clique, le bouton tremble et passe au rouge « Indisponible », sticker « PAS ENCORE » penché ; texte « Bon ça, j'avoue… » puis « on le fait pas encore. »
-- duration: 5.5s
-- global_start: 36.4
-- transition_in: crossfade
-- type: gag
-- blueprint: cursor-ui-demo (Adapt)
-- focal: carte café
+- type: reveal
+- blueprint: kinetic-type-beats (Adapt)
+- focal: « ce n'est que le début »
 - roles: aucun asset image
 - asset_candidates: none
-- status: animated
-- src: compositions/frames/05-cafe.html
-- voiceover: « Et même… vous faire un café entre deux clientes. Bon ça, j'avoue, on le fait pas encore. » — temps locaux réels : « Et même » 0.16–0.5 ; « faire un café » 0.97–1.9 ; « entre deux clientes » 2.01–2.9 ; « Bon ça, j'avoue » 3.08–4.1 ; « on le fait » 4.26–4.7 ; « pas encore » 4.7–5.37
+- status: outline
+- src: compositions/frames/04-bascule.html
+- voiceover: André « Mais ce n'est pas tout. » 0.1–1.1 (« pas tout » 0.69–1.1) · silence 1.25–2.0 · « Et ça… ce n'est que le début. » 2.03–3.5 (« Et ça » 2.03–2.3 ; « ce n'est que » 2.36–2.95 ; « le début » 2.96–3.5)
 
-Scene 1 (0.0–1.0s) : « Et même… » karaoké en haut ; la carte café se pose au centre.
-Scene 2 (1.0–2.5s) : curseur qui vient sur « Lancer la cafetière » et clique à 2.2s.
-Scene 3 (2.5–4.4s) : bouton qui tremble (oscillation déterministe), devient rouge « Indisponible » ; tampon « PAS ENCORE » sur « pas encore » (3.7s) ; sous-titre « Bon ça, j'avoue… on le fait pas encore. » en karaoké.
-- sfx: tick au clic, buzz léger sur l'échec, paper sur le tampon.
+Scene 1 (0.0–1.2s) : « Mais ce n'est pas tout. » karaoké centré (110px).
+Scene 2 (1.2–2.0s) : coupure : le texte s'efface en 0.12s, le fond tombe au presque noir, seule la pastille reste (elle pulse une fois) — moment de tension (un « riser » monte dans le son).
+Scene 3 (2.0–3.5s) : « Et ça… ce n'est que le début. » se dévoile mot à mot avec une lueur crème, « le début. » 1.4× plus gros.
+Scene 4 (3.5–3.9s) : balayage de lumière bleu poudré qui rallume le fond (impact sonore) et passe le relais.
+- sfx: riser 1.2–2.0, impact à 3.5.
 
+## Frame 5 — Bientôt : une page pensée pour Google et les IA
 
-**Recalage voix (prioritaire sur les temps des scènes ci-dessus)** : la durée et les temps de voix ont changé ; garder la même mise en scène, décaler chaque beat sur le mot réel indiqué dans `voiceover`.
+- scene: Titre « Bientôt » (surligné jaune) + « Votre page, en tête des recherches. » ; une grande barre de recherche générique « esthéticienne Montpellier » ; les résultats tombent ; « Maison Alba · Réserver en ligne » (vignette réelle de la page) monte en première position, badge « N°1 » ; tampon BIENTÔT + légende « Référencement SEO » ; puis la scène bascule vers un assistant IA générique (bulle « Un institut pour un soin visage à Montpellier ? ») dont la réponse s'écrit et cite « Maison Alba — réservable en ligne », la carte de la page apparaît dans la réponse ; tampon BIENTÔT + légende « Recommandée par les IA (GEO) ».
+- duration: 7.8s
+- global_start: 28.4
+- transition_in: crossfade
+- type: roadmap
+- blueprint: camera-journey (Adapt)
+- focal: le résultat Maison Alba puis la réponse de l'assistant
+- roles: app-page-publique-mobile = supporting (vignette de la page dans le résultat et la réponse) · photo-1 = supporting
+- asset_candidates: assets/app-page-publique-mobile.png, assets/photo-1.png
+- status: outline
+- src: compositions/frames/05-seo.html
+- voiceover: « Bientôt, votre page de réservation sera pensée pour remonter sur Google… et pour apparaître dans les réponses des IA, comme ChatGPT. » (« Bientôt » 0.1–0.6 ; « page de réservation » 0.98–2.0 ; « remonter sur Google » 3.07–4.2 ; « apparaître » 4.59–5.1 ; « réponses des IA » 5.51–6.4 ; « ChatGPT » 6.79–7.46)
 
-## Frame 6 — Essayez
+Scene 1 (0.0–1.0s) : « Bientôt » tamponné en surligné jaune en haut à gauche, puis « Votre page, en tête des recherches. ».
+Scene 2 (0.9–4.3s) : barre de recherche plein écran (grande, 1300px), requête tapée, résultats ; sur « remonter sur Google » le résultat Maison Alba remonte de la 4e à la 1re place (les autres descendent), badge N°1 ; tampon BIENTÔT + « Référencement SEO » à ~4.3.
+Scene 3 (4.4–7.8s) : la caméra glisse latéralement vers l'assistant IA (icône bulle neutre, sans logo) ; question, points qui écrivent, réponse qui s'écrit sur « réponses des IA » et cite Maison Alba avec la carte de la page ; tampon BIENTÔT + « Recommandée par les IA (GEO) » sur « ChatGPT » (~7.0).
+- sfx: impact sur chaque tampon.
+
+## Frame 6 — Bientôt : votre community manager IA
+
+- scene: Le moment « waouh » : un agent IA (pastille « Agent IA · au travail » avec une petite animation d'activité, sans robot ni cerveau) prend les 4 vraies photos du salon (elles volent depuis une grille « Vos photos »), assemble en direct un **Reel vertical** dans un téléphone (les photos se succèdent en plans, un titre animé « Soin visage éclat ✨ » s'écrit, barre de progression de montage), écrit la légende avec hashtags, puis une vue **calendrier de la semaine** se remplit de publications (Lun « Reel », Mer « Post », Ven « Reel », Dim « Story ») qui se posent une à une avec une coche « Programmé » ; titre final « Votre community manager… qui ne prend jamais de pause. » ; tampon BIENTÔT.
+- duration: 8.9s
+- global_start: 36.2
+- transition_in: crossfade
+- type: roadmap
+- blueprint: zoom-out-workspace-reveal (Adapt)
+- focal: le Reel qui se monte tout seul, puis le calendrier qui se remplit
+- roles: photo-1..4 = supporting (photos réelles du salon, matière du Reel et des posts)
+- asset_candidates: assets/photo-1.png, assets/photo-2.png, assets/photo-3.png, assets/photo-4.png
+- status: outline
+- src: compositions/frames/06-agent.html
+- voiceover: « Un agent IA créera vos Reels et vos publications à partir de vos photos, et les programmera pour vous. Votre community manager… qui ne prend jamais de pause ! » (« agent IA » 0.25–0.8 ; « Reels » 1.43 ; « publications » 2.15–2.8 ; « vos photos » 3.3–4.0 ; « programmera » 4.53–5.0 ; « pour vous » 4.94–5.4 ; « community manager » 6.03–7.0 ; « qui ne prend jamais de pause » 7.09–8.68)
+
+Scene 1 (0.0–1.2s) : pastille « Agent IA · au travail » apparaît au centre, puis se pose en haut ; titre « Bientôt : un agent IA » (Bientôt surligné jaune).
+Scene 2 (1.2–3.9s) : grille « Vos photos » (4 photos réelles) à gauche ; sur « Reels » un téléphone 9:16 à droite ; les photos volent dans le téléphone et le Reel se monte (plans qui défilent, titre animé, barre de progression) ; sur « publications » une carte post carré se forme à côté.
+Scene 3 (3.9–6.0s) : zoom arrière : un calendrier de la semaine apparaît ; sur « programmera » les publications s'y posent une à une avec « Programmé ✓ ».
+Scene 4 (6.0–8.9s) : titre « Votre community manager… qui ne prend jamais de pause. » en karaoké ; tampon BIENTÔT sur l'ensemble ; le compte à rebours arrive à 0:01 et pulse rouge.
+- sfx: whoosh sur les photos qui volent, tick à chaque publication programmée, impact sur le tampon.
+
+## Frame 7 — Bientôt : la relance des clientes
+
+- scene: Une fiche cliente générique « Julie M. · dernière visite il y a 2 mois » (pastille ambre « À relancer ») ; sur « petit message », un SMS/email de relance s'écrit dans une bulle (« Bonjour Julie, cela fait un moment ! Envie d'un soin ? Réservez en un clic : reso-app.fr/r/maison-alba ») et part ; une notification « Julie a réservé · Soin visage éclat » arrive ; tampon BIENTÔT + légende « Relance automatique des clientes ». Le compte à rebours est passé au rouge en « +0:0N ».
+- duration: 5.7s
+- global_start: 45.1
+- transition_in: crossfade
+- type: roadmap
+- blueprint: cursor-ui-demo (Adapt)
+- focal: le message de relance
+- roles: aucun asset image (cartes construites)
+- asset_candidates: none
+- status: outline
+- src: compositions/frames/07-relance.html
+- voiceover: « Et une cliente qui n'est pas revenue depuis deux mois ? Réso lui enverra un petit message pour reprendre rendez-vous. » (« cliente » 0.32 ; « pas revenue » 0.97–1.4 ; « deux mois » 1.68–2.2 ; « Réso » 2.3 ; « petit message » 3.42–4.0 ; « reprendre rendez-vous » 4.61–5.46)
+
+Scene 1 (0.0–2.2s) : titre « Bientôt » (surligné) ; la fiche cliente glisse, l'étiquette « 2 mois » apparaît sur « deux mois », pastille ambre.
+Scene 2 (2.2–4.4s) : sur « petit message » la bulle de relance s'écrit et part (glisse vers la droite) avec un petit son.
+Scene 3 (4.4–5.7s) : sur « reprendre rendez-vous » la notification « Julie a réservé » arrive ; tampon BIENTÔT + légende.
+- sfx: tick à l'envoi, ding sur la réservation, impact sur le tampon.
+
+## Frame 8 — « J'ai dépassé » et essayez
 
 - scene: « Mais en attendant… » ; « Essayez Reso gratuitement » en grand ; bouton crème « Créer ma page » ; pastilles « 7 jours offerts » et « sans carte bancaire » ; URL « reso-app.fr » ; pastille prix « 39 € HT/mois » ; « Votre page est prête en quelques minutes. » ; le compte à rebours approche 0:00 et passe en rouge vers 45 s.
-- duration: 11.4s
-- global_start: 41.9
+- duration: 10.2s
+- global_start: 50.8
 - transition_in: crossfade
 - type: cta
 - blueprint: cta-morph-press (Adapt)
 - focal: bouton « Créer ma page »
 - roles: logo-reso-creme = cutout (petit, au-dessus du titre)
 - asset_candidates: assets/logo-reso-creme.svg
-- status: animated
+- status: outline
 - src: compositions/frames/06-essai.html
-- voiceover: « Mais en attendant, essayez Réso gratuitement pendant sept jours, sans carte bancaire, sur reso-app.fr. Trente-neuf euros hors taxe par mois, et votre page est prête en quelques minutes. » — temps locaux réels : « Mais en attendant » 0.14–1.2 ; « essayez » 1.28 ; « Réso » 1.78 ; « gratuitement » 2.1–2.7 ; « sept jours » 3.16–3.6 ; « sans carte bancaire » 3.77–4.7 ; « reso-app.fr » 4.9–7.0 ; « trente-neuf euros » 7.56–8.1 ; « hors taxe par mois » 8.05–9.1 ; « page est prête » 9.63–10.3 ; « quelques minutes » 10.42–11.3 (le compte à rebours atteint 0:00 à 3.1 local = 45 s global)
+- voiceover: André « Bon… j'ai dépassé. Mais ça valait le coup ! En attendant, essayez Réso gratuitement pendant sept jours, sans carte bancaire, sur reso-app.fr. » — temps locaux réels : « Bon » 0.1 ; « j'ai dépassé » 0.53–1.4 ; « Mais ça valait le coup » 1.65–2.7 ; « En attendant » 2.82–3.5 ; « essayez » 3.62 ; « Réso » 4.05 ; « gratuitement » 4.37–4.9 ; « sept jours » 5.17–5.9 ; « sans carte bancaire » 5.92–7.0 ; « reso-app.fr » 7.13–9.1 ; tenue jusqu'à 10.2. (Le prix n'est plus dit mais la pastille « 39 € HT/mois » reste affichée.)
 
 Scene 1 (0.0–1.4s) : « Mais en attendant… » puis logo + « Essayez Reso gratuitement » (karaoké, 104px).
 Scene 2 (1.4–4.2s) : pastilles « 7 jours offerts » et « sans carte bancaire » qui se posent sur leurs mots ; bouton « Créer ma page » qui se pose.
@@ -155,20 +190,20 @@ Scene 4 (6.6–9.0s) : « Votre page est prête en quelques minutes. » ; le cur
 - sfx: tick sur chaque pastille, tick au clic.
 
 
-**Recalage voix (prioritaire sur les temps des scènes ci-dessus)** : la durée et les temps de voix ont changé ; garder la même mise en scène, décaler chaque beat sur le mot réel indiqué dans `voiceover`.
+**v2** : nouvelle ouverture « Bon… j'ai dépassé. » — la pastille du compte à rebours (déjà rouge, « +0:06 ») grossit au centre de l'écran en tremblant, puis « Mais ça valait le coup ! » (clin d'œil) ; elle revient en haut à droite et la suite de la frame existante (« Essayez Reso gratuitement », pastilles, bouton, URL, prix, clic) se recale sur « En attendant… » (2.82 s). Supprimer « Mais en attendant… » et la phrase « Votre page est prête en quelques minutes ».
 
-## Frame 7 — La chute
+## Frame 9 — La chute
 
 - scene: Dialogue en bulles de chat (style messagerie générique, sans logo) : bulle gauche (Céline, avatar « C ») « Attends… t'as vraiment annoncé ChatGPT ? » ; bulle droite (narrateur) « Bientôt ! Mais avoue que ça donne envie. » avec un sticker « BIENTÔT » collé ; puis logo reso + bouton « Créer ma page » + reso-app.fr ; le compte à rebours affiche « +0:0N » en rouge.
 - duration: 6.2s
-- global_start: 53.3
+- global_start: 61.0
 - transition_in: crossfade
 - type: outro
 - blueprint: titlecard-reveal (Adapt)
 - focal: bulles de dialogue
 - roles: logo-reso-creme = cutout
 - asset_candidates: assets/logo-reso-creme.svg
-- status: animated
+- status: outline
 - src: compositions/frames/07-chute.html
 - voiceover: Céline « Attends… t'as vraiment annoncé ChatGPT ? » 0.14–2.95 (« ChatGPT » 2.1–2.95) · André « Bientôt ! Mais avoue que ça donne envie. » « Bientôt » 3.2–3.8 ; « Mais avoue que ça donne envie » 4.29–5.4 ; carte finale à partir de ~4.6, tenue immobile jusqu'à 6.2
 
@@ -178,4 +213,6 @@ Scene 3 (3.0–4.6s) : les bulles remontent et se réduisent ; logo reso crème 
 - sfx: tick par bulle, logo sonore final.
 
 **Recalage voix (prioritaire sur les temps des scènes ci-dessus)** : la durée et les temps de voix ont changé ; garder la même mise en scène, décaler chaque beat sur le mot réel indiqué dans `voiceover`.
+
+**v2** : seul le `global_start` change (61.0) : le compte à rebours affiche +0:16 → +0:22. Mêmes temps de voix locaux.
 
