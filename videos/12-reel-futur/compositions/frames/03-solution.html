@@ -348,35 +348,35 @@
     /* ---------- email cards (captures réelles recadrées) ---------- */
     .f03-card {
       position: absolute;
-      width: 540px;
-      height: 381px;
+      width: 600px;
+      height: 419px;
       border-radius: 22px;
       overflow: hidden;
       background: #fffdf8;
       border: 1px solid #e7dfd0;
       box-shadow: 0 30px 80px rgba(31, 39, 51, 0.28);
-      transform-origin: 270px 190px;
+      transform-origin: 300px 210px;
     }
     #f03-card1 {
-      left: 500px;
-      top: 300px;
+      left: 430px;
+      top: 424px;
     }
     #f03-card2 {
-      left: 1010px;
-      top: 372px;
+      left: 1000px;
+      top: 448px;
     }
     .f03-card-head {
       position: absolute;
       left: 0;
       top: 0;
-      width: 540px;
-      height: 76px;
+      width: 600px;
+      height: 80px;
       border-bottom: 1px solid #e7dfd0;
     }
     .f03-card-ico {
       position: absolute;
-      left: 22px;
-      top: 16px;
+      left: 24px;
+      top: 18px;
       width: 44px;
       height: 44px;
       border-radius: 50%;
@@ -391,8 +391,8 @@
     }
     .f03-card-label {
       position: absolute;
-      left: 82px;
-      top: 16px;
+      left: 84px;
+      top: 18px;
       font-weight: 700;
       font-size: 34px;
       line-height: 44px;
@@ -403,34 +403,34 @@
     .f03-crop {
       position: absolute;
       left: 0;
-      top: 76px;
-      width: 540px;
-      height: 305px;
+      top: 80px;
+      width: 600px;
+      height: 339px;
       overflow: hidden;
       background: #fffdf8;
     }
-    /* crop = capture region x 80–1090, y 790–1360 (haut) / y 220–790 (avis); k = 540/1010 */
+    /* crop = capture region x 80–1090, y 790–1360 (haut) / y 220–790 (avis); k = 600/1010 */
     .f03-crop img {
       position: absolute;
-      left: -42.77px;
-      width: 625.55px;
-      height: 1353.74px;
+      left: -47.52px;
+      width: 695.05px;
+      height: 1504.16px;
       display: block;
     }
     #f03-crop1 img {
-      top: -422.38px;
+      top: -469.31px;
     }
     #f03-crop2 img {
-      top: -117.62px;
+      top: -130.69px;
     }
-    /* toggle centre in crop px (862,132) × k → (461, 71) */
+    /* toggle centre in crop px (862,132) × k → (512, 78) */
     .f03-toggle-ring {
       position: absolute;
-      left: 413px;
-      top: 43px;
-      width: 96px;
-      height: 56px;
-      border-radius: 28px;
+      left: 460px;
+      top: 47px;
+      width: 104px;
+      height: 62px;
+      border-radius: 31px;
       border: 3px solid rgba(47, 125, 91, 0.9);
     }
 
@@ -472,7 +472,7 @@
       <div id="f03-halo"></div>
     </div>
 
-    <div id="f03-cam" class="clip" data-start="0" data-duration="9.2" data-track-index="1">
+    <div id="f03-cam" class="clip" data-layout-allow-overflow data-start="0" data-duration="9.2" data-track-index="1">
       <!-- scene 1 -->
       <div id="f03-avec">
         <span class="f03-w" id="f03-avec-word"><span class="f03-wi">Avec</span></span>
@@ -550,7 +550,7 @@
           <div class="f03-card-label">Rappel · la veille</div>
         </div>
         <div class="f03-crop" id="f03-crop1">
-          <img src="assets/emails-mobile-haut.png" alt="" />
+          <img src="assets/emails-mobile-haut.png" alt="" data-layout-allow-overflow />
           <div class="f03-toggle-ring" id="f03-ring1"></div>
         </div>
       </div>
@@ -562,7 +562,7 @@
           <div class="f03-card-label">Demande d'avis Google</div>
         </div>
         <div class="f03-crop" id="f03-crop2">
-          <img src="assets/emails-mobile-avis.png" alt="" />
+          <img src="assets/emails-mobile-avis.png" alt="" data-layout-allow-overflow />
           <div class="f03-toggle-ring" id="f03-ring2"></div>
         </div>
       </div>
@@ -659,7 +659,7 @@
 
       tl.fromTo(
         "#f03-phone",
-        { y: 760, rotation: 9, scale: 1.04 },
+        { y: 940, rotation: 9, scale: 1.04 },
         { y: 0, rotation: -3, scale: 1, duration: 0.7, ease: "expo.out" },
         0.92
       );
@@ -678,7 +678,8 @@
         3.0
       );
       tl.to("#f03-pill", { scale: 1, rotation: 0, duration: 0.25, ease: "power2.out" }, 3.3);
-      tl.fromTo("#f03-pill-ring", { opacity: 0.9, scale: 1 }, { opacity: 0, scale: 1.28, duration: 0.6, ease: "expo.out" }, 3.04);
+      tl.fromTo("#f03-pill-ring", { opacity: 0, scale: 0.96 }, { opacity: 0.9, scale: 1, duration: 0.06, ease: "none" }, 3.02);
+      tl.to("#f03-pill-ring", { opacity: 0, scale: 1.28, duration: 0.6, ease: "expo.out" }, 3.08);
       tl.fromTo("#f03-pill-check", { scale: 0, rotation: -40 }, { scale: 1, rotation: 0, duration: 0.32, ease: "expo.out" }, 3.08);
       tl.fromTo("#f03-pill-moon", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: "expo.out" }, 3.2);
 
@@ -727,7 +728,7 @@
       );
       tl.fromTo("#f03-block-glow", { opacity: 0, scale: 1 }, { opacity: 1, scale: 1, duration: 0.12, ease: "power2.out" }, 4.86);
       tl.to("#f03-block-glow", { opacity: 0, scale: 1.12, duration: 0.6, ease: "expo.out" }, 5.0);
-      tl.fromTo("#f03-win", { y: 0 }, { y: 6, duration: 0.08, ease: "power2.out" }, 4.86);
+      tl.to("#f03-win", { y: 6, duration: 0.08, ease: "power2.out" }, 4.86);
       tl.to("#f03-win", { y: 0, duration: 0.3, ease: "power3.out" }, 4.94);
 
       // push in on Inès's column (canvas right edge pinned, block centre at y≈300)
@@ -750,7 +751,7 @@
       tl.to("#f03-win", { scale: 0.96, duration: 0.5, ease: "power3.out" }, 6.0);
       tl.to("#f03-veil", { opacity: 0.22, duration: 0.5, ease: "power2.out" }, 6.0);
       tl.to("#f03-phone", { x: -430, scale: 0.74, duration: 0.5, ease: "power3.out" }, 6.0);
-      tl.to("#f03-canvas", { y: 300 - 836 * S1 - 40, duration: 3.0, ease: "sine.inOut" }, 6.1);
+      tl.to("#f03-canvas", { y: 120 - 836 * S1, duration: 0.7, ease: "power3.inOut" }, 6.0);
 
       // card 1 « Rappel · la veille »
       tl.fromTo(

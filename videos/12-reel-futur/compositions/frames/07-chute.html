@@ -1,0 +1,305 @@
+<template id="f07-template">
+  <style>
+    @font-face { font-family: "Outfit"; src: url("assets/fonts/outfit.woff2") format("woff2"); font-weight: 100 900; font-style: normal; }
+    @font-face { font-family: "Manrope"; src: url("assets/fonts/manrope.woff2") format("woff2"); font-weight: 200 800; font-style: normal; }
+    @font-face { font-family: "JetBrains Mono"; src: url("assets/fonts/jetbrainsmono.woff2") format("woff2"); font-weight: 100 800; font-style: normal; }
+
+    #root {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: "Outfit", sans-serif;
+      color: #FBF6EA;
+    }
+
+    #f07-ground {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 75% 80% at 50% 30%, #7D93A8 0%, #617990 48%, #4A6179 100%);
+    }
+
+    /* ---------- chat ---------- */
+    #f07-chat {
+      position: absolute;
+      left: 240px;
+      top: 250px;
+      width: 1440px;
+      height: 420px;
+      transform-origin: 50% 0%;
+    }
+    #f07-avatar {
+      position: absolute;
+      left: 0;
+      top: 52px;
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: #E7DFD0;
+      color: #4A6179;
+      font-weight: 700;
+      font-size: 50px;
+      line-height: 96px;
+      text-align: center;
+      box-shadow: 0 14px 30px rgba(31, 39, 51, 0.25);
+    }
+    #f07-name {
+      position: absolute;
+      left: 124px;
+      top: 0;
+      font-family: "Manrope", sans-serif;
+      font-weight: 700;
+      font-size: 28px;
+      color: #FBF6EA;
+      opacity: 0.85;
+    }
+    .f07-bubble {
+      position: absolute;
+      padding: 30px 46px 34px;
+      font-weight: 600;
+      font-size: 60px;
+      letter-spacing: -0.025em;
+      line-height: 1.05;
+      white-space: nowrap;
+      box-shadow: 0 30px 80px rgba(31, 39, 51, 0.28);
+    }
+    #f07-typing {
+      left: 124px;
+      top: 48px;
+      width: 190px;
+      height: 106px;
+      padding: 0;
+      background: #FFFDF8;
+      border-radius: 50px 50px 50px 14px;
+      transform-origin: 0% 100%;
+    }
+    .f07-dot {
+      position: absolute;
+      top: 44px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #5F6672;
+    }
+    #f07-left {
+      left: 124px;
+      top: 48px;
+      background: #FFFDF8;
+      color: #1F2733;
+      border-radius: 50px 50px 50px 14px;
+      transform-origin: 0% 100%;
+    }
+    #f07-right {
+      right: 0;
+      top: 246px;
+      background: #1F2733;
+      color: #FBF6EA;
+      border-radius: 50px 50px 14px 50px;
+      transform-origin: 100% 100%;
+    }
+    .f07-w { position: relative; display: inline-block; margin-right: 0.22em; }
+    .f07-w:last-child { margin-right: 0; }
+    #f07-left .f07-w { color: rgba(31, 39, 51, 0.28); }
+    #f07-right .f07-w { color: rgba(251, 246, 234, 0.32); }
+
+    #f07-sticker {
+      position: absolute;
+      left: -46px;
+      top: -58px;
+      padding: 14px 26px 10px;
+      background: #F3D36B;
+      color: #1F2733;
+      font-weight: 700;
+      font-size: 46px;
+      letter-spacing: -0.01em;
+      line-height: 1;
+      border-radius: 10px;
+      box-shadow: 0 8px 18px rgba(31, 39, 51, 0.32);
+      opacity: 0;
+    }
+
+    /* ---------- end card ---------- */
+    #f07-logo {
+      position: absolute;
+      left: 700px;
+      top: 372px;
+      width: 520px;
+      height: 153px;
+    }
+    #f07-cta {
+      position: absolute;
+      left: 640px;
+      top: 586px;
+      width: 640px;
+      height: 112px;
+      border-radius: 56px;
+      background: #FBF6EA;
+      color: #1F2733;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(31, 39, 51, 0.28);
+    }
+    #f07-cta-label {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      font-weight: 700;
+      font-size: 48px;
+      letter-spacing: -0.03em;
+      white-space: nowrap;
+    }
+    #f07-cta-label svg { width: 40px; height: 40px; }
+    #f07-shine {
+      position: absolute;
+      top: -20px;
+      left: 0;
+      width: 120px;
+      height: 152px;
+      background: linear-gradient(90deg, rgba(255, 253, 248, 0) 0%, rgba(255, 253, 248, 0.95) 50%, rgba(255, 253, 248, 0) 100%);
+      transform-origin: 50% 50%;
+      opacity: 0;
+    }
+    #f07-url {
+      position: absolute;
+      left: 0;
+      width: 1920px;
+      top: 730px;
+      text-align: center;
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 500;
+      font-size: 38px;
+      color: #FBF6EA;
+    }
+
+    /* ---------- countdown chip (overtime: soft red) ---------- */
+    #f07-cd {
+      position: absolute;
+      left: 1690px;
+      top: 64px;
+      width: 176px;
+      height: 56px;
+      border-radius: 28px;
+      background: #D65A4A;
+      border: 2px solid rgba(251, 246, 234, 0.30);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 500;
+      font-size: 30px;
+      color: #FBF6EA;
+    }
+    #f07-cd svg { width: 28px; height: 28px; }
+    #f07-cd-val { display: grid; justify-items: center; }
+    #f07-cd-val span { grid-area: 1 / 1; opacity: 0; }
+  </style>
+
+  <div id="root" data-composition-id="07-chute" data-start="0" data-duration="4.6" data-width="1920" data-height="1080">
+    <div id="f07-ground" class="clip" data-start="0" data-duration="4.6" data-track-index="0"></div>
+
+    <div id="f07-stage" class="clip" data-start="0" data-duration="4.6" data-track-index="1">
+      <div id="f07-chat">
+        <div id="f07-avatar">C</div>
+        <div id="f07-name">Céline</div>
+        <div id="f07-typing" class="f07-bubble">
+          <span class="f07-dot" style="left: 46px"></span>
+          <span class="f07-dot" style="left: 85px"></span>
+          <span class="f07-dot" style="left: 124px"></span>
+        </div>
+        <div id="f07-left" class="f07-bubble"><span class="f07-w">Attends…</span><span class="f07-w">t'as</span><span class="f07-w">vraiment</span><span class="f07-w">annoncé</span><span class="f07-w">ChatGPT&nbsp;?</span></div>
+        <div id="f07-right" class="f07-bubble">
+          <span class="f07-w">Bientôt&nbsp;!</span><span class="f07-w">Mais</span><span class="f07-w">avoue</span><span class="f07-w">que</span><span class="f07-w">ça</span><span class="f07-w">donne</span><span class="f07-w">envie.</span>
+          <div id="f07-sticker">BIENTÔT</div>
+        </div>
+      </div>
+
+      <img id="f07-logo" src="assets/logo-reso-creme.svg" alt="reso" />
+      <div id="f07-cta">
+        <div id="f07-shine"></div>
+        <div id="f07-cta-label">
+          <span>Créer ma page</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1F2733" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        </div>
+      </div>
+      <div id="f07-url">reso-app.fr</div>
+
+      <div id="f07-cd">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#FBF6EA" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="13.5" r="8" /><path d="M12 13.5V9.5M9.5 2.5h5M19 6l-1.6 1.6" /></svg>
+        <div id="f07-cd-val"><span>0:00</span><span>+0:01</span><span>+0:02</span><span>+0:03</span><span>+0:04</span></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/gsap.min.js"></script>
+  <script>
+    (function () {
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      var q = function (s) { return document.querySelectorAll(s); };
+
+      /* ---- countdown: global_start 45.0 → overtime, soft red ---- */
+      var cdVals = q("#f07-cd-val span");
+      [0, 1, 2, 3, 4].forEach(function (t, i) {
+        tl.set(cdVals, { opacity: 0 }, t);
+        tl.set(cdVals[i], { opacity: 1 }, t);
+      });
+      tl.fromTo("#f07-cd", { scale: 1.18 }, { scale: 1, duration: 0.35, ease: "expo.out" }, 0);
+      [1, 2, 3, 4].forEach(function (t) {
+        tl.fromTo("#f07-cd", { scale: 1.08 }, { scale: 1, duration: 0.25, ease: "power2.out", immediateRender: false }, t);
+      });
+
+      function lightWord(el, t, from, to) {
+        tl.fromTo(el, { color: from, y: 0 }, { color: to, y: -5, duration: 0.15, ease: "power2.out" }, t);
+      }
+      var INK_DIM = "rgba(31,39,51,0.28)", INK = "#1F2733";
+      var CR_DIM = "rgba(251,246,234,0.32)", CR = "#FBF6EA";
+
+      /* ---- Scene 1 : Céline écrit… ---- */
+      tl.fromTo("#f07-avatar", { scale: 0.4, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: "expo.out" }, 0);
+      tl.fromTo("#f07-name", { opacity: 0, y: 12 }, { opacity: 0.85, y: 0, duration: 0.3, ease: "power2.out" }, 0.05);
+      tl.fromTo("#f07-typing", { scale: 0.5, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.25, ease: "expo.out" }, 0.03);
+      var dots = q(".f07-dot");
+      [0, 1, 2].forEach(function (i) {
+        var t0 = 0.08 + i * 0.07;
+        tl.fromTo(dots[i], { y: 0 }, { y: -12, duration: 0.11, ease: "sine.out" }, t0);
+        tl.to(dots[i], { y: 0, duration: 0.11, ease: "sine.in" }, t0 + 0.11);
+        tl.to(dots[i], { y: -12, duration: 0.11, ease: "sine.out" }, t0 + 0.24);
+        tl.to(dots[i], { y: 0, duration: 0.11, ease: "sine.in" }, t0 + 0.35);
+      });
+      tl.to("#f07-typing", { opacity: 0, scale: 0.85, duration: 0.1, ease: "power2.in" }, 0.5);
+      tl.fromTo("#f07-left", { scale: 0.6, opacity: 0, y: 20 }, { scale: 1.03, opacity: 1, y: 0, duration: 0.3, ease: "expo.out" }, 0.5);
+      tl.to("#f07-left", { scale: 1, duration: 0.2, ease: "power2.out" }, 0.8);
+      var lw = q("#f07-left .f07-w");
+      [0.52, 0.84, 0.97, 1.16, 1.36].forEach(function (t, i) { lightWord(lw[i], t, INK_DIM, INK); });
+
+      /* ---- Scene 2 : réponse + tampon BIENTÔT ---- */
+      tl.to("#f07-chat", { y: -24, duration: 0.4, ease: "power3.out" }, 1.7);
+      tl.fromTo("#f07-right", { scale: 0.6, opacity: 0, y: 30 }, { scale: 1.03, opacity: 1, y: 0, duration: 0.3, ease: "expo.out" }, 1.72);
+      tl.to("#f07-right", { scale: 1, duration: 0.2, ease: "power2.out" }, 2.02);
+      var rw = q("#f07-right .f07-w");
+      [1.8, 2.5, 2.7, 3.02, 3.16, 3.36, 3.66].forEach(function (t, i) { lightWord(rw[i], t, CR_DIM, CR); });
+
+      tl.fromTo("#f07-sticker", { opacity: 0, scale: 1.6, rotation: -14 }, { opacity: 1, scale: 1, rotation: -8, duration: 0.18, ease: "power4.in" }, 1.94);
+      var hit = [[9, 5], [-7, -4], [4, 2], [-2, -1], [0, 0]];
+      hit.forEach(function (p, i) {
+        tl.to("#f07-right", { x: p[0], y: p[1], duration: 0.04, ease: "sine.inOut" }, 2.12 + i * 0.04);
+      });
+
+      /* ---- Scene 3 : les bulles remontent, logo + CTA, tenue ---- */
+      tl.to("#f07-chat", { y: -192, scale: 0.56, duration: 0.6, ease: "power3.inOut" }, 3.0);
+      tl.fromTo("#f07-logo", { opacity: 0, y: 50, scale: 0.88, filter: "blur(12px)" }, { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: 0.5, ease: "expo.out" }, 3.22);
+      tl.fromTo("#f07-cta", { opacity: 0, y: 46, scale: 0.86 }, { opacity: 1, y: 0, scale: 1.04, duration: 0.32, ease: "expo.out" }, 3.4);
+      tl.to("#f07-cta", { scale: 1, duration: 0.22, ease: "power2.out" }, 3.72);
+      tl.fromTo("#f07-url", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" }, 3.56);
+      /* one restrained shine across the button, then everything is still */
+      tl.fromTo("#f07-shine", { x: -160, opacity: 1, skewX: -18 }, { x: 700, opacity: 1, skewX: -18, duration: 0.5, ease: "power2.inOut" }, 3.9);
+
+      tl.set({}, {}, 4.6);
+      window.__timelines["07-chute"] = tl;
+    })();
+  </script>
+</template>
