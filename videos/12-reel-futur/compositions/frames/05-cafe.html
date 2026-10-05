@@ -1,0 +1,376 @@
+<template id="f05-template">
+  <style>
+    @font-face { font-family: "Outfit"; src: url("assets/fonts/outfit.woff2") format("woff2"); font-weight: 100 900; font-style: normal; }
+    @font-face { font-family: "Manrope"; src: url("assets/fonts/manrope.woff2") format("woff2"); font-weight: 200 800; font-style: normal; }
+    @font-face { font-family: "JetBrains Mono"; src: url("assets/fonts/jetbrainsmono.woff2") format("woff2"); font-weight: 100 800; font-style: normal; }
+
+    #root {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: "Outfit", sans-serif;
+      color: #FBF6EA;
+    }
+
+    /* ---------- ground ---------- */
+    #f05-ground {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 75% 80% at 50% 30%, #7D93A8 0%, #617990 48%, #4A6179 100%);
+    }
+
+    /* ---------- headline (karaoke) ---------- */
+    .f05-line {
+      position: absolute;
+      left: 0;
+      width: 1920px;
+      text-align: center;
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    #f05-l0 { top: 110px; font-size: 120px; }
+    #f05-l1 { top: 78px; font-size: 92px; }
+    #f05-l2 { top: 186px; font-size: 92px; }
+    .f05-w {
+      display: inline-block;
+      color: rgba(251, 246, 234, 0.38);
+      margin: 0 0.1em;
+    }
+
+    /* ---------- world (camera) ---------- */
+    #f05-world {
+      position: absolute;
+      inset: 0;
+      transform-origin: 960px 640px;
+    }
+
+    /* ---------- card ---------- */
+    #f05-card {
+      position: absolute;
+      left: 520px;
+      top: 372px;
+      width: 880px;
+      height: 368px;
+      background: #FFFDF8;
+      border-radius: 22px;
+      box-shadow: 0 30px 80px rgba(31, 39, 51, 0.28);
+      color: #1F2733;
+    }
+    #f05-tile {
+      position: absolute;
+      left: 44px;
+      top: 44px;
+      width: 132px;
+      height: 132px;
+      border-radius: 32px;
+      background: #F3EDE1;
+      border: 2px solid #E7DFD0;
+    }
+    #f05-cup { position: absolute; left: 22px; top: 18px; width: 88px; height: 96px; }
+    #f05-title {
+      position: absolute;
+      left: 210px;
+      top: 58px;
+      font-size: 62px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    #f05-hl {
+      position: absolute;
+      left: 460px;
+      top: 84px;
+      width: 248px;
+      height: 46px;
+      background: #F3D36B;
+      border-radius: 10px;
+      transform-origin: 0% 50%;
+    }
+    #f05-sub {
+      position: absolute;
+      left: 212px;
+      top: 138px;
+      font-family: "Manrope", sans-serif;
+      font-weight: 600;
+      font-size: 30px;
+      color: #5F6672;
+      white-space: nowrap;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+    .f05-chip {
+      display: inline-block;
+      padding: 4px 16px;
+      border-radius: 999px;
+      background: #F3EDE1;
+      border: 2px solid #E7DFD0;
+    }
+    #f05-btn {
+      position: absolute;
+      left: 44px;
+      top: 220px;
+      width: 792px;
+      height: 104px;
+      border-radius: 52px;
+      background: #4A6179;
+      overflow: hidden;
+    }
+    #f05-btn-red {
+      position: absolute;
+      inset: 0;
+      background: #D65A4A;
+    }
+    .f05-btn-label {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      font-family: "Manrope", sans-serif;
+      font-weight: 700;
+      font-size: 36px;
+      color: #FBF6EA;
+      white-space: nowrap;
+    }
+    .f05-btn-label svg { width: 34px; height: 34px; }
+
+    /* ---------- sticker ---------- */
+    #f05-sticker {
+      position: absolute;
+      left: 1112px;
+      top: 548px;
+      padding: 16px 30px 12px;
+      background: #F3D36B;
+      color: #1F2733;
+      font-weight: 700;
+      font-size: 58px;
+      letter-spacing: -0.01em;
+      line-height: 1;
+      border-radius: 10px;
+      box-shadow: 0 8px 18px rgba(31, 39, 51, 0.30);
+      white-space: nowrap;
+      opacity: 0;
+    }
+
+    /* ---------- cursor ---------- */
+    #f05-cursor {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 0;
+      height: 0;
+    }
+    .f05-cur {
+      position: absolute;
+      left: -6px;
+      top: -4px;
+      width: 64px;
+      height: 76px;
+      filter: drop-shadow(0 8px 14px rgba(31, 39, 51, 0.35));
+    }
+    #f05-nope { left: -30px; top: -30px; width: 72px; height: 72px; opacity: 0; }
+    #f05-ripple {
+      position: absolute;
+      left: -50px;
+      top: -50px;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 5px solid #FBF6EA;
+      opacity: 0;
+    }
+
+    /* ---------- countdown chip ---------- */
+    #f05-cd {
+      position: absolute;
+      left: 1690px;
+      top: 64px;
+      width: 176px;
+      height: 56px;
+      border-radius: 28px;
+      background: rgba(251, 246, 234, 0.16);
+      border: 2px solid rgba(251, 246, 234, 0.30);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 500;
+      font-size: 30px;
+      color: #FBF6EA;
+    }
+    #f05-cd svg { width: 28px; height: 28px; }
+    #f05-cd-val { display: grid; }
+    #f05-cd-val span { grid-area: 1 / 1; opacity: 0; }
+  </style>
+
+  <div id="root" data-composition-id="05-cafe" data-start="0" data-duration="4.4" data-width="1920" data-height="1080">
+    <div id="f05-ground" class="clip" data-start="0" data-duration="4.4" data-track-index="0"></div>
+
+    <div id="f05-stage" class="clip" data-start="0" data-duration="4.4" data-track-index="1">
+      <div id="f05-world">
+        <div id="f05-card">
+          <div id="f05-tile">
+            <svg id="f05-cup" viewBox="0 0 64 70" fill="none" stroke="#4A6179" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+              <path id="f05-s1" d="M21 22c-4-4 4-7 0-12" />
+              <path id="f05-s2" d="M30 22c-4-4 4-7 0-12" />
+              <path id="f05-s3" d="M39 22c-4-4 4-7 0-12" />
+              <path d="M12 30h36v12a14 14 0 0 1-14 14h-8a14 14 0 0 1-14-14z" fill="#4A6179" />
+              <path d="M48 34h4a7 7 0 0 1 0 14h-5" />
+              <path d="M8 63h44" />
+            </svg>
+          </div>
+          <div id="f05-hl"></div>
+          <div id="f05-title">Préparer un café</div>
+          <div id="f05-sub"><span id="f05-sub1" class="f05-chip">Entre deux clientes</span><span>·</span><span id="f05-sub2" class="f05-chip">serré</span></div>
+          <div id="f05-btn">
+            <div id="f05-btn-red"></div>
+            <div id="f05-lab-a" class="f05-btn-label">
+              <svg viewBox="0 0 24 24" fill="#FBF6EA"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z" /></svg>
+              <span>Lancer la cafetière</span>
+            </div>
+            <div id="f05-lab-b" class="f05-btn-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#FBF6EA" stroke-width="2.6" stroke-linecap="round"><circle cx="12" cy="12" r="9.5" /><path d="M8.5 8.5l7 7M15.5 8.5l-7 7" /></svg>
+              <span>Indisponible</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="f05-sticker">PAS ENCORE</div>
+
+        <div id="f05-cursor">
+          <div id="f05-ripple"></div>
+          <svg id="f05-arrow" class="f05-cur" viewBox="0 0 32 38"><path d="M3 2.5v29l7.4-6.6 4.6 10.4 5-2.2-4.6-10.2 10.1-.6z" fill="#1F2733" stroke="#FBF6EA" stroke-width="2.4" stroke-linejoin="round" /></svg>
+          <svg id="f05-nope" class="f05-cur" viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="#FBF6EA" stroke="#D65A4A" stroke-width="5" /><path d="M9 9l22 22" stroke="#D65A4A" stroke-width="5" stroke-linecap="round" /></svg>
+        </div>
+      </div>
+
+      <div id="f05-l0" class="f05-line"><span class="f05-w">Et</span><span class="f05-w">même…</span></div>
+      <div id="f05-l1" class="f05-line"><span class="f05-w">Bon</span><span class="f05-w">ça,</span><span class="f05-w">j'avoue…</span></div>
+      <div id="f05-l2" class="f05-line"><span class="f05-w">on</span><span class="f05-w">le</span><span class="f05-w">fait</span><span class="f05-w f05-y">pas</span><span class="f05-w f05-y">encore.</span></div>
+
+      <div id="f05-cd">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#FBF6EA" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="13.5" r="8" /><path d="M12 13.5V9.5M9.5 2.5h5M19 6l-1.6 1.6" /></svg>
+        <div id="f05-cd-val"><span>0:14</span><span>0:13</span><span>0:12</span><span>0:11</span><span>0:10</span></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/gsap.min.js"></script>
+  <script>
+    (function () {
+      window.__timelines = window.__timelines || {};
+      var DIM = "rgba(251,246,234,0.38)";
+      var CREAM = "#FBF6EA";
+      var tl = gsap.timeline({ paused: true });
+      var q = function (s) { return document.querySelectorAll(s); };
+
+      /* ---- countdown: global_start 31.6, value = 45 - floor(t) ---- */
+      var cdVals = q("#f05-cd-val span");
+      [0, 0.4, 1.4, 2.4, 3.4].forEach(function (t, i) {
+        tl.set(cdVals, { opacity: 0 }, t);
+        tl.set(cdVals[i], { opacity: 1 }, t);
+      });
+
+      function lightWord(el, t, color) {
+        tl.fromTo(el, { color: DIM, y: 0 }, { color: color || CREAM, y: -6, duration: 0.16, ease: "power2.out" }, t);
+      }
+
+      /* ---- Scene 1 : « Et même… » + la carte se pose ---- */
+      var l0 = q("#f05-l0 .f05-w");
+      tl.fromTo(l0, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.3, ease: "expo.out", stagger: 0.05 }, 0);
+      lightWord(l0[0], 0.1);
+      lightWord(l0[1], 0.32);
+
+      tl.fromTo("#f05-card", { y: 150, opacity: 0, scale: 0.88, rotation: 4 },
+        { y: 0, opacity: 1, scale: 1.04, rotation: -1.5, duration: 0.34, ease: "expo.out" }, 0.18);
+      tl.to("#f05-card", { scale: 1, rotation: 0, duration: 0.24, ease: "power2.out" }, 0.52);
+      tl.fromTo("#f05-tile", { scale: 0.6, rotation: -12 }, { scale: 1, rotation: 0, duration: 0.4, ease: "expo.out" }, 0.3);
+      tl.fromTo("#f05-btn", { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: 0.34, ease: "expo.out" }, 0.4);
+      tl.set("#f05-btn-red", { opacity: 0 }, 0);
+      tl.set("#f05-lab-b", { opacity: 0 }, 0);
+
+      /* steam: two rising puffs (explicit, deterministic) */
+      ["#f05-s1", "#f05-s2", "#f05-s3"].forEach(function (s, i) {
+        var t0 = 0.35 + i * 0.16;
+        tl.fromTo(s, { y: 4, opacity: 0 }, { y: -2, opacity: 1, duration: 0.45, ease: "sine.out" }, t0);
+        tl.to(s, { y: -8, opacity: 0, duration: 0.45, ease: "sine.in" }, t0 + 0.45);
+        tl.fromTo(s, { y: 4, opacity: 0 }, { y: -2, opacity: 1, duration: 0.45, ease: "sine.out" }, t0 + 0.95);
+        tl.to(s, { y: -8, opacity: 0.0, duration: 0.45, ease: "sine.in" }, t0 + 1.4);
+      });
+
+      /* ---- Scene 2 : « un café » / « entre deux clientes » + curseur ---- */
+      tl.fromTo("#f05-hl", { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power3.out" }, 1.12);
+      tl.fromTo("#f05-sub1", { backgroundColor: "#F3EDE1", color: "#5F6672" }, { backgroundColor: "#1F2733", color: CREAM, duration: 0.2, ease: "power2.out" }, 1.62);
+      tl.fromTo("#f05-sub2", { backgroundColor: "#F3EDE1", color: "#5F6672" }, { backgroundColor: "#1F2733", color: CREAM, duration: 0.2, ease: "power2.out" }, 2.05);
+
+      /* camera push toward the button */
+      tl.fromTo("#f05-world", { scale: 1, y: 0 }, { scale: 1.07, y: -18, duration: 1.3, ease: "power2.inOut" }, 1.0);
+
+      /* cursor glides in on a curve (x/y with different eases) */
+      tl.fromTo("#f05-cursor", { x: 1720, opacity: 0 }, { x: 1010, opacity: 1, duration: 0.95, ease: "power3.out" }, 1.0);
+      tl.fromTo("#f05-cursor", { y: 1010 }, { y: 662, duration: 0.95, ease: "power2.inOut" }, 1.0);
+      tl.to("#f05-cursor", { x: 990, y: 652, duration: 0.18, ease: "power2.inOut" }, 1.97);
+
+      /* click at 2.2 */
+      tl.to("#f05-arrow", { scale: 0.82, duration: 0.07, ease: "power2.in" }, 2.15);
+      tl.to("#f05-arrow", { scale: 1, duration: 0.14, ease: "power2.out" }, 2.22);
+      tl.to("#f05-btn", { scale: 0.96, duration: 0.07, ease: "power2.in" }, 2.15);
+      tl.to("#f05-btn", { scale: 1, duration: 0.14, ease: "power2.out" }, 2.22);
+      tl.fromTo("#f05-ripple", { scale: 0.2, opacity: 0.9 }, { scale: 1.6, opacity: 0, duration: 0.4, ease: "power2.out" }, 2.2);
+
+      /* ---- Scene 3 : échec, tremblement, rouge, tampon ---- */
+      /* button shake : fixed keyframes */
+      var shake = [-18, 15, -12, 10, -7, 4, 0];
+      shake.forEach(function (x, i) {
+        tl.to("#f05-btn", { x: x, duration: 0.045, ease: "sine.inOut" }, 2.36 + i * 0.045);
+      });
+      tl.fromTo("#f05-btn-red", { opacity: 0 }, { opacity: 1, duration: 0.14, ease: "power1.out" }, 2.4);
+      tl.fromTo("#f05-lab-a", { opacity: 1, y: 0 }, { opacity: 0, y: -30, duration: 0.14, ease: "power2.in" }, 2.4);
+      tl.fromTo("#f05-lab-b", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.2, ease: "expo.out" }, 2.5);
+      /* cursor becomes a "forbidden" symbol */
+      tl.set("#f05-arrow", { opacity: 0 }, 2.42);
+      tl.fromTo("#f05-nope", { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.18, ease: "expo.out" }, 2.42);
+      tl.to("#f05-cursor", { x: 1060, y: 700, duration: 0.5, ease: "power2.out" }, 2.5);
+      /* coffee dies: highlight drains */
+      tl.to("#f05-hl", { backgroundColor: "#E7DFD0", duration: 0.25, ease: "power1.out" }, 2.45);
+      tl.to("#f05-tile", { rotation: -8, y: 6, duration: 0.3, ease: "power2.out" }, 2.5);
+
+      /* headline swap : « Et même… » out (x-stagger + blur), two lines in */
+      tl.to(l0, { opacity: 0, x: -60, filter: "blur(8px)", duration: 0.18, ease: "power2.in", stagger: 0.04 }, 2.4);
+      var l1 = q("#f05-l1 .f05-w");
+      var l2 = q("#f05-l2 .f05-w");
+      tl.fromTo(l1, { opacity: 0, x: 60, filter: "blur(8px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.24, ease: "expo.out", stagger: 0.03 }, 2.48);
+      tl.fromTo(l2, { opacity: 0, x: 60, filter: "blur(8px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.24, ease: "expo.out", stagger: 0.03 }, 2.56);
+      lightWord(l1[0], 2.52);
+      lightWord(l1[1], 2.72);
+      lightWord(l1[2], 2.92);
+      lightWord(l2[0], 3.25);
+      lightWord(l2[1], 3.36);
+      lightWord(l2[2], 3.46);
+      lightWord(l2[3], 3.62, "#F3D36B");
+      lightWord(l2[4], 3.8, "#F3D36B");
+
+      /* camera eases back a touch so the stamp lands in frame */
+      tl.to("#f05-world", { scale: 1.03, y: -6, duration: 0.8, ease: "power2.inOut" }, 2.6);
+
+      /* stamp « PAS ENCORE » at 3.7 */
+      tl.fromTo("#f05-sticker", { opacity: 0, scale: 1.6, rotation: -14 }, { opacity: 1, scale: 1, rotation: -8, duration: 0.18, ease: "power4.in" }, 3.62);
+      var hit = [[10, 6], [-8, -4], [5, 3], [-2, -1], [0, 0]];
+      hit.forEach(function (p, i) {
+        tl.to("#f05-card", { x: p[0], y: p[1], duration: 0.04, ease: "sine.inOut" }, 3.8 + i * 0.04);
+      });
+      tl.to("#f05-world", { scale: 1.045, duration: 0.6, ease: "power2.out" }, 3.8);
+
+      tl.set({}, {}, 4.4);
+      window.__timelines["05-cafe"] = tl;
+    })();
+  </script>
+</template>

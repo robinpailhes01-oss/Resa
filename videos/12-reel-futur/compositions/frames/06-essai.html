@@ -1,0 +1,352 @@
+<template>
+  <style>
+    @font-face { font-family: "Outfit"; src: url("assets/fonts/outfit.woff2") format("woff2"); font-weight: 100 900; font-display: block; }
+    @font-face { font-family: "Manrope"; src: url("assets/fonts/manrope.woff2") format("woff2"); font-weight: 200 800; font-display: block; }
+    @font-face { font-family: "JetBrains Mono"; src: url("assets/fonts/jetbrainsmono.woff2") format("woff2"); font-weight: 100 800; font-display: block; }
+
+    #root {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      color: #FBF6EA;
+      font-family: "Outfit", sans-serif;
+    }
+    #f06-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 85% 75% at 50% 18%, #7D93A8 0%, #617990 52%, #4A6179 100%);
+    }
+    #f06-halo {
+      position: absolute;
+      left: 660px; top: 300px; width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(251,246,234,0.20) 0%, rgba(251,246,234,0) 68%);
+      opacity: 0;
+    }
+
+    /* ---------- countdown chip ---------- */
+    #f06-chip {
+      position: absolute;
+      left: 1690px; top: 64px; width: 176px; height: 56px;
+      border-radius: 28px;
+      box-sizing: border-box;
+      background: rgba(251,246,234,0.16);
+      border: 2px solid rgba(251,246,234,0.30);
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      font-family: "JetBrains Mono", monospace; font-weight: 500; font-size: 30px;
+      color: #FBF6EA;
+    }
+    #f06-chip-red {
+      position: absolute; inset: -2px; border-radius: 28px;
+      background: #D65A4A; opacity: 0;
+    }
+    #f06-chip svg, #f06-chip-txt { position: relative; }
+    #f06-chip-txt { font-variant-numeric: tabular-nums; }
+
+    /* ---------- karaoke words ---------- */
+    .f06-line { position: absolute; left: 0; right: 0; text-align: center; white-space: nowrap; }
+    .f06-w { display: inline-block; color: rgba(251,246,234,0.38); }
+
+    #f06-wait {
+      top: 420px;
+      font-size: 120px; font-weight: 700; letter-spacing: -0.035em; line-height: 1.1;
+    }
+    #f06-logo {
+      position: absolute; left: 50%; top: 108px; margin-left: -125px;
+      width: 250px; height: auto;
+    }
+    #f06-title {
+      top: 200px;
+      font-size: 124px; font-weight: 700; letter-spacing: -0.035em; line-height: 1.1;
+    }
+    #f06-gratu { position: relative; }
+    #f06-swash {
+      position: absolute; left: 2%; right: 2%; bottom: -6px; height: 10px;
+      border-radius: 6px; background: #FBF6EA; transform-origin: 0% 50%;
+    }
+
+    /* ---------- pills ---------- */
+    #f06-pills {
+      position: absolute; left: 0; right: 0; top: 378px;
+      display: flex; justify-content: center; gap: 22px;
+    }
+    .f06-pill {
+      display: flex; align-items: center; gap: 14px;
+      height: 82px; padding: 0 36px 0 20px; box-sizing: border-box;
+      border-radius: 41px;
+      background: #4A6179;
+      border: 2px solid rgba(251,246,234,0.40);
+      box-shadow: 0 14px 34px rgba(31,39,51,0.22);
+      font-family: "Manrope", sans-serif; font-weight: 700; font-size: 38px; color: #FBF6EA;
+    }
+    .f06-dot {
+      width: 48px; height: 48px; border-radius: 24px; background: #FBF6EA;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ---------- CTA button ---------- */
+    #f06-cta-wrap {
+      position: absolute; left: 0; right: 0; top: 496px; height: 168px;
+      display: flex; justify-content: center;
+    }
+    #f06-cta {
+      position: relative;
+      width: 780px; height: 168px; border-radius: 84px;
+      background: #FBF6EA; color: #1F2733;
+      box-shadow: 0 30px 80px rgba(31,39,51,0.30);
+      display: flex; align-items: center; justify-content: center; gap: 24px;
+      font-size: 74px; font-weight: 700; letter-spacing: -0.03em;
+      transform-origin: 50% 50%;
+    }
+    #f06-cta-label { display: flex; align-items: center; gap: 24px; }
+    #f06-cta-arrow {
+      width: 84px; height: 84px; border-radius: 42px; background: #617990;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #f06-ring {
+      position: absolute; left: 50%; top: 50%;
+      width: 780px; height: 168px; margin-left: -390px; margin-top: -84px;
+      border-radius: 84px; border: 6px solid #FBF6EA; box-sizing: border-box;
+      opacity: 0;
+    }
+
+    /* ---------- price sticker ---------- */
+    #f06-price {
+      position: absolute; left: 1296px; top: 448px;
+      height: 92px; padding: 0 30px; box-sizing: border-box;
+      border-radius: 46px;
+      background: #F3D36B; color: #1F2733;
+      box-shadow: 0 10px 26px rgba(31,39,51,0.30);
+      display: flex; align-items: baseline; gap: 10px; line-height: 92px;
+      font-weight: 700; white-space: nowrap;
+    }
+    #f06-price b { font-size: 58px; letter-spacing: -0.03em; }
+    #f06-price span { font-size: 32px; letter-spacing: -0.01em; }
+
+    /* ---------- URL ---------- */
+    #f06-url {
+      top: 696px;
+      font-family: "JetBrains Mono", monospace; font-weight: 500; font-size: 56px;
+      color: #FBF6EA;
+    }
+    #f06-url-in { display: inline-block; width: 11.4ch; text-align: left; }
+    .f06-c { display: none; }
+    #f06-caret {
+      display: inline-block; width: 6px; height: 54px; margin-left: 4px;
+      background: #FBF6EA; vertical-align: -8px; opacity: 0;
+    }
+
+    /* ---------- closing line ---------- */
+    #f06-end {
+      top: 792px;
+      font-size: 66px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1;
+    }
+    #f06-min { position: relative; }
+
+    /* ---------- cursor ---------- */
+    #f06-cursor {
+      position: absolute; left: 0; top: 0; width: 64px; height: 76px;
+      transform-origin: 8% 6%;
+      filter: drop-shadow(0 8px 14px rgba(31,39,51,0.35));
+      opacity: 0;
+    }
+  </style>
+
+  <div id="root" data-composition-id="06-essai" data-start="0" data-duration="9" data-width="1920" data-height="1080">
+    <div id="f06-bg" class="clip" data-start="0" data-duration="9" data-track-index="0">
+      <div id="f06-halo"></div>
+    </div>
+
+    <!-- Scene 1a — « Mais en attendant… » -->
+    <div id="f06-wait" class="f06-line">
+      <span class="f06-w" id="f06-wa1">Mais</span>
+      <span class="f06-w" id="f06-wa2">en</span>
+      <span class="f06-w" id="f06-wa3">attendant…</span>
+    </div>
+
+    <!-- Scene 1b — logo + title -->
+    <img id="f06-logo" src="assets/logo-reso-creme.svg" alt="Reso" />
+    <div id="f06-title" class="f06-line">
+      <span class="f06-w" id="f06-t1">Essayez</span>
+      <span class="f06-w" id="f06-t2">Reso</span>
+      <span class="f06-w" id="f06-t3"><span id="f06-gratu">gratuitement<i id="f06-swash"></i></span></span>
+    </div>
+
+    <!-- Scene 2 — pills -->
+    <div id="f06-pills">
+      <div class="f06-pill" id="f06-p1">
+        <span class="f06-dot"><svg width="28" height="28" viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="#617990" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        7 jours offerts
+      </div>
+      <div class="f06-pill" id="f06-p2">
+        <span class="f06-dot"><svg width="28" height="28" viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="#617990" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        sans carte bancaire
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div id="f06-cta-wrap">
+      <div id="f06-ring"></div>
+      <div id="f06-cta">
+        <div id="f06-cta-label">
+          Créer ma page
+          <span id="f06-cta-arrow"><svg width="38" height="38" viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="#FBF6EA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene 3 — price sticker + URL -->
+    <div id="f06-price"><b>39 €</b><span>HT/mois</span></div>
+    <div id="f06-url" class="f06-line"><span id="f06-url-in"><span class="f06-c">r</span><span class="f06-c">e</span><span class="f06-c">s</span><span class="f06-c">o</span><span class="f06-c">-</span><span class="f06-c">a</span><span class="f06-c">p</span><span class="f06-c">p</span><span class="f06-c">.</span><span class="f06-c">f</span><span class="f06-c">r</span><span id="f06-caret"></span></span></div>
+
+    <!-- Scene 4 — closing line -->
+    <div id="f06-end" class="f06-line">
+      <span class="f06-w" id="f06-e1">Votre</span>
+      <span class="f06-w" id="f06-e2">page</span>
+      <span class="f06-w" id="f06-e3">est</span>
+      <span class="f06-w" id="f06-e4">prête</span>
+      <span class="f06-w" id="f06-e5">en</span>
+      <span class="f06-w" id="f06-e6">quelques</span>
+      <span class="f06-w" id="f06-e7">minutes.</span>
+    </div>
+
+    <!-- cursor -->
+    <svg id="f06-cursor" viewBox="0 0 32 38">
+      <path d="M3 2 L3 30 L10.5 23.5 L15.5 35 L20.5 32.8 L15.6 21.6 L25.5 21.6 Z" fill="#1F2733" stroke="#FBF6EA" stroke-width="2.4" stroke-linejoin="round"/>
+    </svg>
+
+    <!-- countdown chip -->
+    <div id="f06-chip">
+      <div id="f06-chip-red"></div>
+      <svg width="28" height="28" viewBox="0 0 24 24"><g fill="none" stroke="#FBF6EA" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="13.5" r="8"/><path d="M12 13.5V9.2M9.5 2.5h5M18.6 6.4l1.5-1.5"/></g></svg>
+      <span id="f06-chip-txt">0:09</span>
+    </div>
+  </div>
+
+  <script src="assets/gsap.min.js"></script>
+  <script>
+    (function () {
+      var GLOBAL_START = 36.0;
+      var DUR = 9.0;
+      var CREAM = "#FBF6EA";
+      var DIM = "rgba(251,246,234,0.38)";
+      var tl = gsap.timeline({ paused: true });
+
+      // ---------- countdown chip (deterministic, from global time) ----------
+      var chipTxt = document.getElementById("f06-chip-txt");
+      var clock = { t: 0 };
+      function renderClock() {
+        var g = GLOBAL_START + clock.t;
+        var s = Math.floor(g + 1e-6);
+        var txt;
+        if (s >= 45) {
+          txt = "+0:0" + Math.min(9, s - 45);
+        } else {
+          var v = Math.max(0, 45 - s);
+          txt = "0:" + (v < 10 ? "0" + v : v);
+        }
+        if (chipTxt.textContent !== txt) chipTxt.textContent = txt;
+      }
+      tl.fromTo(clock, { t: 0 }, { t: DUR, duration: DUR, ease: "none", onUpdate: renderClock, onStart: renderClock }, 0);
+      renderClock();
+      // last seconds: chip warms toward red, a pulse on each remaining second
+      tl.fromTo("#f06-chip-red", { opacity: 0 }, { opacity: 0.55, duration: 3.0, ease: "power1.in" }, 6.0);
+      [6, 7, 8].forEach(function (s) {
+        tl.fromTo("#f06-chip", { scale: 1.12 }, { scale: 1, duration: 0.4, ease: "power3.out", immediateRender: false }, s);
+      });
+
+      // ---------- background halo (quiet life) ----------
+      tl.fromTo("#f06-halo", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1.6, duration: DUR, ease: "sine.inOut" }, 0);
+
+      // ---------- karaoke helper ----------
+      function lightWord(sel, at) {
+        tl.fromTo(sel, { color: DIM, y: 6 }, { color: CREAM, y: 0, duration: 0.22, ease: "power2.out", immediateRender: false }, at);
+      }
+
+      // ---------- Scene 1a: « Mais en attendant… » ----------
+      tl.fromTo("#f06-wait", { opacity: 0, y: 40, scale: 0.94 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "expo.out" }, 0.0);
+      gsap.set(["#f06-wa1", "#f06-wa2", "#f06-wa3"], { color: DIM, y: 6 });
+      lightWord("#f06-wa1", 0.08);
+      lightWord("#f06-wa2", 0.4);
+      lightWord("#f06-wa3", 0.6);
+      // zoom-through swap out (within-scene cut)
+      tl.to("#f06-wait", { scale: 1.35, opacity: 0, filter: "blur(14px)", duration: 0.26, ease: "power2.in" }, 1.05);
+
+      // ---------- Scene 1b: logo + title ----------
+      tl.fromTo("#f06-logo", { opacity: 0, y: -24, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "expo.out" }, 1.12);
+      tl.fromTo("#f06-title", { opacity: 0, scale: 0.78, filter: "blur(12px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.4, ease: "expo.out" }, 1.15);
+      gsap.set(["#f06-t1", "#f06-t2", "#f06-t3"], { color: DIM, y: 6 });
+      lightWord("#f06-t1", 1.2);
+      lightWord("#f06-t2", 1.42);
+      lightWord("#f06-t3", 1.66);
+      tl.fromTo("#f06-swash", { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: "expo.out" }, 1.95);
+      // logo faint rotational breath (resting presence)
+      tl.fromTo("#f06-logo", { rotation: -1.2 }, { rotation: 1.2, duration: 3.2, ease: "sine.inOut", immediateRender: false }, 1.6);
+      tl.to("#f06-logo", { rotation: 0, duration: 3.0, ease: "sine.inOut" }, 4.85);
+
+      // ---------- Scene 2: pills ----------
+      tl.fromTo("#f06-p1", { opacity: 0, scale: 1.3, y: -18 }, { opacity: 1, scale: 1, y: 0, duration: 0.38, ease: "expo.out" }, 2.6);
+      tl.fromTo("#f06-p1 .f06-dot", { scale: 0, rotation: -90 }, { scale: 1, rotation: 0, duration: 0.35, ease: "expo.out" }, 2.68);
+      tl.fromTo("#f06-p2", { opacity: 0, scale: 1.3, y: -18 }, { opacity: 1, scale: 1, y: 0, duration: 0.38, ease: "expo.out" }, 3.22);
+      tl.fromTo("#f06-p2 .f06-dot", { scale: 0, rotation: -90 }, { scale: 1, rotation: 0, duration: 0.35, ease: "expo.out" }, 3.3);
+
+      // CTA morph: a cream dot condenses → stretches into the button (shared center)
+      tl.fromTo("#f06-cta",
+        { opacity: 0, scale: 0.4, clipPath: "inset(0px 306px 0px 306px round 84px)" },
+        { opacity: 1, scale: 1, duration: 0.32, ease: "expo.out" }, 3.62);
+      tl.to("#f06-cta", { clipPath: "inset(0px 0px 0px 0px round 84px)", duration: 0.42, ease: "expo.out" }, 3.82);
+      tl.fromTo("#f06-cta-label", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.35, ease: "expo.out" }, 3.95);
+      tl.fromTo("#f06-cta-arrow", { x: -30, opacity: 0 }, { x: 0, opacity: 1, duration: 0.4, ease: "expo.out" }, 4.05);
+
+      // ---------- Scene 3: URL typing (4.3–5.5) ----------
+      var chars = document.querySelectorAll("#f06-url .f06-c");
+      tl.set("#f06-caret", { opacity: 1 }, 4.25);
+      for (var i = 0; i < chars.length; i++) {
+        tl.set(chars[i], { display: "inline" }, 4.35 + i * 0.085);
+      }
+      // caret blink (deterministic sets)
+      var blinkStart = 4.35 + chars.length * 0.085 + 0.15;
+      for (var b = 0; b < 8; b++) {
+        tl.set("#f06-caret", { opacity: b % 2 === 0 ? 0 : 1 }, blinkStart + b * 0.28);
+      }
+      tl.set("#f06-caret", { opacity: 0 }, blinkStart + 8 * 0.28);
+
+      // price sticker stamps on « trente-neuf euros » (5.7)
+      tl.fromTo("#f06-price",
+        { opacity: 0, scale: 1.6, rotation: -2 },
+        { opacity: 1, scale: 1, rotation: -7, duration: 0.18, ease: "power3.in" }, 5.7);
+      tl.fromTo("#f06-cta", { x: 0, rotation: 0 },
+        { keyframes: [{ x: -8, rotation: -0.6, duration: 0.05 }, { x: 6, rotation: 0.5, duration: 0.06 }, { x: -3, rotation: -0.2, duration: 0.06 }, { x: 0, rotation: 0, duration: 0.08 }],
+          immediateRender: false }, 5.88);
+
+      // ---------- Scene 4: closing line + click ----------
+      tl.fromTo("#f06-end", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.35, ease: "expo.out" }, 6.6);
+      var ends = ["#f06-e1", "#f06-e2", "#f06-e3", "#f06-e4", "#f06-e5", "#f06-e6", "#f06-e7"];
+      gsap.set(ends, { color: DIM, y: 6 });
+      var endTimes = [6.7, 6.88, 7.05, 7.2, 7.45, 7.8, 8.15];
+      ends.forEach(function (s, k) { lightWord(s, endTimes[k]); });
+
+      // cursor decel arrival from bottom-right, lands off-center on the button
+      tl.set("#f06-cursor", { opacity: 1 }, 6.75);
+      tl.fromTo("#f06-cursor", { x: 1960, y: 1040, rotation: 8 }, { x: 1112, y: 598, rotation: 0, duration: 0.85, ease: "power3.out" }, 6.75);
+      // press (lockstep)
+      tl.to(["#f06-cta", "#f06-cursor"], { scale: 0.92, duration: 0.1, ease: "power2.in" }, 7.72);
+      tl.to("#f06-cta", { backgroundColor: "#EDE5D3", duration: 0.1, ease: "power2.in" }, 7.72);
+      tl.to(["#f06-cta", "#f06-cursor"], { scale: 1, duration: 0.4, ease: "expo.out" }, 7.84);
+      tl.to("#f06-cta", { backgroundColor: "#FBF6EA", duration: 0.3, ease: "power2.out" }, 7.84);
+      // release ripple + glow
+      tl.fromTo("#f06-ring", { opacity: 0.9, scale: 1 }, { opacity: 0, scale: 1.28, duration: 0.7, ease: "expo.out", immediateRender: false }, 7.84);
+      tl.fromTo("#f06-cta-arrow", { x: 0 }, { keyframes: [{ x: 16, duration: 0.18, ease: "power2.out" }, { x: 0, duration: 0.3, ease: "power2.inOut" }], immediateRender: false }, 7.86);
+      tl.to("#f06-cta", { boxShadow: "0 30px 120px rgba(251,246,234,0.45)", duration: 0.25, ease: "power2.out" }, 7.86);
+      tl.to("#f06-cta", { boxShadow: "0 30px 80px rgba(31,39,51,0.30)", duration: 0.7, ease: "power2.inOut" }, 8.15);
+
+      // pad to exact duration
+      tl.set({}, {}, DUR);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["06-essai"] = tl;
+    })();
+  </script>
+</template>
