@@ -24,11 +24,11 @@ VO=(
 
 # Bruitages : fichier, instant (s), gain.
 SFX=(
-  "buzz 4.55 0.45"     # appel entrant
+  "buzz 4.72 0.45"     # appel entrant
   "tick 8.03 0.4"      # carte SMS
   "tick 8.60 0.4"      # carte Insta
   "tick 9.82 0.4"      # agenda papier
-  "whoosh 11.10 0.5"   # ça part dans tous les sens
+  "whoosh 11.58 0.5"   # ça part dans tous les sens
   "ding 19.04 0.45"    # réservé à 22:47
   "tick 21.06 0.45"    # rendez-vous dans l'agenda
   "tick 21.96 0.4"     # rappel la veille

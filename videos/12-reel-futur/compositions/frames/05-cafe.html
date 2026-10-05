@@ -224,10 +224,10 @@
     #f05-cd-val span { grid-area: 1 / 1; opacity: 0; }
   </style>
 
-  <div id="root" data-composition-id="05-cafe" data-start="0" data-duration="4.9" data-width="1920" data-height="1080">
-    <div id="f05-ground" class="clip" data-start="0" data-duration="4.9" data-track-index="0"></div>
+  <div id="root" data-composition-id="05-cafe" data-start="0" data-duration="5.5" data-width="1920" data-height="1080">
+    <div id="f05-ground" class="clip" data-start="0" data-duration="5.5" data-track-index="0"></div>
 
-    <div id="f05-stage" class="clip" data-start="0" data-duration="4.9" data-track-index="1">
+    <div id="f05-stage" class="clip" data-start="0" data-duration="5.5" data-track-index="1">
       <div id="f05-world">
         <div id="f05-card">
           <div id="f05-tile">
@@ -271,7 +271,7 @@
 
       <div id="f05-cd">
         <svg viewBox="0 0 24 24" fill="none" stroke="#FBF6EA" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="13.5" r="8" /><path d="M12 13.5V9.5M9.5 2.5h5M19 6l-1.6 1.6" /></svg>
-        <div id="f05-cd-val"><span>0:14</span><span>0:13</span><span>0:12</span><span>0:11</span><span>0:10</span></div>
+        <div id="f05-cd-val"><span>0:09</span><span>0:08</span><span>0:07</span><span>0:06</span><span>0:05</span><span>0:04</span></div>
       </div>
     </div>
   </div>
@@ -285,9 +285,9 @@
       var tl = gsap.timeline({ paused: true });
       var q = function (s) { return document.querySelectorAll(s); };
 
-      /* ---- countdown: global_start 31.6, value = 45 - floor(t) ---- */
+      /* ---- countdown: global_start 36.4, value = 45 - floor(36.4 + t) ---- */
       var cdVals = q("#f05-cd-val span");
-      var cdT = [0, 0.4, 1.4, 2.4, 3.4];
+      var cdT = [0, 0.6, 1.6, 2.6, 3.6, 4.6];
       cdT.forEach(function (t, i) {
         tl.set(cdVals[i], { opacity: 1 }, t);
         if (i < cdT.length - 1) tl.set(cdVals[i], { opacity: 0 }, cdT[i + 1]);
@@ -300,8 +300,8 @@
       /* ---- Scene 1 : « Et même… » + la carte se pose ---- */
       var l0 = q("#f05-l0 .f05-w");
       tl.fromTo(l0, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.3, ease: "expo.out", stagger: 0.05 }, 0);
-      lightWord(l0[0], 0.1);
-      lightWord(l0[1], 0.32);
+      lightWord(l0[0], 0.16);
+      lightWord(l0[1], 0.3);
 
       tl.fromTo("#f05-card", { y: 150, opacity: 0, scale: 0.88, rotation: 4 },
         { y: 0, opacity: 1, scale: 1.04, rotation: -1.5, duration: 0.34, ease: "expo.out" }, 0.18);
@@ -321,71 +321,71 @@
       });
 
       /* ---- Scene 2 : « un café » / « entre deux clientes » + curseur ---- */
-      tl.fromTo("#f05-hl", { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power3.out" }, 1.12);
-      tl.fromTo("#f05-sub1", { backgroundColor: "#F3EDE1", color: "#5F6672" }, { backgroundColor: "#1F2733", color: CREAM, duration: 0.2, ease: "power2.out" }, 1.62);
-      tl.fromTo("#f05-sub2", { backgroundColor: "#F3EDE1", color: "#5F6672" }, { backgroundColor: "#1F2733", color: CREAM, duration: 0.2, ease: "power2.out" }, 2.05);
+      tl.fromTo("#f05-hl", { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power3.out" }, 1.55);
+      tl.fromTo("#f05-sub1", { backgroundColor: "#F3EDE1", color: "#5F6672" }, { backgroundColor: "#1F2733", color: CREAM, duration: 0.2, ease: "power2.out" }, 2.01);
+      tl.fromTo("#f05-sub2", { backgroundColor: "#F3EDE1", color: "#5F6672" }, { backgroundColor: "#1F2733", color: CREAM, duration: 0.2, ease: "power2.out" }, 2.5);
 
       /* camera push toward the button */
-      tl.fromTo("#f05-world", { scale: 1.1, y: 0 }, { scale: 1.17, y: -18, duration: 1.3, ease: "power2.inOut" }, 1.0);
+      tl.fromTo("#f05-world", { scale: 1.1, y: 0 }, { scale: 1.17, y: -18, duration: 1.3, ease: "power2.inOut" }, 1.7);
 
       /* cursor glides in on a curve (x/y with different eases) */
       tl.set("#f05-cursor", { x: 1720, y: 1010, opacity: 0 }, 0);
-      tl.to("#f05-cursor", { x: 1010, opacity: 1, duration: 0.95, ease: "power3.out" }, 1.0);
-      tl.to("#f05-cursor", { y: 662, duration: 0.95, ease: "power2.inOut" }, 1.0);
-      tl.to("#f05-cursor", { x: 990, y: 652, duration: 0.18, ease: "power2.inOut" }, 1.97);
+      tl.to("#f05-cursor", { x: 1010, opacity: 1, duration: 0.95, ease: "power3.out" }, 1.75);
+      tl.to("#f05-cursor", { y: 662, duration: 0.95, ease: "power2.inOut" }, 1.75);
+      tl.to("#f05-cursor", { x: 990, y: 652, duration: 0.18, ease: "power2.inOut" }, 2.72);
 
-      /* click at 2.2 */
-      tl.to("#f05-arrow", { scale: 0.82, duration: 0.07, ease: "power2.in" }, 2.15);
-      tl.to("#f05-arrow", { scale: 1, duration: 0.14, ease: "power2.out" }, 2.22);
-      tl.to("#f05-btn", { scale: 0.96, duration: 0.07, ease: "power2.in" }, 2.15);
-      tl.to("#f05-btn", { scale: 1, duration: 0.14, ease: "power2.out" }, 2.22);
-      tl.fromTo("#f05-ripple", { scale: 0.2, opacity: 0.9 }, { scale: 1.6, opacity: 0, duration: 0.4, ease: "power2.out" }, 2.2);
+      /* click at 2.95 (end of « clientes ») */
+      tl.to("#f05-arrow", { scale: 0.82, duration: 0.07, ease: "power2.in" }, 2.9);
+      tl.to("#f05-arrow", { scale: 1, duration: 0.14, ease: "power2.out" }, 2.97);
+      tl.to("#f05-btn", { scale: 0.96, duration: 0.07, ease: "power2.in" }, 2.9);
+      tl.to("#f05-btn", { scale: 1, duration: 0.14, ease: "power2.out" }, 2.97);
+      tl.fromTo("#f05-ripple", { scale: 0.2, opacity: 0.9 }, { scale: 1.6, opacity: 0, duration: 0.4, ease: "power2.out" }, 2.95);
 
       /* ---- Scene 3 : échec, tremblement, rouge, tampon ---- */
       /* button shake : fixed keyframes */
       var shake = [-18, 15, -12, 10, -7, 4, 0];
       shake.forEach(function (x, i) {
-        tl.to("#f05-btn", { x: x, duration: 0.045, ease: "sine.inOut" }, 2.36 + i * 0.045);
+        tl.to("#f05-btn", { x: x, duration: 0.045, ease: "sine.inOut" }, 3.11 + i * 0.045);
       });
-      tl.fromTo("#f05-btn-red", { opacity: 0 }, { opacity: 1, duration: 0.14, ease: "power1.out" }, 2.4);
-      tl.fromTo("#f05-lab-a", { opacity: 1, y: 0 }, { opacity: 0, y: -30, duration: 0.14, ease: "power2.in" }, 2.4);
-      tl.fromTo("#f05-lab-b", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.2, ease: "expo.out" }, 2.5);
+      tl.fromTo("#f05-btn-red", { opacity: 0 }, { opacity: 1, duration: 0.14, ease: "power1.out" }, 3.15);
+      tl.fromTo("#f05-lab-a", { opacity: 1, y: 0 }, { opacity: 0, y: -30, duration: 0.14, ease: "power2.in" }, 3.15);
+      tl.fromTo("#f05-lab-b", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.2, ease: "expo.out" }, 3.25);
       /* cursor becomes a "forbidden" symbol */
-      tl.set("#f05-arrow", { opacity: 0 }, 2.42);
-      tl.fromTo("#f05-nope", { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.18, ease: "expo.out" }, 2.42);
-      tl.to("#f05-cursor", { x: 1060, y: 700, duration: 0.5, ease: "power2.out" }, 2.5);
+      tl.set("#f05-arrow", { opacity: 0 }, 3.17);
+      tl.fromTo("#f05-nope", { opacity: 0, scale: 1.5 }, { opacity: 1, scale: 1, duration: 0.18, ease: "expo.out" }, 3.17);
+      tl.to("#f05-cursor", { x: 1060, y: 700, duration: 0.5, ease: "power2.out" }, 3.25);
       /* coffee dies: highlight drains */
-      tl.to("#f05-hl", { backgroundColor: "#E7DFD0", duration: 0.25, ease: "power1.out" }, 2.45);
-      tl.to("#f05-tile", { rotation: -8, y: 6, duration: 0.3, ease: "power2.out" }, 2.5);
+      tl.to("#f05-hl", { backgroundColor: "#E7DFD0", duration: 0.25, ease: "power1.out" }, 3.2);
+      tl.to("#f05-tile", { rotation: -8, y: 6, duration: 0.3, ease: "power2.out" }, 3.25);
 
       /* headline swap : « Et même… » out (x-stagger + blur), two lines in */
-      tl.to(l0, { opacity: 0, x: -60, filter: "blur(8px)", duration: 0.18, ease: "power2.in", stagger: 0.04 }, 2.4);
+      tl.to(l0, { opacity: 0, x: -60, filter: "blur(8px)", duration: 0.18, ease: "power2.in", stagger: 0.04 }, 2.86);
       var l1 = q("#f05-l1 .f05-w");
       var l2 = q("#f05-l2 .f05-w");
-      tl.fromTo(l1, { opacity: 0, x: 60, filter: "blur(8px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.24, ease: "expo.out", stagger: 0.03 }, 2.48);
-      tl.fromTo(l2, { opacity: 0, x: 60, filter: "blur(8px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.24, ease: "expo.out", stagger: 0.03 }, 2.56);
-      lightWord(l1[0], 2.52);
-      lightWord(l1[1], 2.72);
-      lightWord(l1[2], 2.92);
-      lightWord(l2[0], 3.25);
-      lightWord(l2[1], 3.36);
-      lightWord(l2[2], 3.46);
-      tl.fromTo("#f05-pebg", { scaleX: 0, rotation: -2 }, { scaleX: 1, rotation: -2, duration: 0.3, ease: "power3.out" }, 3.6);
-      lightWord(l2[3], 3.62, "#1F2733");
-      lightWord(l2[4], 3.8, "#1F2733");
+      tl.fromTo(l1, { opacity: 0, x: 60, filter: "blur(8px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.24, ease: "expo.out", stagger: 0.03 }, 2.96);
+      tl.fromTo(l2, { opacity: 0, x: 60, filter: "blur(8px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.24, ease: "expo.out", stagger: 0.03 }, 3.04);
+      lightWord(l1[0], 3.08);
+      lightWord(l1[1], 3.35);
+      lightWord(l1[2], 3.6);
+      lightWord(l2[0], 4.26);
+      lightWord(l2[1], 4.4);
+      lightWord(l2[2], 4.52);
+      tl.fromTo("#f05-pebg", { scaleX: 0, rotation: -2 }, { scaleX: 1, rotation: -2, duration: 0.3, ease: "power3.out" }, 4.66);
+      lightWord(l2[3], 4.7, "#1F2733");
+      lightWord(l2[4], 4.93, "#1F2733");
 
       /* camera eases back a touch so the stamp lands in frame */
-      tl.to("#f05-world", { scale: 1.12, y: -6, duration: 0.8, ease: "power2.inOut" }, 2.6);
+      tl.to("#f05-world", { scale: 1.12, y: -6, duration: 0.8, ease: "power2.inOut" }, 3.35);
 
-      /* stamp « PAS ENCORE » at 3.7 */
-      tl.fromTo("#f05-sticker", { opacity: 0, scale: 1.6, rotation: -14 }, { opacity: 1, scale: 1, rotation: -8, duration: 0.18, ease: "power4.in" }, 3.62);
+      /* stamp « PAS ENCORE » lands at 4.7 on « pas encore » */
+      tl.fromTo("#f05-sticker", { opacity: 0, scale: 1.6, rotation: -14 }, { opacity: 1, scale: 1, rotation: -8, duration: 0.18, ease: "power4.in" }, 4.52);
       var hit = [[10, 6], [-8, -4], [5, 3], [-2, -1], [0, 0]];
       hit.forEach(function (p, i) {
-        tl.to("#f05-card", { x: p[0], y: p[1], duration: 0.04, ease: "sine.inOut" }, 3.8 + i * 0.04);
+        tl.to("#f05-card", { x: p[0], y: p[1], duration: 0.04, ease: "sine.inOut" }, 4.7 + i * 0.04);
       });
-      tl.to("#f05-world", { scale: 1.14, duration: 0.6, ease: "power2.out" }, 3.8);
+      tl.to("#f05-world", { scale: 1.14, duration: 0.6, ease: "power2.out" }, 4.7);
 
-      tl.set({}, {}, 4.4);
+      tl.set({}, {}, 5.5);
       window.__timelines["05-cafe"] = tl;
     })();
   </script>
