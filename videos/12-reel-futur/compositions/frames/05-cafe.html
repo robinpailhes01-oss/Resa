@@ -35,6 +35,19 @@
     #f05-l0 { top: 110px; font-size: 120px; }
     #f05-l1 { top: 78px; font-size: 92px; }
     #f05-l2 { top: 186px; font-size: 92px; }
+    .f05-pe { position: relative; display: inline-block; isolation: isolate; }
+    #f05-pebg {
+      position: absolute;
+      left: 0.02em;
+      right: 0.02em;
+      top: 0.1em;
+      bottom: -0.12em;
+      background: #F3D36B;
+      border-radius: 16px;
+      z-index: -1;
+      transform-origin: 0% 50%;
+      box-shadow: 0 8px 18px rgba(31, 39, 51, 0.25);
+    }
     .f05-w {
       display: inline-block;
       color: rgba(251, 246, 234, 0.38);
@@ -83,12 +96,12 @@
     }
     #f05-hl {
       position: absolute;
-      left: 460px;
-      top: 84px;
-      width: 248px;
-      height: 46px;
+      left: 478px;
+      top: 92px;
+      width: 222px;
+      height: 30px;
       background: #F3D36B;
-      border-radius: 10px;
+      border-radius: 8px;
       transform-origin: 0% 50%;
     }
     #f05-sub {
@@ -144,8 +157,8 @@
     /* ---------- sticker ---------- */
     #f05-sticker {
       position: absolute;
-      left: 1112px;
-      top: 548px;
+      left: 1120px;
+      top: 606px;
       padding: 16px 30px 12px;
       background: #F3D36B;
       color: #1F2733;
@@ -254,7 +267,7 @@
 
       <div id="f05-l0" class="f05-line"><span class="f05-w">Et</span><span class="f05-w">même…</span></div>
       <div id="f05-l1" class="f05-line"><span class="f05-w">Bon</span><span class="f05-w">ça,</span><span class="f05-w">j'avoue…</span></div>
-      <div id="f05-l2" class="f05-line"><span class="f05-w">on</span><span class="f05-w">le</span><span class="f05-w">fait</span><span class="f05-w f05-y">pas</span><span class="f05-w f05-y">encore.</span></div>
+      <div id="f05-l2" class="f05-line"><span class="f05-w">on</span><span class="f05-w">le</span><span class="f05-w">fait</span><span class="f05-pe"><span id="f05-pebg"></span><span class="f05-w">pas</span><span class="f05-w">encore.</span></span></div>
 
       <div id="f05-cd">
         <svg viewBox="0 0 24 24" fill="none" stroke="#FBF6EA" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="13.5" r="8" /><path d="M12 13.5V9.5M9.5 2.5h5M19 6l-1.6 1.6" /></svg>
@@ -312,11 +325,12 @@
       tl.fromTo("#f05-sub2", { backgroundColor: "#F3EDE1", color: "#5F6672" }, { backgroundColor: "#1F2733", color: CREAM, duration: 0.2, ease: "power2.out" }, 2.05);
 
       /* camera push toward the button */
-      tl.fromTo("#f05-world", { scale: 1, y: 0 }, { scale: 1.07, y: -18, duration: 1.3, ease: "power2.inOut" }, 1.0);
+      tl.fromTo("#f05-world", { scale: 1.1, y: 0 }, { scale: 1.17, y: -18, duration: 1.3, ease: "power2.inOut" }, 1.0);
 
       /* cursor glides in on a curve (x/y with different eases) */
-      tl.fromTo("#f05-cursor", { x: 1720, opacity: 0 }, { x: 1010, opacity: 1, duration: 0.95, ease: "power3.out" }, 1.0);
-      tl.fromTo("#f05-cursor", { y: 1010 }, { y: 662, duration: 0.95, ease: "power2.inOut" }, 1.0);
+      tl.set("#f05-cursor", { x: 1720, y: 1010, opacity: 0 }, 0);
+      tl.to("#f05-cursor", { x: 1010, opacity: 1, duration: 0.95, ease: "power3.out" }, 1.0);
+      tl.to("#f05-cursor", { y: 662, duration: 0.95, ease: "power2.inOut" }, 1.0);
       tl.to("#f05-cursor", { x: 990, y: 652, duration: 0.18, ease: "power2.inOut" }, 1.97);
 
       /* click at 2.2 */
@@ -355,11 +369,12 @@
       lightWord(l2[0], 3.25);
       lightWord(l2[1], 3.36);
       lightWord(l2[2], 3.46);
-      lightWord(l2[3], 3.62, "#F3D36B");
-      lightWord(l2[4], 3.8, "#F3D36B");
+      tl.fromTo("#f05-pebg", { scaleX: 0, rotation: -2 }, { scaleX: 1, rotation: -2, duration: 0.3, ease: "power3.out" }, 3.6);
+      lightWord(l2[3], 3.62, "#1F2733");
+      lightWord(l2[4], 3.8, "#1F2733");
 
       /* camera eases back a touch so the stamp lands in frame */
-      tl.to("#f05-world", { scale: 1.03, y: -6, duration: 0.8, ease: "power2.inOut" }, 2.6);
+      tl.to("#f05-world", { scale: 1.12, y: -6, duration: 0.8, ease: "power2.inOut" }, 2.6);
 
       /* stamp « PAS ENCORE » at 3.7 */
       tl.fromTo("#f05-sticker", { opacity: 0, scale: 1.6, rotation: -14 }, { opacity: 1, scale: 1, rotation: -8, duration: 0.18, ease: "power4.in" }, 3.62);
@@ -367,7 +382,7 @@
       hit.forEach(function (p, i) {
         tl.to("#f05-card", { x: p[0], y: p[1], duration: 0.04, ease: "sine.inOut" }, 3.8 + i * 0.04);
       });
-      tl.to("#f05-world", { scale: 1.045, duration: 0.6, ease: "power2.out" }, 3.8);
+      tl.to("#f05-world", { scale: 1.14, duration: 0.6, ease: "power2.out" }, 3.8);
 
       tl.set({}, {}, 4.4);
       window.__timelines["05-cafe"] = tl;
