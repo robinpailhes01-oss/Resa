@@ -888,8 +888,9 @@
         9.58,
         0.0105
       );
-      stamp("#f04-st3", "#f04-s3", 9.88);
-      caption("#f04-c3", 10.02);
+      // stamp on "Instagram" (second half of 9.83–11.0), once the post is taking shape
+      stamp("#f04-st3", "#f04-s3", 10.4);
+      caption("#f04-c3", 10.52);
       // colour the hashtags: wrap last 25 chars
       const pchars = document.querySelectorAll("#f04-ptext span");
       gsap.set(Array.prototype.slice.call(pchars, pchars.length - 25), { color: "#4a6179", fontWeight: 700 });
