@@ -82,16 +82,31 @@ const sql = postgres(url, { max: 1, prepare: false, connect_timeout: 15, onnotic
 const dir = path.join(process.cwd(), "db", "migrations");
 
 try {
-  await sql`create table if not exists schema_migrations (name text primary key, applied_at timestamptz not null default now())`;
+  // Protéger le registre dès sa création, même si une migration suivante échoue.
+  // Le propriétaire de la table conserve les accès nécessaires aux migrations.
+  await sql.begin(async (tx) => {
+    await tx`create table if not exists public.schema_migrations (name text primary key, applied_at timestamptz not null default now())`;
+    await tx`alter table public.schema_migrations enable row level security`;
+    await tx`revoke all on table public.schema_migrations from public`;
+    await tx`do $$
+      declare api_role text;
+      begin
+        foreach api_role in array array['anon', 'authenticated'] loop
+          if exists (select 1 from pg_roles where rolname = api_role) then
+            execute format('revoke all on table public.schema_migrations from %I', api_role);
+          end if;
+        end loop;
+      end $$`;
+  });
   const files = (await readdir(dir)).filter((f) => f.endsWith(".sql")).sort();
-  const applied = new Set((await sql`select name from schema_migrations`).map((r) => r.name));
+  const applied = new Set((await sql`select name from public.schema_migrations`).map((r) => r.name));
   let count = 0;
   for (const file of files) {
     if (applied.has(file)) continue;
     const body = await readFile(path.join(dir, file), "utf8");
     await sql.begin(async (tx) => {
       await tx.unsafe(body);
-      await tx`insert into schema_migrations (name) values (${file})`;
+      await tx`insert into public.schema_migrations (name) values (${file})`;
     });
     console.log(`appliquée : ${file}`);
     count += 1;
