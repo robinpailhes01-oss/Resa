@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="assets/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Instrument Serif"; src: url("assets/fonts/instrumentserif.woff2") format("woff2"); font-weight: 400; }
+      @font-face { font-family: "Inter"; src: url("assets/fonts/inter400.woff2") format("woff2"); font-weight: 400; }
+      @font-face { font-family: "Inter"; src: url("assets/fonts/inter700.woff2") format("woff2"); font-weight: 700; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+      .clip { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+      /* ---- Plan 1 : vidéo + citation serif ---- */
+      #mp-footage { object-fit: cover; }
+      #mp-shade { background: linear-gradient(180deg, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0.18) 38%, rgba(0,0,0,0) 55%); }
+      #mp-quote {
+        position: absolute; left: 190px; right: 190px; top: 430px; width: auto; height: auto; bottom: auto;
+        font-family: "Instrument Serif", serif; font-size: 92px; line-height: 0.9;
+        letter-spacing: -0.02em; color: #fff; text-align: center;
+        text-shadow: 0 2px 24px rgba(0, 0, 0, 0.55), 0 1px 4px rgba(0, 0, 0, 0.45);
+      }
+
+      /* ---- Plan 2 : « Mes prompts : » ---- */
+      #mp-black { background: #000; }
+      #mp-title {
+        position: absolute; left: 0; right: 0; top: 600px;
+        font-family: "Inter", sans-serif; font-weight: 700; font-size: 82px;
+        letter-spacing: -0.01em; color: #fff; text-align: center;
+      }
+      .mp-band {
+        position: absolute; left: -24px; right: -24px; top: 860px; bottom: auto; width: auto; height: 300px;
+        background: #1c1c1e; border-radius: 40px;
+        display: flex; align-items: center; overflow: hidden;
+      }
+      .mp-band span {
+        display: block; white-space: nowrap; padding-left: 96px;
+        font-family: "Inter", sans-serif; font-weight: 400; color: #dcdcdc;
+        letter-spacing: -0.01em;
+        filter: blur(1.2px); /* effet capture zoomée */
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="15" data-width="1080" data-height="1920">
+      <video id="mp-footage" class="clip" src="media/footage.mp4" data-start="0" data-duration="7" data-media-start="0" data-track-index="0" muted playsinline></video>
+      <div id="mp-shade" class="clip" data-start="0" data-duration="7" data-track-index="1"></div>
+      <div id="mp-quote" class="clip" data-start="0" data-duration="7" data-track-index="1">“tu es tout le temps sur claude tu dois avoir des supers prompts”</div>
+
+      <div id="mp-black" class="clip" data-start="7" data-duration="8" data-track-index="2">
+        <div id="mp-title">Mes prompts :</div>
+      </div>
+      <div id="mp-p1" class="mp-band clip" data-start="7" data-duration="1" data-track-index="3"><span>plus vite</span></div>
+      <div id="mp-p2" class="mp-band clip" data-start="8" data-duration="1.2" data-track-index="3"><span>débrouille-toi, trouve une solution</span></div>
+      <div id="mp-p3" class="mp-band clip" data-start="9.2" data-duration="1.4" data-track-index="3"><span>je m’en fous de ça</span></div>
+      <div id="mp-p4" class="mp-band clip" data-start="10.6" data-duration="1.4" data-track-index="3"><span>tu parles trop</span></div>
+      <div id="mp-p5" class="mp-band clip" data-start="12" data-duration="1.3" data-track-index="3"><span>fais comme tu veux</span></div>
+      <div id="mp-p6" class="mp-band clip" data-start="13.3" data-duration="1.7" data-track-index="3"><span>tu me saoules</span></div>
+    </div>
+    <script>
+      // Taille de chaque prompt : le plus gros possible dans le bandeau (comme une capture zoomée).
+      document.querySelectorAll(".mp-band span").forEach(function (s) {
+        var n = s.textContent.length;
+        s.style.fontSize = Math.min(140, Math.floor(2100 / n)) + "px";
+      });
+      var tl = gsap.timeline({ paused: true });
+      // léger zoom continu sur la vidéo, comme la référence
+      tl.fromTo("#mp-footage", { scale: 1.0 }, { scale: 1.06, duration: 7, ease: "none" }, 0);
+      // chaque capture arrive avec un très léger zoom
+      [["#mp-p1", 7], ["#mp-p2", 8], ["#mp-p3", 9.2], ["#mp-p4", 10.6], ["#mp-p5", 12], ["#mp-p6", 13.3]].forEach(function (p) {
+        tl.fromTo(p[0] + " span", { scale: 1.06 }, { scale: 1, duration: 0.35, ease: "expo.out" }, p[1]);
+      });
+      tl.set({}, {}, 15);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
