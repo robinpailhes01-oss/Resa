@@ -5,16 +5,19 @@ import { revalidatePath } from "next/cache";
 import type { FormState } from "@/components/app/ActionForm";
 import { requireEstablishment } from "@/server/auth/guards";
 import { preparePayment, setCancelAtPeriodEnd } from "../billing";
+import { recordJourney } from "@/server/acquisition/journey";
 
 /** Bouton « Payer » : crée (ou réutilise) le paiement SumUp et redirige vers la page de paiement. */
 export async function startPaymentAction(_prev: FormState, _fd: FormData): Promise<FormState> {
-  const { establishment } = await requireEstablishment();
+  const { user, establishment } = await requireEstablishment();
   let url: string | null = null;
+  await recordJourney(user.id, "checkout_started");
   try {
     const payment = await preparePayment(establishment);
     url = payment.hostedUrl;
   } catch (error) {
     console.error("[billing] démarrage paiement", error instanceof Error ? error.message : error);
+    await recordJourney(user.id, "error", "préparation du paiement");
     return { error: "Le paiement n’a pas pu être préparé. Réessayez dans quelques instants ou écrivez-nous." };
   }
   if (!url) return { error: "Le paiement n’a pas pu être préparé." };

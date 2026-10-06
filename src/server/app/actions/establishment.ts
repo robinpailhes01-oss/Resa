@@ -21,6 +21,7 @@ import { addPhotos } from "../photos";
 import { syncGoogleReviews } from "../reviews";
 import { GENERIC_ERROR, bool, fieldErrors, int, optStr, str } from "./shared";
 import { readRequestContext, recordMilestone } from "@/server/acquisition";
+import { recordJourney } from "@/server/acquisition/journey";
 
 const typeValues = BUSINESS_TYPES.map((t) => t.value) as [string, ...string[]];
 const emailOrNull = z
@@ -75,6 +76,10 @@ export async function createEstablishmentAction(_prev: FormState, fd: FormData):
     }
     const acquisition = await readRequestContext();
     after(() => recordMilestone({ name: "start_trial", userId: user.id, establishmentId: establishment.id, ctx: acquisition }));
+    after(async () => {
+      await recordJourney(user.id, "google_import", googlePlaceId ? `fiche importée${googlePhotos.length ? ` (${googlePhotos.length} photos)` : ""}` : "sans import");
+      if (googleHours) await recordJourney(user.id, "hours_set", "depuis Google");
+    });
     after(() =>
       notifyTelegram(
         telegramEvents.establishment({ name: establishment.name, businessType: businessTypeLabel(establishment.businessType), city: establishment.city, slug: establishment.slug }, offer.siteUrl.replace(/\/$/, "")),
@@ -82,6 +87,7 @@ export async function createEstablishmentAction(_prev: FormState, fd: FormData):
     );
   } catch (error) {
     console.error("[app] création établissement", error instanceof Error ? error.message : error);
+    await recordJourney(user.id, "error", "création de l'établissement");
     return { error: GENERIC_ERROR };
   }
   redirect("/app/prestations?bienvenue=1");
@@ -131,7 +137,7 @@ export async function updateEstablishmentAction(_prev: FormState, fd: FormData):
  * `practitionerId` vide = horaires de l'établissement.
  */
 export async function saveOpeningHoursAction(_prev: FormState, fd: FormData): Promise<FormState> {
-  const { establishment } = await requireEstablishment();
+  const { user, establishment } = await requireEstablishment();
   const practitionerId = optStr(fd, "practitionerId");
   const days: WeekInput["days"] = {};
   const errors: Record<string, string> = {};
@@ -155,8 +161,10 @@ export async function saveOpeningHoursAction(_prev: FormState, fd: FormData): Pr
   if (Object.keys(errors).length) return { fieldErrors: errors };
   try {
     await replaceOpeningHours(establishment.id, practitionerId, { days });
+    if (Object.keys(days).length > 0) await recordJourney(user.id, "hours_set");
   } catch (error) {
     console.error("[app] horaires", error instanceof Error ? error.message : error);
+    await recordJourney(user.id, "error", "enregistrement des horaires");
     return { error: GENERIC_ERROR };
   }
   revalidatePath("/app", "layout");

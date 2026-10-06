@@ -11,6 +11,7 @@ import { createCategory, deleteCategory, moveCategory, updateCategory } from "..
 import { categoriesEditor } from "@/content/fr/app";
 import { GENERIC_ERROR, bool, fieldErrors, int, priceToCents, str } from "./shared";
 import { templatesFor } from "@/content/fr/service-templates";
+import { recordJourney } from "@/server/acquisition/journey";
 
 const serviceSchema = z.object({
   name: z.string().trim().min(2, "Indiquez le nom de la prestation.").max(80),
@@ -44,13 +45,15 @@ function refreshCatalog(slug: string) {
 }
 
 export async function createServiceAction(_prev: FormState, fd: FormData): Promise<FormState> {
-  const { establishment } = await requireEstablishment();
+  const { user, establishment } = await requireEstablishment();
   const parsed = readService(fd);
   if (!parsed.success) return fieldErrors(parsed.error);
   try {
     await createService(establishment.id, parsed.data);
+    await recordJourney(user.id, "first_service", "ajoutée à la main");
   } catch (error) {
     console.error("[app] création prestation", error instanceof Error ? error.message : error);
+    await recordJourney(user.id, "error", "création d'une prestation");
     return { error: GENERIC_ERROR };
   }
   refreshCatalog(establishment.slug);
@@ -191,7 +194,7 @@ export async function deletePractitionerAction(id: string): Promise<void> {
 
 /** Crée d'un coup les prestations types cochées à l'onboarding (durées et prix modifiables ensuite). */
 export async function addServiceTemplatesAction(_prev: FormState, fd: FormData): Promise<FormState> {
-  const { establishment } = await requireEstablishment();
+  const { user, establishment } = await requireEstablishment();
   const keys = new Set(fd.getAll("template").map(String));
   const chosen = templatesFor(establishment.businessType).filter((t) => keys.has(t.key));
   if (chosen.length === 0) return { error: "Cochez au moins une prestation." };
@@ -207,8 +210,10 @@ export async function addServiceTemplatesAction(_prev: FormState, fd: FormData):
         practitionerIds: [],
       });
     }
+    await recordJourney(user.id, "first_service", `${chosen.length} modèle(s)`);
   } catch (error) {
     console.error("[app] prestations types", error instanceof Error ? error.message : error);
+    await recordJourney(user.id, "error", "ajout des prestations types");
     return { error: GENERIC_ERROR };
   }
   revalidatePath("/app/prestations");

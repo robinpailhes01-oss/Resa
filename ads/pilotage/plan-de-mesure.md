@@ -21,20 +21,20 @@ Statuts : **en place** · **proposé** (attend l'accord de Robin) · **validé**
 
 | # | Événement | Pourquoi | Coût | Statut |
 |---|---|---|---|---|
-| M1 | Import de la fiche Google : réussi / échoué / ignoré | savoir si l'import aide ou bloque | code, gratuit | proposé |
-| M2 | 1re prestation ajoutée (date) | l'étape la plus longue de l'onboarding | code, gratuit | proposé |
-| M3 | Horaires enregistrés (date) | sans horaires, aucun créneau | code, gratuit | proposé |
-| M4 | Lien de réservation copié (bouton « Copier ») | la pro a l'intention de partager | code, gratuit | proposé |
-| M5 | 1re visite de sa page par quelqu'un d'autre | le lien a vraiment été partagé | code, gratuit, agrégé | proposé |
-| M6 | Page abonnement vue / paiement commencé / paiement échoué | comprendre la fin d'essai | code, gratuit | proposé |
-| M7 | Erreurs vues par les pros (formulaires refusés, erreurs serveur) | repérer les bugs qui font fuir | code, gratuit | proposé |
+| M1 | Import de la fiche Google : réussi / échoué / ignoré | savoir si l'import aide ou bloque | code, gratuit | en place (à mettre en ligne) |
+| M2 | 1re prestation ajoutée (date) | l'étape la plus longue de l'onboarding | code, gratuit | en place (à mettre en ligne) |
+| M3 | Horaires enregistrés (date) | sans horaires, aucun créneau | code, gratuit | en place (à mettre en ligne) |
+| M4 | Lien de réservation copié (bouton « Copier ») | la pro a l'intention de partager | code, gratuit | en place (à mettre en ligne) |
+| M5 | 1re visite de sa page par quelqu'un d'autre (hors la pro connectée) | le lien a vraiment été partagé | code, gratuit | en place (à mettre en ligne) |
+| M6 | Page abonnement vue / paiement commencé / paiement échoué | comprendre la fin d'essai | code, gratuit | en place (à mettre en ligne) |
+| M7 | Erreurs vues par les pros (erreurs serveur des actions clés, erreurs JavaScript dans l’espace pro) | repérer les bugs qui font fuir | code, gratuit | en place (à mettre en ligne) |
 
 ## Vues proposées
 
 | Vue | Contenu | Statut |
 |---|---|---|
-| Parcours individuel | pour chaque inscrit : origine, étapes franchies avec date et heure, étape où il s'est arrêté, depuis combien de temps | proposé |
-| Délais entre étapes | délai médian et nombre de pros bloqués depuis plus de 48 h, par étape | proposé |
+| Parcours individuel | pour chaque inscrit : origine, étapes franchies avec date et heure, étape où il s'est arrêté, depuis combien de temps | en place : rapport Telegram quotidien (à mettre en ligne) |
+| Délais entre étapes | délai médian et nombre de pros bloqués depuis plus de 48 h, par étape | en place : rapport Telegram quotidien (à mettre en ligne) |
 
 ## Outils optionnels (plus tard, seulement si le volume le justifie)
 

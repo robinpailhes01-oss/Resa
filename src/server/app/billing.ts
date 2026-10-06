@@ -10,6 +10,7 @@ import type { Establishment } from "@/server/auth/guards";
 import { pastDueEmail, receiptEmail, renewalEmail } from "@/server/billing/emails";
 import { invoiceFilename, invoiceNumber, renderInvoicePdf, type InvoiceData } from "@/lib/invoice";
 import { recordSubscription } from "@/server/acquisition";
+import { recordJourneyForEstablishment } from "@/server/acquisition/journey";
 
 export type BillingProvider = "mollie" | "sumup";
 
@@ -347,6 +348,7 @@ export async function confirmPayment(lookup: { reference?: string; checkoutId?: 
     }
     if (payment.status === "failed" || payment.status === "canceled" || payment.status === "expired") {
       const [failed] = await sql<Row[]>`update payments set status = ${payment.status === "expired" ? "expired" : "failed"} where id = ${row.id} returning *`;
+      await recordJourneyForEstablishment(row.establishment_id, "payment_failed", payment.status);
       return map(failed);
     }
     return map(row);
@@ -356,6 +358,7 @@ export async function confirmPayment(lookup: { reference?: string; checkoutId?: 
   if (state.status === "PAID") return map(await applyPaid(row, now, { transactionCode: state.transactionCode, method: "card" }));
   if (state.status === "FAILED" || state.status === "EXPIRED") {
     const [failed] = await sql<Row[]>`update payments set status = ${state.status === "FAILED" ? "failed" : "expired"} where id = ${row.id} returning *`;
+    await recordJourneyForEstablishment(row.establishment_id, "payment_failed", state.status);
     return map(failed);
   }
   return map(row);
@@ -389,6 +392,7 @@ export async function handleMolliePayment(paymentId: string, now = new Date()): 
   }
   if (payment.status === "failed" || payment.status === "canceled" || payment.status === "expired") {
     await sql`update payments set status = ${payment.status === "expired" ? "expired" : "failed"} where id = ${row.id}`;
+    await recordJourneyForEstablishment(row.establishment_id, "payment_failed", payment.status);
     return payment.status;
   }
   return payment.status;

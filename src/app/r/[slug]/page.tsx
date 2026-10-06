@@ -30,6 +30,9 @@ import { listServices } from "@/server/app/services";
 import { listCategories } from "@/server/app/categories";
 import { cn } from "@/lib/cn";
 import { canAcceptOnlineBookings, resolveAccess } from "@/lib/trial";
+import { after } from "next/server";
+import { getCurrentUser } from "@/server/auth/session";
+import { recordJourneyForEstablishment } from "@/server/acquisition/journey";
 
 export async function generateMetadata({
   params,
@@ -59,6 +62,9 @@ export default async function ReservationPage({
   const query = await searchParams;
   const establishment = await getEstablishmentBySlug(slug);
   if (!establishment) notFound();
+  // Parcours : 1re visite de la page par quelqu'un d'autre que la pro (le lien a été partagé).
+  const viewer = await getCurrentUser();
+  after(() => recordJourneyForEstablishment(establishment.id, "page_visited", null, viewer?.id));
 
   if (!establishment.bookingEnabled || !canAcceptOnlineBookings(resolveAccess(establishment))) {
     return (

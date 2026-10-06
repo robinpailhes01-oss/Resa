@@ -11,11 +11,14 @@ import { resolveAccess } from "@/lib/trial";
 import { requireEstablishment } from "@/server/auth/guards";
 import { amounts, billingProvider, confirmPayment, hasAutomaticRenewal, listPayments } from "@/server/app/billing";
 import { cancelSubscriptionAction, startPaymentAction } from "@/server/app/actions/billing";
+import { after } from "next/server";
+import { recordJourney } from "@/server/acquisition/journey";
 
 export const metadata: Metadata = { title: "Abonnement" };
 
 export default async function AbonnementPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
-  const { establishment: e } = await requireEstablishment();
+  const { user, establishment: e } = await requireEstablishment();
+  after(() => recordJourney(user.id, "billing_viewed"));
   const params = await searchParams;
   const reference = typeof params.checkout === "string" ? params.checkout : null;
   if (reference) {

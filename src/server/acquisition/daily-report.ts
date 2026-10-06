@@ -1,5 +1,7 @@
 import "server-only";
 import { escapeHtml } from "@/server/telegram";
+import { describeJourney, formatDuration, journeyStats, type Journey } from "@/lib/journey";
+import { loadJourneys } from "./journey";
 import { acquisitionReport, type AcquisitionReport, type FunnelRow } from "./report";
 
 /**
@@ -11,7 +13,33 @@ import { acquisitionReport, type AcquisitionReport, type FunnelRow } from "./rep
 const line = (r: FunnelRow) =>
   `Visites ${r.visits} · Inscriptions ${r.signups} · Établissements ${r.onboarded} · Pages publiées ${r.published} · 1res réservations ${r.activated} · <b>Abonnés payants ${r.paid}</b>`;
 
-export function formatAcquisitionReport(day: AcquisitionReport, week: AcquisitionReport): string {
+const MAX_JOURNEYS = 12;
+
+/** Parcours individuels (7 j) et délais entre étapes (30 j). */
+export function formatJourneys(recent: Journey[], month: Journey[], now: Date): string[] {
+  if (recent.length === 0 && month.length === 0) return [];
+  const out: string[] = [];
+  if (recent.length) {
+    out.push("", `<b>Parcours des inscrits (7 j)</b>${recent.length > MAX_JOURNEYS ? ` · ${MAX_JOURNEYS} plus récents sur ${recent.length}` : ""}`);
+    for (const j of recent.slice(0, MAX_JOURNEYS)) {
+      const { head, steps } = describeJourney(j, now);
+      out.push(`👤 ${escapeHtml(head)}`, `   ${escapeHtml(steps)}`);
+    }
+  }
+  const { delays, blocked } = journeyStats(month, now);
+  const measured = delays.filter((d) => d.count > 0 && d.median !== null);
+  if (measured.length) {
+    out.push("", "<b>Délais médians (30 j)</b>");
+    for (const d of measured) out.push(`• ${d.label} : ${formatDuration(d.median as number)} (${d.count} pro${d.count > 1 ? "s" : ""})`);
+  }
+  if (blocked.length) {
+    out.push("", "<b>Bloqués depuis plus de 48 h (30 j)</b>");
+    for (const b of blocked) out.push(`• ${escapeHtml(b.label)} : ${b.count}`);
+  }
+  return out;
+}
+
+export function formatAcquisitionReport(day: AcquisitionReport, week: AcquisitionReport, journeys: string[] = []): string {
   const sources = week.rows
     .filter((r) => r.source || r.campaign || r.content)
     .slice(0, 8)
@@ -33,10 +61,13 @@ export function formatAcquisitionReport(day: AcquisitionReport, week: Acquisitio
     `Envoi à Meta (7 j) : ${meta}`,
     ...(m.lastError ? [`Dernière erreur : ${escapeHtml(m.lastError.slice(0, 200))}`] : []),
     ...(week.salonPayments.count ? [`Paiements des clientes aux salons (usage, pas des abonnements) : ${week.salonPayments.count}`] : []),
+    // En dernier : la partie la plus longue (Telegram coupe au-delà de 4 000 caractères).
+    ...journeys,
   ].join("\n");
 }
 
 export async function buildAcquisitionReport(now = new Date()): Promise<string> {
-  const [day, week] = await Promise.all([acquisitionReport(1, now), acquisitionReport(7, now)]);
-  return formatAcquisitionReport(day, week);
+  const [day, week, month] = await Promise.all([acquisitionReport(1, now), acquisitionReport(7, now), loadJourneys(30, 200, now)]);
+  const recent = month.filter((j) => now.getTime() - j.signupAt.getTime() <= 7 * 24 * 3600_000);
+  return formatAcquisitionReport(day, week, formatJourneys(recent, month, now));
 }
