@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>Reso — pub Ludivine « ce message est pour toi »</title>
+    <!-- Généré par .claude/skills/reso-facecam-app/scripts/build-montage.mjs — modifier montage.json puis relancer. -->
+    <style>
+@font-face { font-family: "Manrope"; src: url("brand/manrope.woff2") format("woff2"); font-weight: 200 800; font-display: block; }
+@font-face { font-family: "Outfit"; src: url("brand/outfit.woff2") format("woff2"); font-weight: 100 900; font-display: block; }
+@font-face { font-family: "Caveat"; src: url("brand/caveat.woff2") format("woff2"); font-weight: 400 700; font-display: block; }
+@font-face { font-family: "JetBrains Mono"; src: url("brand/jetbrainsmono.woff2") format("woff2"); font-weight: 100 800; font-display: block; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #FBF6EA; font-family: "Manrope", system-ui, sans-serif; color: #1F2733; }
+#root { position: relative; width: 100%; height: 100%; overflow: hidden; background: #FBF6EA; }
+#stage-bg { position: absolute; inset: 0; opacity: 0;
+  background:
+    radial-gradient(circle at 16% 22%, rgba(108, 79, 248, 0.26), transparent 38%),
+    radial-gradient(circle at 86% 30%, rgba(255, 190, 150, 0.32), transparent 36%),
+    radial-gradient(circle at 50% 86%, rgba(130, 170, 255, 0.28), transparent 44%),
+    #FBF6EA; }
+#stage { position: absolute; inset: 0; }
+.shot { position: absolute; opacity: 0; }
+.shot-in { position: relative; width: 100%; height: 100%; }
+.shot .screen { position: absolute; inset: 0; overflow: hidden; background: #FFFDF8; }
+.shot .kb { width: 100%; height: 100%; }
+.shot .kb img, .shot .kb video { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+.shot-phone .shot-in { border-radius: 64px; background: #1F2733; padding: 14px;
+  box-shadow: 0 2px 6px rgba(17,17,22,.06), 0 40px 90px -30px rgba(60,40,140,.45), 0 90px 160px -60px rgba(60,40,140,.35); }
+.shot-phone .screen { inset: 14px; border-radius: 50px; padding-top: 52px; }
+.shot-phone .notch { position: absolute; z-index: 2; top: 30px; left: 50%; width: 120px; height: 34px; margin-left: -60px; border-radius: 20px; background: #1F2733; }
+.shot-window .shot-in { border-radius: 24px; background: #FFFDF8; border: 1px solid #E7DFD0; overflow: hidden;
+  box-shadow: 0 1px 2px rgba(17,17,22,.04), 0 24px 60px -24px rgba(60,40,140,.3), 0 60px 120px -50px rgba(60,40,140,.25); }
+.shot-window .win-bar { height: 44px; display: flex; gap: 9px; align-items: center; padding: 0 18px; border-bottom: 1px solid #E7DFD0; background: #FBF6EA; }
+.shot-window .win-bar i { width: 12px; height: 12px; border-radius: 6px; background: #E7DFD0; }
+.shot-window .screen { top: 44px; }
+#face-wrap { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: hidden; transform-origin: 0 0; }
+#bubble-ring { position: absolute; border-radius: 50%; background: #FFFDF8; box-shadow: 0 24px 60px -20px rgba(60,40,140,.5); }
+#face-inner { width: 100%; height: 100%; transform-origin: 50% 30%; overflow: hidden; }
+#face { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; display: block; }
+#cutout-wrap { position: absolute; inset: 0; }
+#cutout-inner { position: absolute; left: -120px; bottom: 0; width: 1080px; height: 1920px; transform-origin: 0% 100%; transform: scale(0.84); }
+#face-cutout { width: 100%; height: 100%; object-fit: cover; display: block; }
+.card-slide { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 0 90px 420px; }
+.card-in { display: flex; flex-direction: column; align-items: flex-start; gap: 34px; width: 100%; }
+.kicker { font-size: 30px; font-weight: 700; letter-spacing: .02em; color: #4A6179; background: #FFFDF8; border: 1px solid #E7DFD0; border-radius: 999px; padding: 12px 26px; box-shadow: 0 6px 20px -10px rgba(17,17,22,.12); }
+.card-text { font-size: 112px; line-height: .98; font-weight: 800; letter-spacing: -0.04em; color: #1F2733; }
+.cw { display: inline-block; }
+.card-sub { font-size: 42px; line-height: 1.3; font-weight: 500; color: #5F6672; max-width: 860px; }
+.topline { position: absolute; left: 70px; right: 70px; top: 210px; margin: 0 auto; width: fit-content; max-width: 940px; font-size: 50px; line-height: 1.12; font-weight: 800; letter-spacing: -0.02em; text-align: center; color: #1F2733; background: rgba(255,255,255,.94); border-radius: 28px; padding: 22px 36px; box-shadow: 0 2px 6px rgba(17,17,22,.05), 0 18px 40px -16px rgba(60,40,140,.3); }
+.chip { position: absolute; }
+.chip-in { display: flex; align-items: center; gap: 22px; background: #FFFDF8; border: 1px solid #E7DFD0; border-radius: 30px; padding: 22px 30px 22px 22px; box-shadow: 0 2px 6px rgba(17,17,22,.05), 0 18px 40px -16px rgba(60,40,140,.32); }
+.chip-ico { width: 76px; height: 76px; border-radius: 22px; display: flex; align-items: center; justify-content: center; flex: none; }
+.chip-ico svg { width: 40px; height: 40px; }
+.chip-t { font-size: 34px; font-weight: 700; letter-spacing: -0.01em; color: #1F2733; white-space: nowrap; }
+.chip-s { font-size: 28px; font-weight: 500; color: #5F6672; margin-top: 4px; white-space: nowrap; }
+.end { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+.end-in { display: flex; flex-direction: column; align-items: center; gap: 40px; padding-bottom: 260px; }
+#end-logo { width: 460px; height: auto; }
+.end-line { font-size: 56px; font-weight: 800; letter-spacing: -0.03em; text-align: center; max-width: 900px; line-height: 1.08; }
+.end-cta { font-size: 40px; font-weight: 700; color: #FFFDF8; background: #1F2733; border-radius: 22px; padding: 28px 52px; box-shadow: 0 24px 50px -20px rgba(17,17,22,.5); }
+.end-url { font-size: 36px; font-weight: 600; color: #5F6672; }
+#captions { position: absolute; left: 0; top: 0; width: 1080px; height: 0; }
+#fade-out { position: absolute; inset: 0; background: #FBF6EA; opacity: 0; pointer-events: none; }
+.cap { position: absolute; left: 70px; right: 70px; top: -50px; margin: 0 auto; width: fit-content; max-width: 940px; font-size: 60px; line-height: 1.12; font-weight: 800; letter-spacing: -0.02em; text-align: center; color: #1F2733;
+  background: rgba(255,255,255,.95); border-radius: 26px; padding: 16px 30px 18px; box-shadow: 0 2px 6px rgba(17,17,22,.08), 0 20px 44px -16px rgba(17,17,22,.35); }
+.cap .w { display: inline; }
+.cap .w.em { color: #3A4D61; background: #DCE4EC; border-radius: 12px; padding: 0 8px; }
+.tk { display: block; font-size: 22px; font-weight: 500; letter-spacing: .08em; margin-bottom: 8px; }
+.script { display: none; }
+
+html, body, #root { background: #FBF6EA; font-family: "Manrope", "Outfit", system-ui, sans-serif; }
+#stage-bg { background:
+    radial-gradient(ellipse 120% 60% at 22% 18%, rgba(255,255,255,.16), transparent 60%),
+    linear-gradient(180deg, #6B8299 0%, #7389A0 58%, #6B8299 70.4%, #E6DCCB 70.5%, #D8CCB6 100%); }
+#face { filter: sepia(.12) saturate(.9) contrast(.97) brightness(1.02); }
+.shot-phone .shot-in { background: #1F2733; box-shadow: 0 2px 6px rgba(31,39,51,.12), 0 50px 80px -34px rgba(31,39,51,.6), 0 30px 40px -30px rgba(40,34,24,.45); }
+.shot-phone .notch { background: #1F2733; }
+.shot .screen { background: #FBF6EA; }
+.shot-window .shot-in { border-radius: 14px; background: #FFFDF8; border-color: #E7DFD0; box-shadow: 0 50px 80px -34px rgba(31,39,51,.55); }
+.shot-window .win-bar { background: #FBF6EA; border-color: #E7DFD0; }
+#bubble-ring { background: #FBF6EA; box-shadow: 0 30px 60px -24px rgba(31,39,51,.55); }
+.card-slide { background: transparent; padding: 0 96px 560px; }
+.topline, .cap, .card-text { text-wrap: balance; }
+.card-in { gap: 30px; }
+.kicker { font-family: "JetBrains Mono", monospace; font-size: 30px; font-weight: 500; letter-spacing: .06em; color: #FBF6EA; opacity: .82; background: none; border: 0; box-shadow: none; padding: 0; text-transform: lowercase; }
+.card-text { font-family: "Outfit", sans-serif; font-size: 132px; line-height: .96; font-weight: 500; letter-spacing: -0.035em; color: #FBF6EA; }
+.card-sub { font-family: "Manrope", sans-serif; font-size: 40px; font-weight: 500; color: #FBF6EA; opacity: .85; letter-spacing: .01em; }
+.script { display: block; position: absolute; right: 96px; top: 470px; font-family: "Caveat", cursive; font-size: 64px; font-weight: 600; color: #FBF6EA; transform-origin: 100% 50%; text-align: center; }
+.script svg { display: block; width: 100%; height: 24px; margin-top: -6px; }
+.topline { top: 200px; font-family: "Outfit", sans-serif; font-size: 52px; font-weight: 500; letter-spacing: -0.015em; line-height: 1.1; color: #1F2733; background: #FBF6EA; border-radius: 6px; padding: 26px 38px 28px; box-shadow: 0 24px 50px -24px rgba(31,39,51,.55); }
+.tk { font-family: "JetBrains Mono", monospace; color: #4A6179; }
+.chip-in { background: #FBF6EA; border-color: #E7DFD0; border-radius: 16px; box-shadow: 0 24px 44px -20px rgba(31,39,51,.5); }
+.chip-ico { border-radius: 12px; }
+.chip-t { font-family: "Outfit", sans-serif; font-weight: 500; font-size: 36px; color: #1F2733; letter-spacing: -0.01em; }
+.chip-s { color: #5F6672; }
+.cap { font-family: "Outfit", sans-serif; font-weight: 500; font-size: 58px; letter-spacing: -0.01em; color: #FBF6EA; background: rgba(31, 39, 51, 0.92); border-radius: 10px; padding: 14px 30px 18px; box-shadow: 0 20px 40px -18px rgba(31,39,51,.6); }
+.cap .w.em { color: #FBF6EA; background: none; padding: 0; text-decoration: underline; text-decoration-color: #B6A6D8; text-decoration-thickness: 5px; text-underline-offset: 10px; }
+.end { background: #6B8299; }
+.end-photo .end-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.end-photo .end-in { position: relative; padding: 780px 0 0; gap: 26px; }
+.end-photo #end-logo { width: 0; height: 0; }
+.end-line { font-family: "Outfit", sans-serif; font-weight: 400; font-size: 44px; color: #FBF6EA; letter-spacing: 0; }
+.end-cta { font-family: "Outfit", sans-serif; font-weight: 500; font-size: 40px; color: #1F2733; background: #FBF6EA; border-radius: 999px; padding: 26px 56px; box-shadow: 0 24px 50px -22px rgba(31,39,51,.6); }
+.end-url { font-family: "JetBrains Mono", monospace; font-size: 28px; letter-spacing: .12em; color: #FBF6EA; text-transform: uppercase; }
+.m { display: inline-block; overflow: hidden; vertical-align: top; padding: 0.06em 0 0.12em; margin: -0.06em 0 -0.12em; }
+.mi { display: inline-block; }
+.ch { opacity: 0; }
+.contact { position: absolute; left: 8%; right: 8%; bottom: -46px; height: 70px; border-radius: 50%; background: radial-gradient(ellipse at center, rgba(31,39,51,.42), rgba(31,39,51,0) 70%); filter: blur(6px); transform-origin: 50% 50%; }
+#print { position: absolute; inset: 0; background: #FBF6EA; clip-path: inset(100% 0% 0% 0%); display: flex; align-items: center; justify-content: center; pointer-events: none; }
+#print img { width: 300px; height: auto; }
+#frame { z-index: 3; }
+#captions { z-index: 4; }
+#fade-out { z-index: 6; }
+#vignette { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse 90% 75% at 50% 45%, rgba(31,39,51,0) 58%, rgba(31,39,51,.22) 100%); }
+.ag { position: relative; height: 100%; overflow: hidden; background: #FBF6EA; padding: 30px 26px 0; font-family: "Outfit", sans-serif; color: #1F2733; }
+.ag-h { display: grid; grid-template-columns: 1fr auto; row-gap: 4px; padding-bottom: 18px; border-bottom: 1px solid #E7DFD0; }
+.ag-t { font-size: 40px; font-weight: 500; letter-spacing: -0.02em; }
+.ag-d { font-family: "Manrope", sans-serif; font-size: 20px; color: #5F6672; grid-column: 1; }
+.ag-p { grid-row: 1 / span 2; grid-column: 2; align-self: center; font-family: "Manrope", sans-serif; font-size: 18px; font-weight: 600; background: #DCE4EC; color: #4A6179; border-radius: 999px; padding: 8px 16px; }
+.ag-g { position: relative; margin-top: 16px; margin-left: 64px; }
+.ag-row { position: absolute; left: -64px; right: 0; height: 0; border-top: 1px dashed #E7DFD0; }
+.ag-row span { position: absolute; left: 0; top: -11px; font-family: "JetBrains Mono", monospace; font-size: 15px; color: #5F6672; background: #FBF6EA; padding-right: 6px; }
+.ag-b { position: absolute; left: 6px; right: 0; border-radius: 10px; background: #EEF2F5; border-left: 6px solid #B6A6D8; padding: 10px 14px; display: flex; flex-direction: column; gap: 4px; opacity: 0; box-shadow: 0 10px 22px -16px rgba(31,39,51,.45); }
+.ag-b1 { border-left-color: #9DBBA8; background: #F3F1EA; }
+.ag-b b { font-size: 22px; font-weight: 500; }
+.ag-b span { font-family: "Manrope", sans-serif; font-size: 16px; color: #5F6672; }
+.sting { position: absolute; inset: 0; background: #617990; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.sting-coin { position: absolute; right: 0; bottom: 0; width: 820px; height: auto; -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 22%), linear-gradient(180deg, transparent 0%, #000 20%); -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, transparent 0%, #000 22%), linear-gradient(180deg, transparent 0%, #000 20%); mask-composite: intersect; }
+.sting-in { position: relative; display: flex; flex-direction: column; align-items: center; gap: 34px; margin-top: -380px; }
+#sting-logo { width: 540px; height: auto; }
+#sting-line { width: 110px; height: 3px; background: #FBF6EA; opacity: .9; }
+#sting-tag { font-family: "Manrope", sans-serif; font-size: 30px; font-weight: 500; color: #FBF6EA; letter-spacing: 0.34em; white-space: nowrap; }
+#sting-cta { margin-top: 30px; font-family: "JetBrains Mono", monospace; font-size: 26px; color: #FBF6EA; opacity: .85; letter-spacing: .06em; }
+#grain { position: absolute; inset: 0; background-image: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22240%22%20height%3D%22240%22%3E%3Cfilter%20id%3D%22n%22%3E%3CfeTurbulence%20type%3D%22fractalNoise%22%20baseFrequency%3D%22.85%22%20numOctaves%3D%223%22%20stitchTiles%3D%22stitch%22%2F%3E%3CfeColorMatrix%20values%3D%220%200%200%200%20.12%20%200%200%200%200%20.1%20%200%200%200%200%20.08%20%200%200%200%20.55%200%22%2F%3E%3C%2Ffilter%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20filter%3D%22url(%23n)%22%2F%3E%3C%2Fsvg%3E"); background-size: 240px 240px; opacity: .16; mix-blend-mode: multiply; pointer-events: none; }
+#badge { position: absolute; z-index: 5; left: 40px; top: 42px; font-family: "JetBrains Mono", monospace; font-size: 15px; letter-spacing: .03em; color: rgba(251,246,234,.92); background: rgba(31,39,51,.42); padding: 7px 14px; border-radius: 999px; white-space: nowrap; pointer-events: none; }
+#frame { position: absolute; inset: 0; border: 26px solid #FBF6EA; pointer-events: none; box-shadow: inset 0 0 0 1px rgba(40,34,24,.08); }
+
+</style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="reso-montage" data-start="0" data-width="1080" data-height="1920" data-duration="42.4000" data-fps="30">
+      <div id="stage-bg"></div>
+      <div id="stage">
+      <div class="shot shot-full" id="shot-6" style="left:0px;top:0px;width:1080px;height:1920px;"><div class="shot-in" id="shot-6-in"><div class="screen"><div class="kb" id="shot-6-kb"><video id="shot-6-media" class="clip" src="media/app/fiche-google.mp4" data-start="18.1667" data-duration="4.2333" data-media-start="0.000" data-track-index="2" style="object-position:50% 0%" muted playsinline></video></div></div></div></div>
+      <div class="shot shot-phone" id="shot-7" style="left:254px;top:150px;width:573px;height:1240px;"><div class="contact" id="shot-7-contact"></div><div class="shot-in" id="shot-7-in"><div class="notch"></div><div class="screen"><div class="kb" id="shot-7-kb"><video id="shot-7-media" class="clip" src="media/app/page-publique-mobile.mp4" data-start="22.4000" data-duration="1.6667" data-media-start="0.400" data-track-index="2" style="object-position:50% 0%" muted playsinline></video></div></div></div></div>
+      <div class="shot shot-full" id="shot-8" style="left:0px;top:0px;width:1080px;height:1920px;"><div class="shot-in" id="shot-8-in"><div class="screen"><div class="kb" id="shot-8-kb"><video id="shot-8-media" class="clip" src="media/app/lien-reserve.mp4" data-start="24.0667" data-duration="4.6333" data-media-start="0.000" data-track-index="2" style="object-position:50% 0%" muted playsinline></video></div></div></div></div>
+      <div class="shot shot-phone" id="shot-10" style="left:254px;top:150px;width:573px;height:1240px;"><div class="contact" id="shot-10-contact"></div><div class="shot-in" id="shot-10-in"><div class="notch"></div><div class="screen"><div class="kb" id="shot-10-kb"><video id="shot-10-media" class="clip" src="media/app/emails-mobile.mp4" data-start="30.7000" data-duration="3.2667" data-media-start="1.600" data-track-index="2" style="object-position:50% 0%" muted playsinline></video></div></div></div></div>
+      <div class="card-slide clip" id="card-5" data-start="15.5667" data-duration="2.6000" data-track-index="3"><div class="card-in"><div class="kicker" id="card-5-k"><span class="ch">r</span><span class="ch">e</span><span class="ch">s</span><span class="ch">o</span></div><div class="card-text"><span class="m"><span class="mi cw">Tes</span></span> <span class="m"><span class="mi cw">rendez-vous,</span></span> <span class="m"><span class="mi cw">sans</span></span> <span class="m"><span class="mi cw">décrocher.</span></span></div><div class="card-sub" id="card-5-sub">La réservation en ligne pour les pros de la beauté.</div></div></div>
+      <div class="card-slide clip" id="card-11" data-start="33.9667" data-duration="2.3333" data-track-index="3"><div class="card-in"><div class="kicker" id="card-11-k"><span class="ch">A</span><span class="ch">b</span><span class="ch">o</span><span class="ch">n</span><span class="ch">n</span><span class="ch">e</span><span class="ch">m</span><span class="ch">e</span><span class="ch">n</span><span class="ch">t</span></div><div class="card-text"><span class="m"><span class="mi cw">Tout</span></span> <span class="m"><span class="mi cw">ça</span></span> <span class="m"><span class="mi cw">pour</span></span> <span class="m"><span class="mi cw">29</span></span> <span class="m"><span class="mi cw">€</span></span> <span class="m"><span class="mi cw">par</span></span> <span class="m"><span class="mi cw">mois.</span></span></div><div class="card-sub" id="card-11-sub">Essai gratuit 7 jours, sans carte bancaire.</div></div></div>
+      </div>
+      <div id="bubble-ring" style="left:46px;top:1140px;width:320px;height:320px;opacity:0;"></div>
+      <div id="face-wrap" style="opacity:1;"><div id="face-inner"><video id="face" src="media/face.mp4" data-start="0" data-duration="40.2000" data-track-index="1" muted playsinline></video></div></div>
+      <div class="topline clip" id="title-0" data-start="0.0000" data-duration="5.4000" data-track-index="5"><span class="m"><span class="mi">Pros</span></span> <span class="m"><span class="mi">de</span></span> <span class="m"><span class="mi">la</span></span> <span class="m"><span class="mi">beauté :</span></span> <span class="m"><span class="mi">ce</span></span> <span class="m"><span class="mi">message</span></span> <span class="m"><span class="mi">est</span></span> <span class="m"><span class="mi">pour</span></span> <span class="m"><span class="mi">toi</span></span></div>
+      <div class="chip clip" id="chip-1-0" data-start="7.5000" data-duration="1.3667" data-track-index="6" style="left:470px;top:330px;"><div class="chip-in" id="chip-1-0-in"><div class="chip-ico" style="background:#DCE4EC;color:#4A6179"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 12a8.5 8.5 0 0 1-12.4 7.5L3.5 20.5l1-4.4A8.5 8.5 0 1 1 20.5 12z"/></svg></div><div><div class="chip-t">Nouveau message</div><div class="chip-s">Tu as une dispo samedi ?</div></div></div></div>
+      <div class="chip clip" id="chip-2-0" data-start="9.0667" data-duration="2.2000" data-track-index="6" style="left:470px;top:330px;"><div class="chip-in" id="chip-2-0-in"><div class="chip-ico" style="background:#EFE9F7;color:#6E5C8F"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 7v5l3 2"/></svg></div><div><div class="chip-t">22:15</div><div class="chip-s">Encore 6 messages sans réponse</div></div></div></div>
+      <div class="chip clip" id="chip-7-0" data-start="22.6000" data-duration="1.4667" data-track-index="6" style="left:520px;top:980px;"><div class="chip-in" id="chip-7-0-in"><div class="chip-ico" style="background:#DCE4EC;color:#4A6179"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="m7.5 12.3 3 3 6-6.3"/></svg></div><div><div class="chip-t">Page créée</div><div class="chip-s">Photos, horaires, adresse</div></div></div></div>
+      <div class="chip clip" id="chip-9-0" data-start="29.3000" data-duration="1.4000" data-track-index="6" style="left:470px;top:330px;"><div class="chip-in" id="chip-9-0-in"><div class="chip-ico" style="background:#DCE4EC;color:#4A6179"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="3"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg></div><div><div class="chip-t">Nouvelle réservation</div><div class="chip-s">Réservé à 23:04</div></div></div></div>
+      <div class="chip clip" id="chip-10-0" data-start="31.0000" data-duration="1.5000" data-track-index="6" style="left:520px;top:980px;"><div class="chip-in" id="chip-10-0-in"><div class="chip-ico" style="background:#DCE4EC;color:#4A6179"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16.5V11a6 6 0 1 1 12 0v5.5l1.5 2H4.5z"/><path d="M10 21h4"/></svg></div><div><div class="chip-t">Rappel envoyé</div><div class="chip-s">La veille du rendez-vous</div></div></div></div>
+      <div class="chip clip" id="chip-10-1" data-start="32.4000" data-duration="1.5000" data-track-index="6" style="left:520px;top:980px;"><div class="chip-in" id="chip-10-1-in"><div class="chip-ico" style="background:#DCEFE3;color:#1F7A4D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.8 5.8 6.2.9-4.5 4.4 1 6.2L12 17.4l-5.5 2.9 1-6.2L3 9.7l6.2-.9z"/></svg></div><div><div class="chip-t">Demande d'avis Google</div><div class="chip-s">Après le rendez-vous</div></div></div></div>
+      <div class="topline clip" id="title-12" data-start="36.3000" data-duration="3.9000" data-track-index="5"><span class="m"><span class="mi">Écris</span></span> <span class="m"><span class="mi">« RESO »</span></span> <span class="m"><span class="mi">en</span></span> <span class="m"><span class="mi">message</span></span></div>
+      <div id="grain"></div>
+      <div id="frame"></div>
+      <div class="sting clip" id="sting" data-start="40.2000" data-duration="2.2000" data-track-index="7"><img class="sting-coin" id="sting-coin" src="brand/coin-ciseaux.png" alt="" /><div class="sting-in"><img id="sting-logo" src="brand/logo-creme.svg" alt="reso" /><div id="sting-line"></div><div id="sting-tag">BEAUTY BUSINESS SIMPLIFIED</div><div id="sting-cta">Écris « RESO » en message · reso-app.fr</div></div></div>
+      <div id="print"><img src="brand/logo.svg" alt="" /></div>
+      <div id="vignette"></div>
+      <div id="captions">
+      <div class="cap clip" id="cap-0" data-start="0.0333" data-duration="2.4667" data-track-index="8"><span class="w" id="c0w0">Coiffeur</span> <span class="w" id="c0w1">ou</span> <span class="w" id="c0w2">coiffeuse,</span></div>
+      <div class="cap clip" id="cap-1" data-start="2.5000" data-duration="1.7000" data-track-index="8"><span class="w" id="c1w0">barbier,</span> <span class="w" id="c1w1">esthéticienne,</span></div>
+      <div class="cap clip" id="cap-2" data-start="4.2000" data-duration="0.8333" data-track-index="8"><span class="w" id="c2w0">ce</span> <span class="w" id="c2w1">message</span> <span class="w" id="c2w2">est</span> <span class="w" id="c2w3">pour</span></div>
+      <div class="cap clip" id="cap-3" data-start="5.0333" data-duration="0.6000" data-track-index="8"><span class="w" id="c3w0">toi.</span></div>
+      <div class="cap clip" id="cap-4" data-start="5.6333" data-duration="0.7000" data-track-index="8"><span class="w" id="c4w0">Tu</span> <span class="w" id="c4w1">bosses</span> <span class="w" id="c4w2">dans</span> <span class="w" id="c4w3">la</span></div>
+      <div class="cap clip" id="cap-5" data-start="6.3333" data-duration="0.8333" data-track-index="8"><span class="w" id="c5w0">beauté</span> <span class="w" id="c5w1">et</span> <span class="w" id="c5w2">tu</span> <span class="w" id="c5w3">prends</span></div>
+      <div class="cap clip" id="cap-6" data-start="7.1667" data-duration="1.0667" data-track-index="8"><span class="w" id="c6w0">encore</span> <span class="w" id="c6w1">tes</span> <span class="w" id="c6w2">rendez-vous</span></div>
+      <div class="cap clip" id="cap-7" data-start="8.2333" data-duration="0.6333" data-track-index="8"><span class="w" id="c7w0">par</span> <span class="w em" id="c7w1">DM,</span></div>
+      <div class="cap clip" id="cap-8" data-start="8.8667" data-duration="1.2333" data-track-index="8"><span class="w em" id="c8w0">22h15</span> <span class="w" id="c8w1">tu</span> <span class="w" id="c8w2">réponds</span></div>
+      <div class="cap clip" id="cap-9" data-start="10.1000" data-duration="1.2667" data-track-index="8"><span class="w" id="c9w0">toujours</span> <span class="w" id="c9w1">à</span> <span class="w" id="c9w2">tes</span> <span class="w" id="c9w3">clientes</span></div>
+      <div class="cap clip" id="cap-10" data-start="11.3667" data-duration="0.8333" data-track-index="8"><span class="w" id="c10w0">ou</span> <span class="w" id="c10w1">alors</span> <span class="w" id="c10w2">tu</span> <span class="w" id="c10w3">payes</span></div>
+      <div class="cap clip" id="cap-11" data-start="12.2000" data-duration="1.1667" data-track-index="8"><span class="w" id="c11w0">un</span> <span class="w" id="c11w1">logiciel</span> <span class="w" id="c11w2">bien</span> <span class="w" id="c11w3">trop</span></div>
+      <div class="cap clip" id="cap-12" data-start="13.3667" data-duration="0.7667" data-track-index="8"><span class="w em" id="c12w0">cher,</span> <span class="w" id="c12w1">il</span> <span class="w" id="c12w2">y</span> <span class="w" id="c12w3">a</span></div>
+      <div class="cap clip" id="cap-13" data-start="14.1333" data-duration="1.5000" data-track-index="8"><span class="w" id="c13w0">beaucoup</span> <span class="w" id="c13w1">plus</span> <span class="w em" id="c13w2">simple.</span></div>
+      <div class="cap clip" id="cap-14" data-start="15.6333" data-duration="0.9333" data-track-index="8"><span class="w" id="c14w0">Reso,</span> <span class="w" id="c14w1">c'est</span> <span class="w" id="c14w2">tes</span></div>
+      <div class="cap clip" id="cap-15" data-start="16.5667" data-duration="0.9333" data-track-index="8"><span class="w" id="c15w0">rendez-vous</span> <span class="w" id="c15w1">sans</span></div>
+      <div class="cap clip" id="cap-16" data-start="17.5000" data-duration="1.3333" data-track-index="8"><span class="w em" id="c16w0">décrocher,</span> <span class="w" id="c16w1">tu</span> <span class="w" id="c16w2">colles</span> <span class="w" id="c16w3">le</span></div>
+      <div class="cap clip" id="cap-17" data-start="18.8333" data-duration="0.7000" data-track-index="8"><span class="w" id="c17w0">lien</span> <span class="w" id="c17w1">de</span> <span class="w" id="c17w2">ta</span> <span class="w" id="c17w3">fiche</span></div>
+      <div class="cap clip" id="cap-18" data-start="19.5333" data-duration="0.9333" data-track-index="8"><span class="w em" id="c18w0">Google</span> <span class="w" id="c18w1">et</span> <span class="w" id="c18w2">ta</span> <span class="w" id="c18w3">page</span></div>
+      <div class="cap clip" id="cap-19" data-start="20.4667" data-duration="1.2000" data-track-index="8"><span class="w" id="c19w0">de</span> <span class="w" id="c19w1">réservation</span> <span class="w" id="c19w2">se</span> <span class="w" id="c19w3">crée</span></div>
+      <div class="cap clip" id="cap-20" data-start="21.6667" data-duration="0.8000" data-track-index="8"><span class="w" id="c20w0">avec</span> <span class="w" id="c20w1">tes</span> <span class="w" id="c20w2">photos,</span></div>
+      <div class="cap clip" id="cap-21" data-start="22.4667" data-duration="1.0000" data-track-index="8"><span class="w" id="c21w0">tes</span> <span class="w" id="c21w1">horaires</span> <span class="w" id="c21w2">et</span> <span class="w" id="c21w3">ton</span></div>
+      <div class="cap clip" id="cap-22" data-start="23.4667" data-duration="0.6333" data-track-index="8"><span class="w" id="c22w0">adresse.</span></div>
+      <div class="cap clip" id="cap-23" data-start="24.1000" data-duration="1.3667" data-track-index="8"><span class="w" id="c23w0">Tu</span> <span class="w" id="c23w1">partages</span> <span class="w" id="c23w2">ton</span> <span class="w" id="c23w3">lien,</span></div>
+      <div class="cap clip" id="cap-24" data-start="25.4667" data-duration="1.4000" data-track-index="8"><span class="w" id="c24w0">ta</span> <span class="w" id="c24w1">cliente</span> <span class="w" id="c24w2">choisit</span> <span class="w" id="c24w3">son</span></div>
+      <div class="cap clip" id="cap-25" data-start="26.8667" data-duration="1.0000" data-track-index="8"><span class="w" id="c25w0">créneau</span> <span class="w" id="c25w1">et</span> <span class="w" id="c25w2">c'est</span></div>
+      <div class="cap clip" id="cap-26" data-start="27.8667" data-duration="0.9000" data-track-index="8"><span class="w em" id="c26w0">réservé.</span></div>
+      <div class="cap clip" id="cap-27" data-start="28.7667" data-duration="2.0000" data-track-index="8"><span class="w" id="c27w0">Et</span> <span class="w" id="c27w1">même</span> <span class="w" id="c27w2">à</span> <span class="w em" id="c27w3">23h.</span></div>
+      <div class="cap clip" id="cap-28" data-start="30.7667" data-duration="1.3333" data-track-index="8"><span class="w" id="c28w0">Les</span> <span class="w" id="c28w1">rappels</span> <span class="w" id="c28w2">et</span> <span class="w" id="c28w3">les</span></div>
+      <div class="cap clip" id="cap-29" data-start="32.1000" data-duration="1.5000" data-track-index="8"><span class="w" id="c29w0">avis</span> <span class="w em" id="c29w1">Google</span> <span class="w" id="c29w2">partent</span> <span class="w" id="c29w3">sans</span></div>
+      <div class="cap clip" id="cap-30" data-start="33.6000" data-duration="1.2667" data-track-index="8"><span class="w" id="c30w0">toi,</span> <span class="w" id="c30w1">tout</span> <span class="w" id="c30w2">ça</span> <span class="w" id="c30w3">pour</span></div>
+      <div class="cap clip" id="cap-31" data-start="36.3667" data-duration="1.3000" data-track-index="8"><span class="w" id="c31w0">Tu</span> <span class="w" id="c31w1">veux</span> <span class="w" id="c31w2">essayer?</span></div>
+      <div class="cap clip" id="cap-32" data-start="37.6667" data-duration="0.9333" data-track-index="8"><span class="w" id="c32w0">Essaie</span> <span class="w em" id="c32w1">gratuitement,</span></div>
+      <div class="cap clip" id="cap-33" data-start="38.6000" data-duration="0.9333" data-track-index="8"><span class="w" id="c33w0">écris-moi</span> <span class="w" id="c33w1">Reso</span> <span class="w" id="c33w2">en</span></div>
+      <div class="cap clip" id="cap-34" data-start="39.5333" data-duration="0.6667" data-track-index="8"><span class="w" id="c34w0">message.</span></div>
+      </div>
+      <audio id="voice" src="media/face.mp4" data-start="0" data-duration="40.2000" data-track-index="10" data-volume="1"></audio>
+      <audio id="music" src="brand/son/bed.wav" data-start="0" data-duration="42.4000" data-track-index="11" data-volume="1" data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":0.8,"v":0.5},{"t":40.2,"v":0.5},{"t":40.6,"v":1},{"t":41.8,"v":1},{"t":42.4,"v":0}]}]}'></audio>
+      <audio id="sfx-0" src="brand/son/type.wav" data-start="15.7333" data-duration="0.5000" data-track-index="12" data-volume="0.35"></audio>
+      <audio id="sfx-1" src="brand/son/type.wav" data-start="34.1333" data-duration="0.5000" data-track-index="13" data-volume="0.35"></audio>
+      <audio id="sfx-2" src="brand/son/paper.wav" data-start="0.0000" data-duration="0.4000" data-track-index="14" data-volume="0.3"></audio>
+      <audio id="sfx-3" src="brand/son/tick.wav" data-start="7.5667" data-duration="0.0667" data-track-index="15" data-volume="0.4"></audio>
+      <audio id="sfx-4" src="brand/son/tick.wav" data-start="9.1333" data-duration="0.0667" data-track-index="12" data-volume="0.4"></audio>
+      <audio id="sfx-5" src="brand/son/tick.wav" data-start="22.6667" data-duration="0.0667" data-track-index="13" data-volume="0.4"></audio>
+      <audio id="sfx-6" src="brand/son/ding.wav" data-start="29.3667" data-duration="1.2000" data-track-index="14" data-volume="0.3"></audio>
+      <audio id="sfx-7" src="brand/son/ding.wav" data-start="31.0667" data-duration="1.2000" data-track-index="15" data-volume="0.3"></audio>
+      <audio id="sfx-8" src="brand/son/tick.wav" data-start="32.4333" data-duration="0.0667" data-track-index="12" data-volume="0.4"></audio>
+      <audio id="sfx-9" src="brand/son/paper.wav" data-start="36.3000" data-duration="0.4000" data-track-index="13" data-volume="0.3"></audio>
+      <audio id="sfx-10" src="brand/son/logo.wav" data-start="40.2667" data-duration="2.1333" data-track-index="14" data-volume="0.8"></audio>
+      <audio id="sfx-11" src="brand/son/whoosh.wav" data-start="15.2667" data-duration="0.5667" data-track-index="15" data-volume="0.45"></audio>
+      <audio id="sfx-12" src="brand/son/whoosh.wav" data-start="28.4000" data-duration="0.5667" data-track-index="12" data-volume="0.45"></audio>
+      <audio id="sfx-13" src="brand/son/whoosh.wav" data-start="33.6667" data-duration="0.5667" data-track-index="13" data-volume="0.45"></audio>
+      <audio id="sfx-14" src="brand/son/whoosh.wav" data-start="36.0000" data-duration="0.5667" data-track-index="14" data-volume="0.45"></audio>
+      <audio id="sfx-15" src="brand/son/whoosh.wav" data-start="39.9000" data-duration="0.5667" data-track-index="15" data-volume="0.45"></audio>
+      <audio id="sfx-16" src="brand/son/whoosh.wav" data-start="18.0667" data-duration="0.5667" data-track-index="12" data-volume="0.25"></audio>
+      <audio id="sfx-17" src="brand/son/whoosh.wav" data-start="30.6000" data-duration="0.5667" data-track-index="13" data-volume="0.25"></audio>
+    </div>
+    <script src="brand/gsap.min.js"></script>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.set("#shot-6", { opacity: 1 }, 18.1667);
+      tl.fromTo("#shot-6-in", { y: 70, scale: 0.94, rotation: 0 }, { y: 0, scale: 1, rotation: 0, duration: 0.55, ease: "power3.out" }, 18.1667);
+      tl.set("#shot-6", { opacity: 0 }, 22.4000);
+      tl.set("#shot-7", { opacity: 1 }, 22.4000);
+      tl.fromTo("#shot-7-in", { y: 240, rotationX: 22, rotationY: -18, rotation: 0, scale: 0.9, transformPerspective: 1800 }, { y: 0, rotationX: 5, rotationY: -8, rotation: 0, scale: 1, transformPerspective: 1800, duration: 0.95, ease: "power4.out" }, 22.4000);
+      tl.to("#shot-7-in", { rotationX: 2, rotationY: -2, scale: 1.035, duration: 0.7333, ease: "sine.inOut" }, 23.3333);
+      tl.fromTo("#shot-7-contact", { opacity: 0, scaleX: 0.6 }, { opacity: 1, scaleX: 1, duration: 0.9, ease: "power3.out" }, 22.5000);
+      tl.set("#shot-7", { opacity: 0 }, 24.0667);
+      tl.set("#shot-8", { opacity: 1 }, 24.0667);
+      tl.fromTo("#shot-8-in", { y: 70, scale: 0.94, rotation: 0 }, { y: 0, scale: 1, rotation: 0, duration: 0.55, ease: "power3.out" }, 24.0667);
+      tl.set("#shot-8", { opacity: 0 }, 28.7000);
+      tl.set("#shot-10", { opacity: 1 }, 30.7000);
+      tl.fromTo("#shot-10-in", { y: 240, rotationX: 22, rotationY: -18, rotation: 0, scale: 0.9, transformPerspective: 1800 }, { y: 0, rotationX: 5, rotationY: -8, rotation: 0, scale: 1, transformPerspective: 1800, duration: 0.95, ease: "power4.out" }, 30.7000);
+      tl.to("#shot-10-in", { rotationX: 2, rotationY: -2, scale: 1.035, duration: 2.3333, ease: "sine.inOut" }, 31.6667);
+      tl.fromTo("#shot-10-contact", { opacity: 0, scaleX: 0.6 }, { opacity: 1, scaleX: 1, duration: 0.9, ease: "power3.out" }, 30.8000);
+      tl.set("#shot-10", { opacity: 0 }, 33.9667);
+      document.querySelectorAll("#card-5-k .ch").forEach(function(el,k){ tl.set(el, { opacity: 1 }, 15.7333 + k * 0.028); });
+      tl.fromTo("#card-5 .mi", { yPercent: 115 }, { yPercent: 0, duration: 0.85, ease: "power4.out", stagger: 0.07 }, 15.8667);
+      tl.fromTo("#card-5-sub", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, 16.0667);
+      document.querySelectorAll("#card-11-k .ch").forEach(function(el,k){ tl.set(el, { opacity: 1 }, 34.1333 + k * 0.028); });
+      tl.fromTo("#card-11 .mi", { yPercent: 115 }, { yPercent: 0, duration: 0.85, ease: "power4.out", stagger: 0.07 }, 34.2667);
+      tl.fromTo("#card-11-sub", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, 34.4667);
+      tl.fromTo("#title-0", { clipPath: "inset(0% 0% 100% 0%)", y: -10 }, { clipPath: "inset(0% 0% 0% 0%)", y: 0, duration: 0.5, ease: "power3.out" }, 0.0333);
+      tl.fromTo("#title-0 .mi", { yPercent: 115 }, { yPercent: 0, duration: 0.7, ease: "power4.out", stagger: 0.04 }, 0.1333);
+      tl.fromTo("#chip-1-0-in", { opacity: 0, y: 40, rotation: -4 }, { opacity: 1, y: 0, rotation: -1.5, duration: 0.7, ease: "power4.out" }, 7.5000);
+      tl.to("#chip-1-0-in", { y: -6, duration: 0.5667, ease: "sine.inOut" }, 8.0000);
+      tl.fromTo("#chip-2-0-in", { opacity: 0, y: 40, rotation: -4 }, { opacity: 1, y: 0, rotation: -1.5, duration: 0.7, ease: "power4.out" }, 9.0667);
+      tl.to("#chip-2-0-in", { y: -6, duration: 1.4000, ease: "sine.inOut" }, 9.5667);
+      tl.fromTo("#chip-7-0-in", { opacity: 0, y: 40, rotation: -4 }, { opacity: 1, y: 0, rotation: -1.5, duration: 0.7, ease: "power4.out" }, 22.6000);
+      tl.to("#chip-7-0-in", { y: -6, duration: 0.6667, ease: "sine.inOut" }, 23.1000);
+      tl.fromTo("#chip-9-0-in", { opacity: 0, y: 40, rotation: -4 }, { opacity: 1, y: 0, rotation: -1.5, duration: 0.7, ease: "power4.out" }, 29.3000);
+      tl.to("#chip-9-0-in", { y: -6, duration: 0.6000, ease: "sine.inOut" }, 29.8000);
+      tl.fromTo("#chip-10-0-in", { opacity: 0, y: 40, rotation: -4 }, { opacity: 1, y: 0, rotation: -1.5, duration: 0.7, ease: "power4.out" }, 31.0000);
+      tl.to("#chip-10-0-in", { y: -6, duration: 0.7000, ease: "sine.inOut" }, 31.5000);
+      tl.fromTo("#chip-10-1-in", { opacity: 0, y: 40, rotation: -4 }, { opacity: 1, y: 0, rotation: -1.5, duration: 0.7, ease: "power4.out" }, 32.4000);
+      tl.to("#chip-10-1-in", { y: -6, duration: 0.7000, ease: "sine.inOut" }, 32.9000);
+      tl.fromTo("#title-12", { clipPath: "inset(0% 0% 100% 0%)", y: -10 }, { clipPath: "inset(0% 0% 0% 0%)", y: 0, duration: 0.5, ease: "power3.out" }, 36.3333);
+      tl.fromTo("#title-12 .mi", { yPercent: 115 }, { yPercent: 0, duration: 0.7, ease: "power4.out", stagger: 0.04 }, 36.4333);
+      tl.fromTo("#grain", { backgroundPosition: "0px 0px" }, { backgroundPosition: "18833px 26977px", duration: 42.4000, ease: "steps(509)" }, 0);
+      tl.fromTo("#sting-logo", { clipPath: "inset(0% 100% 0% 0%)", y: 12 }, { clipPath: "inset(0% 0% 0% 0%)", y: 0, duration: 0.9, ease: "power3.inOut" }, 40.3000);
+      tl.fromTo("#sting-line", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power3.out" }, 40.9000);
+      tl.fromTo("#sting-tag", { opacity: 0, scaleX: 1.22 }, { opacity: 1, scaleX: 1, duration: 1.1, ease: "power3.out" }, 41.0000);
+      tl.fromTo("#sting-coin", { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 1.2, ease: "power3.out" }, 40.4000);
+      if (document.getElementById("sting-cta")) tl.fromTo("#sting-cta", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 41.4000);
+      tl.fromTo("#print", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.26, ease: "power2.in", immediateRender: false }, 15.3000);
+      tl.fromTo("#print", { clipPath: "inset(0% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 100% 0%)", duration: 0.36, ease: "power3.out", immediateRender: false }, 15.6333);
+      tl.fromTo("#print img", { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power2.out", immediateRender: false }, 15.4333);
+      tl.fromTo("#print", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.26, ease: "power2.in", immediateRender: false }, 28.4333);
+      tl.fromTo("#print", { clipPath: "inset(0% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 100% 0%)", duration: 0.36, ease: "power3.out", immediateRender: false }, 28.7667);
+      tl.fromTo("#print img", { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power2.out", immediateRender: false }, 28.5667);
+      tl.fromTo("#print", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.26, ease: "power2.in", immediateRender: false }, 33.7000);
+      tl.fromTo("#print", { clipPath: "inset(0% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 100% 0%)", duration: 0.36, ease: "power3.out", immediateRender: false }, 34.0333);
+      tl.fromTo("#print img", { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power2.out", immediateRender: false }, 33.8333);
+      tl.fromTo("#print", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.26, ease: "power2.in", immediateRender: false }, 36.0333);
+      tl.fromTo("#print", { clipPath: "inset(0% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 100% 0%)", duration: 0.36, ease: "power3.out", immediateRender: false }, 36.3667);
+      tl.fromTo("#print img", { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power2.out", immediateRender: false }, 36.1667);
+      tl.fromTo("#print", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.26, ease: "power2.in", immediateRender: false }, 39.9333);
+      tl.fromTo("#print", { clipPath: "inset(0% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 100% 0%)", duration: 0.36, ease: "power3.out", immediateRender: false }, 40.2667);
+      tl.fromTo("#print img", { opacity: 0, scale: 0.94 }, { opacity: 1, scale: 1, duration: 0.2, ease: "power2.out", immediateRender: false }, 40.0667);
+      tl.fromTo("#cap-0", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 0.0333);
+      tl.set("#c0w0", { color: "#C9BDEB" }, 0.0333);
+      tl.set("#c0w0", { color: "#FBF6EA" }, 0.9333);
+      tl.set("#c0w1", { color: "#C9BDEB" }, 0.9333);
+      tl.set("#c0w1", { color: "#FBF6EA" }, 1.3667);
+      tl.set("#c0w2", { color: "#C9BDEB" }, 1.3667);
+      tl.fromTo("#cap-1", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 2.5000);
+      tl.set("#c1w0", { color: "#C9BDEB" }, 2.5000);
+      tl.set("#c1w0", { color: "#FBF6EA" }, 3.3000);
+      tl.set("#c1w1", { color: "#C9BDEB" }, 3.3000);
+      tl.fromTo("#cap-2", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 4.2000);
+      tl.set("#c2w0", { color: "#C9BDEB" }, 4.2000);
+      tl.set("#c2w0", { color: "#FBF6EA" }, 4.3000);
+      tl.set("#c2w1", { color: "#C9BDEB" }, 4.3000);
+      tl.set("#c2w1", { color: "#FBF6EA" }, 4.6667);
+      tl.set("#c2w2", { color: "#C9BDEB" }, 4.6667);
+      tl.set("#c2w2", { color: "#FBF6EA" }, 4.8333);
+      tl.set("#c2w3", { color: "#C9BDEB" }, 4.8333);
+      tl.fromTo("#cap-3", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 5.0333);
+      tl.set("#c3w0", { color: "#C9BDEB" }, 5.0333);
+      tl.fromTo("#cap-4", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 5.6333);
+      tl.set("#c4w0", { color: "#C9BDEB" }, 5.6333);
+      tl.set("#c4w0", { color: "#FBF6EA" }, 5.7000);
+      tl.set("#c4w1", { color: "#C9BDEB" }, 5.7000);
+      tl.set("#c4w1", { color: "#FBF6EA" }, 6.1667);
+      tl.set("#c4w2", { color: "#C9BDEB" }, 6.1667);
+      tl.set("#c4w2", { color: "#FBF6EA" }, 6.2333);
+      tl.set("#c4w3", { color: "#C9BDEB" }, 6.2333);
+      tl.fromTo("#cap-5", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 6.3333);
+      tl.set("#c5w0", { color: "#C9BDEB" }, 6.3333);
+      tl.set("#c5w0", { color: "#FBF6EA" }, 6.6333);
+      tl.set("#c5w1", { color: "#C9BDEB" }, 6.6333);
+      tl.set("#c5w1", { color: "#FBF6EA" }, 6.7667);
+      tl.set("#c5w2", { color: "#C9BDEB" }, 6.7667);
+      tl.set("#c5w2", { color: "#FBF6EA" }, 6.9667);
+      tl.set("#c5w3", { color: "#C9BDEB" }, 6.9667);
+      tl.fromTo("#cap-6", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 7.1667);
+      tl.set("#c6w0", { color: "#C9BDEB" }, 7.1667);
+      tl.set("#c6w0", { color: "#FBF6EA" }, 7.5000);
+      tl.set("#c6w1", { color: "#C9BDEB" }, 7.5000);
+      tl.set("#c6w1", { color: "#FBF6EA" }, 7.6667);
+      tl.set("#c6w2", { color: "#C9BDEB" }, 7.6667);
+      tl.fromTo("#cap-7", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 8.2333);
+      tl.set("#c7w0", { color: "#C9BDEB" }, 8.2333);
+      tl.set("#c7w0", { color: "#FBF6EA" }, 8.4000);
+      tl.set("#c7w1", { color: "#C9BDEB" }, 8.4000);
+      tl.fromTo("#cap-8", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 8.8667);
+      tl.set("#c8w0", { color: "#C9BDEB" }, 8.8667);
+      tl.set("#c8w0", { color: "#FBF6EA" }, 9.8000);
+      tl.set("#c8w1", { color: "#C9BDEB" }, 9.8000);
+      tl.set("#c8w1", { color: "#FBF6EA" }, 9.8333);
+      tl.set("#c8w2", { color: "#C9BDEB" }, 9.8333);
+      tl.fromTo("#cap-9", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 10.1000);
+      tl.set("#c9w0", { color: "#C9BDEB" }, 10.1000);
+      tl.set("#c9w0", { color: "#FBF6EA" }, 10.5667);
+      tl.set("#c9w1", { color: "#C9BDEB" }, 10.5667);
+      tl.set("#c9w1", { color: "#FBF6EA" }, 10.5667);
+      tl.set("#c9w2", { color: "#C9BDEB" }, 10.5667);
+      tl.set("#c9w2", { color: "#FBF6EA" }, 10.8000);
+      tl.set("#c9w3", { color: "#C9BDEB" }, 10.8000);
+      tl.fromTo("#cap-10", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 11.3667);
+      tl.set("#c10w0", { color: "#C9BDEB" }, 11.3667);
+      tl.set("#c10w0", { color: "#FBF6EA" }, 11.4333);
+      tl.set("#c10w1", { color: "#C9BDEB" }, 11.4333);
+      tl.set("#c10w1", { color: "#FBF6EA" }, 11.7333);
+      tl.set("#c10w2", { color: "#C9BDEB" }, 11.7333);
+      tl.set("#c10w2", { color: "#FBF6EA" }, 11.8667);
+      tl.set("#c10w3", { color: "#C9BDEB" }, 11.8667);
+      tl.fromTo("#cap-11", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 12.2000);
+      tl.set("#c11w0", { color: "#C9BDEB" }, 12.2000);
+      tl.set("#c11w0", { color: "#FBF6EA" }, 12.3333);
+      tl.set("#c11w1", { color: "#C9BDEB" }, 12.3333);
+      tl.set("#c11w1", { color: "#FBF6EA" }, 12.8333);
+      tl.set("#c11w2", { color: "#C9BDEB" }, 12.8333);
+      tl.set("#c11w2", { color: "#FBF6EA" }, 13.1000);
+      tl.set("#c11w3", { color: "#C9BDEB" }, 13.1000);
+      tl.fromTo("#cap-12", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 13.3667);
+      tl.set("#c12w0", { color: "#C9BDEB" }, 13.3667);
+      tl.set("#c12w0", { color: "#FBF6EA" }, 13.7333);
+      tl.set("#c12w1", { color: "#C9BDEB" }, 13.7333);
+      tl.set("#c12w1", { color: "#FBF6EA" }, 13.8667);
+      tl.set("#c12w2", { color: "#C9BDEB" }, 13.8667);
+      tl.set("#c12w2", { color: "#FBF6EA" }, 13.9333);
+      tl.set("#c12w3", { color: "#C9BDEB" }, 13.9333);
+      tl.fromTo("#cap-13", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 14.1333);
+      tl.set("#c13w0", { color: "#C9BDEB" }, 14.1333);
+      tl.set("#c13w0", { color: "#FBF6EA" }, 14.6333);
+      tl.set("#c13w1", { color: "#C9BDEB" }, 14.6333);
+      tl.set("#c13w1", { color: "#FBF6EA" }, 15.1667);
+      tl.set("#c13w2", { color: "#C9BDEB" }, 15.1667);
+      tl.fromTo("#cap-14", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 15.6333);
+      tl.set("#c14w0", { color: "#C9BDEB" }, 15.6333);
+      tl.set("#c14w0", { color: "#FBF6EA" }, 16.1333);
+      tl.set("#c14w1", { color: "#C9BDEB" }, 16.1333);
+      tl.set("#c14w1", { color: "#FBF6EA" }, 16.4667);
+      tl.set("#c14w2", { color: "#C9BDEB" }, 16.4667);
+      tl.fromTo("#cap-15", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 16.5667);
+      tl.set("#c15w0", { color: "#C9BDEB" }, 16.5667);
+      tl.set("#c15w0", { color: "#FBF6EA" }, 17.2667);
+      tl.set("#c15w1", { color: "#C9BDEB" }, 17.2667);
+      tl.fromTo("#cap-16", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 17.5000);
+      tl.set("#c16w0", { color: "#C9BDEB" }, 17.5000);
+      tl.set("#c16w0", { color: "#FBF6EA" }, 18.2000);
+      tl.set("#c16w1", { color: "#C9BDEB" }, 18.2000);
+      tl.set("#c16w1", { color: "#FBF6EA" }, 18.3000);
+      tl.set("#c16w2", { color: "#C9BDEB" }, 18.3000);
+      tl.set("#c16w2", { color: "#FBF6EA" }, 18.6000);
+      tl.set("#c16w3", { color: "#C9BDEB" }, 18.6000);
+      tl.fromTo("#cap-17", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 18.8333);
+      tl.set("#c17w0", { color: "#C9BDEB" }, 18.8333);
+      tl.set("#c17w0", { color: "#FBF6EA" }, 19.0000);
+      tl.set("#c17w1", { color: "#C9BDEB" }, 19.0000);
+      tl.set("#c17w1", { color: "#FBF6EA" }, 19.1000);
+      tl.set("#c17w2", { color: "#C9BDEB" }, 19.1000);
+      tl.set("#c17w2", { color: "#FBF6EA" }, 19.2333);
+      tl.set("#c17w3", { color: "#C9BDEB" }, 19.2333);
+      tl.fromTo("#cap-18", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 19.5333);
+      tl.set("#c18w0", { color: "#C9BDEB" }, 19.5333);
+      tl.set("#c18w0", { color: "#FBF6EA" }, 20.0333);
+      tl.set("#c18w1", { color: "#C9BDEB" }, 20.0333);
+      tl.set("#c18w1", { color: "#FBF6EA" }, 20.1333);
+      tl.set("#c18w2", { color: "#C9BDEB" }, 20.1333);
+      tl.set("#c18w2", { color: "#FBF6EA" }, 20.2667);
+      tl.set("#c18w3", { color: "#C9BDEB" }, 20.2667);
+      tl.fromTo("#cap-19", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 20.4667);
+      tl.set("#c19w0", { color: "#C9BDEB" }, 20.4667);
+      tl.set("#c19w0", { color: "#FBF6EA" }, 20.7667);
+      tl.set("#c19w1", { color: "#C9BDEB" }, 20.7667);
+      tl.set("#c19w1", { color: "#FBF6EA" }, 21.2667);
+      tl.set("#c19w2", { color: "#C9BDEB" }, 21.2667);
+      tl.set("#c19w2", { color: "#FBF6EA" }, 21.3667);
+      tl.set("#c19w3", { color: "#C9BDEB" }, 21.3667);
+      tl.fromTo("#cap-20", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 21.6667);
+      tl.set("#c20w0", { color: "#C9BDEB" }, 21.6667);
+      tl.set("#c20w0", { color: "#FBF6EA" }, 21.8667);
+      tl.set("#c20w1", { color: "#C9BDEB" }, 21.8667);
+      tl.set("#c20w1", { color: "#FBF6EA" }, 22.0333);
+      tl.set("#c20w2", { color: "#C9BDEB" }, 22.0333);
+      tl.fromTo("#cap-21", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 22.4667);
+      tl.set("#c21w0", { color: "#C9BDEB" }, 22.4667);
+      tl.set("#c21w0", { color: "#FBF6EA" }, 22.7333);
+      tl.set("#c21w1", { color: "#C9BDEB" }, 22.7333);
+      tl.set("#c21w1", { color: "#FBF6EA" }, 23.1333);
+      tl.set("#c21w2", { color: "#C9BDEB" }, 23.1333);
+      tl.set("#c21w2", { color: "#FBF6EA" }, 23.2667);
+      tl.set("#c21w3", { color: "#C9BDEB" }, 23.2667);
+      tl.fromTo("#cap-22", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 23.4667);
+      tl.set("#c22w0", { color: "#C9BDEB" }, 23.4667);
+      tl.fromTo("#cap-23", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 24.1000);
+      tl.set("#c23w0", { color: "#C9BDEB" }, 24.1000);
+      tl.set("#c23w0", { color: "#FBF6EA" }, 24.2333);
+      tl.set("#c23w1", { color: "#C9BDEB" }, 24.2333);
+      tl.set("#c23w1", { color: "#FBF6EA" }, 24.8000);
+      tl.set("#c23w2", { color: "#C9BDEB" }, 24.8000);
+      tl.set("#c23w2", { color: "#FBF6EA" }, 25.0333);
+      tl.set("#c23w3", { color: "#C9BDEB" }, 25.0333);
+      tl.fromTo("#cap-24", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 25.4667);
+      tl.set("#c24w0", { color: "#C9BDEB" }, 25.4667);
+      tl.set("#c24w0", { color: "#FBF6EA" }, 25.6000);
+      tl.set("#c24w1", { color: "#C9BDEB" }, 25.6000);
+      tl.set("#c24w1", { color: "#FBF6EA" }, 26.1667);
+      tl.set("#c24w2", { color: "#C9BDEB" }, 26.1667);
+      tl.set("#c24w2", { color: "#FBF6EA" }, 26.6333);
+      tl.set("#c24w3", { color: "#C9BDEB" }, 26.6333);
+      tl.fromTo("#cap-25", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 26.8667);
+      tl.set("#c25w0", { color: "#C9BDEB" }, 26.8667);
+      tl.set("#c25w0", { color: "#FBF6EA" }, 27.3667);
+      tl.set("#c25w1", { color: "#C9BDEB" }, 27.3667);
+      tl.set("#c25w1", { color: "#FBF6EA" }, 27.5000);
+      tl.set("#c25w2", { color: "#C9BDEB" }, 27.5000);
+      tl.fromTo("#cap-26", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 27.8667);
+      tl.set("#c26w0", { color: "#C9BDEB" }, 27.8667);
+      tl.fromTo("#cap-27", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 28.7667);
+      tl.set("#c27w0", { color: "#C9BDEB" }, 28.7667);
+      tl.set("#c27w0", { color: "#FBF6EA" }, 29.3000);
+      tl.set("#c27w1", { color: "#C9BDEB" }, 29.3000);
+      tl.set("#c27w1", { color: "#FBF6EA" }, 29.4333);
+      tl.set("#c27w2", { color: "#C9BDEB" }, 29.4333);
+      tl.set("#c27w2", { color: "#FBF6EA" }, 29.5333);
+      tl.set("#c27w3", { color: "#C9BDEB" }, 29.5333);
+      tl.fromTo("#cap-28", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 30.7667);
+      tl.set("#c28w0", { color: "#C9BDEB" }, 30.7667);
+      tl.set("#c28w0", { color: "#FBF6EA" }, 31.0667);
+      tl.set("#c28w1", { color: "#C9BDEB" }, 31.0667);
+      tl.set("#c28w1", { color: "#FBF6EA" }, 31.5667);
+      tl.set("#c28w2", { color: "#C9BDEB" }, 31.5667);
+      tl.set("#c28w2", { color: "#FBF6EA" }, 31.6667);
+      tl.set("#c28w3", { color: "#C9BDEB" }, 31.6667);
+      tl.fromTo("#cap-29", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 32.1000);
+      tl.set("#c29w0", { color: "#C9BDEB" }, 32.1000);
+      tl.set("#c29w0", { color: "#FBF6EA" }, 32.2333);
+      tl.set("#c29w1", { color: "#C9BDEB" }, 32.2333);
+      tl.set("#c29w1", { color: "#FBF6EA" }, 32.8000);
+      tl.set("#c29w2", { color: "#C9BDEB" }, 32.8000);
+      tl.set("#c29w2", { color: "#FBF6EA" }, 33.3000);
+      tl.set("#c29w3", { color: "#C9BDEB" }, 33.3000);
+      tl.fromTo("#cap-30", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 33.6000);
+      tl.set("#c30w0", { color: "#C9BDEB" }, 33.6000);
+      tl.set("#c30w0", { color: "#FBF6EA" }, 34.0000);
+      tl.set("#c30w1", { color: "#C9BDEB" }, 34.0000);
+      tl.set("#c30w1", { color: "#FBF6EA" }, 34.3333);
+      tl.set("#c30w2", { color: "#C9BDEB" }, 34.3333);
+      tl.set("#c30w2", { color: "#FBF6EA" }, 34.5000);
+      tl.set("#c30w3", { color: "#C9BDEB" }, 34.5000);
+      tl.fromTo("#cap-31", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 36.3667);
+      tl.set("#c31w0", { color: "#C9BDEB" }, 36.3667);
+      tl.set("#c31w0", { color: "#FBF6EA" }, 36.4667);
+      tl.set("#c31w1", { color: "#C9BDEB" }, 36.4667);
+      tl.set("#c31w1", { color: "#FBF6EA" }, 36.9000);
+      tl.set("#c31w2", { color: "#C9BDEB" }, 36.9000);
+      tl.fromTo("#cap-32", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 37.6667);
+      tl.set("#c32w0", { color: "#C9BDEB" }, 37.6667);
+      tl.set("#c32w0", { color: "#FBF6EA" }, 37.8333);
+      tl.set("#c32w1", { color: "#C9BDEB" }, 37.8333);
+      tl.fromTo("#cap-33", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 38.6000);
+      tl.set("#c33w0", { color: "#C9BDEB" }, 38.6000);
+      tl.set("#c33w0", { color: "#FBF6EA" }, 39.0667);
+      tl.set("#c33w1", { color: "#C9BDEB" }, 39.0667);
+      tl.set("#c33w1", { color: "#FBF6EA" }, 39.3667);
+      tl.set("#c33w2", { color: "#C9BDEB" }, 39.3667);
+      tl.fromTo("#cap-34", { opacity: 0, y: 14, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.16, ease: "power2.out" }, 39.5333);
+      tl.set("#c34w0", { color: "#C9BDEB" }, 39.5333);
+      tl.to("#face-wrap", { x: 0, y: 0, scale: 1, clipPath: "inset(0px 0px 0px 0px round 0px)", opacity: 1, duration: 0, ease: "power3.inOut" }, 0.0000);
+      tl.to("#bubble-ring", { opacity: 0, duration: 0 }, 0.0000);
+      tl.set("#face-inner", { scale: 1 }, 0.0000);
+      tl.to("#stage-bg", { opacity: 0, duration: 0 }, 0.0000);
+      tl.to("#captions", { y: 1300, duration: 0, ease: "power3.inOut" }, 0.0000);
+      tl.to("#face-wrap", { x: 0, y: 0, scale: 1, clipPath: "inset(0px 0px 0px 0px round 0px)", opacity: 1, duration: 0.5, ease: "power3.inOut" }, 5.6000);
+      tl.to("#bubble-ring", { opacity: 0, duration: 0.3 }, 5.6000);
+      tl.set("#face-inner", { scale: 1.12 }, 5.6000);
+      tl.to("#stage-bg", { opacity: 0, duration: 0.35 }, 5.6000);
+      tl.to("#captions", { y: 1300, duration: 0.5, ease: "power3.inOut" }, 5.6000);
+      tl.to("#face-wrap", { x: 0, y: 0, scale: 1, clipPath: "inset(0px 0px 0px 0px round 0px)", opacity: 1, duration: 0.5, ease: "power3.inOut" }, 8.8667);
+      tl.to("#bubble-ring", { opacity: 0, duration: 0.3 }, 8.8667);
+      tl.set("#face-inner", { scale: 1 }, 8.8667);
+      tl.to("#stage-bg", { opacity: 0, duration: 0.35 }, 8.8667);
+      tl.to("#captions", { y: 1300, duration: 0.5, ease: "power3.inOut" }, 8.8667);
+      tl.to("#face-wrap", { x: 0, y: 0, scale: 1, clipPath: "inset(0px 0px 0px 0px round 0px)", opacity: 1, duration: 0.5, ease: "power3.inOut" }, 11.3667);
+      tl.to("#bubble-ring", { opacity: 0, duration: 0.3 }, 11.3667);
+      tl.set("#face-inner", { scale: 1.1 }, 11.3667);
+      tl.to("#stage-bg", { opacity: 0, duration: 0.35 }, 11.3667);
+      tl.to("#captions", { y: 1300, duration: 0.5, ease: "power3.inOut" }, 11.3667);
+      tl.to("#face-wrap", { x: 0, y: 0, scale: 1, clipPath: "inset(0px 0px 0px 0px round 0px)", opacity: 1, duration: 0.5, ease: "power3.inOut" }, 13.7333);
+      tl.to("#bubble-ring", { opacity: 0, duration: 0.3 }, 13.7333);
+      tl.set("#face-inner", { scale: 1 }, 13.7333);
+      tl.to("#stage-bg", { opacity: 0, duration: 0.35 }, 13.7333);
+      tl.to("#captions", { y: 1300, duration: 0.5, ease: "power3.inOut" }, 13.7333);
+      tl.to("#face-wrap", { x: -44, y: 1033.33, scale: 0.462963, clipPath: "inset(252px 216px 1020px 216px round 324px)", opacity: 1, duration: 0, ease: "power3.inOut" }, 15.5667);
+      tl.to("#bubble-ring", { opacity: 1, duration: 0 }, 15.5667);
+      tl.set("#face-inner", { scale: 1 }, 15.5667);
+      tl.to("#stage-bg", { opacity: 1, duration: 0 }, 15.5667);
+      tl.to("#captions", { y: 1500, duration: 0, ease: "power3.inOut" }, 15.5667);
+      tl.to("#face-wrap", { x: -44, y: 1033.33, scale: 0.462963, clipPath: "inset(252px 216px 1020px 216px round 324px)", opacity: 1, duration: 0.5, ease: "power3.inOut" }, 18.1667);
+      tl.to("#bubble-ring", { opacity: 1, duration: 0.3 }, 18.4667);
+      tl.set("#face-inner", { scale: 1 }, 18.1667);
+      tl.to("#stage-bg", { opacity: 1, duration: 0.35 }, 18.1667);
+      tl.to("#captions", { y: 1500, duration: 0.5, ease: "power3.inOut" }, 18.1667);
+      tl.to("#face-wrap", { x: -44, y: 1033.33, scale: 0.462963, clipPath: "inset(252px 216px 1020px 216px round 324px)", opacity: 1, duration: 0.5, ease: "power3.inOut" }, 22.4000);
+      tl.to("#bubble-ring", { opacity: 1, duration: 0.3 }, 22.7000);
+      tl.set("#face-inner", { scale: 1 }, 22.4000);
+      tl.to("#stage-bg", { opacity: 1, duration: 0.35 }, 22.4000);
+      tl.to("#captions", { y: 1500, duration: 0.5, ease: "power3.inOut" }, 22.4000);
+      tl.to("#face-wrap", { x: -44, y: 1033.33, scale: 0.462963, clipPath: "inset(252px 216px 1020px 216px round 324px)", opacity: 1, duration: 0.5, ease: "power3.inOut" }, 24.0667);
+      tl.to("#bubble-ring", { opacity: 1, duration: 0.3 }, 24.3667);
+      tl.set("#face-inner", { scale: 1 }, 24.0667);
+      tl.to("#stage-bg", { opacity: 1, duration: 0.35 }, 24.0667);
+      tl.to("#captions", { y: 1500, duration: 0.5, ease: "power3.inOut" }, 24.0667);
+      tl.to("#face-wrap", { x: 0, y: 0, scale: 1, clipPath: "inset(0px 0px 0px 0px round 0px)", opacity: 1, duration: 0, ease: "power3.inOut" }, 28.7000);
+      tl.to("#bubble-ring", { opacity: 0, duration: 0 }, 28.7000);
+      tl.set("#face-inner", { scale: 1.12 }, 28.7000);
+      tl.to("#stage-bg", { opacity: 0, duration: 0 }, 28.7000);
+      tl.to("#captions", { y: 1300, duration: 0, ease: "power3.inOut" }, 28.7000);
+      tl.to("#face-wrap", { x: -44, y: 1033.33, scale: 0.462963, clipPath: "inset(252px 216px 1020px 216px round 324px)", opacity: 1, duration: 0.5, ease: "power3.inOut" }, 30.7000);
+      tl.to("#bubble-ring", { opacity: 1, duration: 0.3 }, 31.0000);
+      tl.set("#face-inner", { scale: 1 }, 30.7000);
+      tl.to("#stage-bg", { opacity: 1, duration: 0.35 }, 30.7000);
+      tl.to("#captions", { y: 1500, duration: 0.5, ease: "power3.inOut" }, 30.7000);
+      tl.to("#face-wrap", { x: -44, y: 1033.33, scale: 0.462963, clipPath: "inset(252px 216px 1020px 216px round 324px)", opacity: 1, duration: 0, ease: "power3.inOut" }, 33.9667);
+      tl.to("#bubble-ring", { opacity: 1, duration: 0 }, 33.9667);
+      tl.set("#face-inner", { scale: 1 }, 33.9667);
+      tl.to("#stage-bg", { opacity: 1, duration: 0 }, 33.9667);
+      tl.to("#captions", { y: 1500, duration: 0, ease: "power3.inOut" }, 33.9667);
+      tl.to("#face-wrap", { x: 0, y: 0, scale: 1, clipPath: "inset(0px 0px 0px 0px round 0px)", opacity: 1, duration: 0, ease: "power3.inOut" }, 36.3000);
+      tl.to("#bubble-ring", { opacity: 0, duration: 0 }, 36.3000);
+      tl.set("#face-inner", { scale: 1.08 }, 36.3000);
+      tl.to("#stage-bg", { opacity: 0, duration: 0 }, 36.3000);
+      tl.to("#captions", { y: 1300, duration: 0, ease: "power3.inOut" }, 36.3000);
+      tl.to("#face-wrap", { x: -44, y: 1033.33, scale: 0.462963, clipPath: "inset(252px 216px 1020px 216px round 324px)", opacity: 0, duration: 0, ease: "power3.inOut" }, 40.2000);
+      tl.to("#bubble-ring", { opacity: 0, duration: 0 }, 40.2000);
+      tl.set("#face-inner", { scale: 1 }, 40.2000);
+      tl.to("#stage-bg", { opacity: 1, duration: 0 }, 40.2000);
+      tl.to("#captions", { y: 1500, duration: 0, ease: "power3.inOut" }, 40.2000);
+      window.__timelines["reso-montage"] = tl;
+    </script>
+  </body>
+</html>

@@ -1,0 +1,198 @@
+{
+  "id": "14-ads-ludivine",
+  "title": "Reso — pub Ludivine « ce message est pour toi »",
+  "fps": 30,
+  "face": {
+    "src": "media/face.mp4",
+    "focusY": 30,
+    "bubbleCrop": 0.6,
+    "splitFocusY": 32
+  },
+  "transcript": "transcript.json",
+  "captions": {
+    "maxWords": 4,
+    "maxChars": 24,
+    "emphasis": [
+      "DM,",
+      "22h15",
+      "cher,",
+      "simple.",
+      "décrocher,",
+      "Google",
+      "réservé.",
+      "23h.",
+      "29€",
+      "gratuitement,"
+    ],
+    "replace": {
+      "Réseau": "Reso",
+      "réseau": "Reso",
+      "codes": "colles",
+      "barber": "barbier",
+      "29€": "29 €",
+      "Essaye": "Essaie"
+    },
+    "drop": [
+      "euh",
+      "heu",
+      "hum",
+      "ben",
+      "bah"
+    ]
+  },
+  "segments": [
+    {
+      "start": 0,
+      "layout": "face",
+      "title": "Pros de la beauté : ce message est pour toi",
+      "titleDuration": 5.4
+    },
+    {
+      "start": 5.6,
+      "layout": "face",
+      "zoom": 1.12,
+      "chips": [
+        {
+          "at": 1.9,
+          "duration": 1.5,
+          "icon": "message",
+          "title": "Nouveau message",
+          "text": "Tu as une dispo samedi ?"
+        }
+      ]
+    },
+    {
+      "start": 8.85,
+      "layout": "face",
+      "zoom": 1.0,
+      "chips": [
+        {
+          "at": 0.2,
+          "duration": 2.2,
+          "icon": "clock",
+          "title": "22:15",
+          "text": "Encore 6 messages sans réponse",
+          "tint": 2
+        }
+      ]
+    },
+    {
+      "start": 11.35,
+      "layout": "face",
+      "zoom": 1.1
+    },
+    {
+      "start": 13.72,
+      "layout": "face",
+      "zoom": 1.0
+    },
+    {
+      "start": 15.58,
+      "layout": "card",
+      "card": {
+        "kicker": "reso",
+        "text": "Tes rendez-vous, sans décrocher.",
+        "sub": "La réservation en ligne pour les pros de la beauté."
+      }
+    },
+    {
+      "start": 18.15,
+      "layout": "app",
+      "app": {
+        "src": "media/app/fiche-google.mp4",
+        "frame": "full",
+        "from": 0
+      }
+    },
+    {
+      "start": 22.4,
+      "layout": "app",
+      "app": {
+        "src": "media/app/page-publique-mobile.mp4",
+        "frame": "phone",
+        "from": 0.4
+      },
+      "chips": [
+        {
+          "at": 0.2,
+          "icon": "check",
+          "title": "Page créée",
+          "text": "Photos, horaires, adresse"
+        }
+      ]
+    },
+    {
+      "start": 24.08,
+      "layout": "app",
+      "app": {
+        "src": "media/app/lien-reserve.mp4",
+        "frame": "full",
+        "from": 0
+      }
+    },
+    {
+      "start": 28.7,
+      "layout": "face",
+      "zoom": 1.12,
+      "chips": [
+        {
+          "at": 0.6,
+          "duration": 1.6,
+          "icon": "calendar",
+          "title": "Nouvelle réservation",
+          "text": "Réservé à 23:04"
+        }
+      ]
+    },
+    {
+      "start": 30.7,
+      "layout": "app",
+      "app": {
+        "src": "media/app/emails-mobile.mp4",
+        "frame": "phone",
+        "from": 1.6
+      },
+      "chips": [
+        {
+          "at": 0.3,
+          "duration": 1.5,
+          "icon": "bell",
+          "title": "Rappel envoyé",
+          "text": "La veille du rendez-vous"
+        },
+        {
+          "at": 1.7,
+          "duration": 1.5,
+          "icon": "star",
+          "title": "Demande d'avis Google",
+          "text": "Après le rendez-vous",
+          "tint": 3
+        }
+      ]
+    },
+    {
+      "start": 33.95,
+      "layout": "card",
+      "captions": false,
+      "card": {
+        "kicker": "Abonnement",
+        "text": "Tout ça pour 29 € par mois.",
+        "sub": "Essai gratuit 7 jours, sans carte bancaire."
+      }
+    },
+    {
+      "start": 36.3,
+      "layout": "face",
+      "zoom": 1.08,
+      "title": "Écris « RESO » en message",
+      "titleDuration": 3.9
+    }
+  ],
+  "endCard": {
+    "duration": 2.6,
+    "style": "sting",
+    "line": "Tes rendez-vous, sans décrocher.",
+    "cta": "Écris « RESO » en message",
+    "url": "reso-app.fr"
+  }
+}
