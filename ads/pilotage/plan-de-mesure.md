@@ -36,6 +36,22 @@ Statuts : **en place** · **proposé** (attend l'accord de Robin) · **validé**
 | Parcours individuel | pour chaque inscrit : origine, étapes franchies avec date et heure, étape où il s'est arrêté, depuis combien de temps | en place : rapport Telegram quotidien (à mettre en ligne) |
 | Délais entre étapes | délai médian et nombre de pros bloqués depuis plus de 48 h, par étape | en place : rapport Telegram quotidien (à mettre en ligne) |
 
+## Bonne cible ? (avatar)
+
+| Source | Ce qu'on regarde | Statut |
+|---|---|---|
+| RESO (rapport Telegram) | profil de chaque inscrit : métier, ville, nombre de praticiens, fiche Google existante ; répartition « Qui s'inscrit » par métier | en place (à mettre en ligne) |
+| Meta → Répartition | résultats par âge, sexe, région, emplacement | à lire à chaque rapport |
+| DM Instagram | grille de qualification remplie par Robin (ci-dessous) | à utiliser pendant T-001 |
+
+**Grille de qualification d'un lead Instagram** (4 questions, posées naturellement dans la conversation) :
+1. Quel est ton métier ? (coiffure, barber, ongles, esthétique, cils, autre)
+2. Tu travailles seule ou en équipe ?
+3. Aujourd'hui, tes clientes réservent comment ? (DM, téléphone, logiciel : lequel ?)
+4. Qu'est-ce qui te prend le plus de temps avec les rendez-vous ?
+
+→ Lead **qualifié** = pro de la beauté en activité qui répond au moins aux questions 1 et 3.
+
 ## Outils optionnels (plus tard, seulement si le volume le justifie)
 
 | Outil | Apport | Coût | Données personnelles | Statut |

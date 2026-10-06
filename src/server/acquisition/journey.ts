@@ -1,6 +1,7 @@
 import "server-only";
 import { REPEATABLE_STEPS, shortName, type Journey, type JourneyStep } from "@/lib/journey";
 import { getSql } from "@/server/db";
+import { businessTypeLabel } from "@/server/app/establishments";
 
 /**
  * Micro-étapes du parcours (cf. ads/pilotage/plan-de-mesure.md) : enregistrées
@@ -41,6 +42,9 @@ export async function recordJourneyForEstablishment(establishmentId: string, ste
 
 type Row = {
   full_name: string;
+  business_type: string | null;
+  city: string | null;
+  practitioners: number;
   source: string | null;
   signup_at: Date;
   establishment_at: Date | null;
@@ -73,7 +77,7 @@ export async function loadJourneys(days: number, limit = 200, now = new Date()):
       where u.created_at >= ${from}
       order by u.created_at desc limit ${limit}
     ), e as (
-      select distinct on (owner_user_id) id, owner_user_id, created_at, booking_enabled, google_place_id
+      select distinct on (owner_user_id) id, owner_user_id, created_at, booking_enabled, google_place_id, business_type, city
       from establishments where owner_user_id in (select id from u) order by owner_user_id, created_at
     ), j as (
       select user_id,
@@ -95,6 +99,8 @@ export async function loadJourneys(days: number, limit = 200, now = new Date()):
       from acquisition_events where user_id in (select id from u) group by user_id
     )
     select u.full_name, u.source, u.created_at as signup_at, e.created_at as establishment_at, e.google_place_id,
+      e.business_type, e.city,
+      (select count(*)::int from practitioners p where p.establishment_id = e.id and p.active) as practitioners,
       j.google_import,
       -- Comptes antérieurs au suivi détaillé : repli sur l'état réel en base.
       coalesce(j.first_service_at, (select min(s.created_at) from services s where s.establishment_id = e.id)) as first_service_at,
@@ -110,6 +116,9 @@ export async function loadJourneys(days: number, limit = 200, now = new Date()):
   return rows.map((r) => ({
     name: shortName(r.full_name),
     source: r.source,
+    profile: r.establishment_at
+      ? { businessType: r.business_type ? businessTypeLabel(r.business_type) : null, city: r.city, practitioners: r.practitioners, googleListing: Boolean(r.google_place_id) }
+      : null,
     signupAt: new Date(r.signup_at),
     establishmentAt: d(r.establishment_at),
     googleImport: r.google_import ?? (r.establishment_at ? (r.google_place_id ? "fiche importée" : "sans import") : null),

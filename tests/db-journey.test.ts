@@ -20,7 +20,7 @@ describe.skipIf(!url)("parcours des inscrits", () => {
     const [u] = await sql`insert into users (email, password_hash, full_name) values (${`parcours+${stamp}@example.com`}, 'x', 'Léa Martin') returning id`;
     userId = u.id;
     await sql`insert into acquisition_attributions (user_id, utm_source, utm_campaign, utm_content) values (${userId}, 'meta', 't001', 'site_pub01')`;
-    const [e] = await sql`insert into establishments (owner_user_id, name, slug) values (${userId}, 'Léa Nails', ${`parcours-${stamp}`}) returning id`;
+    const [e] = await sql`insert into establishments (owner_user_id, name, slug, business_type, city) values (${userId}, 'Léa Nails', ${`parcours-${stamp}`}, 'onglerie', 'Montpellier') returning id`;
     establishmentId = e.id;
   });
 
@@ -59,7 +59,8 @@ describe.skipIf(!url)("parcours des inscrits", () => {
     expect(j.hoursAt).toBeNull();
     expect(j.errors).toBe(2);
     const text = formatJourneys(journeys, journeys, new Date()).join("\n");
-    expect(text).toContain("Léa M. · meta · t001 · site_pub01 · arrêté à : renseigner ses horaires");
+    expect(text).toContain("Léa M. · Onglerie · Montpellier · 0 praticien · fiche Google : non · meta · t001 · site_pub01 · arrêté à : renseigner ses horaires");
+    expect(text).toContain("Qui s'inscrit (7 j)</b> : Onglerie 1");
     expect(text).toContain("✓ prestations");
     expect(text).toContain("✗ horaires");
     expect(text).toContain("2 erreur(s) : enregistrement des horaires");

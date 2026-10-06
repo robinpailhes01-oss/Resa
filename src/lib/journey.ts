@@ -21,9 +21,18 @@ export const REPEATABLE_STEPS: ReadonlySet<JourneyStep> = new Set(["payment_fail
 /** Étapes que le navigateur d'un pro connecté peut signaler. */
 export const CLIENT_STEPS: ReadonlySet<JourneyStep> = new Set(["link_copied", "error"]);
 
+/** Profil de l'établissement : sert à vérifier qu'on attire la bonne cible. */
+export type JourneyProfile = {
+  businessType: string | null;
+  city: string | null;
+  practitioners: number;
+  googleListing: boolean;
+};
+
 export type Journey = {
   name: string;
   source: string | null;
+  profile: JourneyProfile | null;
   signupAt: Date;
   establishmentAt: Date | null;
   googleImport: string | null;
@@ -116,6 +125,26 @@ function maxDate(a: Date | null, b: Date | null): Date | null {
   return a > b ? a : b;
 }
 
+export function describeProfile(p: JourneyProfile | null): string {
+  if (!p) return "profil inconnu (pas d'établissement)";
+  return [
+    p.businessType ?? "métier ?",
+    p.city ?? "ville ?",
+    `${p.practitioners} praticien${p.practitioners > 1 ? "s" : ""}`,
+    `fiche Google : ${p.googleListing ? "oui" : "non"}`,
+  ].join(" · ");
+}
+
+/** Répartition des inscrits par métier (« onglerie 3 · coiffure 1 · sans établissement 2 »). */
+export function avatarMix(journeys: Journey[]): string {
+  const counts = new Map<string, number>();
+  for (const j of journeys) {
+    const key = j.profile?.businessType ?? "sans établissement";
+    counts.set(key, (counts.get(key) ?? 0) + 1);
+  }
+  return [...counts.entries()].sort((a, b) => b[1] - a[1]).map(([k, n]) => `${k} ${n}`).join(" · ");
+}
+
 /** Deux lignes par pro pour le rapport Telegram (texte brut, à échapper par l'appelant). */
 export function describeJourney(j: Journey, now: Date): { head: string; steps: string } {
   const mark = (ok: boolean, label: string, at?: Date | null, from?: Date | null) =>
@@ -136,5 +165,5 @@ export function describeJourney(j: Journey, now: Date): { head: string; steps: s
   const since = formatDuration(now.getTime() - lastProgressAt(j).getTime());
   const status = stop ? `arrêté à : ${stop.label} (depuis ${since})` : "abonné ✅";
   const errors = j.errors ? ` · ⚠️ ${j.errors} erreur(s)${j.lastError ? ` : ${j.lastError}` : ""}` : "";
-  return { head: `${j.name} · ${j.source ?? "direct"} · ${status}`, steps: parts.join(" · ") + errors };
+  return { head: `${j.name} · ${describeProfile(j.profile)} · ${j.source ?? "direct"} · ${status}`, steps: parts.join(" · ") + errors };
 }

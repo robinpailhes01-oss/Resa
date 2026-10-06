@@ -30,6 +30,7 @@ Les agents relisent ce journal avant toute recommandation et le complètent apr�
 
 ## Décisions
 
+- **D-013** · 2026-10-06 · Profil de chaque inscrit (métier, ville, praticiens, fiche Google) et répartition « Qui s'inscrit » ajoutés au rapport Telegram ; grille de qualification des leads Instagram · validé par Robin. Mise en ligne : fusion par Robin.
 - **D-012** · 2026-10-06 · Phase 1 du suivi du parcours validée et codée : parcours de chaque inscrit, délais entre étapes, 7 micro-étapes (import Google, prestations, horaires, lien copié, page visitée, abonnement vu / paiement commencé / échoué, erreurs) · validé par Robin. Testé sur une base locale (146 tests). Mise en ligne : fusion par Robin, avec le rapport Telegram (D-010).
 - **D-011** · 2026-10-06 · Agent `reso-comportement` et skill `reso-analyse-parcours` ajoutés à l'équipe ; plan de mesure (`plan-de-mesure.md`) proposé · validé par Robin (création). Micro-étapes et parcours individuels : en attente de validation.
 - **D-010** · 2026-10-06 · Rapport Telegram quotidien du tunnel codé (branche `ads`) · validé par Robin. Mise en ligne : fusion par Robin.

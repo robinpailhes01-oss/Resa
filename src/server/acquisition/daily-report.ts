@@ -1,6 +1,6 @@
 import "server-only";
 import { escapeHtml } from "@/server/telegram";
-import { describeJourney, formatDuration, journeyStats, type Journey } from "@/lib/journey";
+import { avatarMix, describeJourney, formatDuration, journeyStats, type Journey } from "@/lib/journey";
 import { loadJourneys } from "./journey";
 import { acquisitionReport, type AcquisitionReport, type FunnelRow } from "./report";
 
@@ -20,6 +20,7 @@ export function formatJourneys(recent: Journey[], month: Journey[], now: Date): 
   if (recent.length === 0 && month.length === 0) return [];
   const out: string[] = [];
   if (recent.length) {
+    out.push("", `<b>Qui s'inscrit (7 j)</b> : ${escapeHtml(avatarMix(recent))}`);
     out.push("", `<b>Parcours des inscrits (7 j)</b>${recent.length > MAX_JOURNEYS ? ` · ${MAX_JOURNEYS} plus récents sur ${recent.length}` : ""}`);
     for (const j of recent.slice(0, MAX_JOURNEYS)) {
       const { head, steps } = describeJourney(j, now);
