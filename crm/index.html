@@ -57,6 +57,7 @@ body { margin: 0; }
 .who button { border: 0; background: none; color: var(--accent); font-weight: 600; padding: 0; }
 body { background: var(--bg); color: var(--ink); font-family: var(--f-ui); font-size: 14px; line-height: 1.45; }
 .wrap { max-width: 1180px; margin: 0 auto; padding-inline: 16px; padding-block: 20px 48px; display: grid; gap: 18px; }
+.wrap > * { min-width: 0; }
 button, input, select, textarea { font: inherit; color: inherit; }
 button { cursor: pointer; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 8px; }
@@ -87,8 +88,9 @@ a.btn { text-decoration: none; color: inherit; }
 
 /* Toolbar */
 .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-.tabs { display: inline-flex; background: var(--surface-2); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
-.tabs button { border: 0; background: transparent; padding: 7px 14px; border-radius: 999px; font-weight: 600; color: var(--muted); }
+.tabs { display: inline-flex; background: var(--surface-2); border: 1px solid var(--line); border-radius: 999px; padding: 3px; max-width: 100%; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tabs button { white-space: nowrap; flex: none; border: 0; background: transparent; padding: 7px 14px; border-radius: 999px; font-weight: 600; color: var(--muted); }
 .tabs button[aria-selected="true"] { background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
 .tabs .count { font-variant-numeric: tabular-nums; margin-left: 4px; color: var(--accent); }
 .field { border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 8px 12px; min-width: 0; }
@@ -212,6 +214,7 @@ details.pitch ol { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 6px;
       <button role="tab" id="tab-today" aria-selected="true" type="button">À appeler aujourd’hui<span class="count" id="c-today"></span></button>
       <button role="tab" id="tab-all" aria-selected="false" type="button">Tous les leads<span class="count" id="c-all"></span></button>
       <button role="tab" id="tab-nolink" aria-selected="false" type="button">Sans lien<span class="count" id="c-nolink"></span></button>
+      <button role="tab" id="tab-lulu" aria-selected="false" type="button">Lulu<span class="count" id="c-lulu"></span></button>
     </div>
     <input id="q" class="field search" type="search" placeholder="Rechercher un nom, une ville, un numéro…" aria-label="Rechercher">
     <select id="city" class="field" aria-label="Filtrer par ville"><option value="">Toutes les villes</option></select>
@@ -291,6 +294,7 @@ function filtered() {
   let rows = state.leads.filter(l => {
     if (state.view === "today" && !isDue(l)) return false;
     if (state.view === "nolink" && !l.noLink) return false;
+    if (state.view === "lulu" && !l.lulu) return false;
     if (state.status && l.status !== state.status) return false;
     if (state.city && l.city !== state.city) return false;
     if (state.prio && !l.priority) return false;
@@ -330,6 +334,7 @@ function renderList() {
   $("#c-all").textContent = state.leads.length;
   $("#c-prio").textContent = state.leads.filter(l => l.priority).length;
   $("#c-nolink").textContent = state.leads.filter(l => l.noLink).length;
+  $("#c-lulu").textContent = state.leads.filter(l => l.lulu).length;
   if (!state.leads.length) {
     list.innerHTML = `<div class="empty"><strong>Aucun lead pour l’instant</strong><span>Ajoutez votre premier salon avec « + Ajouter un lead ». Chaque appel noté ici est visible par toute l’équipe.</span></div>`;
     return;
@@ -337,6 +342,7 @@ function renderList() {
   const rows = filtered();
   if (!rows.length) {
     const msg = state.view === "today" ? "Rien à appeler pour aujourd’hui avec ces filtres."
+      : state.view === "lulu" ? "Aucun lead dans « Lulu » avec ces filtres. Ouvrez une fiche et utilisez « Transférer dans Lulu »."
       : state.view === "nolink" ? "Aucun lead « sans lien » avec ces filtres. Ouvrez une fiche et utilisez « Transférer dans Sans lien »."
       : "Aucun lead ne correspond à ces filtres.";
     list.innerHTML = `<div class="empty"><strong>${msg}</strong><span>Changez de vue ou effacez la recherche.</span></div>`;
@@ -375,7 +381,7 @@ function renderPanel(fresh) {
       <div style="min-width:0">
         <h2 id="p-title">${esc(l.name)}</h2>
         <div class="meta">${esc(l.type || "")}${l.address ? " · " + esc(l.address) : ""}</div>
-        <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center">${pill(l.status)}<button class="prio-toggle" type="button" data-act="prio" aria-pressed="${!!l.priority}" ${ro}>${l.priority ? "★ Prioritaire" : "☆ Marquer prioritaire"}</button><button class="prio-toggle" type="button" data-act="nolink" aria-pressed="${!!l.noLink}" ${ro}>${l.noLink ? "✓ Sans lien · retirer" : "→ Transférer dans Sans lien"}</button></div>
+        <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center">${pill(l.status)}<button class="prio-toggle" type="button" data-act="prio" aria-pressed="${!!l.priority}" ${ro}>${l.priority ? "★ Prioritaire" : "☆ Marquer prioritaire"}</button><button class="prio-toggle" type="button" data-act="nolink" aria-pressed="${!!l.noLink}" ${ro}>${l.noLink ? "✓ Sans lien · retirer" : "→ Transférer dans Sans lien"}</button><button class="prio-toggle" type="button" data-act="lulu" aria-pressed="${!!l.lulu}" ${ro}>${l.lulu ? "✓ Lulu · retirer" : "→ Transférer dans Lulu"}</button></div>
       </div>
       <button class="x" type="button" data-act="close" aria-label="Fermer">×</button>
     </div>
@@ -573,10 +579,11 @@ $("#pipeline").addEventListener("click", e => {
   if (state.status && CLOSED.has(state.status)) setView("all");
   render();
 });
-function setView(v) { state.view = v; ["today", "all", "nolink"].forEach(k => $("#tab-" + k).setAttribute("aria-selected", v === k)); }
+function setView(v) { state.view = v; ["today", "all", "nolink", "lulu"].forEach(k => $("#tab-" + k).setAttribute("aria-selected", v === k)); }
 $("#tab-today").onclick = () => { setView("today"); renderList(); };
 $("#tab-all").onclick = () => { setView("all"); renderList(); };
 $("#tab-nolink").onclick = () => { setView("nolink"); renderList(); };
+$("#tab-lulu").onclick = () => { setView("lulu"); renderList(); };
 $("#q").addEventListener("input", e => { state.q = e.target.value; renderList(); });
 $("#city").addEventListener("change", e => { state.city = e.target.value; renderList(); });
 $("#btn-prio").onclick = e => { state.prio = !state.prio; e.currentTarget.setAttribute("aria-pressed", state.prio); renderList(); };
@@ -596,7 +603,7 @@ $("#panel").addEventListener("click", e => {
     return;
   }
   const a = e.target.closest("[data-act]"); if (!a) return;
-  ({ close: closePanel, log: () => logCall(a), save: () => saveLead(a), copy: copyPhone, delete: () => deleteLead(a), prio: () => toggleFlag(a, "priority", "Marqué prioritaire", "Priorité retirée"), nolink: () => toggleFlag(a, "noLink", "Transféré dans « Sans lien »", "Retiré de « Sans lien »") })[a.dataset.act]?.();
+  ({ close: closePanel, log: () => logCall(a), save: () => saveLead(a), copy: copyPhone, delete: () => deleteLead(a), prio: () => toggleFlag(a, "priority", "Marqué prioritaire", "Priorité retirée"), nolink: () => toggleFlag(a, "noLink", "Transféré dans « Sans lien »", "Retiré de « Sans lien »"), lulu: () => toggleFlag(a, "lulu", "Transféré dans « Lulu »", "Retiré de « Lulu »") })[a.dataset.act]?.();
 });
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
