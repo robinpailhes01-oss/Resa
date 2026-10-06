@@ -1,0 +1,774 @@
+<template id="07-relance-template">
+  <style>
+    @font-face {
+      font-family: "Outfit";
+      src: url("assets/fonts/outfit.woff2") format("woff2");
+      font-weight: 100 900;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "Manrope";
+      src: url("assets/fonts/manrope.woff2") format("woff2");
+      font-weight: 200 800;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "JetBrains Mono";
+      src: url("assets/fonts/jetbrainsmono.woff2") format("woff2");
+      font-weight: 100 800;
+      font-style: normal;
+    }
+
+    #root {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: "Manrope", sans-serif;
+      color: #1f2733;
+    }
+
+    /* ---------- ground ---------- */
+    #f07r-ground {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+    }
+    #f07r-ground-in {
+      position: absolute;
+      left: -120px;
+      top: -60px;
+      width: 2160px;
+      height: 1200px;
+      background:
+        radial-gradient(ellipse 36% 52% at 34% 20%, rgba(125, 147, 168, 0.95) 0%, rgba(125, 147, 168, 0) 70%),
+        radial-gradient(ellipse 34% 50% at 72% 26%, rgba(125, 147, 168, 0.75) 0%, rgba(125, 147, 168, 0) 70%),
+        radial-gradient(ellipse 120% 110% at 50% 45%, #617990 0%, #5a728a 62%, #4a6179 100%);
+    }
+
+    #f07r-stage {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+    }
+    #f07r-scene {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1920px;
+      height: 1080px;
+      transform-origin: 50% 56%;
+    }
+
+    /* ---------- HUD title ---------- */
+    #f07r-title {
+      position: absolute;
+      left: 104px;
+      top: 66px;
+      height: 96px;
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      font-family: "Outfit", sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    #f07r-bientot {
+      position: relative;
+      font-size: 74px;
+      color: #1f2733;
+      padding: 8px 22px 12px;
+    }
+    #f07r-bhl {
+      position: absolute;
+      inset: 0;
+      background: #f3d36b;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(31, 39, 51, 0.22);
+    }
+    #f07r-btx {
+      position: relative;
+    }
+    #f07r-subs {
+      position: relative;
+      width: 1100px;
+      height: 80px;
+      font-size: 60px;
+    }
+    .f07r-sub {
+      position: absolute;
+      left: 0;
+      top: 6px;
+      white-space: nowrap;
+    }
+    .f07r-w {
+      display: inline-block;
+      color: rgba(251, 246, 234, 0.38);
+      margin-right: 0.22em;
+    }
+
+    /* ---------- countdown chip (overtime : soft red) ---------- */
+    #f07r-chip {
+      position: absolute;
+      left: 1690px;
+      top: 64px;
+      width: 176px;
+      height: 56px;
+      border-radius: 28px;
+      background: #d65a4a;
+      border: 2px solid #d65a4a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: #fbf6ea;
+      box-sizing: border-box;
+    }
+    #f07r-chip svg {
+      width: 26px;
+      height: 26px;
+      display: block;
+    }
+    #f07r-chip-num {
+      position: relative;
+      width: 92px;
+      height: 34px;
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 500;
+      font-size: 30px;
+      line-height: 34px;
+    }
+    .f07r-cd {
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+    }
+
+    /* ---------- shared ---------- */
+    .f07r-card {
+      position: absolute;
+      background: #fffdf8;
+      border-radius: 22px;
+      box-shadow: 0 30px 80px rgba(31, 39, 51, 0.28);
+    }
+    .f07r-caret {
+      display: inline-block;
+      width: 4px;
+      height: 1.05em;
+      background: #4a6179;
+      vertical-align: -0.16em;
+      margin-left: 3px;
+    }
+    .f07r-stamp {
+      position: absolute;
+      padding: 14px 32px 12px;
+      background: #f3d36b;
+      color: #1f2733;
+      font-family: "Outfit", sans-serif;
+      font-weight: 800;
+      font-size: 60px;
+      line-height: 1;
+      letter-spacing: 0.02em;
+      border-radius: 10px;
+      border: 4px solid rgba(31, 39, 51, 0.9);
+      box-shadow: 0 8px 18px rgba(31, 39, 51, 0.32);
+      z-index: 6;
+    }
+    .f07r-cap {
+      position: absolute;
+      left: 0;
+      width: 1920px;
+      text-align: center;
+      font-family: "Outfit", sans-serif;
+      font-weight: 700;
+      font-size: 54px;
+      line-height: 1;
+      letter-spacing: -0.035em;
+      color: #fbf6ea;
+      white-space: nowrap;
+    }
+    .f07r-cap span {
+      color: #f3d36b;
+    }
+
+    /* ---------- client card ---------- */
+    #f07r-client {
+      left: 150px;
+      top: 262px;
+      width: 620px;
+      height: 360px;
+      padding: 34px 38px;
+      box-sizing: border-box;
+      z-index: 2;
+    }
+    #f07r-ch {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    #f07r-avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 48px;
+      background: #4a6179;
+      color: #fbf6ea;
+      font-family: "Outfit", sans-serif;
+      font-weight: 700;
+      font-size: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: none;
+    }
+    .f07r-name {
+      font-weight: 800;
+      font-size: 42px;
+      line-height: 1.1;
+      white-space: nowrap;
+    }
+    .f07r-meta {
+      margin-top: 6px;
+      font-weight: 600;
+      font-size: 23px;
+      color: #5f6672;
+      white-space: nowrap;
+    }
+    #f07r-pillbox {
+      position: relative;
+      margin-left: auto;
+      width: 176px;
+      height: 46px;
+      flex: none;
+      align-self: flex-start;
+      margin-top: 6px;
+    }
+    .f07r-pill {
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 46px;
+      padding: 0 18px;
+      border-radius: 23px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-weight: 800;
+      font-size: 21px;
+      white-space: nowrap;
+    }
+    .f07r-pill i {
+      display: block;
+      width: 11px;
+      height: 11px;
+      border-radius: 6px;
+    }
+    #f07r-amber {
+      background: #f8e6bf;
+      color: #8a5a0b;
+    }
+    #f07r-amber i {
+      background: #e0a030;
+    }
+    #f07r-green {
+      background: #dcefe5;
+      color: #2f7d5b;
+    }
+    #f07r-green i {
+      background: #2f7d5b;
+    }
+    #f07r-sep {
+      height: 2px;
+      background: #e7dfd0;
+      margin: 30px 0 26px;
+    }
+    .f07r-lab {
+      font-weight: 600;
+      font-size: 23px;
+      color: #5f6672;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .f07r-lab svg {
+      width: 26px;
+      height: 26px;
+      display: block;
+    }
+    #f07r-last {
+      margin-top: 8px;
+      font-weight: 800;
+      font-size: 48px;
+      line-height: 1.15;
+      white-space: nowrap;
+    }
+    #f07r-2m {
+      position: relative;
+      display: inline-block;
+      padding: 0 10px;
+      margin-left: 4px;
+    }
+    #f07r-2m-hl {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 6px;
+      bottom: 2px;
+      background: #f2c46d;
+      border-radius: 10px;
+      transform-origin: 0 50%;
+    }
+    #f07r-2m-tx {
+      position: relative;
+    }
+    #f07r-soin {
+      margin-top: 14px;
+      font-weight: 600;
+      font-size: 23px;
+      color: #5f6672;
+      white-space: nowrap;
+    }
+    #f07r-soin b {
+      color: #1f2733;
+      font-weight: 700;
+    }
+
+    /* ---------- message panel ---------- */
+    #f07r-panel {
+      left: 850px;
+      top: 236px;
+      width: 920px;
+      height: 540px;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .f07r-kicker {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      height: 96px;
+      padding: 0 36px;
+      border-bottom: 2px solid #e7dfd0;
+      font-weight: 800;
+      font-size: 32px;
+      color: #1f2733;
+      white-space: nowrap;
+    }
+    .f07r-ico {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: #4a6179;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: none;
+    }
+    .f07r-ico svg {
+      width: 32px;
+      height: 32px;
+      display: block;
+    }
+    #f07r-auto {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 22px;
+      color: #5f6672;
+    }
+    #f07r-tog {
+      position: relative;
+      width: 62px;
+      height: 34px;
+      border-radius: 17px;
+      background: #4a6179;
+    }
+    #f07r-tog i {
+      position: absolute;
+      right: 4px;
+      top: 4px;
+      width: 26px;
+      height: 26px;
+      border-radius: 13px;
+      background: #fbf6ea;
+    }
+    #f07r-sys {
+      position: absolute;
+      left: 0;
+      top: 120px;
+      width: 920px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 21px;
+      color: #8a8f98;
+      white-space: nowrap;
+    }
+    #f07r-sent {
+      position: absolute;
+      right: 36px;
+      top: 166px;
+      width: 640px;
+      box-sizing: border-box;
+      background: #4a6179;
+      color: #fbf6ea;
+      font-size: 31px;
+      font-weight: 600;
+      line-height: 1.34;
+      padding: 18px 28px;
+      border-radius: 30px 30px 8px 30px;
+      transform-origin: 100% 100%;
+    }
+    #f07r-ok {
+      position: absolute;
+      right: 40px;
+      top: 330px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 21px;
+      color: #2f7d5b;
+      white-space: nowrap;
+    }
+    #f07r-input {
+      position: absolute;
+      left: 30px;
+      top: 384px;
+      width: 860px;
+      height: 130px;
+      display: flex;
+      gap: 18px;
+      align-items: flex-end;
+    }
+    #f07r-field {
+      position: relative;
+      flex: 1;
+      height: 130px;
+      box-sizing: border-box;
+      border: 3px solid #e7dfd0;
+      border-radius: 24px;
+      background: #fff;
+      padding: 14px 22px;
+      font-size: 29px;
+      font-weight: 600;
+      line-height: 1.34;
+      color: #1f2733;
+      overflow: hidden;
+    }
+    #f07r-ph {
+      position: absolute;
+      left: 22px;
+      top: 14px;
+      color: #a7abb2;
+    }
+    #f07r-send {
+      width: 84px;
+      height: 84px;
+      border-radius: 42px;
+      background: #4a6179;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: none;
+      margin-bottom: 23px;
+    }
+    #f07r-send svg {
+      width: 38px;
+      height: 38px;
+      display: block;
+    }
+
+    /* ---------- booking notification ---------- */
+    #f07r-notif {
+      left: 196px;
+      top: 664px;
+      width: 600px;
+      height: 124px;
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      padding: 0 28px;
+      box-sizing: border-box;
+      border-radius: 26px;
+      z-index: 3;
+    }
+    #f07r-notif-ico {
+      width: 70px;
+      height: 70px;
+      border-radius: 20px;
+      background: #2f7d5b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: none;
+    }
+    #f07r-notif-ico svg {
+      width: 38px;
+      height: 38px;
+      display: block;
+    }
+    .f07r-nt {
+      font-weight: 800;
+      font-size: 33px;
+      line-height: 1.1;
+      white-space: nowrap;
+    }
+    .f07r-ns {
+      margin-top: 6px;
+      font-weight: 600;
+      font-size: 23px;
+      color: #5f6672;
+      white-space: nowrap;
+    }
+    .f07r-now {
+      margin-left: auto;
+      align-self: flex-start;
+      margin-top: 24px;
+      font-weight: 600;
+      font-size: 19px;
+      color: #8a8f98;
+    }
+
+    #f07r-st {
+      left: 1452px;
+      top: 742px;
+    }
+    #f07r-cap {
+      top: 880px;
+    }
+  </style>
+
+  <div id="root" data-composition-id="07-relance" data-start="0" data-duration="5.7" data-width="1920" data-height="1080">
+    <div id="f07r-ground" class="clip" data-start="0" data-duration="5.7" data-track-index="0">
+      <div id="f07r-ground-in"></div>
+    </div>
+
+    <div id="f07r-stage" class="clip" data-start="0" data-duration="5.7" data-track-index="1">
+      <div id="f07r-scene" data-layout-allow-overflow data-layout-allow-occlusion>
+        <!-- client card (demo data) -->
+        <div class="f07r-card" id="f07r-client">
+          <div id="f07r-ch">
+            <div id="f07r-avatar">JM</div>
+            <div>
+              <div class="f07r-name">Julie M.</div>
+              <div class="f07r-meta">Cliente · 6 visites</div>
+            </div>
+            <div id="f07r-pillbox">
+              <div class="f07r-pill" id="f07r-amber"><i></i>À relancer</div>
+              <div class="f07r-pill" id="f07r-green"><i></i>A réservé</div>
+            </div>
+          </div>
+          <div id="f07r-sep"></div>
+          <div class="f07r-lab">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#5f6672" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="3" /><path d="M3.5 10h17M8 3v4M16 3v4" /></svg>
+            Dernière visite
+          </div>
+          <div id="f07r-last">il y a <span id="f07r-2m"><span id="f07r-2m-hl"></span><span id="f07r-2m-tx">2 mois</span></span></div>
+          <div id="f07r-soin">Dernier soin : <b>Soin visage éclat</b></div>
+        </div>
+
+        <!-- relance message panel -->
+        <div class="f07r-card" id="f07r-panel">
+          <div class="f07r-kicker">
+            <div class="f07r-ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fbf6ea" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M4 5h16v11H10l-5 4v-4H4z" /><path d="M8 9.5h8M8 12.5h5" /></svg>
+            </div>
+            <span>Message à Julie</span>
+            <div id="f07r-auto">Relance auto<div id="f07r-tog"><i></i></div></div>
+          </div>
+          <div id="f07r-sys">Aujourd'hui · relance après 2 mois sans visite</div>
+          <div id="f07r-sent">Bonjour Julie, ça fait un moment ! Un créneau vous ferait plaisir cette semaine ?</div>
+          <div id="f07r-ok">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#2f7d5b" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5" /></svg>
+            Envoyé
+          </div>
+          <div id="f07r-input">
+            <div id="f07r-field">
+              <span id="f07r-ph">Votre message…</span>
+              <span id="f07r-draft"><span id="f07r-dtext"></span><span class="f07r-caret" id="f07r-caret"></span></span>
+            </div>
+            <div id="f07r-send">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fbf6ea" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6" /></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- booking notification (demo data) -->
+        <div class="f07r-card" id="f07r-notif" data-layout-allow-overlap>
+          <div id="f07r-notif-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fffdf8" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5" /></svg>
+          </div>
+          <div>
+            <div class="f07r-nt">Julie a réservé</div>
+            <div class="f07r-ns">Soin visage éclat · jeudi 14:30</div>
+          </div>
+          <div class="f07r-now">à l'instant</div>
+        </div>
+
+        <div class="f07r-stamp" id="f07r-st" data-layout-allow-overlap data-layout-allow-occlusion>BIENTÔT</div>
+        <div class="f07r-cap" id="f07r-cap">Relance <span>automatique</span> des clientes</div>
+      </div>
+
+      <!-- HUD : title -->
+      <div id="f07r-title">
+        <div id="f07r-bientot"><div id="f07r-bhl"></div><span id="f07r-btx">Bientôt</span></div>
+        <div id="f07r-subs">
+          <div class="f07r-sub" id="f07r-subA"><span class="f07r-w f07r-wa">Cliente</span><span class="f07r-w f07r-wa">pas</span><span class="f07r-w f07r-wa">revenue</span><span class="f07r-w f07r-wa">depuis</span><span class="f07r-w f07r-wa">2</span><span class="f07r-w f07r-wa">mois ?</span></div>
+          <div class="f07r-sub" id="f07r-subB"><span class="f07r-w f07r-wb">Reso</span><span class="f07r-w f07r-wb">lui</span><span class="f07r-w f07r-wb">envoie</span><span class="f07r-w f07r-wb">un</span><span class="f07r-w f07r-wb">petit</span><span class="f07r-w f07r-wb">message.</span></div>
+        </div>
+      </div>
+
+      <!-- countdown chip (global_start 45.1 : overtime from the start) -->
+      <div id="f07r-chip">
+        <svg viewBox="0 0 26 26" fill="none" stroke="#fbf6ea" stroke-width="2.4" stroke-linecap="round"><circle cx="13" cy="14.5" r="9" /><path d="M13 14.5V9.5M10 2.5h6M20.5 6.5l1.8-1.8" /></svg>
+        <div id="f07r-chip-num"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/gsap.min.js"></script>
+  <script>
+    (function () {
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const DUR = 5.7;
+      const GLOBAL_START = 45.1;
+      const CREAM = "#fbf6ea";
+
+      // ── countdown chip: overtime « +0:SS » = floor(global_start + t) − 45, discrete swaps ──
+      const num = document.getElementById("f07r-chip-num");
+      const cds = [];
+      for (let s = Math.floor(GLOBAL_START); s <= Math.floor(GLOBAL_START + DUR); s++) {
+        const o = Math.max(0, s - 45);
+        const el = document.createElement("span");
+        el.className = "f07r-cd";
+        el.textContent = "+0:" + String(o).padStart(2, "0");
+        num.appendChild(el);
+        cds.push({ el, t0: Math.max(0, s - GLOBAL_START) });
+      }
+      cds.forEach((c, i) => {
+        if (i === 0) gsap.set(c.el, { opacity: 1 });
+        else {
+          tl.set(c.el, { opacity: 1 }, c.t0);
+          tl.set(cds[i - 1].el, { opacity: 0 }, c.t0);
+          // light pulse on each new overtime second
+          tl.fromTo("#f07r-chip", { scale: 1.08 }, { scale: 1, duration: 0.25, ease: "power2.out", immediateRender: false }, c.t0);
+        }
+      });
+
+      // ── typewriter helper: fixed per-character schedule ──
+      function typeInto(target, segments, t0, per) {
+        const host = document.getElementById(target);
+        const chars = [];
+        segments.forEach(([text, tag]) => {
+          let parent = host;
+          if (tag) {
+            parent = document.createElement(tag);
+            host.appendChild(parent);
+          }
+          for (const ch of text) {
+            const s = document.createElement("span");
+            s.textContent = ch;
+            s.style.display = "none";
+            parent.appendChild(s);
+            chars.push(s);
+          }
+        });
+        chars.forEach((s, i) => tl.set(s, { display: "inline" }, t0 + i * per));
+        return t0 + chars.length * per;
+      }
+
+      // ── stamp helper: scale 1.6 → 1 in 0.18s + panel shake ──
+      function stamp(st, shake, t) {
+        tl.fromTo(st, { opacity: 0, scale: 1.6, rotation: -14 }, { opacity: 1, scale: 1, rotation: -8, duration: 0.18, ease: "power3.in", immediateRender: true }, t);
+        tl.fromTo(shake, { x: 0, y: 0 }, { keyframes: [{ x: -9, y: 6, duration: 0.05 }, { x: 7, y: -4, duration: 0.05 }, { x: -3, y: 2, duration: 0.05 }, { x: 0, y: 0, duration: 0.06 }], ease: "none", immediateRender: false }, t + 0.18);
+      }
+      function caption(c, t) {
+        tl.fromTo(c, { opacity: 0, y: 26, filter: "blur(8px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.34, ease: "expo.out", immediateRender: true }, t);
+      }
+
+      // ── ground + scene: slow push, keeps everything alive ──
+      tl.fromTo("#f07r-ground-in", { scale: 1, x: 0 }, { scale: 1.05, x: -40, duration: DUR, ease: "none" }, 0);
+      tl.fromTo("#f07r-scene", { scale: 1.0 }, { scale: 1.03, duration: DUR, ease: "sine.inOut" }, 0);
+
+      // ══ Scene 1 (0–2.2) : « Bientôt » + client card, « 2 mois » ══
+      tl.fromTo("#f07r-bientot", { opacity: 0, scale: 1.6, rotation: -9 }, { opacity: 1, scale: 1, rotation: -3, duration: 0.18, ease: "power3.in", immediateRender: true }, 0.08);
+      tl.fromTo("#f07r-title", { x: 0, y: 0 }, { keyframes: [{ x: -6, y: 4, duration: 0.05 }, { x: 5, y: -2, duration: 0.05 }, { x: 0, y: 0, duration: 0.06 }], ease: "none", immediateRender: false }, 0.26);
+      const wa = gsap.utils.toArray(".f07r-wa");
+      const wb = gsap.utils.toArray(".f07r-wb");
+      tl.fromTo(wa, { opacity: 0, y: 30, filter: "blur(8px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.3, ease: "expo.out", stagger: 0.04, immediateRender: true }, 0.18);
+      gsap.set(wb, { opacity: 0 });
+      // karaoke A: « Cliente » 0.32 · « pas revenue » 0.97–1.4 · « depuis » 1.45 · « 2 mois » 1.68–2.2
+      [0.32, 0.97, 1.16, 1.45, 1.68, 1.86].forEach((t, i) => {
+        tl.to(wa[i], { color: CREAM, y: -6, duration: 0.14, ease: "power2.out" }, t);
+      });
+
+      // client card slides in on « cliente »
+      tl.fromTo("#f07r-client", { opacity: 0, x: -220, y: 30, rotation: 0, scale: 1.04 }, { opacity: 1, x: 0, y: 0, rotation: -2.5, scale: 1, duration: 0.5, ease: "expo.out", immediateRender: true }, 0.3);
+      tl.fromTo("#f07r-ch, #f07r-sep, .f07r-lab, #f07r-last, #f07r-soin", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3, ease: "expo.out", stagger: 0.06, immediateRender: true }, 0.42);
+      // « deux mois » 1.68 : highlight sweeps behind « 2 mois », small pop
+      tl.fromTo("#f07r-2m-hl", { scaleX: 0 }, { scaleX: 1, duration: 0.28, ease: "expo.out", immediateRender: true }, 1.68);
+      tl.fromTo("#f07r-2m", { scale: 1 }, { keyframes: [{ scale: 1.1, duration: 0.12, ease: "power2.out" }, { scale: 1, duration: 0.22, ease: "power2.inOut" }], immediateRender: false }, 1.7);
+      // amber « À relancer » pill
+      gsap.set("#f07r-green", { opacity: 0, scale: 0.6 });
+      tl.fromTo("#f07r-amber", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.3, ease: "expo.out", immediateRender: true }, 1.94);
+
+      // ══ Scene 2 (2.2–4.4) : relance panel, typed message, sent ══
+      tl.to(wa, { opacity: 0, y: -34, filter: "blur(10px)", duration: 0.18, ease: "power2.in", stagger: 0.02 }, 2.12);
+      tl.fromTo(wb, { opacity: 0, y: 30, filter: "blur(8px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.3, ease: "expo.out", stagger: 0.04, immediateRender: false }, 2.24);
+      // karaoke B: « Réso » 2.3 · « lui enverra » · « un petit message » 3.42–4.0
+      [2.3, 2.56, 2.76, 3.3, 3.44, 3.66].forEach((t, i) => {
+        tl.to(wb[i], { color: CREAM, y: -6, duration: 0.14, ease: "power2.out" }, t);
+      });
+
+      // client card steps back a little, panel flies in from the right
+      tl.to("#f07r-client", { x: -14, y: 10, rotation: -4, scale: 0.97, duration: 0.5, ease: "power2.out" }, 2.22);
+      tl.fromTo("#f07r-panel", { opacity: 0, x: 260, y: 40, rotation: 3, scale: 1.04 }, { opacity: 1, x: 0, y: 0, rotation: 1, scale: 1, duration: 0.48, ease: "expo.out", immediateRender: true }, 2.22);
+      tl.fromTo("#f07r-sys", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out", immediateRender: true }, 2.5);
+
+      // typing (deterministic) 2.6 → ~3.7
+      gsap.set("#f07r-caret", { opacity: 0 });
+      tl.set("#f07r-ph", { opacity: 0 }, 2.58);
+      tl.set("#f07r-caret", { opacity: 1 }, 2.58);
+      const MSG = "Bonjour Julie, ça fait un moment ! Un créneau vous ferait plaisir cette semaine ?";
+      const tEnd = typeInto("f07r-dtext", [[MSG, null]], 2.62, 0.0132);
+
+      // SEND on the end of « message » (3.9): button press, draft clears, bubble slides up-right into the thread
+      const SEND = Math.max(tEnd + 0.12, 3.9);
+      tl.fromTo("#f07r-send", { scale: 1 }, { keyframes: [{ scale: 0.86, duration: 0.07, ease: "power2.in" }, { scale: 1, duration: 0.16, ease: "power2.out" }], immediateRender: false }, SEND - 0.07);
+      tl.to("#f07r-send svg", { keyframes: [{ x: 10, duration: 0.1, ease: "power2.out" }, { x: 0, duration: 0.16, ease: "power2.inOut" }] }, SEND - 0.04);
+      tl.to("#f07r-draft", { opacity: 0, y: -16, duration: 0.08, ease: "power2.in" }, SEND);
+      tl.set("#f07r-ph", { opacity: 1 }, SEND + 0.14);
+      tl.fromTo("#f07r-sent", { opacity: 0, x: -150, y: 230, scale: 0.88 }, { opacity: 1, x: 0, y: 0, scale: 1, duration: 0.44, ease: "expo.out", immediateRender: true }, SEND + 0.03);
+      tl.fromTo("#f07r-ok", { opacity: 0, x: 16 }, { opacity: 1, x: 0, duration: 0.26, ease: "expo.out", immediateRender: true }, SEND + 0.3);
+
+      // ══ Scene 3 (4.4–5.7) : booking notification, stamp, caption ══
+      const DING = 4.7;
+      tl.fromTo("#f07r-notif", { opacity: 0, y: 120, rotation: 0, scale: 1.04 }, { opacity: 1, y: 0, rotation: 1.8, scale: 1, duration: 0.42, ease: "expo.out", immediateRender: true }, DING);
+      tl.fromTo("#f07r-notif-ico", { scale: 0.5 }, { scale: 1, duration: 0.3, ease: "expo.out", immediateRender: true }, DING + 0.08);
+      // pill swap amber → green on the client card
+      tl.to("#f07r-amber", { opacity: 0, scale: 0.7, duration: 0.14, ease: "power2.in" }, DING + 0.06);
+      tl.to("#f07r-green", { opacity: 1, scale: 1, duration: 0.3, ease: "expo.out" }, DING + 0.16);
+
+      const STAMP = 5.0;
+      stamp("#f07r-st", "#f07r-panel", STAMP);
+      caption("#f07r-cap", STAMP + 0.12);
+
+      gsap.set(["#f07r-st", "#f07r-cap"], { opacity: 0 });
+
+      tl.set({}, {}, DUR);
+      window.__timelines["07-relance"] = tl;
+    })();
+  </script>
+</template>

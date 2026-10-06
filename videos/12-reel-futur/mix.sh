@@ -47,9 +47,9 @@ SFX=(
   "tick 41.60 0.35"
   "tick 42.00 0.35"
   "impact 44.20 0.75"  # BIENTÔT agent
-  "tick 48.60 0.4"     # message de relance envoyé
-  "ding 49.70 0.45"    # Julie a réservé
-  "impact 50.40 0.7"   # BIENTÔT relance
+  "tick 49.00 0.4"     # message de relance envoyé
+  "ding 49.80 0.45"    # Julie a réservé
+  "impact 50.28 0.7"   # BIENTÔT relance
   "buzz 51.36 0.45"    # chrono qui tremble
   "tick 56.10 0.4"     # 7 jours offerts
   "tick 56.80 0.4"     # sans carte bancaire
