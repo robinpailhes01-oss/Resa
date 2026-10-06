@@ -9,6 +9,7 @@ import { notifyTelegram, telegramEvents } from "@/server/telegram";
 import type { Establishment } from "@/server/auth/guards";
 import { pastDueEmail, receiptEmail, renewalEmail } from "@/server/billing/emails";
 import { invoiceFilename, invoiceNumber, renderInvoicePdf, type InvoiceData } from "@/lib/invoice";
+import { recordSubscription } from "@/server/acquisition";
 
 export type BillingProvider = "mollie" | "sumup";
 
@@ -243,6 +244,8 @@ async function applyPaid(row: Row, now: Date, extra: { transactionCode: string |
       .catch((error) => console.error("[billing] facture non envoyée", error instanceof Error ? error.message : error));
     // Attendu explicitement : en serverless, un envoi non attendu est interrompu à la fin de la requête.
     await notifyTelegram(telegramEvents.payment({ establishment: est.name, amountLabel: formatEuros(a.totalCents) }));
+    // Étape « abonnement payé » du tunnel : seulement le premier paiement Reso de l'établissement.
+    await recordSubscription(row.establishment_id, paid.amount_cents);
   }
   return paid;
 }

@@ -2,7 +2,8 @@
 
 import { headers } from "next/headers";
 import { after } from "next/server";
-import { notifyTelegram, telegramEvents } from "@/server/telegram";
+import { escapeHtml, notifyTelegram, telegramEvents } from "@/server/telegram";
+import { readRequestContext, recordMilestone, saveSignupAttribution, sourceLabel } from "@/server/acquisition";
 import { matchProspectSignup } from "@/server/prospection";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -71,9 +72,19 @@ export async function signUp(_prev: AuthState, formData: FormData): Promise<Auth
   await sendVerificationEmail(userId, email).catch((error) => {
     console.error("[auth] email de bienvenue non envoyé", error instanceof Error ? error.message : error);
   });
+  const acquisition = await readRequestContext();
   after(async () => {
+    await saveSignupAttribution(userId, acquisition).catch((error) => {
+      console.error("[acquisition] origine non enregistrée", error instanceof Error ? error.message : error);
+    });
+    await recordMilestone({ name: "signup", userId, ctx: acquisition });
     const viaProspection = await matchProspectSignup(email).catch(() => null);
-    await notifyTelegram(telegramEvents.signup({ fullName: parsed.data.fullName, email }) + (viaProspection ? `\n🎯 via prospection : ${viaProspection}` : ""));
+    const source = sourceLabel(acquisition.attribution);
+    await notifyTelegram(
+      telegramEvents.signup({ fullName: parsed.data.fullName, email }) +
+        (source ? `\n📣 origine : ${escapeHtml(source)}` : "") +
+        (viaProspection ? `\n🎯 via prospection : ${viaProspection}` : ""),
+    );
   });
   await createSession(userId);
   redirect("/app/bienvenue");
