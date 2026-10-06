@@ -41,12 +41,12 @@ SFX=(
   "impact 28.00 0.9"   # rallumage
   "impact 32.36 0.7"   # BIENTÔT SEO
   "impact 35.24 0.7"   # BIENTÔT GEO
-  "whoosh 38.00 0.45"  # photos qui volent
-  "tick 40.80 0.35"    # publications programmées
+  "whoosh 37.60 0.45"  # photos qui volent
+  "tick 40.90 0.35"    # publications programmées
   "tick 41.20 0.35"
-  "tick 41.60 0.35"
-  "tick 42.00 0.35"
-  "impact 44.20 0.75"  # BIENTÔT agent
+  "tick 41.50 0.35"
+  "tick 41.80 0.35"
+  "impact 42.20 0.75"  # BIENTÔT agent
   "tick 49.00 0.4"     # message de relance envoyé
   "ding 49.80 0.45"    # Julie a réservé
   "impact 50.28 0.7"   # BIENTÔT relance

@@ -1,0 +1,1053 @@
+<template id="06-agent-template">
+  <style>
+    @font-face {
+      font-family: "Outfit";
+      src: url("assets/fonts/outfit.woff2") format("woff2");
+      font-weight: 100 900;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "Manrope";
+      src: url("assets/fonts/manrope.woff2") format("woff2");
+      font-weight: 200 800;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "JetBrains Mono";
+      src: url("assets/fonts/jetbrainsmono.woff2") format("woff2");
+      font-weight: 100 800;
+      font-style: normal;
+    }
+
+    #root {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: "Manrope", sans-serif;
+      color: #1f2733;
+    }
+
+    /* ---------- ground ---------- */
+    #f06a-ground {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+    }
+    #f06a-ground-in {
+      position: absolute;
+      left: -200px;
+      top: -60px;
+      width: 2400px;
+      height: 1200px;
+      background:
+        radial-gradient(ellipse 34% 52% at 32% 20%, rgba(125, 147, 168, 0.95) 0%, rgba(125, 147, 168, 0) 70%),
+        radial-gradient(ellipse 34% 52% at 72% 24%, rgba(125, 147, 168, 0.75) 0%, rgba(125, 147, 168, 0) 70%),
+        radial-gradient(ellipse 120% 110% at 50% 45%, #617990 0%, #5a728a 62%, #4a6179 100%);
+    }
+
+    #f06a-stage {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+    }
+
+    /* ---------- camera world ---------- */
+    #f06a-world {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 2600px;
+      height: 1080px;
+      transform-origin: 0 0;
+    }
+
+    /* ---------- HUD title ---------- */
+    #f06a-title {
+      position: absolute;
+      left: 104px;
+      top: 66px;
+      height: 96px;
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      font-family: "Outfit", sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    #f06a-bientot {
+      position: relative;
+      font-size: 74px;
+      color: #1f2733;
+      padding: 8px 22px 12px;
+    }
+    #f06a-bhl {
+      position: absolute;
+      inset: 0;
+      background: #f3d36b;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(31, 39, 51, 0.22);
+    }
+    #f06a-btx {
+      position: relative;
+    }
+    #f06a-subs {
+      position: relative;
+      width: 1100px;
+      height: 80px;
+      font-size: 62px;
+    }
+    .f06a-sub {
+      position: absolute;
+      left: 0;
+      top: 6px;
+      white-space: nowrap;
+    }
+    .f06a-w {
+      display: inline-block;
+      color: rgba(251, 246, 234, 0.38);
+      margin-right: 0.22em;
+    }
+
+    /* ---------- agent pill ---------- */
+    #f06a-pill {
+      position: absolute;
+      left: 104px;
+      top: 188px;
+      width: 420px;
+      height: 64px;
+      border-radius: 32px;
+      background: #fffdf8;
+      box-shadow: 0 18px 44px rgba(31, 39, 51, 0.26);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0 26px 0 14px;
+      font-size: 27px;
+      font-weight: 600;
+      color: #5f6672;
+      white-space: nowrap;
+      transform-origin: 50% 50%;
+    }
+    #f06a-pill b {
+      font-weight: 800;
+      color: #1f2733;
+    }
+    #f06a-spin-wrap {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      border-radius: 20px;
+      background: #4a6179;
+      flex: none;
+    }
+    #f06a-spin {
+      position: absolute;
+      left: 6px;
+      top: 6px;
+      width: 28px;
+      height: 28px;
+      display: block;
+    }
+    #f06a-pdots {
+      display: flex;
+      gap: 6px;
+      margin-left: 2px;
+    }
+    #f06a-pdots i {
+      display: block;
+      width: 9px;
+      height: 9px;
+      border-radius: 5px;
+      background: #2f7d5b;
+    }
+
+    /* ---------- headline (scene 4) ---------- */
+    #f06a-head {
+      position: absolute;
+      left: 0;
+      top: 52px;
+      width: 1920px;
+      text-align: center;
+      font-family: "Outfit", sans-serif;
+      font-weight: 700;
+      font-size: 94px;
+      line-height: 1.04;
+      letter-spacing: -0.035em;
+    }
+    .f06a-hl {
+      white-space: nowrap;
+    }
+    .f06a-hw {
+      display: inline-block;
+      color: rgba(251, 246, 234, 0.38);
+      margin: 0 0.11em;
+    }
+
+    /* ---------- countdown chip ---------- */
+    #f06a-chip {
+      position: absolute;
+      left: 1690px;
+      top: 64px;
+      width: 176px;
+      height: 56px;
+      border-radius: 28px;
+      background: rgba(251, 246, 234, 0.16);
+      border: 2px solid rgba(251, 246, 234, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: #fbf6ea;
+    }
+    #f06a-chip svg {
+      width: 26px;
+      height: 26px;
+      display: block;
+    }
+    #f06a-chip-num {
+      position: relative;
+      width: 76px;
+      height: 34px;
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 500;
+      font-size: 30px;
+      line-height: 34px;
+    }
+    .f06a-cd {
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      white-space: nowrap;
+    }
+
+    /* ---------- shared ---------- */
+    .f06a-card {
+      position: absolute;
+      background: #fffdf8;
+      border-radius: 22px;
+      box-shadow: 0 30px 80px rgba(31, 39, 51, 0.28);
+    }
+    .f06a-kicker {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      height: 76px;
+      padding: 0 24px;
+      border-bottom: 2px solid #e7dfd0;
+      font-weight: 800;
+      font-size: 30px;
+      color: #1f2733;
+      white-space: nowrap;
+    }
+    .f06a-ico {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      background: #4a6179;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: none;
+    }
+    .f06a-ico svg {
+      width: 28px;
+      height: 28px;
+      display: block;
+    }
+    .f06a-stamp {
+      position: absolute;
+      padding: 14px 32px 12px;
+      background: #f3d36b;
+      color: #1f2733;
+      font-family: "Outfit", sans-serif;
+      font-weight: 800;
+      font-size: 60px;
+      line-height: 1;
+      letter-spacing: 0.02em;
+      border-radius: 10px;
+      border: 4px solid rgba(31, 39, 51, 0.9);
+      box-shadow: 0 8px 18px rgba(31, 39, 51, 0.32);
+      z-index: 6;
+    }
+    .f06a-cap {
+      position: absolute;
+      font-family: "Outfit", sans-serif;
+      font-weight: 700;
+      font-size: 52px;
+      line-height: 1;
+      letter-spacing: -0.035em;
+      color: #fbf6ea;
+      white-space: nowrap;
+      text-align: center;
+    }
+    .f06a-cap span {
+      color: #f3d36b;
+    }
+
+    /* ---------- photos card ---------- */
+    #f06a-photos {
+      left: 150px;
+      top: 330px;
+      width: 470px;
+      height: 504px;
+    }
+    .f06a-cell {
+      position: absolute;
+      width: 205px;
+      height: 192px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #ece6da;
+    }
+    .f06a-cell img,
+    .f06a-fly img,
+    .f06a-shot img,
+    .f06a-thumb img {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .f06a-cell img,
+    .f06a-fly img {
+      transform: scale(1.06);
+    }
+    .f06a-ok {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      width: 40px;
+      height: 40px;
+      border-radius: 20px;
+      background: #2f7d5b;
+      border: 3px solid #fffdf8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .f06a-ok svg {
+      width: 22px;
+      height: 22px;
+      display: block;
+    }
+    .f06a-fly {
+      position: absolute;
+      width: 205px;
+      height: 192px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 44px rgba(31, 39, 51, 0.32);
+      z-index: 5;
+    }
+
+    /* ---------- phone (Reel) ---------- */
+    #f06a-phone {
+      position: absolute;
+      left: 780px;
+      top: 320px;
+      width: 300px;
+      height: 624px;
+      border-radius: 56px;
+      background: #1f2733;
+      box-shadow:
+        0 30px 80px rgba(31, 39, 51, 0.32),
+        0 8px 22px rgba(31, 39, 51, 0.22);
+      z-index: 4;
+    }
+    #f06a-screen {
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      width: 276px;
+      height: 600px;
+      border-radius: 44px;
+      overflow: hidden;
+      background: #2a3442;
+    }
+    #f06a-wait {
+      position: absolute;
+      left: 0;
+      top: 262px;
+      width: 276px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 24px;
+      color: rgba(251, 246, 234, 0.75);
+    }
+    .f06a-shot {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      opacity: 0;
+    }
+    .f06a-shot img {
+      transform-origin: 50% 50%;
+    }
+    #f06a-shade {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(31, 39, 51, 0.45) 0%, rgba(31, 39, 51, 0) 22%, rgba(31, 39, 51, 0) 52%, rgba(31, 39, 51, 0.72) 100%);
+    }
+    #f06a-reel-tag {
+      position: absolute;
+      left: 22px;
+      top: 30px;
+      height: 40px;
+      padding: 0 16px 0 10px;
+      border-radius: 20px;
+      background: rgba(251, 246, 234, 0.92);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: "Outfit", sans-serif;
+      font-weight: 700;
+      font-size: 22px;
+      color: #1f2733;
+    }
+    #f06a-reel-tag svg {
+      width: 22px;
+      height: 22px;
+      display: block;
+    }
+    #f06a-reel-title {
+      position: absolute;
+      left: 22px;
+      top: 410px;
+      width: 236px;
+      font-family: "Outfit", sans-serif;
+      font-weight: 700;
+      font-size: 36px;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: #fbf6ea;
+      text-shadow: 0 2px 10px rgba(31, 39, 51, 0.5);
+    }
+    #f06a-spark {
+      display: inline-block;
+      width: 26px;
+      height: 26px;
+      margin-left: 4px;
+      vertical-align: -0.05em;
+    }
+    #f06a-prog {
+      position: absolute;
+      left: 22px;
+      top: 520px;
+      width: 232px;
+    }
+    #f06a-prog-lbl {
+      position: relative;
+      height: 26px;
+      font-weight: 700;
+      font-size: 19px;
+      color: #fbf6ea;
+      white-space: nowrap;
+    }
+    #f06a-prog-lbl span {
+      position: absolute;
+      left: 0;
+      top: 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    #f06a-prog-lbl svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+    }
+    #f06a-track {
+      margin-top: 8px;
+      width: 232px;
+      height: 8px;
+      border-radius: 4px;
+      background: rgba(251, 246, 234, 0.3);
+      overflow: hidden;
+    }
+    #f06a-fill {
+      width: 232px;
+      height: 8px;
+      border-radius: 4px;
+      background: #f3d36b;
+      transform-origin: 0 50%;
+    }
+
+    /* ---------- post card ---------- */
+    #f06a-post {
+      left: 1180px;
+      top: 352px;
+      width: 380px;
+      height: 520px;
+      overflow: hidden;
+      z-index: 3;
+    }
+    #f06a-post-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      height: 70px;
+      padding: 0 18px;
+      font-weight: 800;
+      font-size: 23px;
+      white-space: nowrap;
+    }
+    #f06a-post-av {
+      position: relative;
+      width: 42px;
+      height: 42px;
+      border-radius: 21px;
+      overflow: hidden;
+      flex: none;
+      background: #ece6da;
+    }
+    #f06a-post-av img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .f06a-type {
+      margin-left: auto;
+      height: 32px;
+      padding: 0 14px;
+      border-radius: 16px;
+      background: #e9e2d4;
+      font-family: "Outfit", sans-serif;
+      font-weight: 700;
+      font-size: 19px;
+      line-height: 32px;
+      color: #4a6179;
+    }
+    #f06a-post-img {
+      position: relative;
+      width: 380px;
+      height: 300px;
+      overflow: hidden;
+      background: #ece6da;
+    }
+    #f06a-post-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    #f06a-post-txt {
+      padding: 16px 20px 0;
+      font-size: 22px;
+      font-weight: 500;
+      line-height: 1.35;
+      color: #1f2733;
+      height: 140px;
+    }
+    #f06a-post-txt i {
+      font-style: normal;
+      font-weight: 700;
+      color: #4a6179;
+    }
+    .f06a-caret {
+      display: inline-block;
+      width: 3px;
+      height: 1.05em;
+      background: #4a6179;
+      vertical-align: -0.16em;
+      margin-left: 2px;
+    }
+
+    /* ---------- weekly calendar ---------- */
+    #f06a-cal {
+      left: 1220px;
+      top: 352px;
+      width: 1200px;
+      height: 512px;
+    }
+    #f06a-days {
+      position: absolute;
+      left: 24px;
+      top: 96px;
+      width: 1152px;
+      height: 392px;
+      display: flex;
+      gap: 8px;
+    }
+    .f06a-day {
+      position: relative;
+      flex: 1 1 0;
+      height: 392px;
+    }
+    .f06a-dname {
+      height: 34px;
+      text-align: center;
+      font-family: "Outfit", sans-serif;
+      font-weight: 700;
+      font-size: 26px;
+      color: #5f6672;
+    }
+    .f06a-slot {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 44px;
+      height: 348px;
+      border-radius: 16px;
+      border: 2px dashed #e1d8c7;
+      background: #faf6ee;
+    }
+    .f06a-entry {
+      position: absolute;
+      left: 5px;
+      top: 7px;
+      right: 5px;
+      height: 330px;
+      border-radius: 14px;
+      background: #fffdf8;
+      border: 2px solid #e7dfd0;
+      box-shadow: 0 12px 26px rgba(31, 39, 51, 0.16);
+      padding: 8px;
+    }
+    .f06a-thumb {
+      position: relative;
+      width: 100%;
+      height: 176px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #ece6da;
+    }
+    .f06a-thumb svg {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 40px;
+      height: 40px;
+      margin: -20px 0 0 -20px;
+      display: block;
+    }
+    .f06a-etype {
+      margin-top: 10px;
+      font-family: "Outfit", sans-serif;
+      font-weight: 700;
+      font-size: 27px;
+      line-height: 1;
+      color: #1f2733;
+    }
+    .f06a-etime {
+      margin-top: 6px;
+      font-weight: 600;
+      font-size: 19px;
+      color: #5f6672;
+    }
+    .f06a-status {
+      position: absolute;
+      left: 6px;
+      right: 6px;
+      bottom: 10px;
+      height: 36px;
+      border-radius: 18px;
+      background: #2f7d5b;
+      color: #fffdf8;
+      font-weight: 700;
+      font-size: 17px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      white-space: nowrap;
+    }
+    .f06a-status svg {
+      width: 16px;
+      height: 16px;
+      display: block;
+      flex: none;
+    }
+    #f06a-st {
+      left: 2150px;
+      top: 300px;
+    }
+    #f06a-c {
+      left: 1220px;
+      top: 900px;
+      width: 1200px;
+    }
+  </style>
+
+  <div id="root" data-composition-id="06-agent" data-start="0" data-duration="9.4" data-width="1920" data-height="1080">
+    <div id="f06a-ground" class="clip" data-start="0" data-duration="9.4" data-track-index="0">
+      <div id="f06a-ground-in"></div>
+    </div>
+
+    <div id="f06a-stage" class="clip" data-start="0" data-duration="9.4" data-track-index="1">
+      <!-- camera world -->
+      <div id="f06a-world" data-layout-allow-overflow data-layout-allow-occlusion>
+        <!-- « Vos photos » -->
+        <div class="f06a-card" id="f06a-photos">
+          <div class="f06a-kicker">
+            <div class="f06a-ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fbf6ea" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="3" /><circle cx="9" cy="10" r="1.8" /><path d="M21 15l-5-5-8 9" /></svg>
+            </div>
+            <span>Vos photos</span>
+          </div>
+          <div class="f06a-cell" style="left: 22px; top: 96px"><img src="assets/photo-2.png" alt="" /><div class="f06a-ok"><svg viewBox="0 0 24 24" fill="none" stroke="#fffdf8" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg></div></div>
+          <div class="f06a-cell" style="left: 243px; top: 96px"><img src="assets/photo-3.png" alt="" /><div class="f06a-ok"><svg viewBox="0 0 24 24" fill="none" stroke="#fffdf8" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg></div></div>
+          <div class="f06a-cell" style="left: 22px; top: 300px"><img src="assets/photo-4.png" alt="" /><div class="f06a-ok"><svg viewBox="0 0 24 24" fill="none" stroke="#fffdf8" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg></div></div>
+          <div class="f06a-cell" style="left: 243px; top: 300px"><img src="assets/photo-1.png" alt="" /><div class="f06a-ok"><svg viewBox="0 0 24 24" fill="none" stroke="#fffdf8" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg></div></div>
+        </div>
+
+        <!-- flying copies (grid → phone) -->
+        <div class="f06a-fly" style="left: 172px; top: 426px"><img src="assets/photo-2.png" alt="" /></div>
+        <div class="f06a-fly" style="left: 393px; top: 426px"><img src="assets/photo-3.png" alt="" /></div>
+        <div class="f06a-fly" style="left: 172px; top: 630px"><img src="assets/photo-4.png" alt="" /></div>
+        <div class="f06a-fly" style="left: 393px; top: 630px"><img src="assets/photo-1.png" alt="" /></div>
+
+        <!-- phone : the Reel assembles live -->
+        <div id="f06a-phone">
+          <div id="f06a-screen">
+            <div id="f06a-wait">Montage…</div>
+            <div class="f06a-shot"><img src="assets/photo-2.png" alt="" style="object-position: 42% 50%" /></div>
+            <div class="f06a-shot"><img src="assets/photo-3.png" alt="" style="object-position: 48% 50%" /></div>
+            <div class="f06a-shot"><img src="assets/photo-4.png" alt="" style="object-position: 52% 50%" /></div>
+            <div class="f06a-shot"><img src="assets/photo-1.png" alt="" style="object-position: 57% 50%" /></div>
+            <div id="f06a-shade"></div>
+            <div id="f06a-reel-tag">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#1f2733" /><path d="M9.6 7.6l7 4.4-7 4.4z" fill="#fbf6ea" /></svg>
+              Reel
+            </div>
+            <div id="f06a-reel-title"><span id="f06a-rtext"></span><svg id="f06a-spark" viewBox="0 0 24 24"><path d="M12 2.5l2.1 6.4 6.4 2.1-6.4 2.1L12 19.5l-2.1-6.4L3.5 11l6.4-2.1z" fill="#f3d36b" /><path d="M19.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z" fill="#fbf6ea" /></svg></div>
+            <div id="f06a-prog">
+              <div id="f06a-prog-lbl">
+                <span id="f06a-lbl-a">Montage en cours</span>
+                <span id="f06a-lbl-b"><svg viewBox="0 0 24 24" fill="none" stroke="#f3d36b" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>Reel prêt</span>
+              </div>
+              <div id="f06a-track"><div id="f06a-fill"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- square post + caption with hashtags -->
+        <div class="f06a-card" id="f06a-post">
+          <div id="f06a-post-head">
+            <div id="f06a-post-av"><img src="assets/photo-1.png" alt="" /></div>
+            <span>Maison Alba</span>
+            <div class="f06a-type">Post</div>
+          </div>
+          <div id="f06a-post-img"><img src="assets/photo-1.png" alt="" /></div>
+          <div id="f06a-post-txt"><span id="f06a-ptext"></span><span class="f06a-caret" id="f06a-pcaret"></span></div>
+        </div>
+
+        <!-- weekly calendar -->
+        <div class="f06a-card" id="f06a-cal">
+          <div class="f06a-kicker" style="height: 84px; padding: 0 28px">
+            <div class="f06a-ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fbf6ea" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="3" /><path d="M3.5 10h17M8 3v4M16 3v4" /></svg>
+            </div>
+            <span>Cette semaine</span>
+          </div>
+          <div id="f06a-days">
+            <div class="f06a-day"><div class="f06a-dname">Lun</div><div class="f06a-slot">
+              <div class="f06a-entry" id="f06a-e1">
+                <div class="f06a-thumb"><img src="assets/photo-2.png" alt="" /><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="rgba(31,39,51,0.55)" /><path d="M9.6 7.6l7 4.4-7 4.4z" fill="#fbf6ea" /></svg></div>
+                <div class="f06a-etype">Reel</div><div class="f06a-etime">18:00</div>
+                <div class="f06a-status" id="f06a-s1"><svg viewBox="0 0 24 24" fill="none" stroke="#fffdf8" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>Programmé</div>
+              </div>
+            </div></div>
+            <div class="f06a-day"><div class="f06a-dname">Mar</div><div class="f06a-slot"></div></div>
+            <div class="f06a-day"><div class="f06a-dname">Mer</div><div class="f06a-slot">
+              <div class="f06a-entry" id="f06a-e2">
+                <div class="f06a-thumb"><img src="assets/photo-1.png" alt="" /></div>
+                <div class="f06a-etype">Post</div><div class="f06a-etime">12:30</div>
+                <div class="f06a-status" id="f06a-s2"><svg viewBox="0 0 24 24" fill="none" stroke="#fffdf8" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>Programmé</div>
+              </div>
+            </div></div>
+            <div class="f06a-day"><div class="f06a-dname">Jeu</div><div class="f06a-slot"></div></div>
+            <div class="f06a-day"><div class="f06a-dname">Ven</div><div class="f06a-slot">
+              <div class="f06a-entry" id="f06a-e3">
+                <div class="f06a-thumb"><img src="assets/photo-4.png" alt="" /><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="rgba(31,39,51,0.55)" /><path d="M9.6 7.6l7 4.4-7 4.4z" fill="#fbf6ea" /></svg></div>
+                <div class="f06a-etype">Reel</div><div class="f06a-etime">18:00</div>
+                <div class="f06a-status" id="f06a-s3"><svg viewBox="0 0 24 24" fill="none" stroke="#fffdf8" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>Programmé</div>
+              </div>
+            </div></div>
+            <div class="f06a-day"><div class="f06a-dname">Sam</div><div class="f06a-slot"></div></div>
+            <div class="f06a-day"><div class="f06a-dname">Dim</div><div class="f06a-slot">
+              <div class="f06a-entry" id="f06a-e4">
+                <div class="f06a-thumb"><img src="assets/photo-3.png" alt="" /></div>
+                <div class="f06a-etype">Story</div><div class="f06a-etime">10:00</div>
+                <div class="f06a-status" id="f06a-s4"><svg viewBox="0 0 24 24" fill="none" stroke="#fffdf8" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>Programmé</div>
+              </div>
+            </div></div>
+          </div>
+        </div>
+
+        <div class="f06a-stamp" id="f06a-st" data-layout-allow-overlap data-layout-allow-occlusion>BIENTÔT</div>
+        <div class="f06a-cap" id="f06a-c">Agent IA de <span>création de contenu</span></div>
+      </div>
+
+      <!-- HUD : title (fixed, outside the camera) -->
+      <div id="f06a-title">
+        <div id="f06a-bientot"><div id="f06a-bhl"></div><span id="f06a-btx">Bientôt</span></div>
+        <div id="f06a-subs">
+          <div class="f06a-sub" id="f06a-subA"><span class="f06a-w f06a-wa">Un</span><span class="f06a-w f06a-wa">agent</span><span class="f06a-w f06a-wa">IA</span><span class="f06a-w f06a-wa">crée</span><span class="f06a-w f06a-wa">vos</span><span class="f06a-w f06a-wa">Reels</span><span class="f06a-w f06a-wa">et</span><span class="f06a-w f06a-wa">posts…</span></div>
+          <div class="f06a-sub" id="f06a-subB"><span class="f06a-w f06a-wb">…et</span><span class="f06a-w f06a-wb">les</span><span class="f06a-w f06a-wb">programme</span><span class="f06a-w f06a-wb">pour</span><span class="f06a-w f06a-wb">vous.</span></div>
+        </div>
+      </div>
+
+      <!-- HUD : agent pill -->
+      <div id="f06a-pill">
+        <div id="f06a-spin-wrap"><svg id="f06a-spin" viewBox="0 0 28 28" fill="none" stroke-linecap="round"><circle cx="14" cy="14" r="10" stroke="rgba(251,246,234,0.3)" stroke-width="3.4" /><path d="M14 4a10 10 0 0 1 10 10" stroke="#f3d36b" stroke-width="3.4" /></svg></div>
+        <b>Agent IA</b><span>· au travail</span>
+        <div id="f06a-pdots"><i></i><i></i><i></i></div>
+      </div>
+
+      <!-- HUD : final headline (karaoke) -->
+      <div id="f06a-head">
+        <div class="f06a-hl"><span class="f06a-hw">Votre</span><span class="f06a-hw">community</span><span class="f06a-hw">manager…</span></div>
+        <div class="f06a-hl"><span class="f06a-hw">qui</span><span class="f06a-hw">ne</span><span class="f06a-hw">prend</span><span class="f06a-hw">jamais</span><span class="f06a-hw">de</span><span class="f06a-hw">pause&nbsp;!</span></div>
+      </div>
+
+      <!-- countdown chip (global_start 36.2) -->
+      <div id="f06a-chip">
+        <svg viewBox="0 0 26 26" fill="none" stroke="#fbf6ea" stroke-width="2.4" stroke-linecap="round"><circle cx="13" cy="14.5" r="9" /><path d="M13 14.5V9.5M10 2.5h6M20.5 6.5l1.8-1.8" /></svg>
+        <div id="f06a-chip-num"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/gsap.min.js"></script>
+  <script>
+    (function () {
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const DUR = 8.9;
+      const GLOBAL_START = 36.2;
+      const CREAM = "#fbf6ea";
+
+      // ── countdown chip: value = max(0, 45 - floor(global_start + t)), discrete swaps ──
+      // at t_global >= 45 (local 8.8) the chip turns soft red and shows the overtime « +0:0N »
+      const chip = document.getElementById("f06a-chip");
+      const num = document.getElementById("f06a-chip-num");
+      const cds = [];
+      for (let s = Math.floor(GLOBAL_START); s <= Math.floor(GLOBAL_START + DUR); s++) {
+        const el = document.createElement("span");
+        el.className = "f06a-cd";
+        el.textContent = s >= 45 ? "+0:" + String(s - 45).padStart(2, "0") : "0:" + String(Math.max(0, 45 - s)).padStart(2, "0");
+        num.appendChild(el);
+        cds.push({ el, s, t0: Math.max(0, s - GLOBAL_START) });
+      }
+      cds.forEach((c, i) => {
+        if (i === 0) gsap.set(c.el, { opacity: 1 });
+        else {
+          tl.set(c.el, { opacity: 1 }, c.t0);
+          tl.set(cds[i - 1].el, { opacity: 0 }, c.t0);
+        }
+        if (c.s === 44) {
+          // 0:01 : pulse, border warms to red
+          tl.fromTo(chip, { scale: 1 }, { keyframes: [{ scale: 1.1, duration: 0.12, ease: "power2.out" }, { scale: 1, duration: 0.28, ease: "power2.inOut" }], immediateRender: false }, c.t0);
+          tl.set(chip, { borderColor: "rgba(214,90,74,0.95)" }, c.t0);
+        }
+        if (c.s === 45) {
+          tl.set(chip, { backgroundColor: "#D65A4A", borderColor: "#D65A4A" }, c.t0);
+          tl.set(num, { width: 92 }, c.t0);
+          tl.fromTo(chip, { scale: 1 }, { keyframes: [{ scale: 1.1, duration: 0.05, ease: "power2.out" }, { scale: 1.04, duration: 0.05, ease: "power2.inOut" }], immediateRender: false }, c.t0);
+        }
+      });
+
+      // ── typewriter helper: fixed per-character schedule ──
+      function typeInto(target, segments, t0, per) {
+        const host = document.getElementById(target);
+        const chars = [];
+        segments.forEach(([text, tag]) => {
+          let parent = host;
+          if (tag) {
+            parent = document.createElement(tag);
+            host.appendChild(parent);
+          }
+          for (const ch of text) {
+            const s = document.createElement("span");
+            s.textContent = ch;
+            s.style.display = "none";
+            parent.appendChild(s);
+            chars.push(s);
+          }
+        });
+        chars.forEach((s, i) => tl.set(s, { display: "inline" }, t0 + i * per));
+        return t0 + chars.length * per;
+      }
+
+      // ── camera: one state, one writer (applied on every timeline render) ──
+      // focus (fx, fy) in world px is shown at screen centre (960, 540), zoom s.
+      const world = document.getElementById("f06a-world");
+      const cam = { fx: 870, fy: 560, s: 1.08 };
+      function applyCam() {
+        const tx = 960 - cam.fx * cam.s;
+        const ty = 540 - cam.fy * cam.s;
+        world.style.transform = "translate(" + tx.toFixed(2) + "px," + ty.toFixed(2) + "px) scale(" + cam.s.toFixed(4) + ")";
+      }
+      applyCam();
+      tl.eventCallback("onUpdate", applyCam);
+
+      // ── stamp helper: scale 1.6 → 1 in 0.18s + panel shake ──
+      function stamp(st, shake, t) {
+        tl.fromTo(st, { opacity: 0, scale: 1.6, rotation: -14 }, { opacity: 1, scale: 1, rotation: -8, duration: 0.18, ease: "power3.in", immediateRender: true }, t);
+        tl.fromTo(shake, { x: 0, y: 0 }, { keyframes: [{ x: -9, y: 6, duration: 0.05 }, { x: 7, y: -4, duration: 0.05 }, { x: -3, y: 2, duration: 0.05 }, { x: 0, y: 0, duration: 0.06 }], ease: "none", immediateRender: false }, t + 0.18);
+      }
+      function caption(c, t) {
+        tl.fromTo(c, { opacity: 0, y: 26, filter: "blur(8px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.34, ease: "expo.out", immediateRender: true }, t);
+      }
+
+      // ── ground: slow push ──
+      tl.fromTo("#f06a-ground-in", { scale: 1, x: 0 }, { scale: 1.05, duration: DUR, ease: "none" }, 0);
+      tl.to("#f06a-ground-in", { x: -150, duration: 0.8, ease: "expo.out" }, 3.95);
+
+      // ── agent pill activity: spinner + wave dots, finite & deterministic ──
+      tl.fromTo("#f06a-spin", { rotation: 0 }, { rotation: 360 * 8, duration: DUR, ease: "none", transformOrigin: "50% 50%" }, 0);
+      gsap.utils.toArray("#f06a-pdots i").forEach((d, i) => {
+        for (let k = 0; k < 8; k++) {
+          tl.fromTo(d, { y: 0, opacity: 0.45 }, { keyframes: [{ y: -6, opacity: 1, duration: 0.14 }, { y: 0, opacity: 0.45, duration: 0.18 }], ease: "sine.inOut", immediateRender: false }, 0.4 + k * 0.7 + i * 0.1);
+        }
+      });
+
+      // ══ Scene 1 (0–1.2) : « Bientôt » stamped, subline A, pill centre → home ══
+      tl.fromTo("#f06a-bientot", { opacity: 0, scale: 1.6, rotation: -9 }, { opacity: 1, scale: 1, rotation: -3, duration: 0.18, ease: "power3.in", immediateRender: true }, 0.06);
+      tl.fromTo("#f06a-title", { x: 0, y: 0 }, { keyframes: [{ x: -6, y: 4, duration: 0.05 }, { x: 5, y: -2, duration: 0.05 }, { x: 0, y: 0, duration: 0.06 }], ease: "none", immediateRender: false }, 0.24);
+      const wa = gsap.utils.toArray(".f06a-wa");
+      const wb = gsap.utils.toArray(".f06a-wb");
+      tl.fromTo(wa, { opacity: 0, y: 30, filter: "blur(8px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.32, ease: "expo.out", stagger: 0.04, immediateRender: true }, 0.3);
+      gsap.set(wb, { opacity: 0 });
+      // karaoke A: Un agent IA (0.25–0.8) · crée vos (0.9–1.3) · Reels (1.43) · et posts (2.0–2.15)
+      [0.25, 0.42, 0.62, 0.92, 1.18, 1.43, 1.98, 2.15].forEach((t, i) => {
+        tl.to(wa[i], { color: CREAM, y: -6, duration: 0.14, ease: "power2.out" }, t);
+      });
+
+      // pill : appears big at screen centre on « agent IA », then settles under the title
+      tl.fromTo("#f06a-pill", { opacity: 0, x: 646, y: 320, scale: 1.25 }, { opacity: 1, scale: 1.55, duration: 0.4, ease: "expo.out", immediateRender: true }, 0.28);
+      tl.to("#f06a-pill", { x: 0, y: 0, scale: 1, duration: 0.5, ease: "expo.inOut" }, 0.86);
+
+      // ══ Scene 2 (1.1–3.9) : photos grid, phone, Reel assembles, square post ══
+      tl.fromTo("#f06a-photos", { opacity: 0, x: -120, scale: 1.04 }, { opacity: 1, x: 0, scale: 1, duration: 0.45, ease: "expo.out", immediateRender: true }, 1.08);
+      const cells = gsap.utils.toArray(".f06a-cell");
+      tl.fromTo(cells, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.32, ease: "expo.out", stagger: 0.05, immediateRender: true }, 1.16);
+      gsap.set(".f06a-ok", { opacity: 0, scale: 0.4 });
+
+      // « Reels » 1.43 : phone rises in
+      tl.fromTo("#f06a-phone", { opacity: 0, y: 260, scale: 1.04 }, { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: "expo.out", immediateRender: true }, 1.4);
+
+      // photos fly from the grid into the phone (whoosh ≈ 1.55)
+      const PHONE_CX = 930, PHONE_CY = 632;
+      const flyHome = [
+        [172, 426],
+        [393, 426],
+        [172, 630],
+        [393, 630],
+      ];
+      gsap.utils.toArray(".f06a-fly").forEach((f, i) => {
+        const dx = PHONE_CX - (flyHome[i][0] + 102.5);
+        const dy = PHONE_CY - (flyHome[i][1] + 96);
+        gsap.set(f, { opacity: 0 });
+        tl.set(f, { opacity: 1 }, 1.55 + i * 0.07);
+        tl.fromTo(f, { x: 0, y: 0, scale: 1, rotation: 0 }, { x: dx, y: dy, scale: 0.55, rotation: i % 2 ? 5 : -5, duration: 0.36, ease: "power3.in", immediateRender: false }, 1.55 + i * 0.07);
+        tl.set(f, { opacity: 0 }, 1.91 + i * 0.07);
+      });
+      // phone takes the hits
+      tl.fromTo("#f06a-phone", { rotation: 0 }, { keyframes: [{ rotation: -1.6, duration: 0.06 }, { rotation: 1.1, duration: 0.07 }, { rotation: 0, duration: 0.08 }], ease: "none", immediateRender: false }, 1.92);
+
+      // Reel cuts : a new shot every 0.5s with a gentle push (keeps the phone alive to the end)
+      const shots = gsap.utils.toArray(".f06a-shot");
+      const CUT0 = 1.9, CUT = 0.5;
+      tl.set("#f06a-wait", { opacity: 0 }, CUT0);
+      let k = 0;
+      for (let t = CUT0; t < DUR; t += CUT, k++) {
+        const sh = shots[k % 4];
+        const prev = k > 0 ? shots[(k - 1) % 4] : null;
+        tl.set(sh, { opacity: 1, zIndex: k + 1 }, t);
+        if (prev && prev !== sh) tl.set(prev, { opacity: 0 }, t + 0.001);
+        tl.fromTo(sh.querySelector("img"), { scale: 1.16, x: k % 2 ? -8 : 8 }, { scale: 1.0, x: 0, duration: CUT + 0.05, ease: "none", immediateRender: false }, t);
+      }
+      // shade + overlays above the shots
+      gsap.set(["#f06a-shade", "#f06a-reel-tag", "#f06a-reel-title", "#f06a-prog"], { zIndex: 50 });
+      tl.fromTo("#f06a-reel-tag", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.3, ease: "expo.out", immediateRender: true }, 1.95);
+      // animated title « Soin visage éclat »
+      gsap.set("#f06a-spark", { opacity: 0, scale: 0.3 });
+      const rEnd = typeInto("f06a-rtext", [["Soin visage éclat", null]], 2.05, 0.028);
+      tl.to("#f06a-spark", { opacity: 1, scale: 1, rotation: 90, duration: 0.3, ease: "expo.out" }, rEnd);
+      // edit progress bar
+      tl.fromTo("#f06a-prog", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3, ease: "expo.out", immediateRender: true }, 1.95);
+      tl.fromTo("#f06a-fill", { scaleX: 0 }, { scaleX: 1, duration: 1.62, ease: "power1.inOut", immediateRender: true }, 2.0);
+      gsap.set("#f06a-lbl-b", { opacity: 0 });
+      tl.set("#f06a-lbl-a", { opacity: 0 }, 3.62);
+      tl.fromTo("#f06a-lbl-b", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.22, ease: "expo.out", immediateRender: false }, 3.62);
+
+      // « publications » 2.15–2.8 : square post forms, caption + hashtags are written
+      tl.fromTo("#f06a-post", { opacity: 0, x: 90, scale: 0.92, rotation: 3 }, { opacity: 1, x: 0, scale: 1, rotation: 2, duration: 0.42, ease: "expo.out", immediateRender: true }, 2.15);
+      tl.fromTo("#f06a-post-img img", { scale: 1.25 }, { scale: 1.05, duration: 1.6, ease: "expo.out", immediateRender: true }, 2.15);
+      gsap.set("#f06a-pcaret", { opacity: 0 });
+      tl.set("#f06a-pcaret", { opacity: 1 }, 2.4);
+      const pEnd = typeInto(
+        "f06a-ptext",
+        [
+          ["Nouveau au salon : le soin visage éclat. Réservez en ligne ! ", null],
+          ["#soinvisage #institut", "i"],
+        ],
+        2.44,
+        0.0185
+      );
+      tl.set("#f06a-pcaret", { opacity: 0 }, pEnd + 0.1);
+
+      // « vos photos » 3.3–4.0 : each source photo gets its check
+      tl.to(".f06a-ok", { opacity: 1, scale: 1, duration: 0.24, ease: "expo.out", stagger: 0.11 }, 3.3);
+      tl.fromTo(cells, { y: 0 }, { keyframes: [{ y: -8, duration: 0.1 }, { y: 0, duration: 0.16 }], ease: "sine.inOut", stagger: 0.11, immediateRender: false }, 3.3);
+
+      // ══ Scene 3 (3.95–6.0) : one decelerating zoom-out reveals the week ══
+      tl.to(cam, { fx: 1600, fy: 562, s: 0.98, duration: 0.85, ease: "expo.out" }, 3.95);
+      tl.to("#f06a-photos", { opacity: 0, x: -140, filter: "blur(8px)", duration: 0.3, ease: "power2.in" }, 3.95);
+      tl.to("#f06a-post", { opacity: 0, x: 120, y: -30, scale: 0.82, filter: "blur(6px)", duration: 0.28, ease: "power2.in" }, 3.98);
+      tl.fromTo("#f06a-cal", { opacity: 0, x: 160, scale: 1.04 }, { opacity: 1, x: 0, scale: 1, duration: 0.5, ease: "expo.out", immediateRender: true }, 4.12);
+      tl.fromTo(".f06a-slot", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out", stagger: 0.03, immediateRender: true }, 4.22);
+
+      // subline B on « programmera » (4.53) / « pour vous » (4.94–5.4)
+      gsap.set("#f06a-subB", { opacity: 1 });
+      tl.to(wa, { opacity: 0, y: -34, filter: "blur(10px)", duration: 0.18, ease: "power2.in", stagger: 0.02 }, 4.2);
+      tl.fromTo(wb, { opacity: 0, y: 30, filter: "blur(8px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.3, ease: "expo.out", stagger: 0.04, immediateRender: false }, 4.36);
+      [4.42, 4.48, 4.56, 4.96, 5.16].forEach((t, i) => {
+        tl.to(wb[i], { color: CREAM, y: -6, duration: 0.14, ease: "power2.out" }, t);
+      });
+
+      // entries land one by one, then tick « Programmé ✓ »
+      const ENTRY_T = [4.5, 4.8, 5.1, 5.4];
+      ["#f06a-e1", "#f06a-e2", "#f06a-e3", "#f06a-e4"].forEach((e, i) => {
+        tl.fromTo(e, { opacity: 0, y: -90, scale: 1.04, rotation: i % 2 ? 3 : -3 }, { opacity: 1, y: 0, scale: 1, rotation: 0, duration: 0.35, ease: "expo.out", immediateRender: true }, ENTRY_T[i]);
+        tl.fromTo("#f06a-s" + (i + 1), { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.2, ease: "expo.out", immediateRender: true }, ENTRY_T[i] + 0.2);
+      });
+
+      // stamp BIENTÔT on the calendar (impact 6.0) + caption
+      stamp("#f06a-st", "#f06a-cal", 5.82);
+      caption("#f06a-c", 5.92);
+
+      // ══ Scene 4 (6.0–8.9) : headline karaoke ══
+      tl.to("#f06a-title", { opacity: 0, y: -40, filter: "blur(10px)", duration: 0.22, ease: "power2.in" }, 5.74);
+      tl.to("#f06a-pill", { opacity: 0, y: -30, filter: "blur(8px)", duration: 0.2, ease: "power2.in" }, 5.74);
+      const hw = gsap.utils.toArray(".f06a-hw");
+      tl.fromTo(hw, { opacity: 0, y: 34, filter: "blur(8px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.3, ease: "expo.out", stagger: 0.03, immediateRender: true }, 5.92);
+      // Votre community manager (6.03–7.0) · qui ne prend jamais de pause (7.09–8.68)
+      [6.05, 6.28, 6.62, 7.1, 7.24, 7.42, 7.72, 8.08, 8.24].forEach((t, i) => {
+        tl.to(hw[i], { color: CREAM, y: -6, duration: 0.14, ease: "power2.out" }, t);
+      });
+
+      // initial hidden states for later stamp / caption
+      gsap.set(["#f06a-st", "#f06a-c"], { opacity: 0 });
+
+      tl.set({}, {}, DUR);
+      window.__timelines["06-agent"] = tl;
+    })();
+  </script>
+</template>

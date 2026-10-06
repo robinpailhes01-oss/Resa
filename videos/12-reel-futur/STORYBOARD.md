@@ -97,7 +97,7 @@ Scene 4 (6.0–9.2s) : deux cartes emails (captures réelles recadrées) se pose
 - focal: « ce n'est que le début »
 - roles: aucun asset image
 - asset_candidates: none
-- status: outline
+- status: animated
 - src: compositions/frames/04-bascule.html
 - voiceover: André « Mais ce n'est pas tout. » 0.1–1.1 (« pas tout » 0.69–1.1) · silence 1.25–2.0 · « Et ça… ce n'est que le début. » 2.03–3.5 (« Et ça » 2.03–2.3 ; « ce n'est que » 2.36–2.95 ; « le début » 2.96–3.5)
 
@@ -118,7 +118,7 @@ Scene 4 (3.5–3.9s) : balayage de lumière bleu poudré qui rallume le fond (im
 - focal: le résultat Maison Alba puis la réponse de l'assistant
 - roles: app-page-publique-mobile = supporting (vignette de la page dans le résultat et la réponse) · photo-1 = supporting
 - asset_candidates: assets/app-page-publique-mobile.png, assets/photo-1.png
-- status: outline
+- status: animated
 - src: compositions/frames/05-seo.html
 - voiceover: « Bientôt, votre page de réservation sera pensée pour remonter sur Google… et pour apparaître dans les réponses des IA, comme ChatGPT. » (« Bientôt » 0.1–0.6 ; « page de réservation » 0.98–2.0 ; « remonter sur Google » 3.07–4.2 ; « apparaître » 4.59–5.1 ; « réponses des IA » 5.51–6.4 ; « ChatGPT » 6.79–7.46)
 
@@ -138,7 +138,7 @@ Scene 3 (4.4–7.8s) : la caméra glisse latéralement vers l'assistant IA (icô
 - focal: le Reel qui se monte tout seul, puis le calendrier qui se remplit
 - roles: photo-1..4 = supporting (photos réelles du salon, matière du Reel et des posts)
 - asset_candidates: assets/photo-1.png, assets/photo-2.png, assets/photo-3.png, assets/photo-4.png
-- status: outline
+- status: animated
 - src: compositions/frames/06-agent.html
 - voiceover: « Un agent IA créera vos Reels et vos publications à partir de vos photos, et les programmera pour vous. Votre community manager… qui ne prend jamais de pause ! » (« agent IA » 0.25–0.8 ; « Reels » 1.43 ; « publications » 2.15–2.8 ; « vos photos » 3.3–4.0 ; « programmera » 4.53–5.0 ; « pour vous » 4.94–5.4 ; « community manager » 6.03–7.0 ; « qui ne prend jamais de pause » 7.09–8.68)
 
@@ -159,7 +159,7 @@ Scene 4 (6.0–8.9s) : titre « Votre community manager… qui ne prend jamais d
 - focal: le message de relance
 - roles: aucun asset image (cartes construites)
 - asset_candidates: none
-- status: outline
+- status: animated
 - src: compositions/frames/07-relance.html
 - voiceover: « Et une cliente qui n'est pas revenue depuis deux mois ? Réso lui enverra un petit message pour reprendre rendez-vous. » (« cliente » 0.32 ; « pas revenue » 0.97–1.4 ; « deux mois » 1.68–2.2 ; « Réso » 2.3 ; « petit message » 3.42–4.0 ; « reprendre rendez-vous » 4.61–5.46)
 
@@ -179,7 +179,7 @@ Scene 3 (4.4–5.7s) : sur « reprendre rendez-vous » la notification « Julie 
 - focal: bouton « Créer ma page »
 - roles: logo-reso-creme = cutout (petit, au-dessus du titre)
 - asset_candidates: assets/logo-reso-creme.svg
-- status: outline
+- status: animated
 - src: compositions/frames/06-essai.html
 - voiceover: André « Bon… j'ai dépassé. Mais ça valait le coup ! En attendant, essayez Réso gratuitement pendant sept jours, sans carte bancaire, sur reso-app.fr. » — temps locaux réels : « Bon » 0.1 ; « j'ai dépassé » 0.53–1.4 ; « Mais ça valait le coup » 1.65–2.7 ; « En attendant » 2.82–3.5 ; « essayez » 3.62 ; « Réso » 4.05 ; « gratuitement » 4.37–4.9 ; « sept jours » 5.17–5.9 ; « sans carte bancaire » 5.92–7.0 ; « reso-app.fr » 7.13–9.1 ; tenue jusqu'à 10.2. (Le prix n'est plus dit mais la pastille « 39 € HT/mois » reste affichée.)
 
@@ -203,7 +203,7 @@ Scene 4 (6.6–9.0s) : « Votre page est prête en quelques minutes. » ; le cur
 - focal: bulles de dialogue
 - roles: logo-reso-creme = cutout
 - asset_candidates: assets/logo-reso-creme.svg
-- status: outline
+- status: animated
 - src: compositions/frames/07-chute.html
 - voiceover: Céline « Attends… t'as vraiment annoncé ChatGPT ? » 0.14–2.95 (« ChatGPT » 2.1–2.95) · André « Bientôt ! Mais avoue que ça donne envie. » « Bientôt » 3.2–3.8 ; « Mais avoue que ça donne envie » 4.29–5.4 ; carte finale à partir de ~4.6, tenue immobile jusqu'à 6.2
 
