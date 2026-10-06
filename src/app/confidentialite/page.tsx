@@ -115,12 +115,32 @@ export default function ConfidentialitePage() {
         . Vous pouvez aussi saisir la CNIL.
       </p>
 
-      <h2>Cookies et mesure d’audience</h2>
+      <h2 id="cookies">Cookies et mesure d’audience</h2>
+      <p>Le site dépose les cookies suivants, tous propres à Reso sauf mention contraire :</p>
+      <ul>
+        <li>
+          <strong>Session</strong> : maintient la connexion d’un professionnel à son espace. Strictement nécessaire, sans
+          consentement.
+        </li>
+        <li>
+          <strong>Choix de cookies</strong> (<code>reso_consent</code>) : retient votre accord ou votre refus pendant 6 mois.
+        </li>
+        <li>
+          <strong>Origine de la visite</strong> (<code>reso_src</code>) : la campagne qui vous a amené (paramètres « utm » de
+          l’adresse), conservée 30 jours et rattachée à votre compte si vous vous inscrivez, pour savoir quelles campagnes
+          amènent des inscriptions. Elle ne contient aucun identifiant publicitaire sans votre accord.
+        </li>
+        <li>
+          <strong>Avec votre accord seulement</strong> : le Pixel de Meta Platforms Ireland (cookies <code>_fbp</code> et{" "}
+          <code>_fbc</code>) mesure l’efficacité de nos publicités sur Facebook et Instagram. Si vous avez accepté, les étapes
+          de votre parcours (inscription, démarrage de l’essai, première réservation, abonnement) sont aussi transmises à Meta
+          depuis nos serveurs, avec votre adresse email chiffrée par hachage, jamais en clair.
+        </li>
+      </ul>
       <p>
-        Le site dépose un seul cookie, strictement nécessaire : le cookie de session qui maintient la connexion d’un
-        professionnel à son espace. Il ne requiert pas de consentement. Aucun cookie publicitaire, aucun traceur de mesure
-        d’audience et aucun contenu tiers ne sont chargés. Si un outil de mesure était ajouté, un mécanisme permettant
-        d’accepter, de refuser et de modifier votre choix serait mis en place avant tout dépôt.
+        Les visites sont aussi comptées de façon agrégée, par jour et par campagne, sans aucun identifiant de personne. Les
+        pages de réservation des établissements et leurs clients ne font l’objet d’aucune mesure publicitaire. Vous pouvez
+        modifier votre choix à tout moment avec le lien « Gérer les cookies » en bas de page.
       </p>
 
       <h2>Sécurité</h2>

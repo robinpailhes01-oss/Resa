@@ -20,6 +20,7 @@ import { resolvePhotoUrls } from "@/server/google/places";
 import { addPhotos } from "../photos";
 import { syncGoogleReviews } from "../reviews";
 import { GENERIC_ERROR, bool, fieldErrors, int, optStr, str } from "./shared";
+import { readRequestContext, recordMilestone } from "@/server/acquisition";
 
 const typeValues = BUSINESS_TYPES.map((t) => t.value) as [string, ...string[]];
 const emailOrNull = z
@@ -72,6 +73,8 @@ export async function createEstablishmentAction(_prev: FormState, fd: FormData):
         syncGoogleReviews(establishment.id, googlePlaceId).catch((error) => console.error("[google] avis", error instanceof Error ? error.message : error)),
       );
     }
+    const acquisition = await readRequestContext();
+    after(() => recordMilestone({ name: "start_trial", userId: user.id, establishmentId: establishment.id, ctx: acquisition }));
     after(() =>
       notifyTelegram(
         telegramEvents.establishment({ name: establishment.name, businessType: businessTypeLabel(establishment.businessType), city: establishment.city, slug: establishment.slug }, offer.siteUrl.replace(/\/$/, "")),

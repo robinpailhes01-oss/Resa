@@ -3,7 +3,8 @@ import { NextResponse, type NextRequest } from "next/server";
 /**
  * En-têtes de sécurité et CSP avec nonce (cahier des charges §13).
  * Le nonce est régénéré à chaque requête ; les pages sont donc rendues
- * dynamiquement. Aucun script tiers n'est autorisé dans cette version.
+ * dynamiquement. Seul tiers : le Pixel Meta, chargé après consentement par un
+ * script de confiance ('strict-dynamic'), qui envoie ses mesures à facebook.com.
  */
 export function proxy(request: NextRequest) {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
@@ -14,9 +15,9 @@ export function proxy(request: NextRequest) {
     `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ""}`,
     // Les styles inline proviennent de React (attributs style) et de Tailwind ; aucun style tiers.
     "style-src 'self' 'unsafe-inline'",
-    "img-src 'self' data: blob: https://lh3.googleusercontent.com https://*.googleusercontent.com",
+    "img-src 'self' data: blob: https://lh3.googleusercontent.com https://*.googleusercontent.com https://www.facebook.com",
     "font-src 'self'",
-    "connect-src 'self'",
+    "connect-src 'self' https://www.facebook.com https://connect.facebook.net",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",

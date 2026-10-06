@@ -16,6 +16,7 @@ import { processEmailJobs } from "../notifications";
 import { getPractitioner } from "../practitioners";
 import { getService } from "../services";
 import { GENERIC_ERROR, fieldErrors, str } from "./shared";
+import { recordOnlineBooking } from "@/server/acquisition";
 
 const schema = z.object({
   slug: z.string().min(3).max(60),
@@ -97,6 +98,7 @@ export async function publicBookAction(_prev: FormState, fd: FormData): Promise<
     });
     token = result.manageToken;
     bookingId = result.booking.id;
+    after(() => recordOnlineBooking(establishment.id, d.email));
   } catch (error) {
     if (error instanceof SlotUnavailableError) return { error: "Ce créneau vient d’être réservé. Choisissez-en un autre." };
     console.error("[réservation] création", error instanceof Error ? error.message : error);
