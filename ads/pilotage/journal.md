@@ -13,7 +13,7 @@ Les agents relisent ce journal avant toute recommandation et le complètent apr�
 
 ## Tests
 
-### T-001 · Site direct contre conversation Instagram — statut : proposé (en attente de validation)
+### T-001 · Site direct contre conversation Instagram — statut : validé, en préparation
 
 - **Question** : pour 50 €, quel chemin produit le plus de leads sérieux et le meilleur départ vers l'abonnement ?
 - **Hypothèse** : pour des pros qui vivent dans leurs DM, une conversation Instagram génère plus de leads
@@ -30,6 +30,9 @@ Les agents relisent ce journal avant toute recommandation et le complètent apr�
 
 ## Décisions
 
+- **D-009** · 2026-10-06 · Variante vidéo cellule B (carte de fin « Écris « PAGE » en message », voix off Higgsfield, 0,5 crédit) · validée par Robin.
+- **D-008** · 2026-10-06 · Tracking codé sur la branche `ads` (bandeau cookies, Pixel après accord, API Conversions, origine des inscriptions, page `/admin/acquisition`) · validé par Robin. Mise en production : à valider après configuration Meta et Vercel (voir `tracking.md`).
+- **D-007** · 2026-10-06 · Test T-001 et définitions du tunnel validés par Robin.
 - **D-006** · 2026-10-06 · Bandeau de consentement cookies à ajouter, au style RESO · validé par Robin.
 - **D-005** · 2026-10-06 · L'abonnement RESO passe par Mollie (prélèvement) · confirmé par Robin.
 - **D-004** · 2026-10-06 · Point de départ : 0 inscrit, 0 client · constaté par Robin.

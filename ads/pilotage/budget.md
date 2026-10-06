@@ -10,6 +10,6 @@ Règles : `regles.md` §2. Toute hausse du plafond = nouvelle ligne, avec la dat
 
 | Outil | Statut | Remarque |
 |---|---|---|
-| Higgsfield | ~27 crédits restants (6 oct.) | Voix off pub 01 : ~10 crédits utilisés |
+| Higgsfield | ~26,5 crédits restants (6 oct.) | Voix off pub 01 : ~10 crédits ; variante cellule B : 0,5 crédit |
 | Meta Ads | compte RESO créé | limite de dépenses du compte à régler à 50 € |
 | Outils payants supplémentaires | aucun | accord de Robin requis |

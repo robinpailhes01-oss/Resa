@@ -1,7 +1,7 @@
 """Bande son de la pub 01 (synthèse, aucun échantillon externe).
 
 Les instants reprennent la timeline de index.html (objet T).
-Usage : python3 sound.py out.wav [--sans-voix]
+Usage : python3 sound.py out.wav [--sans-voix] [--variante-dm]
 """
 import os
 import sys
@@ -329,8 +329,12 @@ VO_AT = [0.15, 2.75, 6.6, 8.65, 10.4, 12.6, 16.5, 21.3, 24.95, 27.4]
 voice = np.zeros(N)
 if "--sans-voix" not in sys.argv:
     here = os.path.dirname(os.path.abspath(__file__))
-    for k, at in enumerate(VO_AT):
-        with wave.open(os.path.join(here, "vo", f"vo-{k}.wav")) as w:
+    lines = [(at, f"vo-{k}.wav") for k, at in enumerate(VO_AT)]
+    if "--variante-dm" in sys.argv:
+        # Carte de fin « Écris-moi « page » en message » à la place de « Sept jours gratuits ».
+        lines[9] = (27.15, "vo-9-dm.wav")
+    for at, name in lines:
+        with wave.open(os.path.join(here, "vo", name)) as w:
             assert w.getframerate() == SR and w.getnchannels() == 1
             v = np.frombuffer(w.readframes(w.getnframes()), np.int16) / 32768
         v = hp_fast(v, 110)

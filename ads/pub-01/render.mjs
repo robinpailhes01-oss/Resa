@@ -1,13 +1,13 @@
 // Rendu image par image de index.html → MP4 1080×1920 30 i/s, mixé avec la bande son.
-// Usage : node render.mjs <sound.wav> <out.mp4>
+// Usage : node render.mjs <sound.wav> <out.mp4> [variante]   (variante « dm » : carte de fin Instagram Direct)
 import { chromium } from '/opt/node-tools/node_modules/playwright/index.mjs';
 import { spawn } from 'node:child_process';
-const [wav, out] = process.argv.slice(2);
+const [wav, out, variant] = process.argv.slice(2);
 const FPS = 30;
 const b = await chromium.launch();
 const p = await b.newPage({ viewport: { width: 1080, height: 1920 } });
 p.on('pageerror', e => console.log('ERR', e.message));
-await p.goto('file://' + process.cwd() + '/index.html');
+await p.goto('file://' + process.cwd() + '/index.html' + (variant ? `?v=${variant}` : ''));
 await p.evaluate(() => window.ready);
 const dur = await p.evaluate(() => window.TIMELINE.dur);
 const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(FPS), '-c:v', 'png', '-i', '-',

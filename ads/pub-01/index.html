@@ -296,6 +296,15 @@ const T = {
 };
 window.TIMELINE = T;
 
+/* Variante de la carte de fin : ?v=dm (pub « Envoyer un message » vers Instagram Direct). */
+const VARIANT = new URLSearchParams(location.search).get("v") === "dm" ? "dm" : "site";
+if (VARIANT === "dm") {
+  document.getElementById("s7-trial").textContent = "On te crée ta page gratuitement";
+  document.getElementById("cta").innerHTML = "Écris « PAGE » en message";
+  document.getElementById("cta").style.fontSize = "48px";
+  document.getElementById("url").textContent = "sur Instagram";
+}
+
 const msgs = [
   ["lea.nails", "t’as une place samedi ? 🥺"],
   ["sarah_m", "tu as quoi comme dispo demain ?"],

@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { headers } from "next/headers";
 import { offer } from "@/config/offer";
 import { metadata as siteMetadata } from "@/content/fr/landing";
+import { Tracking } from "@/components/tracking/Tracking";
 import "./globals.css";
 
 const manrope = localFont({
@@ -94,6 +95,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           Aller au contenu
         </a>
         {children}
+        <Tracking />
       </body>
     </html>
   );

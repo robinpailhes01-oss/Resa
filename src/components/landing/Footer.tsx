@@ -5,6 +5,7 @@ import { offer } from "@/config/offer";
 import { byMode, cta, footer } from "@/content/fr/landing";
 import { CtaLink } from "./CtaLink";
 import { SocialLinks } from "@/components/ui/SocialLinks";
+import { ManageCookiesButton } from "@/components/tracking/Tracking";
 
 /**
  * Fin de page : le visuel de marque recomposé (« reso® », filet, « BEAUTY BUSINESS
@@ -102,6 +103,11 @@ export function Footer({ closing = false }: { closing?: boolean }) {
                 </Link>
               </li>
             ))}
+            {process.env.NEXT_PUBLIC_META_PIXEL_ID ? (
+              <li>
+                <ManageCookiesButton className={`${linkClass} text-left`} />
+              </li>
+            ) : null}
             {offer.supportEmail ? (
               <li>
                 <a href={`mailto:${offer.supportEmail}`} className={linkClass}>
