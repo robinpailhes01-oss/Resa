@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>reso — pub 01</title>
+<style>
+@font-face { font-family: Outfit; src: url(assets/outfit-latin-wght-normal.woff2) format("woff2"); font-weight: 100 900; }
+@font-face { font-family: Manrope; src: url(assets/manrope-latin-wght-normal.woff2) format("woff2"); font-weight: 200 800; }
+:root {
+  --page: #fbf6ea; --card: #fffdf8; --ink: #1f2733; --muted: #5f6672; --line: #e7dfd0;
+  --brand: #4a6179; --powder: #6b8299; --powder-deep: #566e86; --soft: #dce4ec; --soft-tint: #eef2f5;
+  --accent: #b6a6d8; --lilac: #6e5c8f; --success: #1f7a4d; --success-tint: #dcefe3; --night: #131922;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+body { font-family: Manrope, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+#stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: var(--night); }
+.abs { position: absolute; }
+.layer { position: absolute; inset: 0; }
+.center { left: 50%; top: 50%; }
+.title { font-family: Outfit, sans-serif; font-weight: 600; letter-spacing: -0.035em; line-height: 0.98; }
+.w { display: inline-block; will-change: transform, opacity; }
+div.w { display: block; }
+
+/* ---------- Scène 1 : DM ---------- */
+#s1 { background: radial-gradient(120% 80% at 50% 62%, #263142 0%, #131922 60%, #0c1016 100%); }
+#s1 .pulse { position: absolute; left: 50%; top: 1180px; width: 1400px; height: 1400px; margin: -700px 0 0 -700px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(182,166,216,.28) 0%, rgba(182,166,216,0) 60%); }
+#s1-text { left: 0; right: 0; top: 270px; text-align: center; color: var(--page); font-size: 104px; }
+#s1-text .hl { color: var(--accent); }
+#lock { left: 50%; top: 640px; width: 640px; height: 1300px; margin-left: -320px; border-radius: 86px;
+  background: linear-gradient(160deg, #3b4b5f 0%, #232c39 55%, #1a212b 100%);
+  box-shadow: 0 0 0 12px #0a0d12, 0 0 0 14px #3a4350, 0 60px 120px rgba(0,0,0,.55); overflow: hidden; }
+#lock .island { position: absolute; left: 50%; top: 22px; width: 190px; height: 52px; margin-left: -95px; background: #000; border-radius: 30px; }
+#lock .date { position: absolute; top: 112px; width: 100%; text-align: center; color: rgba(251,246,234,.8); font: 600 30px Manrope; }
+#lock .clock { position: absolute; top: 140px; width: 100%; text-align: center; color: var(--page); font: 500 200px Outfit; letter-spacing: -0.04em; }
+.notif { position: absolute; left: 28px; right: 28px; height: 132px; border-radius: 38px; padding: 22px 26px 0 112px;
+  background: rgba(244,240,232,.86); backdrop-filter: blur(20px); box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+.notif .ic { position: absolute; left: 24px; top: 28px; width: 72px; height: 72px; border-radius: 18px;
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
+.notif .ic::after { content: ""; position: absolute; inset: 17px; border: 5px solid #fff; border-radius: 12px; }
+.notif .from { font: 800 26px Manrope; color: #1b1b1b; display: flex; justify-content: space-between; }
+.notif .from span { font-weight: 500; color: #6d6d6d; }
+.notif .msg { font: 500 30px Manrope; color: #1b1b1b; margin-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#flash { background: #fff; opacity: 0; }
+
+/* ---------- Scène 2 : trop cher ---------- */
+#s2 { background: radial-gradient(110% 70% at 50% 55%, #4a6179 0%, #2e3d4e 70%, #1e2834 100%); }
+#s2-text { left: 0; right: 0; top: 330px; text-align: center; color: var(--page); font-size: 104px; }
+#s2-text .small { font-size: 64px; font-weight: 500; opacity: .85; letter-spacing: -0.02em; }
+#ticker { left: 0; right: 0; top: 820px; text-align: center; color: var(--page); }
+#ticker .num { font: 600 400px Outfit; letter-spacing: -0.06em; font-variant-numeric: tabular-nums; line-height: 1; }
+#ticker .unit { font: 500 70px Outfit; letter-spacing: -0.02em; opacity: .8; margin-top: -10px; }
+#strike { left: 150px; top: 1010px; height: 22px; width: 780px; background: var(--accent); border-radius: 12px; transform-origin: left center; }
+#s2-sub { left: 0; right: 0; top: 1390px; text-align: center; color: rgba(251,246,234,.85); font: 500 52px Outfit; letter-spacing: -0.02em; }
+
+/* ---------- Scène 3 : révélation ---------- */
+#s3 { background: var(--page); }
+#s3-pre { left: 0; right: 0; top: 640px; text-align: center; font-size: 84px; color: var(--muted); font-weight: 500; }
+#logo3 { left: 50%; top: 820px; width: 760px; margin-left: -380px; }
+#s3-tag { left: 0; right: 0; top: 1130px; text-align: center; font: 500 46px Manrope; color: var(--brand); letter-spacing: .02em; }
+
+/* ---------- Scène 4 : réservation ---------- */
+#s4 { background: radial-gradient(90% 60% at 50% 45%, #8aa0b6 0%, #6b8299 45%, #4f667e 100%); perspective: 2400px; }
+#s4-cap { left: 0; right: 0; top: 250px; height: 220px; text-align: center; color: var(--page); font-size: 92px; }
+#s4-cap > div { position: absolute; left: 0; right: 0; top: 0; }
+#linkpill { left: 50%; top: 455px; height: 84px; padding: 0 36px 0 28px; border-radius: 42px; background: var(--card); color: var(--ink);
+  font: 700 36px Manrope; display: flex; align-items: center; gap: 16px; white-space: nowrap; box-shadow: 0 20px 50px rgba(20,30,45,.25); }
+#linkpill svg { width: 40px; height: 40px; }
+#phone { left: 50%; top: 600px; width: 620px; height: 1290px; margin-left: -310px; border-radius: 88px; background: #0d1117; padding: 18px;
+  box-shadow: 0 0 0 3px #4b5563 inset, 0 80px 140px rgba(18,28,42,.45), 0 30px 60px rgba(18,28,42,.3); transform-style: preserve-3d; }
+#screen { position: relative; width: 584px; height: 1254px; border-radius: 72px; overflow: hidden; background: var(--page); }
+#screen .island { position: absolute; z-index: 9; left: 50%; top: 18px; width: 170px; height: 48px; margin-left: -85px; background: #000; border-radius: 26px; }
+.scr { position: absolute; inset: 0; }
+#pageimg { position: absolute; left: 0; top: 0; width: 584px; }
+.tap { position: absolute; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%; background: rgba(31,39,51,.18); border: 4px solid rgba(255,255,255,.9); opacity: 0; z-index: 8; }
+/* créneaux (recréation fidèle de BookingPreview) */
+#slots { background: var(--page); padding: 96px 30px 0; }
+#slots .hdr { display: flex; align-items: center; justify-content: space-between; padding-bottom: 22px; border-bottom: 2px solid var(--line); }
+#slots .salon { display: flex; gap: 16px; align-items: center; }
+#slots .salon img { width: 64px; height: 64px; border-radius: 14px; object-fit: cover; }
+#slots .salon b { display: block; font: 700 28px Manrope; }
+#slots .salon span { font: 500 22px Manrope; color: var(--muted); }
+#slots .steps { display: flex; gap: 12px; align-items: center; margin: 30px 0 34px; font: 600 22px Manrope; color: var(--muted); }
+#slots .steps i { display: inline-flex; width: 38px; height: 38px; border-radius: 50%; align-items: center; justify-content: center; font-style: normal; font-weight: 800; font-size: 20px; border: 2px solid var(--line); }
+#slots .steps .on i { background: var(--ink); color: #fff; border-color: var(--ink); }
+#slots .steps .on { color: var(--ink); }
+#slots .steps .bar { width: 26px; height: 2px; background: var(--line); }
+#slots h3 { font: 700 34px Outfit; letter-spacing: -0.02em; margin-bottom: 8px; }
+#slots .svc { font: 500 24px Manrope; color: var(--muted); margin-bottom: 26px; }
+#slots .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 20px; }
+#slots .d, #slots .s { border: 2px solid var(--line); border-radius: 18px; text-align: center; background: var(--card); color: var(--ink); }
+#slots .d { padding: 14px 0; font: 700 30px Manrope; line-height: 1.1; }
+#slots .d small { display: block; font: 500 20px Manrope; opacity: .75; }
+#slots .s { padding: 20px 0; font: 700 26px Manrope; font-variant-numeric: tabular-nums; }
+#slots .d.on { background: var(--ink); border-color: var(--ink); color: #fff; }
+#slots .s.on { border-color: var(--brand); background: var(--soft-tint); color: var(--brand); }
+#slots .sum { margin-top: 30px; display: flex; align-items: center; justify-content: space-between; border: 2px solid var(--line); border-radius: 24px; padding: 22px 22px; background: rgba(251,246,234,.7); }
+#slots .sum b { display: block; font: 700 26px Manrope; }
+#slots .sum span { font: 500 22px Manrope; color: var(--muted); }
+#slots .go { background: var(--ink); color: #fff; font: 700 24px Manrope; border-radius: 16px; padding: 16px 20px; }
+/* confirmation */
+#done { background: var(--page); display: flex; flex-direction: column; align-items: center; padding-top: 300px; text-align: center; }
+#done svg { width: 210px; height: 210px; }
+#done h3 { font: 600 66px Outfit; letter-spacing: -0.03em; margin-top: 40px; }
+#done .card { margin-top: 40px; width: 500px; border: 2px solid var(--line); border-radius: 30px; background: var(--card); padding: 30px; text-align: left; }
+#done .card b { display: block; font: 700 30px Manrope; }
+#done .card span { display: block; font: 500 26px Manrope; color: var(--muted); margin-top: 8px; }
+#done .mail { margin-top: 30px; font: 600 24px Manrope; color: var(--success); background: var(--success-tint); padding: 14px 24px; border-radius: 30px; }
+
+/* ---------- Scène 5 : agenda ---------- */
+#s5 { background: linear-gradient(180deg, #fbf6ea 0%, #eef2f5 100%); perspective: 2600px; }
+#s5-cap { left: 0; right: 0; top: 250px; text-align: center; font-size: 92px; color: var(--ink); }
+#agwrap { left: 50%; top: 560px; width: 900px; height: 860px; margin-left: -450px; border-radius: 44px; overflow: hidden; background: var(--card);
+  box-shadow: 0 0 0 2px var(--line), 0 70px 120px rgba(31,39,51,.18); transform-style: preserve-3d; }
+#agimg { position: absolute; left: 0; top: 0; width: 900px; }
+#newappt { position: absolute; border-radius: 22px; background: #e9e3f6; border: 3px solid var(--accent); padding: 16px 20px; box-shadow: 0 24px 50px rgba(110,92,143,.35); }
+#newappt b { display: block; font: 700 26px Manrope; color: var(--ink); }
+#newappt span { font: 500 22px Manrope; color: var(--lilac); }
+.pill { position: absolute; left: 50%; height: 104px; border-radius: 52px; background: var(--card); display: flex; align-items: center; gap: 20px; padding: 0 40px 0 22px;
+  font: 700 36px Manrope; color: var(--ink); white-space: nowrap; box-shadow: 0 0 0 2px var(--line), 0 26px 60px rgba(31,39,51,.18); }
+.pill i { width: 64px; height: 64px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-style: normal; font-size: 34px; }
+
+/* ---------- Scène 6 : prix ---------- */
+#s6 { background: radial-gradient(100% 70% at 50% 45%, #2b3747 0%, #1a222d 65%, #10151c 100%); }
+#s6-pre { left: 0; right: 0; top: 360px; text-align: center; color: rgba(251,246,234,.85); font-size: 84px; font-weight: 500; }
+#price { left: 0; right: 0; top: 560px; text-align: center; color: var(--page); }
+#price .roll { display: inline-block; height: 440px; overflow: hidden; vertical-align: top; }
+#price .col { display: flex; flex-direction: column; }
+#price .col span { font: 600 440px/440px Outfit; letter-spacing: -0.06em; height: 440px; }
+#price .eur { font: 600 220px/440px Outfit; vertical-align: top; margin-left: 10px; }
+#price-unit { left: 0; right: 0; top: 1020px; text-align: center; color: var(--page); font: 500 64px Outfit; letter-spacing: -0.02em; }
+.chip { position: absolute; left: 50%; height: 92px; border-radius: 46px; border: 2px solid rgba(251,246,234,.35); color: var(--page);
+  font: 600 38px Manrope; display: flex; align-items: center; padding: 0 40px; white-space: nowrap; background: rgba(251,246,234,.06); }
+
+/* ---------- Scène 7 : fin ---------- */
+#s7 { background: var(--page); }
+#logo7 { left: 50%; top: 470px; width: 520px; margin-left: -260px; }
+#s7-title { left: 0; right: 0; top: 760px; text-align: center; font-size: 112px; color: var(--ink); }
+#s7-trial { left: 0; right: 0; top: 1060px; text-align: center; font: 600 44px Manrope; color: var(--brand); }
+#cta { left: 50%; top: 1180px; height: 150px; width: 700px; margin-left: -350px; border-radius: 75px; background: var(--ink); color: var(--page);
+  display: flex; align-items: center; justify-content: center; gap: 22px; font: 700 54px Manrope; box-shadow: 0 30px 70px rgba(31,39,51,.3); }
+#url { left: 0; right: 0; top: 1380px; text-align: center; font: 600 40px Manrope; color: var(--muted); letter-spacing: .02em; }
+
+#grain { position: absolute; inset: -50px; pointer-events: none; opacity: .10; mix-blend-mode: overlay; z-index: 50; }
+#vignette { position: absolute; inset: 0; pointer-events: none; z-index: 49; background: radial-gradient(120% 90% at 50% 50%, rgba(0,0,0,0) 60%, rgba(0,0,0,.22) 100%); }
+#wipe { position: absolute; inset: 0; z-index: 48; pointer-events: none; }
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- Scène 1 -->
+  <section id="s1" class="layer">
+    <div class="pulse"></div>
+    <div id="s1-text" class="abs title">
+      <div><span class="w">Tu</span> <span class="w">prends</span> <span class="w">encore</span></div>
+      <div><span class="w">tes</span> <span class="w">RDV</span> <span class="w hl">par</span> <span class="w hl">DM&nbsp;?</span></div>
+    </div>
+    <div id="lock" class="abs">
+      <div class="island"></div>
+      <div class="date">mardi 6 octobre</div>
+      <div class="clock">22:14</div>
+      <div id="notifs"></div>
+    </div>
+  </section>
+
+  <!-- Scène 2 -->
+  <section id="s2" class="layer">
+    <div id="s2-text" class="abs title">
+      <div class="w small">Ou alors tu paies</div>
+      <div><span class="w">un</span> <span class="w">logiciel</span></div>
+      <div><span class="w">trop</span> <span class="w">cher.</span></div>
+    </div>
+    <div id="ticker" class="abs"><div class="num">49</div><div class="unit">€ / mois</div></div>
+    <div id="strike" class="abs"></div>
+    <div id="s2-sub" class="abs">pour des options que tu n’utilises pas.</div>
+  </section>
+
+  <!-- Scène 3 -->
+  <section id="s3" class="layer">
+    <div id="s3-pre" class="abs title">Il y a plus simple.</div>
+    <svg id="logo3" class="abs" viewBox="50 -575 1822 595">
+      <defs>
+        <linearGradient id="chrome" x1="0" x2="1" y1="0" y2="0" gradientUnits="objectBoundingBox">
+          <stop offset="0" stop-color="#1f2733"/>
+          <stop id="sh1" offset="0.40" stop-color="#1f2733"/>
+          <stop id="sh2" offset="0.47" stop-color="#c9d5e2"/>
+          <stop id="sh3" offset="0.50" stop-color="#ffffff"/>
+          <stop id="sh4" offset="0.53" stop-color="#c9d5e2"/>
+          <stop id="sh5" offset="0.60" stop-color="#1f2733"/>
+          <stop offset="1" stop-color="#1f2733"/>
+        </linearGradient>
+        <clipPath id="reveal"><rect id="revealRect" x="50" y="-600" width="0" height="700"/></clipPath>
+      </defs>
+      <path id="logoPath3" clip-path="url(#reveal)" fill="url(#chrome)"/>
+    </svg>
+    <div id="s3-tag" class="abs">la réservation en ligne des pros beauté</div>
+  </section>
+
+  <!-- Scène 4 -->
+  <section id="s4" class="layer">
+    <div id="s4-cap" class="abs title">
+      <div id="c41">Ton lien de réservation.</div>
+      <div id="c42">Ta cliente choisit.</div>
+      <div id="c43">Elle réserve seule.<br><span style="color:#dce4ec">Même à 23h.</span></div>
+    </div>
+    <div id="linkpill" class="abs">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#4a6179" stroke-width="2.4" stroke-linecap="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>
+      reso-app.fr/r/maison-alba
+    </div>
+    <div id="phone" class="abs">
+      <div id="screen">
+        <div class="island"></div>
+        <div id="scrPage" class="scr"><img id="pageimg" src="captures/page-ongles.png"></div>
+        <div id="slots" class="scr">
+          <div class="hdr">
+            <div class="salon"><img src="../../public/demo/salon.webp"><div><b>Maison Alba</b><span>Institut de beauté · Montpellier</span></div></div>
+            <svg viewBox="50 -575 1822 595" width="96" fill="#1f2733"><path class="logoPath"/></svg>
+          </div>
+          <div class="steps"><span class="on"><i>✓</i></span> Prestation <span class="bar"></span><span class="on"><i>2</i></span><span style="color:#1f2733">Créneau</span><span class="bar"></span><span><i>3</i></span> Coordonnées</div>
+          <h3>Choisissez votre créneau</h3>
+          <div class="svc">Pose semi-permanent · 1 h · 40 € · avec Inès</div>
+          <div class="grid">
+            <div class="d" id="d0"><small>Mar.</small>6</div><div class="d" id="d1"><small>Mer.</small>7</div><div class="d" id="d2"><small>Jeu.</small>8</div><div class="d" id="d3"><small>Ven.</small>9</div><div class="d" id="d4"><small>Sam.</small>10</div>
+          </div>
+          <div class="grid">
+            <div class="s">09:00</div><div class="s">10:30</div><div class="s" id="slotPick">14:00</div><div class="s">16:00</div><div class="s">17:30</div>
+          </div>
+          <div class="sum" id="sum"><div><b>Pose semi-permanent · 1 h</b><span>Mar. 6 oct. à 14:00 · 40 €</span></div><div class="go" id="go">Continuer →</div></div>
+        </div>
+        <div id="done" class="scr">
+          <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="#dcefe3"/><circle id="ring" cx="50" cy="50" r="46" fill="none" stroke="#1f7a4d" stroke-width="4" stroke-dasharray="289" stroke-dashoffset="289" transform="rotate(-90 50 50)"/><path id="tick" d="M30 52 L44 65 L71 37" fill="none" stroke="#1f7a4d" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="60" stroke-dashoffset="60"/></svg>
+          <h3>C’est réservé&nbsp;!</h3>
+          <div class="card"><b>Pose semi-permanent</b><span>Mardi 6 octobre · 14:00</span><span>Maison Alba · avec Inès</span></div>
+          <div class="mail">✓ Confirmation envoyée par email</div>
+        </div>
+        <div id="tap" class="tap"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scène 5 -->
+  <section id="s5" class="layer">
+    <div id="s5-cap" class="abs title"><div class="w">Ton agenda</div><div class="w">se remplit seul.</div></div>
+    <div id="agwrap" class="abs">
+      <img id="agimg" src="captures/agenda-grid.png">
+      <div id="newappt"><b>14:00 · Léa Martin</b><span>Pose semi-permanent</span></div>
+    </div>
+    <div id="p1" class="pill"><i style="background:#dcefe3;color:#1f7a4d">✓</i>Confirmation envoyée</div>
+    <div id="p2" class="pill"><i style="background:#eef2f5;color:#4a6179">⏰</i>Rappel la veille</div>
+    <div id="p3" class="pill"><i style="background:#efe9f7;color:#6e5c8f">★</i>Avis Google demandé</div>
+  </section>
+
+  <!-- Scène 6 -->
+  <section id="s6" class="layer">
+    <div id="s6-pre" class="abs title">Tout ça pour</div>
+    <div id="price" class="abs">
+      <span class="roll"><span class="col" id="colA"></span></span><span class="roll"><span class="col" id="colB"></span></span><span class="eur">€</span>
+    </div>
+    <div id="price-unit" class="abs">par mois, TTC</div>
+    <div id="ch1" class="chip">Sans engagement</div>
+    <div id="ch2" class="chip">Même prix pour toute l’équipe</div>
+  </section>
+
+  <!-- Scène 7 -->
+  <section id="s7" class="layer">
+    <svg id="logo7" class="abs" viewBox="50 -575 1822 595" fill="#1f2733"><path class="logoPath"/></svg>
+    <div id="s7-title" class="abs title"><div class="w">Tes rendez-vous,</div><div class="w">sans décrocher.</div></div>
+    <div id="s7-trial" class="abs">7 jours gratuits · sans carte bancaire</div>
+    <div id="cta" class="abs">Essaie gratuitement <span>→</span></div>
+    <div id="url" class="abs">reso-app.fr</div>
+  </section>
+
+  <div id="wipe"></div>
+  <div id="flash" class="layer" style="z-index:47"></div>
+  <div id="vignette"></div>
+  <canvas id="grain" width="1180" height="2020"></canvas>
+</div>
+
+<script>
+const LOGO = "M62 0V-479H168V0ZM168 -267.7 130.8 -286.1Q130.8 -376.9 171.6 -432.9Q212.4 -489 293.8 -489Q329.7 -489 358.8 -476Q387.8 -463.1 412.8 -434.2L343.4 -362.8Q329.9 -377.3 313.5 -383.5Q297.1 -389.7 275.5 -389.7Q228.8 -389.7 198.4 -360Q168 -330.4 168 -267.7Z M688.4 10Q616.5 10 559.2 -22.4Q501.8 -54.9 468.4 -111.8Q435 -168.6 435 -239.5Q435 -310.4 467.9 -366.8Q500.8 -423.1 557.1 -456.1Q613.5 -489 682.4 -489Q749.1 -489 800.4 -458.2Q851.7 -427.3 881.1 -373.6Q910.4 -319.8 910.4 -251.1Q910.4 -239.5 909 -227.2Q907.5 -214.9 904.6 -200H509.2V-286.9H849.5L810.1 -252.4Q808.4 -297.2 793 -327.9Q777.7 -358.7 749.5 -375.1Q721.3 -391.6 680.4 -391.6Q637.5 -391.6 605.8 -373.2Q574 -354.8 556.6 -321.6Q539.2 -288.4 539.2 -242.5Q539.2 -196.5 557.6 -161.8Q576 -127.1 609.8 -108.2Q643.5 -89.3 687.6 -89.3Q725.2 -89.3 757.1 -102.5Q789.1 -115.8 811.4 -141.3L878.9 -72.8Q844.1 -32.1 794.2 -11Q744.4 10 688.4 10Z M1135.7 10Q1095.8 10 1059.1 -0.5Q1022.3 -11 991.6 -30.4Q960.8 -49.9 938 -77.7L1005.5 -145.3Q1030.7 -115.8 1063.6 -101.1Q1096.4 -86.4 1137.6 -86.4Q1175.7 -86.4 1195.4 -98.1Q1215.2 -109.7 1215.2 -131.8Q1215.2 -154.6 1197.1 -167.2Q1179 -179.7 1150.4 -188.3Q1121.8 -197 1090.1 -206.1Q1058.5 -215.1 1029.8 -230.5Q1001.2 -245.9 983.1 -272.8Q965.1 -299.7 965.1 -342.6Q965.1 -388 986.4 -420.6Q1007.7 -453.3 1046.9 -471.1Q1086.1 -489 1140.5 -489Q1198.1 -489 1242.4 -468.6Q1286.7 -448.3 1316.4 -407.7L1248.9 -340.2Q1227.9 -366.3 1200.5 -379.4Q1173 -392.6 1137.5 -392.6Q1103.4 -392.6 1084.8 -381.9Q1066.3 -371.1 1066.3 -351.2Q1066.3 -330.4 1084.4 -319Q1102.4 -307.5 1131.1 -299.4Q1159.7 -291.2 1191.3 -281.7Q1223 -272.2 1251.6 -255.8Q1280.2 -239.4 1298.3 -212Q1316.4 -184.6 1316.4 -140.6Q1316.4 -71.2 1267.7 -30.6Q1219 10 1135.7 10Z M1608.3 10Q1538.5 10 1481.6 -23.4Q1424.8 -56.8 1391.4 -113.7Q1358 -170.6 1358 -240.5Q1358 -310.4 1391.4 -366.3Q1424.8 -422.2 1481.6 -455.6Q1538.5 -489 1608.3 -489Q1679.1 -489 1735.9 -456.1Q1792.7 -423.1 1826.1 -366.8Q1859.5 -310.4 1859.5 -240.5Q1859.5 -170.6 1826.1 -113.7Q1792.7 -56.8 1735.9 -23.4Q1679.1 10 1608.3 10ZM1608.3 -92.1Q1650.2 -92.1 1682.4 -111.1Q1714.6 -130.1 1732.6 -163.9Q1750.6 -197.6 1750.6 -240.6Q1750.6 -283.5 1732.1 -316.2Q1713.7 -349 1681.9 -367.9Q1650.2 -386.9 1608.3 -386.9Q1567.4 -386.9 1535.1 -367.9Q1502.9 -349 1484.9 -316.2Q1466.9 -283.5 1466.9 -240.5Q1466.9 -197.6 1484.9 -163.8Q1502.9 -130.1 1535.1 -111.1Q1567.4 -92.1 1608.3 -92.1Z";
+document.getElementById("logoPath3").setAttribute("d", LOGO);
+document.querySelectorAll(".logoPath").forEach(p => p.setAttribute("d", LOGO));
+
+/* ---------- Timeline (secondes) : partagée avec la bande son (timeline.json) ---------- */
+const T = {
+  dur: 27,
+  notifs: [0.0, 0.32, 0.62, 0.9, 1.16, 1.4, 1.62, 1.82],
+  hookWords: [0.0, 0.1, 0.2, 0.55, 0.65, 0.8, 0.95],
+  impact1: 2.45, s2: 2.7, s3: 5.55, s4: 7.3, s5: 14.1, s6: 18.7, s7: 22.6,
+  tapChoose: 8.85, tapDay: 9.95, tapSlot: 10.45, tapGo: 11.05, done: 11.4,
+  apptDrop: 14.9, pills: [15.7, 16.35, 17.0], priceSlam: 19.75,
+};
+window.TIMELINE = T;
+
+const msgs = [
+  ["lea.nails", "t’as une place samedi ? 🥺"],
+  ["sarah_m", "tu as quoi comme dispo demain ?"],
+  ["ines.b", "je peux décaler à 15h ??"],
+  ["manon", "c’est combien la pose complète ?"],
+  ["julie.c", "dispo ce soir ?"],
+  ["camille.r", "coucou tu réponds ? 😅"],
+  ["nadia", "il te reste un créneau jeudi ?"],
+  ["emma", "tu bosses lundi ?"],
+];
+const notifBox = document.getElementById("notifs");
+const notifEls = msgs.map(([from, msg]) => {
+  const n = document.createElement("div");
+  n.className = "notif";
+  n.innerHTML = `<div class="ic"></div><div class="from">${from}<span>maintenant</span></div><div class="msg">${msg}</div>`;
+  notifBox.appendChild(n);
+  return n;
+});
+
+/* rouleaux du prix : 9 → 2 et 9 → 9 en défilant */
+const colA = document.getElementById("colA"), colB = document.getElementById("colB");
+const seqA = [9, 8, 7, 6, 5, 4, 3, 2], seqB = [9, 4, 7, 1, 8, 3, 6, 9];
+seqA.forEach(d => colA.insertAdjacentHTML("beforeend", `<span>${d}</span>`));
+seqB.forEach(d => colB.insertAdjacentHTML("beforeend", `<span>${d}</span>`));
+
+/* ---------- Grain (pré-calculé, seedé) ---------- */
+let seed = 7;
+const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647);
+const grain = document.getElementById("grain"), gctx = grain.getContext("2d");
+const tiles = [];
+for (let k = 0; k < 6; k++) {
+  const c = document.createElement("canvas"); c.width = c.height = 256;
+  const x = c.getContext("2d"), img = x.createImageData(256, 256);
+  for (let i = 0; i < img.data.length; i += 4) { const v = rnd() * 255; img.data[i] = img.data[i + 1] = img.data[i + 2] = v; img.data[i + 3] = 255; }
+  x.putImageData(img, 0, 0); tiles.push(c);
+}
+
+/* ---------- Outils d'animation ---------- */
+const $ = id => document.getElementById(id);
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, p) => a + (b - a) * p;
+const P = (t, a, b) => clamp((t - a) / (b - a));
+const E = {
+  out: p => 1 - Math.pow(1 - p, 3),
+  expo: p => (p === 1 ? 1 : 1 - Math.pow(2, -10 * p)),
+  inOut: p => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2),
+  back: p => { const c1 = 2.2, c3 = c1 + 1; return 1 + c3 * Math.pow(p - 1, 3) + c1 * Math.pow(p - 1, 2); },
+  in: p => p * p * p,
+};
+const css = (el, o) => { for (const k in o) el.style[k] = o[k]; };
+const vis = (el, on) => (el.style.display = on ? "" : "none");
+function shake(t, t0, amp, dur = 0.25) {
+  const p = (t - t0) / dur;
+  if (p < 0 || p > 1) return [0, 0];
+  const a = amp * (1 - p);
+  return [Math.sin(t * 190) * a, Math.cos(t * 230) * a * 0.6];
+}
+/* mot qui « claque » : grossi + flou → net */
+function slam(el, t, t0, d = 0.28, from = 1.6) {
+  const p = P(t, t0, t0 + d), e = E.back(p);
+  css(el, { opacity: p > 0 ? clamp(p * 3) : 0, transform: `scale(${lerp(from, 1, e)})`, filter: `blur(${(1 - E.out(p)) * 14}px)` });
+}
+function rise(el, t, t0, d = 0.5, dy = 60) {
+  const p = P(t, t0, t0 + d), e = E.expo(p);
+  css(el, { opacity: clamp(p * 2.2), transform: `translateY(${(1 - e) * dy}px)`, filter: `blur(${(1 - e) * 10}px)` });
+}
+function tapAt(t, t0, x, y) {
+  const el = $("tap"), p = P(t, t0 - 0.12, t0 + 0.35);
+  if (p <= 0 || p >= 1) { el.style.opacity = 0; return; }
+  css(el, { left: x + "px", top: y + "px", opacity: p < 0.3 ? p / 0.3 : 1 - (p - 0.3) / 0.7, transform: `scale(${p < 0.3 ? 1.2 - p : 0.9 + (p - 0.3) * 0.9})` });
+}
+
+/* ---------- Rendu d'une image au temps t ---------- */
+function seek(t) {
+  const sc = {
+    s1: t < T.s2 + 0.05, s2: t >= T.s2 && t < T.s3 + 0.35, s3: t >= T.s3 && t < T.s4 + 0.3,
+    s4: t >= T.s4 && t < T.s5 + 0.3, s5: t >= T.s5 && t < T.s6 + 0.05, s6: t >= T.s6 && t < T.s7 + 0.3, s7: t >= T.s7,
+  };
+  for (const k in sc) vis($(k), sc[k]);
+
+  /* ===== S1 ===== */
+  if (sc.s1) {
+    const words = $("s1-text").querySelectorAll(".w");
+    words.forEach((w, i) => slam(w, t, T.hookWords[i], 0.26, i >= 5 ? 2.0 : 1.6));
+    // vibrations : secousse à chaque notification
+    let sx = 0, sy = 0;
+    T.notifs.forEach(n => { const [a, b] = shake(t, n, 16, 0.22); sx += a; sy += b; });
+    const outP = E.in(P(t, T.impact1, T.s2 + 0.05));
+    css($("lock"), { transform: `translate(${sx}px, ${sy + outP * 200}px) scale(${1 + outP * 0.35}) rotate(${sx * 0.08}deg)`, filter: `blur(${outP * 18}px)`, opacity: 1 - outP });
+    css($("s1-text"), { transform: `scale(${1 + outP * 0.6})`, opacity: 1 - outP, filter: `blur(${outP * 20}px)` });
+    // pile de notifications : la plus récente en haut, les autres glissent
+    notifEls.forEach((n, i) => {
+      const t0 = T.notifs[i], p = P(t, t0, t0 + 0.3), e = E.back(p);
+      const newer = T.notifs.filter((x, j) => j > i && t >= x).length;
+      const slotY = 470 + newer * 148;
+      const enterY = 380;
+      const y = lerp(enterY, slotY, e);
+      // décalage animé quand une nouvelle arrive
+      const lastArr = T.notifs.filter(x => t >= x && x > t0).slice(-1)[0];
+      const pushP = lastArr !== undefined ? E.out(P(t, lastArr, lastArr + 0.22)) : 1;
+      const yy = lastArr !== undefined ? lerp(slotY - 148, slotY, pushP) : y;
+      css(n, { transform: `translateY(${yy}px) scale(${lerp(0.85, 1, e)})`, opacity: t < t0 ? 0 : clamp(p * 3) * (newer > 4 ? 0 : 1) });
+    });
+    const pl = (t % 0.31) / 0.31;
+    css($("s1").querySelector(".pulse"), { transform: `scale(${0.7 + pl * 0.5})`, opacity: (1 - pl) * (t < T.impact1 ? 1 : 0) });
+  }
+  // flash d'impact
+  const fl = Math.max(1 - P(t, T.impact1, T.impact1 + 0.18), 0) * (t >= T.impact1 ? 1 : 0) * 0.85
+           + Math.max(1 - P(t, T.priceSlam, T.priceSlam + 0.2), 0) * (t >= T.priceSlam ? 1 : 0) * 0.35;
+  $("flash").style.opacity = fl;
+
+  /* ===== S2 ===== */
+  if (sc.s2) {
+    const inP = E.expo(P(t, T.s2, T.s2 + 0.35));
+    const w = $("s2-text").querySelectorAll(".w");
+    rise(w[0], t, T.s2 + 0.05, 0.4, 40);
+    slam(w[1], t, T.s2 + 0.3); slam(w[2], t, T.s2 + 0.42);
+    slam(w[3], t, T.s2 + 0.7, 0.3, 1.9); slam(w[4], t, T.s2 + 0.82, 0.3, 1.9);
+    // compteur qui grimpe
+    const cp = P(t, T.s2 + 0.9, T.s2 + 1.9);
+    const val = Math.round(lerp(49, 99, E.out(cp)));
+    $("ticker").querySelector(".num").textContent = val;
+    const [kx, ky] = shake(t, T.s2 + 1.9, 14, 0.3);
+    css($("ticker"), { opacity: clamp(P(t, T.s2 + 0.85, T.s2 + 1.0)), transform: `translate(${kx}px,${ky}px) scale(${lerp(0.8, 1, E.back(P(t, T.s2 + 0.85, T.s2 + 1.15)))})` });
+    const sp = E.expo(P(t, T.s2 + 2.05, T.s2 + 2.35));
+    css($("strike"), { transform: `rotate(-8deg) scaleX(${sp})`, opacity: sp > 0 ? 1 : 0 });
+    rise($("s2-sub"), t, T.s2 + 2.15, 0.4, 30);
+    // sortie : zoom vers l'avant
+    const out = E.in(P(t, T.s3 - 0.15, T.s3 + 0.3));
+    css($("s2"), { transform: `scale(${(0.92 + inP * 0.08) + out * 0.5})`, opacity: 1 - out, filter: `blur(${out * 16}px)` });
+  }
+
+  /* ===== S3 ===== */
+  if (sc.s3) {
+    const inP = E.out(P(t, T.s3, T.s3 + 0.4));
+    css($("s3"), { clipPath: `circle(${inP * 130}% at 50% 50%)` });
+    rise($("s3-pre"), t, T.s3 + 0.1, 0.5, 40);
+    const rp = E.inOut(P(t, T.s3 + 0.45, T.s3 + 1.0));
+    $("revealRect").setAttribute("width", 1900 * rp);
+    const lp = E.out(P(t, T.s3 + 0.45, T.s3 + 1.2));
+    css($("logo3"), { transform: `scale(${lerp(0.88, 1, lp)})`, opacity: clamp(lp * 3) });
+    // reflet chromé
+    const sh = lerp(-0.3, 1.3, E.inOut(P(t, T.s3 + 0.9, T.s3 + 1.6)));
+    [["sh1", -0.1], ["sh2", -0.03], ["sh3", 0], ["sh4", 0.03], ["sh5", 0.1]].forEach(([id, o]) => $(id).setAttribute("offset", clamp(sh + o)));
+    rise($("s3-tag"), t, T.s3 + 1.0, 0.5, 24);
+    const out = E.inOut(P(t, T.s4 - 0.1, T.s4 + 0.3));
+    css($("s3").querySelector("#logo3"), { transform: `scale(${lerp(0.88, 1, lp) - out * 0.15}) translateY(${-out * 300}px)` });
+    $("s3").style.opacity = 1 - out;
+  }
+
+  /* ===== S4 ===== */
+  if (sc.s4) {
+    const inP = E.expo(P(t, T.s4, T.s4 + 0.8));
+    const float = Math.sin((t - T.s4) * 1.6) * 8;
+    const rotY = lerp(32, -7, inP) + Math.sin((t - T.s4) * 0.9) * 2;
+    const rotX = lerp(14, 4, inP);
+    css($("phone"), { transform: `translateY(${lerp(500, 0, inP) + float}px) rotateY(${rotY}deg) rotateX(${rotX}deg)`, opacity: clamp(inP * 2) });
+    css($("s4"), { opacity: clamp(P(t, T.s4, T.s4 + 0.25)) });
+    // légendes
+    const caps = [["c41", T.s4 + 0.2, T.tapChoose + 0.6], ["c42", T.tapChoose + 0.75, T.done - 0.05], ["c43", T.done + 0.1, 99]];
+    caps.forEach(([id, a, b]) => {
+      const p = P(t, a, a + 0.45), o = P(t, b - 0.2, b);
+      css($(id), { opacity: clamp(p * 2) * (1 - o), transform: `translateY(${(1 - E.expo(p)) * 50 - o * 40}px)`, filter: `blur(${(1 - E.expo(p)) * 10 + o * 8}px)` });
+    });
+    const lp = E.back(P(t, T.s4 + 0.45, T.s4 + 0.8)), lo = P(t, T.tapChoose + 0.4, T.tapChoose + 0.6);
+    css($("linkpill"), { transform: `translateX(-50%) scale(${lerp(0.6, 1, lp)})`, opacity: clamp(lp * 2) * (1 - lo) });
+    // écran 1 : défilement de la page
+    const sp = E.inOut(P(t, T.s4 + 0.7, T.tapChoose - 0.25));
+    const scrollTo = 1000;
+    $("pageimg").style.transform = `translateY(${-sp * scrollTo}px)`;
+    vis($("scrPage"), t < T.tapChoose + 0.3);
+    // écran 2 : créneaux (glisse depuis la droite)
+    const s2p = E.expo(P(t, T.tapChoose + 0.15, T.tapChoose + 0.55));
+    vis($("slots"), t >= T.tapChoose + 0.15 && t < T.done + 0.4);
+    $("slots").style.transform = `translateX(${(1 - s2p) * 584}px)`;
+    $("d0").classList.toggle("on", t >= T.tapDay);
+    $("slotPick").classList.toggle("on", t >= T.tapSlot);
+    const sumP = E.back(P(t, T.tapSlot + 0.05, T.tapSlot + 0.35));
+    css($("sum"), { opacity: clamp(sumP * 2), transform: `translateY(${(1 - sumP) * 40}px)` });
+    $("go").style.transform = `scale(${t >= T.tapGo && t < T.tapGo + 0.15 ? 0.94 : 1})`;
+    // écran 3 : confirmation
+    const dp = E.expo(P(t, T.done, T.done + 0.4));
+    vis($("done"), t >= T.done);
+    $("done").style.transform = `translateY(${(1 - dp) * 1254}px)`;
+    $("ring").setAttribute("stroke-dashoffset", 289 * (1 - E.out(P(t, T.done + 0.25, T.done + 0.7))));
+    $("tick").setAttribute("stroke-dashoffset", 60 * (1 - E.out(P(t, T.done + 0.5, T.done + 0.8))));
+    $("done").querySelector("svg").style.transform = `scale(${lerp(0.5, 1, E.back(P(t, T.done + 0.2, T.done + 0.6)))})`;
+    rise($("done").querySelector("h3"), t, T.done + 0.55, 0.4, 30);
+    rise($("done").querySelector(".card"), t, T.done + 0.7, 0.4, 30);
+    rise($("done").querySelector(".mail"), t, T.done + 1.0, 0.4, 20);
+    // taps
+    let tx = 0, ty = 0, tt = -1;
+    if (t < T.tapChoose + 0.5) { tx = 475; ty = 1772 - scrollTo; tt = T.tapChoose; }
+    if (t > T.tapDay - 0.2 && t < T.tapDay + 0.4) { tx = 82; ty = 470; tt = T.tapDay; }
+    if (t > T.tapSlot - 0.2 && t < T.tapSlot + 0.4) { tx = 292; ty = 568; tt = T.tapSlot; }
+    if (t > T.tapGo - 0.2 && t < T.tapGo + 0.4) { tx = 490; ty = 680; tt = T.tapGo; }
+    tapAt(t, tt, tx, ty);
+    const out = E.inOut(P(t, T.s5 - 0.1, T.s5 + 0.3));
+    css($("s4"), { opacity: 1 - out, transform: `scale(${1 + out * 0.1})` });
+  }
+
+  /* ===== S5 ===== */
+  if (sc.s5) {
+    const inP = E.expo(P(t, T.s5, T.s5 + 0.6));
+    $("s5").style.opacity = clamp(P(t, T.s5 - 0.1, T.s5 + 0.2));
+    const w = $("s5-cap").querySelectorAll(".w");
+    rise(w[0], t, T.s5 + 0.1, 0.5, 50); rise(w[1], t, T.s5 + 0.25, 0.5, 50);
+    const drift = (t - T.s5) * 6;
+    css($("agwrap"), { transform: `translateY(${lerp(300, 0, inP) - drift}px) rotateX(${lerp(24, 8, inP)}deg) rotateZ(${lerp(-4, -1.5, inP)}deg) scale(${lerp(0.9, 1, inP)})`, opacity: clamp(inP * 2) });
+    // image agenda : 1170 px → 900 px (×0,769) ; on cadre 12:00 → 18:00
+    const k = 900 / 1170, offY = -560;
+    $("agimg").style.transform = `translateY(${offY}px)`;
+    const dp = E.back(P(t, T.apptDrop, T.apptDrop + 0.45));
+    const x = 240 * k, y = 1000 * k + offY + 4, w2 = (955 - 240) * k, h = 168 * k - 8;
+    css($("newappt"), { left: x + "px", top: y + "px", width: w2 + "px", height: h + "px",
+      transform: `translateY(${(1 - dp) * -260}px) scale(${lerp(1.25, 1, dp)}) rotate(${(1 - dp) * -6}deg)`, opacity: t < T.apptDrop ? 0 : clamp(dp * 3) });
+    T.pills.forEach((pt, i) => {
+      const p = E.back(P(t, pt, pt + 0.4));
+      css($("p" + (i + 1)), { top: (1250 + i * 128) + "px", transform: `translateX(-50%) translateX(${(i - 1) * 40}px) scale(${lerp(0.5, 1, p)})`, opacity: t < pt ? 0 : clamp(p * 2) });
+    });
+    const out = E.in(P(t, T.s6 - 0.25, T.s6 + 0.05));
+    css($("s5"), { transform: `scale(${1 - out * 0.08})`, filter: `blur(${out * 12}px)` });
+  }
+
+  /* ===== S6 ===== */
+  if (sc.s6) {
+    $("s6").style.opacity = clamp(P(t, T.s6, T.s6 + 0.15));
+    rise($("s6-pre"), t, T.s6 + 0.05, 0.45, 40);
+    // rouleaux 99 → 29
+    const rp = E.out(P(t, T.s6 + 0.35, T.priceSlam));
+    const rpB = E.out(P(t, T.s6 + 0.35, T.priceSlam - 0.12));
+    colA.style.transform = `translateY(${-rp * (seqA.length - 1) * 440}px)`;
+    colB.style.transform = `translateY(${-rpB * (seqB.length - 1) * 440}px)`;
+    const sl = E.back(P(t, T.priceSlam, T.priceSlam + 0.3));
+    const [kx, ky] = shake(t, T.priceSlam, 18, 0.3);
+    css($("price"), { opacity: clamp(P(t, T.s6 + 0.3, T.s6 + 0.5)), transform: `translate(${kx}px,${ky}px) scale(${t < T.priceSlam ? 0.86 : lerp(1.12, 1, sl)})` });
+    rise($("price-unit"), t, T.priceSlam + 0.1, 0.4, 30);
+    [["ch1", T.priceSlam + 0.45, 1220], ["ch2", T.priceSlam + 0.75, 1340]].forEach(([id, a, top]) => {
+      const p = E.back(P(t, a, a + 0.4));
+      css($(id), { top: top + "px", transform: `translateX(-50%) scale(${lerp(0.6, 1, p)})`, opacity: t < a ? 0 : clamp(p * 2) });
+    });
+    const out = E.inOut(P(t, T.s7 - 0.1, T.s7 + 0.3));
+    css($("s6"), { transform: `translateY(${-out * 200}px)`, opacity: clamp(P(t, T.s6, T.s6 + 0.15)) * (1 - out) });
+  }
+
+  /* ===== S7 ===== */
+  if (sc.s7) {
+    const inP = E.expo(P(t, T.s7, T.s7 + 0.5));
+    css($("s7"), { clipPath: `inset(${(1 - inP) * 100}% 0 0 0)` });
+    const lp = E.back(P(t, T.s7 + 0.2, T.s7 + 0.7));
+    css($("logo7"), { transform: `scale(${lerp(0.7, 1, lp)})`, opacity: clamp(lp * 2) });
+    const w = $("s7-title").querySelectorAll(".w");
+    rise(w[0], t, T.s7 + 0.45, 0.55, 50); rise(w[1], t, T.s7 + 0.6, 0.55, 50);
+    rise($("s7-trial"), t, T.s7 + 0.95, 0.5, 30);
+    const cp = E.back(P(t, T.s7 + 1.2, T.s7 + 1.6));
+    const pulse = t > T.s7 + 2 ? 1 + Math.max(0, Math.sin((t - T.s7 - 2) * 4)) * 0.035 : 1;
+    const press = t > T.s7 + 2.25 && t < T.s7 + 2.4 ? 0.95 : 1;
+    css($("cta"), { transform: `scale(${lerp(0.6, 1, cp) * pulse * press})`, opacity: clamp(cp * 2) });
+    rise($("url"), t, T.s7 + 1.5, 0.5, 20);
+  }
+
+  /* grain animé */
+  const frame = Math.round(t * 30);
+  gctx.clearRect(0, 0, 1180, 2020);
+  const tile = tiles[frame % tiles.length];
+  const ox = (frame * 37) % 256, oy = (frame * 91) % 256;
+  for (let x = -ox; x < 1180; x += 256) for (let y = -oy; y < 2020; y += 256) gctx.drawImage(tile, x, y);
+}
+window.seek = seek;
+window.ready = Promise.all([document.fonts.ready, ...[...document.images].map(i => i.decode().catch(() => {}))]);
+seek(0);
+</script>
+</body>
+</html>
