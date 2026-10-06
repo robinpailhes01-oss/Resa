@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Check, Copy } from "lucide-react";
+import { reportJourney } from "@/components/tracking/journey-client";
 
 export function CopyField({ value }: { value: string }) {
   const [copied, setCopied] = useState(false);
@@ -20,6 +21,7 @@ export function CopyField({ value }: { value: string }) {
           try {
             await navigator.clipboard.writeText(value);
             setCopied(true);
+            reportJourney("link_copied");
             setTimeout(() => setCopied(false), 2000);
           } catch {
             // Sélection manuelle possible dans le champ.

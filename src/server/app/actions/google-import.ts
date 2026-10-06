@@ -8,6 +8,7 @@ import { applyGooglePlace } from "../google-sync";
 import { syncGoogleReviews } from "../reviews";
 import { GooglePlacesError, findPlaces, isGoogleImportEnabled } from "@/server/google/places";
 import { SlidingWindowRateLimiter } from "@/server/rate-limit";
+import { recordJourney } from "@/server/acquisition/journey";
 
 export type GoogleSearchResult = { results: GooglePlaceCandidate[]; error?: undefined } | { results?: undefined; error: string };
 
@@ -24,6 +25,7 @@ export async function searchGooglePlacesAction(rawQuery: string): Promise<Google
     return { results: await findPlaces(query) };
   } catch (error) {
     console.error("[google] recherche de fiche", error instanceof GooglePlacesError ? error.message : error);
+    await recordJourney(user.id, "error", "recherche de la fiche Google");
     if (error instanceof GooglePlacesError && error.message.startsWith("Lien Google non reconnu")) {
       return { error: "Ce lien n’a pas pu être lu. Tapez plutôt le nom de votre établissement et sa ville." };
     }
