@@ -1,0 +1,369 @@
+<template>
+  <script src="assets/gsap.min.js"></script>
+  <style>
+    @font-face {
+      font-family: "Outfit";
+      src: url("assets/fonts/outfit.woff2") format("woff2");
+      font-weight: 100 900;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "JetBrains Mono";
+      src: url("assets/fonts/jetbrainsmono.woff2") format("woff2");
+      font-weight: 100 800;
+      font-style: normal;
+    }
+
+    #root {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: "Outfit", sans-serif;
+    }
+
+    /* ---------- ground: powder stage, night layer, light sweep ---------- */
+    #f04b-bg {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: radial-gradient(130% 95% at 50% 0%, #7d93a8 0%, #617990 52%, #4a6179 100%);
+    }
+    #f04b-halo {
+      position: absolute;
+      left: 360px;
+      top: 120px;
+      width: 1200px;
+      height: 760px;
+      border-radius: 50%;
+      background: radial-gradient(closest-side, rgba(125, 147, 168, 0.55), rgba(125, 147, 168, 0));
+    }
+    #f04b-night {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(90% 80% at 50% 46%, #1f2733 0%, #19202a 55%, #11161d 100%);
+      clip-path: polygon(-30% 0%, 160% 0%, 160% 100%, -30% 100%);
+    }
+    #f04b-sweep {
+      position: absolute;
+      left: 0;
+      top: -60px;
+      width: 1000px;
+      height: 1200px;
+      background: linear-gradient(
+        90deg,
+        rgba(125, 147, 168, 0) 0%,
+        rgba(125, 147, 168, 0.55) 38%,
+        rgba(190, 206, 220, 0.85) 62%,
+        rgba(251, 246, 234, 0.95) 80%,
+        rgba(251, 246, 234, 0) 100%
+      );
+      transform-origin: 500px 600px;
+    }
+
+    /* ---------- stage ---------- */
+    #f04b-stage {
+      position: absolute;
+      inset: 0;
+      transform-origin: 960px 500px;
+    }
+    .f04b-line {
+      position: absolute;
+      left: 0;
+      width: 1920px;
+      text-align: center;
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    .f04b-w {
+      display: inline-block;
+      margin: 0 0.1em;
+    }
+    /* scene 1 karaoke */
+    #f04b-lineA {
+      top: 466px;
+      font-size: 110px;
+      color: rgba(251, 246, 234, 0.38);
+      transform-origin: 960px 55px;
+    }
+    /* scene 3 reveal */
+    #f04b-lineB {
+      top: 352px;
+      font-size: 100px;
+      color: #fbf6ea;
+      text-shadow:
+        0 0 24px rgba(251, 246, 234, 0.45),
+        0 0 70px rgba(251, 246, 234, 0.22);
+    }
+    #f04b-lineC {
+      top: 478px;
+      font-size: 140px;
+      color: #fbf6ea;
+      text-shadow:
+        0 0 30px rgba(251, 246, 234, 0.55),
+        0 0 90px rgba(251, 246, 234, 0.3);
+      transform-origin: 960px 70px;
+    }
+    .f04b-c {
+      display: inline-block;
+    }
+
+    /* tension line + glows */
+    #f04b-hline {
+      position: absolute;
+      left: 360px;
+      top: 539px;
+      width: 1200px;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(251, 246, 234, 0), rgba(251, 246, 234, 0.95) 50%, rgba(251, 246, 234, 0));
+      transform-origin: 600px 1px;
+    }
+    #f04b-glow {
+      position: absolute;
+      left: 260px;
+      top: 200px;
+      width: 1400px;
+      height: 640px;
+      border-radius: 50%;
+      background: radial-gradient(closest-side, rgba(251, 246, 234, 0.2), rgba(251, 246, 234, 0.06) 55%, rgba(251, 246, 234, 0));
+      transform-origin: 700px 320px;
+    }
+    #f04b-glow2 {
+      position: absolute;
+      left: 560px;
+      top: 430px;
+      width: 800px;
+      height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(closest-side, rgba(251, 246, 234, 0.42), rgba(251, 246, 234, 0));
+      transform-origin: 400px 130px;
+    }
+
+    /* ---------- countdown chip (identique dans toutes les frames) ---------- */
+    #f04b-chip {
+      position: absolute;
+      left: 1690px;
+      top: 64px;
+      width: 176px;
+      height: 56px;
+      border-radius: 28px;
+      background: rgba(251, 246, 234, 0.16);
+      border: 1.5px solid rgba(251, 246, 234, 0.3);
+      box-sizing: border-box;
+      transform-origin: 88px 28px;
+    }
+    #f04b-chip svg {
+      position: absolute;
+      left: 26px;
+      top: 13px;
+      width: 28px;
+      height: 28px;
+    }
+    #f04b-chip-val {
+      position: absolute;
+      left: 66px;
+      top: 0;
+      height: 53px;
+      line-height: 53px;
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 500;
+      font-size: 28px;
+      color: #fbf6ea;
+      white-space: nowrap;
+    }
+    #f04b-chip-ring {
+      position: absolute;
+      left: -2px;
+      top: -2px;
+      width: 176px;
+      height: 56px;
+      border-radius: 28px;
+      border: 2px solid rgba(251, 246, 234, 0.85);
+      box-sizing: border-box;
+      transform-origin: 88px 28px;
+    }
+    #f04b-chip-glow {
+      position: absolute;
+      left: -62px;
+      top: -52px;
+      width: 300px;
+      height: 160px;
+      border-radius: 50%;
+      background: radial-gradient(closest-side, rgba(251, 246, 234, 0.28), rgba(251, 246, 234, 0));
+    }
+  </style>
+
+  <div id="root" data-composition-id="04-bascule" data-start="0" data-duration="3.9" data-width="1920" data-height="1080">
+    <div id="f04b-bg" class="clip" data-start="0" data-duration="3.9" data-track-index="0">
+      <div id="f04b-halo"></div>
+      <div id="f04b-night"></div>
+      <div id="f04b-sweep"></div>
+    </div>
+
+    <div id="f04b-stage" class="clip" data-layout-allow-overflow data-start="0" data-duration="3.9" data-track-index="1">
+      <div id="f04b-lineA" class="f04b-line">
+        <span class="f04b-w f04b-wa">Mais</span><span class="f04b-w f04b-wa">ce</span><span class="f04b-w f04b-wa">n'est</span><span class="f04b-w f04b-wa">pas</span><span class="f04b-w f04b-wa">tout.</span>
+      </div>
+
+      <div id="f04b-hline"></div>
+      <div id="f04b-glow"></div>
+      <div id="f04b-glow2"></div>
+
+      <div id="f04b-lineB" class="f04b-line">
+        <span class="f04b-w f04b-wb">Et</span><span class="f04b-w f04b-wb">ça…</span><span class="f04b-w f04b-wb">ce</span><span class="f04b-w f04b-wb">n'est</span><span class="f04b-w f04b-wb">que</span>
+      </div>
+      <div id="f04b-lineC" class="f04b-line">
+        <span class="f04b-w f04b-wb">le</span><span class="f04b-w f04b-wb">début.</span>
+      </div>
+    </div>
+
+    <!-- countdown chip : reste seul allumé dans le noir -->
+    <div id="f04b-chip" class="clip" data-layout-allow-overflow data-start="0" data-duration="3.9" data-track-index="2">
+      <div id="f04b-chip-glow"></div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="#FBF6EA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13.5" r="7.5" /><path d="M12 13.5V9.8" /><path d="M9.5 2.8h5" /><path d="M18.4 6.6l1.4-1.4" /></svg>
+      <div id="f04b-chip-val">0:21</div>
+      <div id="f04b-chip-ring"></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var ID = "04-bascule";
+      var GLOBAL_START = 24.5;
+      var DUR = 3.9;
+      var CREAM = "#FBF6EA";
+      var DIM = "rgba(251, 246, 234, 0.38)";
+      var scope = document.querySelector("#root[data-composition-id='" + ID + "']") || document;
+      var q = function (s) {
+        return scope.querySelector(s);
+      };
+      var qa = function (s) {
+        return Array.prototype.slice.call(scope.querySelectorAll(s));
+      };
+
+      // split the reveal words into letters (synchronous, before the timeline is built)
+      qa(".f04b-wb").forEach(function (w) {
+        var txt = w.textContent;
+        w.textContent = "";
+        for (var i = 0; i < txt.length; i++) {
+          var c = document.createElement("span");
+          c.className = "f04b-c";
+          c.textContent = txt[i];
+          w.appendChild(c);
+        }
+      });
+
+      var tl = gsap.timeline({ paused: true });
+
+      // ---------- countdown chip (deterministic from local time) ----------
+      var chipVal = q("#f04b-chip-val");
+      function chipText(tLocal) {
+        var g = GLOBAL_START + tLocal;
+        var s = Math.floor(g + 1e-6);
+        if (g >= 45) {
+          var o = s - 45;
+          return "+0:" + (o < 10 ? "0" + o : "" + o);
+        }
+        var v = 45 - s;
+        return "0:" + (v < 10 ? "0" + v : "" + v);
+      }
+      var clock = { t: 0 };
+      tl.fromTo(
+        clock,
+        { t: 0 },
+        {
+          t: DUR,
+          duration: DUR,
+          ease: "none",
+          onUpdate: function () {
+            chipVal.textContent = chipText(clock.t);
+          },
+        },
+        0
+      );
+
+      // initial states for one-shot layers
+      tl.set("#f04b-night", { opacity: 0 }, 0);
+      tl.set(["#f04b-hline", "#f04b-glow", "#f04b-glow2", "#f04b-chip-ring", "#f04b-chip-glow"], { opacity: 0 }, 0);
+      tl.set("#f04b-sweep", { x: -1100, skewX: -14, opacity: 0 }, 0);
+
+      // ================= Scene 1 (0.0–1.2) « Mais ce n'est pas tout. » =================
+      var wa = qa(".f04b-wa");
+      tl.fromTo(wa, { opacity: 0, y: 44, scale: 1.08 }, { opacity: 1, y: 0, scale: 1, duration: 0.3, ease: "expo.out", stagger: 0.035 }, 0);
+      [0.1, 0.3, 0.45, 0.69, 0.9].forEach(function (t, i) {
+        tl.fromTo(wa[i], { color: DIM }, { color: CREAM, y: -6, duration: 0.14, ease: "power2.out", immediateRender: false }, t);
+      });
+      tl.fromTo("#f04b-lineA", { scale: 1 }, { scale: 1.04, duration: 1.2, ease: "sine.out" }, 0);
+      tl.fromTo("#f04b-halo", { x: -50, opacity: 0.75 }, { x: 30, opacity: 1, duration: 1.2, ease: "sine.inOut" }, 0);
+
+      // ================= Scene 2 (1.2–2.0) blackout, chip alone =================
+      // the cut: text gone in 0.12s, lights drop to night
+      tl.to("#f04b-lineA", { opacity: 0, scale: 0.97, filter: "blur(8px)", duration: 0.12, ease: "power2.in" }, 1.2);
+      tl.to("#f04b-night", { opacity: 1, duration: 0.06, ease: "none" }, 1.22);
+      // chip: one pulse on the tick (0:20 → 0:19 at local 1.5)
+      tl.fromTo("#f04b-chip", { scale: 1 }, { scale: 1.14, duration: 0.1, ease: "power2.out", immediateRender: false }, 1.5);
+      tl.to("#f04b-chip", { scale: 1, duration: 0.42, ease: "expo.out" }, 1.6);
+      tl.fromTo("#f04b-chip-ring", { opacity: 0.9, scale: 1 }, { opacity: 0, scale: 1.6, duration: 0.6, ease: "expo.out", immediateRender: false }, 1.5);
+      tl.fromTo("#f04b-chip-glow", { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power2.out", immediateRender: false }, 1.5);
+      tl.to("#f04b-chip-glow", { opacity: 0.35, duration: 0.6, ease: "power2.out" }, 1.62);
+      // tension: a thin horizon line draws out from the centre under the riser
+      tl.fromTo("#f04b-hline", { opacity: 0, scaleX: 0 }, { opacity: 0.75, scaleX: 1, duration: 0.68, ease: "power2.in", immediateRender: false }, 1.34);
+
+      // ================= Scene 3 (2.0–3.5) « Et ça… ce n'est que le début. » =================
+      // the line blooms into a soft glow
+      tl.to("#f04b-hline", { opacity: 0, scaleX: 1.25, scaleY: 8, duration: 0.4, ease: "expo.out" }, 2.02);
+      tl.fromTo("#f04b-glow", { opacity: 0, scale: 0.55 }, { opacity: 1, scale: 1, duration: 0.7, ease: "expo.out", immediateRender: false }, 2.02);
+      tl.fromTo("#f04b-stage", { scale: 1 }, { scale: 1.045, duration: 1.88, ease: "sine.inOut", immediateRender: false }, 2.02);
+
+      // letters unveil, word by word, out of blur with a cream glow
+      var wb = qa(".f04b-wb");
+      var wordT = [2.03, 2.18, 2.36, 2.5, 2.72, 2.96, 3.08];
+      wb.forEach(function (w, i) {
+        var cs = w.querySelectorAll(".f04b-c");
+        var big = i >= 5;
+        tl.fromTo(
+          cs,
+          { opacity: 0, y: big ? 34 : 24, scale: big ? 1.18 : 1.1, filter: big ? "blur(18px)" : "blur(12px)" },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            filter: "blur(0px)",
+            duration: big ? 0.5 : 0.38,
+            ease: "expo.out",
+            stagger: big ? 0.035 : 0.022,
+          },
+          wordT[i]
+        );
+      });
+      // « le début. » lands brighter: a second bloom behind it
+      tl.fromTo("#f04b-glow2", { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.5, ease: "expo.out", immediateRender: false }, 2.98);
+      tl.to("#f04b-glow2", { opacity: 0.7, duration: 0.4, ease: "sine.inOut" }, 3.48);
+
+      // ================= Scene 4 (3.5–3.9) light sweep re-lights the stage =================
+      // band and night edge share the same ease/duration → stay locked together
+      var SW_T = 3.46;
+      var SW_D = 0.44;
+      tl.to("#f04b-sweep", { opacity: 1, duration: 0.05, ease: "none" }, SW_T);
+      tl.fromTo("#f04b-sweep", { x: -1100, skewX: -14 }, { x: 2300, skewX: -14, duration: SW_D, ease: "power2.inOut", immediateRender: false }, SW_T);
+      // night left edge = band left + 600px; ±7% diagonal matches the skew
+      tl.fromTo(
+        "#f04b-night",
+        { clipPath: "polygon(-19.5% 0%, 160% 0%, 160% 100%, -33.5% 100%)" },
+        { clipPath: "polygon(157.5% 0%, 160% 0%, 160% 100%, 143.5% 100%)", duration: SW_D, ease: "power2.inOut", immediateRender: false },
+        SW_T
+      );
+      tl.to("#f04b-halo", { x: 0, opacity: 1, duration: 0.01 }, SW_T);
+      // impact at 3.5: the payoff word takes the hit
+      tl.fromTo("#f04b-lineC", { scale: 1 }, { scale: 1.05, duration: 0.08, ease: "power2.out", immediateRender: false }, 3.5);
+      tl.to("#f04b-lineC", { scale: 1.02, duration: 0.3, ease: "expo.out" }, 3.58);
+      tl.to("#f04b-glow", { opacity: 0.55, duration: 0.36, ease: "power2.out" }, 3.52);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines[ID] = tl;
+    })();
+  </script>
+</template>

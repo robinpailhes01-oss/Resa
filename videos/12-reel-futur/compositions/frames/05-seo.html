@@ -1,0 +1,779 @@
+<template id="05-seo-template">
+  <style>
+    @font-face {
+      font-family: "Outfit";
+      src: url("assets/fonts/outfit.woff2") format("woff2");
+      font-weight: 100 900;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "Manrope";
+      src: url("assets/fonts/manrope.woff2") format("woff2");
+      font-weight: 200 800;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "JetBrains Mono";
+      src: url("assets/fonts/jetbrainsmono.woff2") format("woff2");
+      font-weight: 100 800;
+      font-style: normal;
+    }
+
+    #root {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: "Manrope", sans-serif;
+      color: #1f2733;
+    }
+
+    /* ---------- ground (wider than the frame: parallax during the glide) ---------- */
+    #f05s-ground {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+    }
+    #f05s-ground-in {
+      position: absolute;
+      left: -200px;
+      top: -60px;
+      width: 2400px;
+      height: 1200px;
+      background:
+        radial-gradient(ellipse 34% 52% at 32% 20%, rgba(125, 147, 168, 0.95) 0%, rgba(125, 147, 168, 0) 70%),
+        radial-gradient(ellipse 34% 52% at 72% 24%, rgba(125, 147, 168, 0.75) 0%, rgba(125, 147, 168, 0) 70%),
+        radial-gradient(ellipse 120% 110% at 50% 45%, #617990 0%, #5a728a 62%, #4a6179 100%);
+    }
+
+    #f05s-stage {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+    }
+
+    /* ---------- camera world: two stations side by side ---------- */
+    #f05s-world {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 3840px;
+      height: 1080px;
+      transform-origin: 0 0;
+    }
+    .f05s-station {
+      position: absolute;
+      top: 0;
+      width: 1920px;
+      height: 1080px;
+    }
+    #f05s-st-search {
+      left: 0;
+    }
+    #f05s-st-ai {
+      left: 1920px;
+    }
+
+    /* ---------- HUD title ---------- */
+    #f05s-title {
+      position: absolute;
+      left: 104px;
+      top: 66px;
+      height: 96px;
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      font-family: "Outfit", sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    #f05s-bientot {
+      position: relative;
+      font-size: 74px;
+      color: #1f2733;
+      padding: 8px 22px 12px;
+    }
+    #f05s-bhl {
+      position: absolute;
+      inset: 0;
+      background: #f3d36b;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(31, 39, 51, 0.22);
+    }
+    #f05s-btx {
+      position: relative;
+    }
+    #f05s-subs {
+      position: relative;
+      width: 1100px;
+      height: 80px;
+      font-size: 62px;
+    }
+    .f05s-sub {
+      position: absolute;
+      left: 0;
+      top: 6px;
+      white-space: nowrap;
+    }
+    .f05s-w {
+      display: inline-block;
+      color: rgba(251, 246, 234, 0.38);
+      margin-right: 0.22em;
+    }
+
+    /* ---------- countdown chip ---------- */
+    #f05s-chip {
+      position: absolute;
+      left: 1690px;
+      top: 64px;
+      width: 176px;
+      height: 56px;
+      border-radius: 28px;
+      background: rgba(251, 246, 234, 0.16);
+      border: 2px solid rgba(251, 246, 234, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: #fbf6ea;
+    }
+    #f05s-chip svg {
+      width: 26px;
+      height: 26px;
+      display: block;
+    }
+    #f05s-chip-num {
+      position: relative;
+      width: 76px;
+      height: 34px;
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 500;
+      font-size: 30px;
+      line-height: 34px;
+    }
+    .f05s-cd {
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+    }
+
+    /* ---------- shared ---------- */
+    .f05s-caret {
+      display: inline-block;
+      width: 4px;
+      height: 1.05em;
+      background: #4a6179;
+      vertical-align: -0.16em;
+      margin-left: 3px;
+    }
+    .f05s-stamp {
+      position: absolute;
+      padding: 14px 32px 12px;
+      background: #f3d36b;
+      color: #1f2733;
+      font-family: "Outfit", sans-serif;
+      font-weight: 800;
+      font-size: 60px;
+      line-height: 1;
+      letter-spacing: 0.02em;
+      border-radius: 10px;
+      border: 4px solid rgba(31, 39, 51, 0.9);
+      box-shadow: 0 8px 18px rgba(31, 39, 51, 0.32);
+      z-index: 6;
+    }
+    .f05s-cap {
+      position: absolute;
+      left: 0;
+      width: 1920px;
+      text-align: center;
+      font-family: "Outfit", sans-serif;
+      font-weight: 700;
+      font-size: 50px;
+      line-height: 1;
+      letter-spacing: -0.035em;
+      color: #fbf6ea;
+      white-space: nowrap;
+    }
+    .f05s-cap span {
+      color: #f3d36b;
+    }
+
+    /* ---------- station 1 : search ---------- */
+    #f05s-bar {
+      position: absolute;
+      left: 310px;
+      top: 222px;
+      width: 1300px;
+      height: 120px;
+      border-radius: 60px;
+      background: #fffdf8;
+      box-shadow: 0 30px 80px rgba(31, 39, 51, 0.28);
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      padding: 0 48px;
+      font-size: 50px;
+      font-weight: 600;
+      color: #1f2733;
+      white-space: nowrap;
+    }
+    #f05s-bar svg {
+      width: 50px;
+      height: 50px;
+      flex: none;
+    }
+    #f05s-results {
+      position: absolute;
+      left: 310px;
+      top: 374px;
+      width: 1300px;
+      height: 436px;
+      border-radius: 22px;
+      background: #fffdf8;
+      box-shadow: 0 30px 80px rgba(31, 39, 51, 0.28);
+    }
+    .f05s-row {
+      position: absolute;
+      left: 12px;
+      top: 12px;
+      width: 1276px;
+      height: 100px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      padding: 0 22px;
+    }
+    .f05s-sk-thumb {
+      width: 72px;
+      height: 72px;
+      border-radius: 14px;
+      background: #ece6da;
+      flex: none;
+    }
+    .f05s-sk-lines {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .f05s-sk-bar {
+      height: 18px;
+      border-radius: 9px;
+      background: #ece6da;
+    }
+    .f05s-sk-pos {
+      margin-left: auto;
+      font-family: "Outfit", sans-serif;
+      font-weight: 700;
+      font-size: 30px;
+      color: #c9c1b2;
+    }
+    #f05s-alba {
+      background: #fffdf8;
+      border: 3px solid #e7dfd0;
+      z-index: 3;
+    }
+    #f05s-alba-thumb {
+      width: 76px;
+      height: 76px;
+      border-radius: 14px;
+      overflow: hidden;
+      flex: none;
+    }
+    #f05s-alba-thumb img {
+      width: 100%;
+      height: 180%;
+      object-fit: cover;
+      object-position: 50% 5%;
+      display: block;
+    }
+    .f05s-rt {
+      font-weight: 800;
+      font-size: 36px;
+      color: #1f2733;
+      white-space: nowrap;
+      line-height: 1.1;
+    }
+    .f05s-rs {
+      font-weight: 600;
+      font-size: 23px;
+      color: #5f6672;
+      margin-top: 6px;
+      white-space: nowrap;
+    }
+    .f05s-stars {
+      color: #937016;
+      letter-spacing: 0.04em;
+      margin-right: 10px;
+    }
+    #f05s-rankbox {
+      position: relative;
+      margin-left: auto;
+      width: 104px;
+      height: 58px;
+      flex: none;
+    }
+    #f05s-rank4,
+    #f05s-rank {
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      font-family: "Outfit", sans-serif;
+      font-weight: 700;
+      font-size: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #f05s-rank4 {
+      color: #8a8f98;
+      background: #f1ece1;
+    }
+    #f05s-rank {
+      background: #2f7d5b;
+      color: #fffdf8;
+    }
+    #f05s-st1 {
+      left: 1440px;
+      top: 330px;
+    }
+    #f05s-c1 {
+      top: 842px;
+    }
+
+    /* ---------- station 2 : assistant ---------- */
+    #f05s-assist {
+      position: absolute;
+      left: 310px;
+      top: 196px;
+      width: 1300px;
+      height: 624px;
+      border-radius: 22px;
+      background: #fffdf8;
+      box-shadow: 0 30px 80px rgba(31, 39, 51, 0.28);
+      overflow: hidden;
+    }
+    .f05s-kicker {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      height: 96px;
+      padding: 0 38px;
+      border-bottom: 2px solid #e7dfd0;
+      font-weight: 800;
+      font-size: 32px;
+      color: #1f2733;
+    }
+    .f05s-ico {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: #4a6179;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: none;
+    }
+    .f05s-ico svg {
+      width: 32px;
+      height: 32px;
+      display: block;
+    }
+    #f05s-chat {
+      position: relative;
+      padding: 30px 38px 0;
+    }
+    #f05s-q {
+      margin-left: auto;
+      width: max-content;
+      max-width: 1000px;
+      background: #4a6179;
+      color: #fbf6ea;
+      font-size: 36px;
+      font-weight: 600;
+      line-height: 1.3;
+      padding: 18px 32px;
+      border-radius: 32px 32px 8px 32px;
+      transform-origin: 100% 100%;
+      white-space: nowrap;
+    }
+    #f05s-arow {
+      display: flex;
+      gap: 18px;
+      margin-top: 22px;
+      align-items: flex-start;
+    }
+    #f05s-a {
+      position: relative;
+      width: 1000px;
+      height: 130px;
+      background: #f3eee3;
+      color: #1f2733;
+      font-size: 35px;
+      font-weight: 500;
+      line-height: 1.36;
+      padding: 18px 30px;
+      border-radius: 8px 32px 32px 32px;
+    }
+    #f05s-a b {
+      font-weight: 800;
+    }
+    #f05s-dots {
+      position: absolute;
+      left: 30px;
+      top: 34px;
+      display: flex;
+      gap: 10px;
+    }
+    #f05s-dots i {
+      display: block;
+      width: 16px;
+      height: 16px;
+      border-radius: 8px;
+      background: #8a8f98;
+    }
+    #f05s-src {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      width: 760px;
+      margin: 22px 0 0 74px;
+      padding: 14px 30px 14px 14px;
+      border-radius: 22px;
+      border: 3px solid #e7dfd0;
+      background: #fff;
+      box-shadow: 0 14px 30px rgba(31, 39, 51, 0.12);
+      transform-origin: 0 50%;
+    }
+    #f05s-src-thumb {
+      width: 150px;
+      height: 176px;
+      border-radius: 14px;
+      overflow: hidden;
+      flex: none;
+      background: #ece6da;
+    }
+    #f05s-src-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 50% 0%;
+      display: block;
+    }
+    .f05s-src-t {
+      font-weight: 800;
+      font-size: 34px;
+      line-height: 1.15;
+      color: #1f2733;
+      white-space: nowrap;
+    }
+    .f05s-src-t em {
+      font-style: normal;
+      color: #2f7d5b;
+    }
+    .f05s-src-s {
+      margin-top: 10px;
+      font-weight: 600;
+      font-size: 23px;
+      color: #5f6672;
+      white-space: nowrap;
+    }
+    #f05s-src-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 16px;
+      height: 50px;
+      padding: 0 24px;
+      border-radius: 25px;
+      background: #4a6179;
+      color: #fbf6ea;
+      font-family: "Outfit", sans-serif;
+      font-weight: 700;
+      font-size: 24px;
+    }
+    #f05s-st2 {
+      left: 1430px;
+      top: 150px;
+    }
+    #f05s-c2 {
+      top: 842px;
+    }
+  </style>
+
+  <div id="root" data-composition-id="05-seo" data-start="0" data-duration="7.8" data-width="1920" data-height="1080">
+    <div id="f05s-ground" class="clip" data-start="0" data-duration="7.8" data-track-index="0">
+      <div id="f05s-ground-in"></div>
+    </div>
+
+    <div id="f05s-stage" class="clip" data-start="0" data-duration="7.8" data-track-index="1">
+      <!-- camera world -->
+      <div id="f05s-world" data-layout-allow-overflow data-layout-allow-occlusion>
+        <!-- station 1 : search -->
+        <div class="f05s-station" id="f05s-st-search">
+          <div id="f05s-bar">
+            <svg viewBox="0 0 30 30" fill="none" stroke="#4a6179" stroke-width="3.2" stroke-linecap="round"><circle cx="13" cy="13" r="9" /><path d="M20 20l7 7" /></svg>
+            <span id="f05s-query"></span><span class="f05s-caret" id="f05s-qcaret"></span>
+          </div>
+          <div id="f05s-results">
+            <div class="f05s-row" id="f05s-sk1">
+              <div class="f05s-sk-thumb"></div>
+              <div class="f05s-sk-lines"><div class="f05s-sk-bar" style="width: 520px"></div><div class="f05s-sk-bar" style="width: 330px"></div></div>
+            </div>
+            <div class="f05s-row" id="f05s-sk2">
+              <div class="f05s-sk-thumb"></div>
+              <div class="f05s-sk-lines"><div class="f05s-sk-bar" style="width: 450px"></div><div class="f05s-sk-bar" style="width: 380px"></div></div>
+            </div>
+            <div class="f05s-row" id="f05s-sk3">
+              <div class="f05s-sk-thumb"></div>
+              <div class="f05s-sk-lines"><div class="f05s-sk-bar" style="width: 490px"></div><div class="f05s-sk-bar" style="width: 290px"></div></div>
+            </div>
+            <div class="f05s-row" id="f05s-alba">
+              <div id="f05s-alba-thumb"><img src="assets/app-page-publique-mobile.png" alt="" /></div>
+              <div>
+                <div class="f05s-rt">Maison Alba · Réserver en ligne</div>
+                <div class="f05s-rs"><span class="f05s-stars">★★★★★</span>Institut de beauté · Montpellier</div>
+              </div>
+              <div id="f05s-rankbox"><div id="f05s-rank4">N°4</div><div id="f05s-rank">N°1</div></div>
+            </div>
+          </div>
+          <div class="f05s-stamp" id="f05s-st1" data-layout-allow-overlap data-layout-allow-occlusion>BIENTÔT</div>
+          <div class="f05s-cap" id="f05s-c1">Référencement <span>SEO</span></div>
+        </div>
+
+        <!-- station 2 : assistant -->
+        <div class="f05s-station" id="f05s-st-ai">
+          <div id="f05s-assist">
+            <div class="f05s-kicker">
+              <div class="f05s-ico">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#fbf6ea" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M4 5h16v11H10l-5 4v-4H4z" /><path d="M8 9.5h8M8 12.5h5" /></svg>
+              </div>
+              <span>Assistant IA</span>
+            </div>
+            <div id="f05s-chat">
+              <div id="f05s-q">Un institut pour un soin visage à Montpellier ?</div>
+              <div id="f05s-arow">
+                <div class="f05s-ico" style="background: #e9e2d4">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#4a6179" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M4 5h16v11H10l-5 4v-4H4z" /><path d="M8 9.5h8M8 12.5h5" /></svg>
+                </div>
+                <div id="f05s-a">
+                  <div id="f05s-dots"><i></i><i></i><i></i></div>
+                  <span id="f05s-atext"></span><span class="f05s-caret" id="f05s-acaret"></span>
+                </div>
+              </div>
+              <div id="f05s-src">
+                <div id="f05s-src-thumb"><img src="assets/app-page-publique-mobile.png" alt="" /></div>
+                <div>
+                  <div class="f05s-src-t">Maison Alba — <em>réservable en ligne</em></div>
+                  <div class="f05s-src-s"><span class="f05s-stars">★★★★★</span>Institut de beauté · Montpellier</div>
+                  <div id="f05s-src-btn">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#fbf6ea" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="3" /><path d="M3.5 10h17M8 3v4M16 3v4" /></svg>
+                    Réserver
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="f05s-stamp" id="f05s-st2" data-layout-allow-overlap data-layout-allow-occlusion>BIENTÔT</div>
+          <div class="f05s-cap" id="f05s-c2">Recommandée par les IA <span>(GEO)</span></div>
+        </div>
+      </div>
+
+      <!-- HUD : title (fixed, outside the camera) -->
+      <div id="f05s-title">
+        <div id="f05s-bientot"><div id="f05s-bhl"></div><span id="f05s-btx">Bientôt</span></div>
+        <div id="f05s-subs">
+          <div class="f05s-sub" id="f05s-subA"><span class="f05s-w f05s-wa">Votre</span><span class="f05s-w f05s-wa">page,</span><span class="f05s-w f05s-wa">en</span><span class="f05s-w f05s-wa">tête</span><span class="f05s-w f05s-wa">des</span><span class="f05s-w f05s-wa">recherches.</span></div>
+          <div class="f05s-sub" id="f05s-subB"><span class="f05s-w f05s-wb">Votre</span><span class="f05s-w f05s-wb">page,</span><span class="f05s-w f05s-wb">citée</span><span class="f05s-w f05s-wb">par</span><span class="f05s-w f05s-wb">les</span><span class="f05s-w f05s-wb">IA.</span></div>
+        </div>
+      </div>
+
+      <!-- countdown chip (global_start 28.4) -->
+      <div id="f05s-chip">
+        <svg viewBox="0 0 26 26" fill="none" stroke="#fbf6ea" stroke-width="2.4" stroke-linecap="round"><circle cx="13" cy="14.5" r="9" /><path d="M13 14.5V9.5M10 2.5h6M20.5 6.5l1.8-1.8" /></svg>
+        <div id="f05s-chip-num"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/gsap.min.js"></script>
+  <script>
+    (function () {
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const DUR = 7.8;
+      const GLOBAL_START = 28.4;
+      const CREAM = "#fbf6ea";
+
+      // ── countdown chip: value = max(0, 45 - floor(global_start + t)), discrete swaps ──
+      const num = document.getElementById("f05s-chip-num");
+      const cds = [];
+      for (let s = Math.floor(GLOBAL_START); s <= Math.floor(GLOBAL_START + DUR); s++) {
+        const v = Math.max(0, 45 - s);
+        const el = document.createElement("span");
+        el.className = "f05s-cd";
+        el.textContent = "0:" + String(v).padStart(2, "0");
+        num.appendChild(el);
+        cds.push({ el, t0: Math.max(0, s - GLOBAL_START) });
+      }
+      cds.forEach((c, i) => {
+        if (i === 0) gsap.set(c.el, { opacity: 1 });
+        else {
+          tl.set(c.el, { opacity: 1 }, c.t0);
+          tl.set(cds[i - 1].el, { opacity: 0 }, c.t0);
+        }
+      });
+
+      // ── typewriter helper: fixed per-character schedule ──
+      function typeInto(target, segments, t0, per) {
+        const host = document.getElementById(target);
+        const chars = [];
+        segments.forEach(([text, tag]) => {
+          let parent = host;
+          if (tag) {
+            parent = document.createElement(tag);
+            host.appendChild(parent);
+          }
+          for (const ch of text) {
+            const s = document.createElement("span");
+            s.textContent = ch;
+            s.style.display = "none";
+            parent.appendChild(s);
+            chars.push(s);
+          }
+        });
+        chars.forEach((s, i) => tl.set(s, { display: "inline" }, t0 + i * per));
+        return t0 + chars.length * per;
+      }
+
+      // ── camera: one state, one writer (applied on every timeline render) ──
+      // focus (fx, fy) in world px is shown at screen centre (960, 540), zoom s.
+      const world = document.getElementById("f05s-world");
+      const cam = { fx: 960, fy: 470, s: 1.12, blur: 0 };
+      function applyCam() {
+        const tx = 960 - cam.fx * cam.s;
+        const ty = 540 - cam.fy * cam.s;
+        world.style.transform = "translate(" + tx.toFixed(2) + "px," + ty.toFixed(2) + "px) scale(" + cam.s.toFixed(4) + ")";
+        world.style.filter = cam.blur > 0.05 ? "blur(" + cam.blur.toFixed(2) + "px)" : "none";
+      }
+      applyCam();
+      tl.eventCallback("onUpdate", applyCam);
+
+      // ── stamp helper: scale 1.6 → 1 in 0.18s + panel shake ──
+      function stamp(st, shake, t) {
+        tl.fromTo(st, { opacity: 0, scale: 1.6, rotation: -14 }, { opacity: 1, scale: 1, rotation: -8, duration: 0.18, ease: "power3.in", immediateRender: true }, t);
+        tl.fromTo(shake, { x: 0, y: 0 }, { keyframes: [{ x: -9, y: 6, duration: 0.05 }, { x: 7, y: -4, duration: 0.05 }, { x: -3, y: 2, duration: 0.05 }, { x: 0, y: 0, duration: 0.06 }], ease: "none", immediateRender: false }, t + 0.18);
+      }
+      function caption(c, t) {
+        tl.fromTo(c, { opacity: 0, y: 26, filter: "blur(8px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.34, ease: "expo.out", immediateRender: true }, t);
+      }
+
+      // ── ground: slow push + parallax during the glide ──
+      tl.fromTo("#f05s-ground-in", { scale: 1, x: 0 }, { scale: 1.05, duration: DUR, ease: "none" }, 0);
+      tl.to("#f05s-ground-in", { x: -170, duration: 0.64, ease: "power2.inOut" }, 4.5);
+
+      // ══ Scene 1 (0–1.0) : « Bientôt » stamped (0.1), subline A ══
+      tl.fromTo("#f05s-bientot", { opacity: 0, scale: 1.6, rotation: -9 }, { opacity: 1, scale: 1, rotation: -3, duration: 0.18, ease: "power3.in", immediateRender: true }, 0.08);
+      tl.fromTo("#f05s-title", { x: 0, y: 0 }, { keyframes: [{ x: -6, y: 4, duration: 0.05 }, { x: 5, y: -2, duration: 0.05 }, { x: 0, y: 0, duration: 0.06 }], ease: "none", immediateRender: false }, 0.26);
+      const wa = gsap.utils.toArray(".f05s-wa");
+      const wb = gsap.utils.toArray(".f05s-wb");
+      tl.fromTo(wa, { opacity: 0, y: 30, filter: "blur(8px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.32, ease: "expo.out", stagger: 0.05, immediateRender: true }, 0.34);
+      gsap.set(wb, { opacity: 0 });
+      // karaoke: « Votre page » on « page de réservation » (0.98), « en tête des recherches » on « remonter sur Google » (3.07)
+      tl.to(wa.slice(0, 2), { color: CREAM, y: -6, duration: 0.14, ease: "power2.out", stagger: 0.18 }, 0.98);
+      tl.to(wa.slice(2), { color: CREAM, y: -6, duration: 0.14, ease: "power2.out", stagger: 0.24 }, 3.07);
+
+      // camera prologue: tight & slightly high, lands as the bar arrives
+      tl.fromTo(cam, { fx: 960, fy: 470, s: 1.12 }, { fx: 960, fy: 545, s: 1.0, duration: 0.75, ease: "power4.out", immediateRender: true }, 0.8);
+
+      // ══ Scene 2 (0.9–4.4) : search bar, typed query, results, climb to N°1 ══
+      tl.fromTo("#f05s-bar", { opacity: 0, y: 260, scale: 1.06 }, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "expo.out", immediateRender: true }, 0.8);
+      gsap.set("#f05s-qcaret", { opacity: 0 });
+      tl.set("#f05s-qcaret", { opacity: 1 }, 1.05);
+      const qEnd = typeInto("f05s-query", [["esthéticienne Montpellier", null]], 1.12, 0.034);
+      tl.set("#f05s-qcaret", { opacity: 0 }, qEnd + 0.12);
+
+      // results card + 4 rows (Maison Alba in 4th position)
+      const STEP = 104;
+      tl.fromTo("#f05s-results", { opacity: 0, y: 70, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.42, ease: "expo.out", immediateRender: true }, 2.0);
+      const rows = ["#f05s-sk1", "#f05s-sk2", "#f05s-sk3", "#f05s-alba"];
+      rows.forEach((r, i) => {
+        tl.fromTo(r, { opacity: 0, x: 40, y: i * STEP - 18 }, { opacity: 1, x: 0, y: i * STEP, duration: 0.34, ease: "expo.out", immediateRender: true }, 2.1 + i * 0.09);
+      });
+      gsap.set("#f05s-rank", { opacity: 0, scale: 0.5 });
+      // skeleton loading breathe (keyframes, no repeat)
+      tl.fromTo(".f05s-sk-bar, .f05s-sk-thumb", { opacity: 1 }, { keyframes: [{ opacity: 0.5, duration: 0.25 }, { opacity: 1, duration: 0.25 }], ease: "sine.inOut", immediateRender: false }, 2.55);
+
+      // « remonter sur Google » 3.07 : Alba climbs 4 → 1, the others step down
+      tl.to("#f05s-alba", { y: 0, scale: 1.035, borderColor: "#4a6179", boxShadow: "0 22px 48px rgba(31,39,51,0.25)", duration: 0.7, ease: "expo.inOut" }, 3.08);
+      tl.to("#f05s-sk1", { y: STEP, duration: 0.7, ease: "expo.inOut" }, 3.1);
+      tl.to("#f05s-sk2", { y: 2 * STEP, duration: 0.7, ease: "expo.inOut" }, 3.12);
+      tl.to("#f05s-sk3", { y: 3 * STEP, opacity: 0.6, duration: 0.7, ease: "expo.inOut" }, 3.14);
+      tl.to("#f05s-rank4", { opacity: 0, duration: 0.15 }, 3.6);
+      tl.to("#f05s-rank", { opacity: 1, scale: 1, duration: 0.3, ease: "expo.out" }, 3.62);
+      // camera leans in on the new N°1
+      tl.to(cam, { fy: 575, s: 1.06, duration: 1.1, ease: "power2.inOut" }, 3.1);
+
+      // stamp BIENTÔT + caption « Référencement SEO »
+      stamp("#f05s-st1", "#f05s-st-search", 3.96);
+      caption("#f05s-c1", 4.08);
+
+      // ══ Scene 3 (4.4–7.8) : lateral glide to the assistant ══
+      gsap.set("#f05s-subB", { opacity: 1 });
+      tl.to(wa, { opacity: 0, y: -34, filter: "blur(10px)", duration: 0.18, ease: "power2.in", stagger: 0.025 }, 4.5);
+      tl.to(cam, { fx: 2880, duration: 0.66, ease: "power2.inOut" }, 4.5);
+      tl.to(cam, { keyframes: [{ s: 0.9, fy: 545, duration: 0.33, ease: "power2.out" }, { s: 1.0, fy: 560, duration: 0.35, ease: "power2.out" }] }, 4.5);
+      tl.fromTo(cam, { blur: 0 }, { keyframes: [{ blur: 14, duration: 0.3, ease: "power2.in" }, { blur: 0, duration: 0.34, ease: "power2.out" }], immediateRender: false }, 4.5);
+      tl.fromTo(wb, { opacity: 0, y: 30, filter: "blur(8px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.3, ease: "expo.out", stagger: 0.05, immediateRender: false }, 4.74);
+      // karaoke B: « Votre page, citée » on « apparaître » (4.59 → reveal), « par les IA » on « réponses des IA » (5.51)
+      tl.to(wb.slice(0, 3), { color: CREAM, y: -6, duration: 0.14, ease: "power2.out", stagger: 0.1 }, 4.98);
+      tl.to(wb.slice(3), { color: CREAM, y: -6, duration: 0.14, ease: "power2.out", stagger: 0.2 }, 5.6);
+
+      // assistant panel content
+      tl.fromTo("#f05s-q", { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.32, ease: "expo.out", immediateRender: true }, 4.92);
+      tl.fromTo("#f05s-arow", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.26, ease: "expo.out", immediateRender: true }, 5.1);
+      gsap.utils.toArray("#f05s-dots i").forEach((d, i) => {
+        tl.fromTo(d, { y: 0 }, { keyframes: [{ y: -8, duration: 0.08 }, { y: 0, duration: 0.08 }, { y: 0, duration: 0.04 }, { y: -8, duration: 0.08 }, { y: 0, duration: 0.08 }], ease: "none", immediateRender: false }, 5.14 + i * 0.05);
+      });
+      tl.set("#f05s-dots", { display: "none" }, 5.5);
+      gsap.set("#f05s-acaret", { opacity: 0 });
+      tl.set("#f05s-acaret", { opacity: 1 }, 5.5);
+      const aEnd = typeInto(
+        "f05s-atext",
+        [
+          ["Je vous recommande ", null],
+          ["Maison Alba", "b"],
+          [", un institut de beauté au centre-ville.", null],
+        ],
+        5.52,
+        0.0118
+      );
+      tl.set("#f05s-acaret", { opacity: 0 }, aEnd + 0.08);
+      // page card arrives in the answer
+      tl.fromTo("#f05s-src", { opacity: 0, scale: 0.7, y: 24 }, { opacity: 1, scale: 1, y: 0, duration: 0.38, ease: "expo.out", immediateRender: true }, 6.4);
+      tl.fromTo("#f05s-src-thumb img", { scale: 1.2 }, { scale: 1, duration: 0.9, ease: "expo.out", immediateRender: true }, 6.4);
+      // slow push toward the answer, keeps the hold alive to the end
+      tl.to(cam, { fy: 590, s: 1.035, duration: 2.3, ease: "sine.inOut" }, 5.5);
+
+      // stamp BIENTÔT + caption « Recommandée par les IA (GEO) » on « ChatGPT » (6.79)
+      stamp("#f05s-st2", "#f05s-st-ai", 6.84);
+      caption("#f05s-c2", 6.96);
+
+      // initial hidden states for later stamps / captions
+      gsap.set(["#f05s-st1", "#f05s-st2", "#f05s-c1", "#f05s-c2"], { opacity: 0 });
+
+      tl.set({}, {}, DUR);
+      window.__timelines["05-seo"] = tl;
+    })();
+  </script>
+</template>
