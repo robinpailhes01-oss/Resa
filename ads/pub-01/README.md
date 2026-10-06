@@ -4,6 +4,7 @@ Vidéo motion design 9:16 (1080×1920, 30 i/s, 30 s), réalisée avec les vrais 
 
 - `reso-pub-01-voix.mp4` : version avec voix off (Higgsfield, voix « Céline »)
 - `reso-pub-01.mp4` : version sans voix
+- `reso-pub-01-dm.mp4` : variante cellule B (test T-001) : carte de fin « Écris « PAGE » en message », pour une pub « Envoyer un message » vers Instagram Direct (`?v=dm`, `sound.py --variante-dm`)
 - `vo/` : les 10 phrases de la voix off, nettoyées et calées (`T.vo` dans index.html)
 - `voix-comparaison.m4a` : le hook lu par 4 voix Higgsfield (Elodie, Céline, Inès, Nadine)
 - `index.html` : l'animation (timeline `T`, fonction `seek(t)`)
@@ -61,5 +62,5 @@ Des pros de la beauté indépendants :
 npm ci && RESO_LAUNCH_MODE=live npx next dev   # pour refaire les captures (http://localhost:3000/demo…)
 pip install numpy
 python3 ads/pub-01/sound.py /tmp/sound.wav            # ajouter --sans-voix pour la version sans voix off
-cd ads/pub-01 && node render.mjs /tmp/sound.wav reso-pub-01.mp4
+cd ads/pub-01 && node render.mjs /tmp/sound.wav reso-pub-01.mp4        # ajouter « dm » en 3e argument pour la variante
 ```
