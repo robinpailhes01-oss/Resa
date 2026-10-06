@@ -39,8 +39,8 @@ SFX=(
   "tick 23.22 0.4"     # demande d'avis
   "riser 25.75 0.8"    # coupure → « ce n'est que le début »
   "impact 28.00 0.9"   # rallumage
-  "impact 32.70 0.7"   # BIENTÔT SEO
-  "impact 35.40 0.7"   # BIENTÔT GEO
+  "impact 32.36 0.7"   # BIENTÔT SEO
+  "impact 35.24 0.7"   # BIENTÔT GEO
   "whoosh 38.00 0.45"  # photos qui volent
   "tick 40.80 0.35"    # publications programmées
   "tick 41.20 0.35"
@@ -50,10 +50,10 @@ SFX=(
   "tick 48.60 0.4"     # message de relance envoyé
   "ding 49.70 0.45"    # Julie a réservé
   "impact 50.40 0.7"   # BIENTÔT relance
-  "buzz 51.50 0.45"    # chrono qui tremble
+  "buzz 51.36 0.45"    # chrono qui tremble
   "tick 56.10 0.4"     # 7 jours offerts
   "tick 56.80 0.4"     # sans carte bancaire
-  "paper 58.50 0.45"   # 39 € HT/mois
+  "paper 58.90 0.45"   # 39 € HT/mois
   "tick 60.00 0.45"    # clic Créer ma page
   "tick 61.24 0.35"    # bulle Céline
   "paper 64.48 0.5"    # BIENTÔT (réponse)
