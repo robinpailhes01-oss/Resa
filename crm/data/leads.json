@@ -990,7 +990,8 @@
       "maps": "https://www.google.com/maps/search/?api=1&query=Gr%C3%A8ze+Coiffure+11+Rue+de+Maguelone%2C+34000+Montpellier",
       "notes": "Lot ciblé : pas de Planity.",
       "priority": true,
-      "noLink": true
+      "noLink": true,
+      "lulu": true
     },
     {
       "name": "Color Loft",
@@ -1002,7 +1003,8 @@
       "maps": "https://www.google.com/maps/search/?api=1&query=Color+Loft+6+Rue+de+Maguelone%2C+34000+Montpellier",
       "notes": "Lot ciblé : pas de Planity.",
       "priority": true,
-      "noLink": true
+      "noLink": true,
+      "lulu": true
     },
     {
       "name": "Patrick Roux Coiffure",
@@ -1014,19 +1016,8 @@
       "maps": "https://www.google.com/maps/search/?api=1&query=Patrick+Roux+Coiffure+13+Rue+de+la+Croix+d%27Or%2C+34000+Montpellier",
       "notes": "Lot ciblé : pas de Planity.",
       "priority": true,
-      "noLink": true
-    },
-    {
-      "name": "Josyvan Coiffures",
-      "type": "Coiffure",
-      "address": "3 Rue du Bras de Fer, 34000 Montpellier",
-      "city": "Montpellier",
-      "phone": "04 67 66 03 92",
-      "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
-      "maps": "https://www.google.com/maps/search/?api=1&query=Josyvan+Coiffures+3+Rue+du+Bras+de+Fer%2C+34000+Montpellier",
-      "notes": "Lot ciblé : pas de Planity.",
-      "priority": true,
-      "noLink": true
+      "noLink": true,
+      "lulu": true
     },
     {
       "name": "Evelyne'B",
@@ -1038,19 +1029,8 @@
       "maps": "https://www.google.com/maps/search/?api=1&query=Evelyne%27B+17+Boulevard+des+Arceaux%2C+34000+Montpellier",
       "notes": "Lot ciblé : pas de Planity. A un site perso (coiffeur-montpellier-evelyneb.fr) : demander comment ils prennent les RDV.",
       "priority": true,
-      "noLink": true
-    },
-    {
-      "name": "Claude Michel Coiffure",
-      "type": "Coiffure",
-      "address": "1 Place Rondelet, 34000 Montpellier",
-      "city": "Montpellier",
-      "phone": "04 67 58 78 08",
-      "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
-      "maps": "https://www.google.com/maps/search/?api=1&query=Claude+Michel+Coiffure+1+Place+Rondelet%2C+34000+Montpellier",
-      "notes": "Lot ciblé : pas de Planity.",
-      "priority": true,
-      "noLink": true
+      "noLink": true,
+      "lulu": true
     },
     {
       "name": "Coiffure Tiff'Anita",
@@ -1062,7 +1042,8 @@
       "maps": "https://www.google.com/maps/search/?api=1&query=Coiffure+Tiff%27Anita+7+Rue+de+la+Friperie%2C+34000+Montpellier",
       "notes": "Lot ciblé : pas de Planity.",
       "priority": true,
-      "noLink": true
+      "noLink": true,
+      "lulu": true
     },
     {
       "name": "Artistik Coiffure",
@@ -1074,7 +1055,8 @@
       "maps": "https://www.google.com/maps/search/?api=1&query=Artistik+Coiffure+748+Rue+de+la+Vieille+Poste%2C+34000+Montpellier",
       "notes": "Lot ciblé : pas de Planity.",
       "priority": true,
-      "noLink": true
+      "noLink": true,
+      "lulu": true
     },
     {
       "name": "Romain Coiffure",
@@ -1086,19 +1068,8 @@
       "maps": "https://www.google.com/maps/search/?api=1&query=Romain+Coiffure+2+BIS+Rue+Four+des+Flammes%2C+34000+Montpellier",
       "notes": "Lot ciblé : pas de Planity.",
       "priority": true,
-      "noLink": true
-    },
-    {
-      "name": "Kristeliz",
-      "type": "Coiffure",
-      "address": "30 Rue de l'Université, 34000 Montpellier",
-      "city": "Montpellier",
-      "phone": "04 67 60 88 27",
-      "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
-      "maps": "https://www.google.com/maps/search/?api=1&query=Kristeliz+30+Rue+de+l%27Universit%C3%A9%2C+34000+Montpellier",
-      "notes": "Lot ciblé : pas de Planity. A un site perso (kristeliz.com) : demander comment ils prennent les RDV.",
-      "priority": true,
-      "noLink": true
+      "noLink": true,
+      "lulu": true
     },
     {
       "name": "L'Atelier de Benjamin",
@@ -1110,7 +1081,8 @@
       "maps": "https://www.google.com/maps/search/?api=1&query=L%27Atelier+de+Benjamin+3+Rue+du+Puits+du+Temple%2C+34000+Montpellier",
       "notes": "Lot ciblé : sans réservation en ligne.",
       "priority": true,
-      "noLink": true
+      "noLink": true,
+      "lulu": true
     },
     {
       "name": "Saint-Germain Céline",
@@ -1122,19 +1094,8 @@
       "maps": "https://www.google.com/maps/search/?api=1&query=Saint-Germain+C%C3%A9line+18+Rue+Saint-Firmin%2C+34000+Montpellier",
       "notes": "Lot ciblé : sans réservation en ligne.",
       "priority": true,
-      "noLink": true
-    },
-    {
-      "name": "Coiff'Styl Martine",
-      "type": "Coiffure",
-      "address": "3 Rue du Puits des Esquilles, 34000 Montpellier",
-      "city": "Montpellier",
-      "phone": "04 67 66 11 10",
-      "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
-      "maps": "https://www.google.com/maps/search/?api=1&query=Coiff%27Styl+Martine+3+Rue+du+Puits+des+Esquilles%2C+34000+Montpellier",
-      "notes": "Lot ciblé : sans réservation en ligne.",
-      "priority": true,
-      "noLink": true
+      "noLink": true,
+      "lulu": true
     },
     {
       "name": "Triaire Sébastien",
@@ -1146,7 +1107,8 @@
       "maps": "https://www.google.com/maps/search/?api=1&query=Triaire+S%C3%A9bastien+11+Boulevard+des+Arceaux%2C+34000+Montpellier",
       "notes": "Lot ciblé : sans réservation en ligne. Coiffure homme et barbier, avec ou sans RDV.",
       "priority": true,
-      "noLink": true
+      "noLink": true,
+      "lulu": true
     },
     {
       "name": "Les Créateurs",
@@ -1158,7 +1120,8 @@
       "maps": "https://www.google.com/maps/search/?api=1&query=Les+Cr%C3%A9ateurs+22+Boulevard+d%27Orient%2C+34070+Montpellier",
       "notes": "Lot ciblé : sans réservation en ligne. Prend aussi sans RDV.",
       "priority": true,
-      "noLink": true
+      "noLink": true,
+      "lulu": true
     },
     {
       "name": "SB Salon",
@@ -1170,7 +1133,8 @@
       "maps": "https://www.google.com/maps/search/?api=1&query=SB+Salon+6+Rue+du+Petit+Saint-Jean%2C+34000+Montpellier",
       "notes": "Lot ciblé : sans réservation en ligne.",
       "priority": true,
-      "noLink": true
+      "noLink": true,
+      "lulu": true
     },
     {
       "name": "Albrizio Pasquale",
@@ -1182,19 +1146,8 @@
       "maps": "https://www.google.com/maps/search/?api=1&query=Albrizio+Pasquale+R%C3%A9sidence+Europa%2C+Rue+Hippolyte+Rech%2C+34090+Montpellier",
       "notes": "Lot ciblé : sans réservation en ligne. RDV uniquement par téléphone (indiqué sur ses fiches). Salon L'Oréal Professionnel.",
       "priority": true,
-      "noLink": true
-    },
-    {
-      "name": "Club 7",
-      "type": "Coiffure",
-      "address": "448 Rue de la Roqueturière, Impasse Suzanne Lenglen, 34090 Montpellier",
-      "city": "Montpellier",
-      "phone": "04 67 70 77 09",
-      "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
-      "maps": "https://www.google.com/maps/search/?api=1&query=Club+7+448+Rue+de+la+Roqueturi%C3%A8re%2C+Impasse+Suzanne+Lenglen%2C+34090+Montpellier",
-      "notes": "Lot ciblé : sans réservation en ligne.",
-      "priority": true,
-      "noLink": true
+      "noLink": true,
+      "lulu": true
     },
     {
       "name": "Beauté Nature Coiffure",
@@ -1206,7 +1159,8 @@
       "maps": "https://www.google.com/maps/search/?api=1&query=Beaut%C3%A9+Nature+Coiffure+135+Rue+de+la+Cavalade%2C+34000+Montpellier",
       "notes": "Lot ciblé : sans réservation en ligne. Coloration végétale, 174 avis Google.",
       "priority": true,
-      "noLink": true
+      "noLink": true,
+      "lulu": true
     },
     {
       "name": "Atelier Coiffure Valérie Hebda",
@@ -1218,7 +1172,8 @@
       "maps": "https://www.google.com/maps/search/?api=1&query=Atelier+Coiffure+Val%C3%A9rie+Hebda+467+Rue+de+la+Roqueturi%C3%A8re%2C+34090+Montpellier",
       "notes": "Lot ciblé : sans réservation en ligne. Site vitrine sans réservation en ligne.",
       "priority": true,
-      "noLink": true
+      "noLink": true,
+      "lulu": true
     },
     {
       "name": "De Mèche Avec Vous",
@@ -1230,7 +1185,8 @@
       "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; Fresha : fiche non partenaire ; ni Treatwell, ni Booksy, ni Rdv360). Bouton Google non vérifié.",
       "maps": "https://www.google.com/maps/search/?api=1&query=De+M%C3%A8che+Avec+Vous+453+Rue+L%C3%A9on+Blum%2C+34000+Montpellier",
       "notes": "Lot ultra qualifié Montpellier. Note Google 5,0 (79 avis). RDV par téléphone uniquement. Gérante : Mélanie.",
-      "noLink": true
+      "noLink": true,
+      "lulu": true
     },
     {
       "name": "JG Coiffeur Créateur",
@@ -1242,19 +1198,8 @@
       "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; Fresha : fiche non partenaire ; ni Treatwell, ni Booksy, ni Rdv360). Bouton Google non vérifié.",
       "maps": "https://www.google.com/maps/search/?api=1&query=JG+Coiffeur+Cr%C3%A9ateur+8+Rue+du+Bras+de+Fer%2C+34000+Montpellier",
       "notes": "Lot ultra qualifié Montpellier. Écusson. Site vitrine (jg-coiffeurcreateur.fr) sans réservation en ligne.",
-      "noLink": true
-    },
-    {
-      "name": "Esprit Basora",
-      "type": "Coiffure",
-      "address": "10 Rue du Palais des Guilhem, 34000 Montpellier",
-      "city": "Montpellier",
-      "phone": "04 67 60 25 40",
-      "priority": true,
-      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; Fresha : fiche non partenaire ; ni Treatwell, ni Booksy, ni Rdv360). Bouton Google non vérifié.",
-      "maps": "https://www.google.com/maps/search/?api=1&query=Esprit+Basora+10+Rue+du+Palais+des+Guilhem%2C+34000+Montpellier",
-      "notes": "Lot ultra qualifié Montpellier. Coiffeur visagiste, 4,7 (50+ avis). Site espritbasora.com : aucun module de réservation trouvé. Autre numéro : 07 83 89 66 38.",
-      "noLink": true
+      "noLink": true,
+      "lulu": true
     },
     {
       "name": "YLB Prestige",
@@ -1266,31 +1211,8 @@
       "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; Fresha : fiche non partenaire ; ni Treatwell, ni Booksy, ni Rdv360). Bouton Google non vérifié.",
       "maps": "https://www.google.com/maps/search/?api=1&query=YLB+Prestige+1+Rue+de+la+Draperie+Rouge%2C+34000+Montpellier",
       "notes": "Lot ultra qualifié Montpellier. 1er étage face à Uniqlo (Halles Castellane). Salon L'Oréal Professionnel. Site ylb-coiffure.com non vérifié (injoignable).",
-      "noLink": true
-    },
-    {
-      "name": "Beauté Alma",
-      "type": "Coiffure",
-      "address": "4 Rue Durand, 34000 Montpellier",
-      "city": "Montpellier",
-      "phone": "07 80 81 17 27",
-      "priority": true,
-      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; Fresha : fiche non partenaire ; ni Treatwell, ni Booksy, ni Rdv360). Bouton Google non vérifié.",
-      "maps": "https://www.google.com/maps/search/?api=1&query=Beaut%C3%A9+Alma+4+Rue+Durand%2C+34000+Montpellier",
-      "notes": "Lot ultra qualifié Montpellier. Coiffure afro, tresses, lissage. Coiffeuse : Nana.",
-      "noLink": true
-    },
-    {
-      "name": "Arrais Coiffure",
-      "type": "Coiffure mixte",
-      "address": "15 Rue de la Figairasse, 34070 Montpellier",
-      "city": "Montpellier",
-      "phone": "06 03 09 44 90",
-      "priority": true,
-      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; Fresha : fiche non partenaire ; ni Treatwell, ni Booksy, ni Rdv360). Bouton Google non vérifié.",
-      "maps": "https://www.google.com/maps/search/?api=1&query=Arrais+Coiffure+15+Rue+de+la+Figairasse%2C+34070+Montpellier",
-      "notes": "Lot ultra qualifié Montpellier. Ouvert l'après-midi et le soir (15h-23h) : appeler après 15h. Coloration végétale, barbier.",
-      "noLink": true
+      "noLink": true,
+      "lulu": true
     },
     {
       "name": "Dali Barber",
@@ -1302,19 +1224,248 @@
       "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; Fresha : fiche non partenaire ; ni Treatwell, ni Booksy, ni Rdv360). Bouton Google non vérifié.",
       "maps": "https://www.google.com/maps/search/?api=1&query=Dali+Barber+673+Chemin+de+Moular%C3%A8s%2C+34070+Montpellier",
       "notes": "Lot ultra qualifié Montpellier. Ouvert 7j/7, 4,3 (130+ avis). Autre numéro : 04 67 50 37 67.",
-      "noLink": true
+      "noLink": true,
+      "lulu": true
     },
     {
-      "name": "Old Barber",
-      "type": "Barbier",
-      "address": "77 Rue du Faubourg Figuerolles, 34070 Montpellier",
+      "name": "Maïzen",
+      "type": "Institut de beauté",
+      "address": "61 Boulevard de Strasbourg, 34000 Montpellier",
       "city": "Montpellier",
-      "phone": "09 86 22 10 04",
-      "priority": true,
-      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; Fresha : fiche non partenaire ; ni Treatwell, ni Booksy, ni Rdv360). Bouton Google non vérifié.",
-      "maps": "https://www.google.com/maps/search/?api=1&query=Old+Barber+77+Rue+du+Faubourg+Figuerolles%2C+34070+Montpellier",
-      "notes": "Lot ultra qualifié Montpellier. Coiffeur et barbier depuis 2018, petits prix.",
-      "noLink": true
+      "phone": "06 95 64 37 16",
+      "noLink": true,
+      "lulu": true,
+      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; ni Fresha, Treatwell, Booksy, Kiute ; site sans module de réservation).",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Ma%C3%AFzen+61+Boulevard+de+Strasbourg%2C+34000+Montpellier",
+      "notes": "Lot vérifié deux fois (fiche Google et ouverture). Massages et soins. Ouvert du mardi au samedi, 14h30-20h30 : appeler l'après-midi. Avis Google positifs."
+    },
+    {
+      "name": "Cils Glamour",
+      "type": "Institut de beauté",
+      "address": "1 Rue du Brucq, 34430 Saint-Jean-de-Védas",
+      "city": "Saint-Jean-de-Védas",
+      "phone": "06 71 36 10 38",
+      "noLink": true,
+      "lulu": true,
+      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; ni Fresha, Treatwell, Booksy, Kiute ; site sans module de réservation).",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Cils+Glamour+1+Rue+du+Brucq%2C+34430+Saint-Jean-de-V%C3%A9das",
+      "notes": "Lot vérifié deux fois (fiche Google et ouverture). Extensions de cils. Google 4,7 (15 avis). Technicienne : Nina."
+    },
+    {
+      "name": "Institut Douce Camélia",
+      "type": "Institut de beauté",
+      "address": "176 Avenue de la Royale, 34160 Castries",
+      "city": "Castries",
+      "phone": "06 58 71 71 06",
+      "noLink": true,
+      "lulu": true,
+      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; ni Fresha, Treatwell, Booksy, Kiute ; site sans module de réservation).",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Institut+Douce+Cam%C3%A9lia+176+Avenue+de+la+Royale%2C+34160+Castries",
+      "notes": "Lot vérifié deux fois (fiche Google et ouverture). Google 5/5 (13 avis). Soins, laser, épilation."
+    },
+    {
+      "name": "Hair Designer",
+      "type": "Coiffure",
+      "address": "9 Rue du 11 Novembre 1918, 34200 Sète",
+      "city": "Sète",
+      "phone": "04 67 74 41 18",
+      "noLink": true,
+      "lulu": true,
+      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; ni Fresha, Treatwell, Booksy, Kiute ; site sans module de réservation).",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Hair+Designer+9+Rue+du+11+Novembre+1918%2C+34200+S%C3%A8te",
+      "notes": "Lot vérifié deux fois (fiche Google et ouverture). Coiffeuse indépendante, avis positifs."
+    },
+    {
+      "name": "Coiffure Régine",
+      "type": "Coiffure",
+      "address": "3 Rue du 11 Novembre 1918, 34200 Sète",
+      "city": "Sète",
+      "phone": "04 67 74 39 36",
+      "noLink": true,
+      "lulu": true,
+      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; ni Fresha, Treatwell, Booksy, Kiute ; site sans module de réservation).",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Coiffure+R%C3%A9gine+3+Rue+du+11+Novembre+1918%2C+34200+S%C3%A8te",
+      "notes": "Lot vérifié deux fois (fiche Google et ouverture). 4,8 (10+ avis). Fermé lundi."
+    },
+    {
+      "name": "ID Style",
+      "type": "Coiffure",
+      "address": "9 Rue Gambetta, 34200 Sète",
+      "city": "Sète",
+      "phone": "04 67 74 47 61",
+      "noLink": true,
+      "lulu": true,
+      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; ni Fresha, Treatwell, Booksy, Kiute ; site sans module de réservation).",
+      "maps": "https://www.google.com/maps/search/?api=1&query=ID+Style+9+Rue+Gambetta%2C+34200+S%C3%A8te",
+      "notes": "Lot vérifié deux fois (fiche Google et ouverture). Google 4,7 (20 avis). À Sète depuis 2009. Coiffeuses : Dorine et Julie. Site vitrine sans réservation."
+    },
+    {
+      "name": "Racine Ô Carré",
+      "type": "Coiffure",
+      "address": "48 Quai de Bosc, 34200 Sète",
+      "city": "Sète",
+      "phone": "04 99 02 62 31",
+      "noLink": true,
+      "lulu": true,
+      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; ni Fresha, Treatwell, Booksy, Kiute ; site sans module de réservation).",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Racine+%C3%94+Carr%C3%A9+48+Quai+de+Bosc%2C+34200+S%C3%A8te",
+      "notes": "Lot vérifié deux fois (fiche Google et ouverture). Coloration végétale. Site : RDV par téléphone uniquement. Gérante : Pascale Gouri."
+    },
+    {
+      "name": "Le Salon",
+      "type": "Coiffure",
+      "address": "1 Avenue Victor Hugo, 34200 Sète",
+      "city": "Sète",
+      "phone": "04 67 74 91 12",
+      "noLink": true,
+      "lulu": true,
+      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; ni Fresha, Treatwell, Booksy, Kiute ; site sans module de réservation).",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Le+Salon+1+Avenue+Victor+Hugo%2C+34200+S%C3%A8te",
+      "notes": "Lot vérifié deux fois (fiche Google et ouverture). 4,8 (24 avis). Face à la gare."
+    },
+    {
+      "name": "L'Atelier Coiffure",
+      "type": "Coiffure",
+      "address": "24 Quai de la République, 34200 Sète",
+      "city": "Sète",
+      "phone": "04 67 46 15 25",
+      "noLink": true,
+      "lulu": true,
+      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; ni Fresha, Treatwell, Booksy, Kiute ; site sans module de réservation).",
+      "maps": "https://www.google.com/maps/search/?api=1&query=L%27Atelier+Coiffure+24+Quai+de+la+R%C3%A9publique%2C+34200+S%C3%A8te",
+      "notes": "Lot vérifié deux fois (fiche Google et ouverture). 4,8 (20+ avis). Indépendante depuis 2006."
+    },
+    {
+      "name": "Capitale Coiffure",
+      "type": "Coiffure",
+      "address": "2 Place de l'Église, 34500 Béziers",
+      "city": "Béziers",
+      "phone": "04 67 11 20 85",
+      "noLink": true,
+      "lulu": true,
+      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; ni Fresha, Treatwell, Booksy, Kiute ; site sans module de réservation).",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Capitale+Coiffure+2+Place+de+l%27%C3%89glise%2C+34500+B%C3%A9ziers",
+      "notes": "Lot vérifié deux fois (fiche Google et ouverture). Salon récent (2024), ouvert 7j/7 de 10h à 21h."
+    },
+    {
+      "name": "Isandra Coiffure",
+      "type": "Coiffure",
+      "address": "42 Avenue Auguste Albertini, 34500 Béziers",
+      "city": "Béziers",
+      "phone": "04 67 30 17 48",
+      "noLink": true,
+      "lulu": true,
+      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; ni Fresha, Treatwell, Booksy, Kiute ; site sans module de réservation).",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Isandra+Coiffure+42+Avenue+Auguste+Albertini%2C+34500+B%C3%A9ziers",
+      "notes": "Lot vérifié deux fois (fiche Google et ouverture). Google 4,7 (100+ avis). Depuis 2004, 3 à 5 salariés. Gérante : Isabelle Borgia."
+    },
+    {
+      "name": "Mon Concept Coiffure",
+      "type": "Coiffure",
+      "address": "85 Avenue Rhin et Danube, 34500 Béziers",
+      "city": "Béziers",
+      "phone": "04 67 39 80 74",
+      "noLink": true,
+      "lulu": true,
+      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; ni Fresha, Treatwell, Booksy, Kiute ; site sans module de réservation).",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Mon+Concept+Coiffure+85+Avenue+Rhin+et+Danube%2C+34500+B%C3%A9ziers",
+      "notes": "Lot vérifié deux fois (fiche Google et ouverture). Depuis 2016, propose des abonnements. Avis très positifs (Carole, Élodie). Note Google non trouvée : à confirmer."
+    },
+    {
+      "name": "Saint-Michel Coiffure",
+      "type": "Coiffure",
+      "address": "55 Avenue Maréchal Foch, 34500 Béziers",
+      "city": "Béziers",
+      "phone": "04 67 28 40 21",
+      "noLink": true,
+      "lulu": true,
+      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; ni Fresha, Treatwell, Booksy, Kiute ; site sans module de réservation).",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Saint-Michel+Coiffure+55+Avenue+Mar%C3%A9chal+Foch%2C+34500+B%C3%A9ziers",
+      "notes": "Lot vérifié deux fois (fiche Google et ouverture). 4,5 (25 avis). RDV par téléphone. Gérant : Michel Loubety."
+    },
+    {
+      "name": "Nathalie Coiffure",
+      "type": "Coiffure",
+      "address": "87 Boulevard de la Liberté, 34500 Béziers",
+      "city": "Béziers",
+      "phone": "04 67 26 48 87",
+      "noLink": true,
+      "lulu": true,
+      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; ni Fresha, Treatwell, Booksy, Kiute ; site sans module de réservation).",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Nathalie+Coiffure+87+Boulevard+de+la+Libert%C3%A9%2C+34500+B%C3%A9ziers",
+      "notes": "Lot vérifié deux fois (fiche Google et ouverture). 4,5 (30+ avis). Prend aussi sans RDV."
+    },
+    {
+      "name": "HP Coiffure Hôtel de Ville",
+      "type": "Coiffure",
+      "address": "1 Place Gabriel Péri, 34500 Béziers",
+      "city": "Béziers",
+      "phone": "04 67 28 47 03",
+      "noLink": true,
+      "lulu": true,
+      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; ni Fresha, Treatwell, Booksy, Kiute ; site sans module de réservation).",
+      "maps": "https://www.google.com/maps/search/?api=1&query=HP+Coiffure+H%C3%B4tel+de+Ville+1+Place+Gabriel+P%C3%A9ri%2C+34500+B%C3%A9ziers",
+      "notes": "Lot vérifié deux fois (fiche Google et ouverture). Face à la mairie. Depuis 2004, 3 à 5 salariés (Brice, Astrid, Clara). Note 4,7-4,8."
+    },
+    {
+      "name": "Anne Espace Beauté",
+      "type": "Institut de beauté",
+      "address": "19 Rue Argence, 34500 Béziers",
+      "city": "Béziers",
+      "phone": "04 67 09 09 23",
+      "noLink": true,
+      "lulu": true,
+      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; ni Fresha, Treatwell, Booksy, Kiute ; site sans module de réservation).",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Anne+Espace+Beaut%C3%A9+19+Rue+Argence%2C+34500+B%C3%A9ziers",
+      "notes": "Lot vérifié deux fois (fiche Google et ouverture). 5/5 (moins de 10 avis). Ouvert du lundi au samedi."
+    },
+    {
+      "name": "Les Rituels de Gabrielle",
+      "type": "Institut de beauté",
+      "address": "7 & 10 Rue Montmorency, 34500 Béziers",
+      "city": "Béziers",
+      "phone": "04 67 28 30 96",
+      "noLink": true,
+      "lulu": true,
+      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; ni Fresha, Treatwell, Booksy, Kiute ; site sans module de réservation).",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Les+Rituels+de+Gabrielle+7+%26+10+Rue+Montmorency%2C+34500+B%C3%A9ziers",
+      "notes": "Lot vérifié deux fois (fiche Google et ouverture). Google 4,9 (349 avis), 6 à 9 salariés. Gros institut : viser la gérante."
+    },
+    {
+      "name": "Planet'Coiffure",
+      "type": "Coiffure",
+      "address": "2 Rue Marcelin Albert, 34300 Agde",
+      "city": "Agde",
+      "phone": "04 67 94 18 06",
+      "noLink": true,
+      "lulu": true,
+      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; ni Fresha, Treatwell, Booksy, Kiute ; site sans module de réservation).",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Planet%27Coiffure+2+Rue+Marcelin+Albert%2C+34300+Agde",
+      "notes": "Lot vérifié deux fois (fiche Google et ouverture). 4,8 (40+ avis). Depuis 2001. Gérant : Stéphane Belluire."
+    },
+    {
+      "name": "Changez d'Hair",
+      "type": "Coiffure",
+      "address": "6 Rue du Tambour, 34300 Agde",
+      "city": "Agde",
+      "phone": "04 67 30 62 94",
+      "noLink": true,
+      "lulu": true,
+      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; ni Fresha, Treatwell, Booksy, Kiute ; site sans module de réservation).",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Changez+d%27Hair+6+Rue+du+Tambour%2C+34300+Agde",
+      "notes": "Lot vérifié deux fois (fiche Google et ouverture). 4,9 (22 avis Pages Jaunes). Depuis 2012. Gérante : Audrey Midague."
+    },
+    {
+      "name": "Un Moment Pour Soi",
+      "type": "Institut de beauté",
+      "address": "14 Avenue des Isles d'Amérique, 34300 Agde",
+      "city": "Agde",
+      "phone": "04 67 32 00 89",
+      "noLink": true,
+      "lulu": true,
+      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; ni Fresha, Treatwell, Booksy, Kiute ; site sans module de réservation).",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Un+Moment+Pour+Soi+14+Avenue+des+Isles+d%27Am%C3%A9rique%2C+34300+Agde",
+      "notes": "Lot vérifié deux fois (fiche Google et ouverture). Cap d'Agde, Google 4,6 (61 avis). Depuis 2008. Gérante : Clémentine."
     }
   ]
 }
