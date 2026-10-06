@@ -1001,106 +1001,6 @@
       "notes": "Lot Métropole Montpellier"
     },
     {
-      "name": "Zino & Kenzi",
-      "type": "Barbier",
-      "address": "17, Rue Aristide Ollivier, 34000 Montpellier",
-      "city": "Montpellier",
-      "phone": "07 62 13 05 30",
-      "planity": "Sur Planity mais seulement 0 avis — https://www.planity.com/zino-kenzi-34000-montpellier",
-      "maps": "https://www.google.com/maps/search/?api=1&query=Zino+%26+Kenzi+17%2C+Rue+Aristide+Ollivier%2C+34000+Montpellier",
-      "notes": "Lot ciblé : Planity peu utilisé (0 avis). Angle : ils paient Planity pour presque rien."
-    },
-    {
-      "name": "L'instant pour soi",
-      "type": "Coiffure",
-      "address": "5, Rue de Substantion, 34000 Montpellier",
-      "city": "Montpellier",
-      "phone": "04 67 72 67 64",
-      "planity": "Sur Planity mais seulement 1 avis — https://www.planity.com/linstant-pour-soi-34000-montpellier-59n",
-      "maps": "https://www.google.com/maps/search/?api=1&query=L%27instant+pour+soi+5%2C+Rue+de+Substantion%2C+34000+Montpellier",
-      "notes": "Lot ciblé : Planity peu utilisé (1 avis). Angle : ils paient Planity pour presque rien."
-    },
-    {
-      "name": "Hair Santa",
-      "type": "Coiffure",
-      "address": "48, Pl. du Millénaire, 34000 Montpellier",
-      "city": "Montpellier",
-      "phone": "04 67 64 97 33",
-      "planity": "Sur Planity mais seulement 2 avis — https://www.planity.com/hair-santa-34000-montpellier",
-      "maps": "https://www.google.com/maps/search/?api=1&query=Hair+Santa+48%2C+Pl.+du+Mill%C3%A9naire%2C+34000+Montpellier",
-      "notes": "Lot ciblé : Planity peu utilisé (2 avis). Angle : ils paient Planity pour presque rien."
-    },
-    {
-      "name": "Il Raffaele",
-      "type": "Barbier",
-      "address": "799, Rue Hélène Boucher, 34130 Mauguio",
-      "city": "Mauguio",
-      "phone": "06 51 94 87 01",
-      "planity": "Sur Planity mais seulement 2 avis — https://www.planity.com/il-raffaele-34130-mauguio",
-      "maps": "https://www.google.com/maps/search/?api=1&query=Il+Raffaele+799%2C+Rue+H%C3%A9l%C3%A8ne+Boucher+%28+food+Bikes+and+cars+%29%2C+34130+Mauguio",
-      "notes": "Lot ciblé : Planity peu utilisé (2 avis). Angle : ils paient Planity pour presque rien."
-    },
-    {
-      "name": "Fris'Style Coiffure",
-      "type": "Coiffure",
-      "address": "23 Boulevard Pasteur - Arrêt Louis Blanc, 34000 Montpellier",
-      "city": "Montpellier",
-      "phone": "04 67 02 11 00",
-      "planity": "Sur Planity mais seulement 3 avis — https://www.planity.com/frisstyle-coiffure-montpellier-tendance-nature-34000",
-      "maps": "https://www.google.com/maps/search/?api=1&query=Fris%27Style+Coiffure+23+Boulevard+Pasteur+-+Arr%C3%AAt+Louis+Blanc%2C+34000+Montpellier",
-      "notes": "Lot ciblé : Planity peu utilisé (3 avis). Angle : ils paient Planity pour presque rien."
-    },
-    {
-      "name": "B Studio",
-      "type": "Coiffure",
-      "address": "69, Rue du Poumpidou, 34990 Juvignac",
-      "city": "Juvignac",
-      "phone": "07 86 12 73 55",
-      "planity": "Sur Planity mais seulement 3 avis — https://www.planity.com/b-studio-34990-juvignac",
-      "maps": "https://www.google.com/maps/search/?api=1&query=B+Studio+69%2C+Rue+du+Poumpidou%2C+34990+Juvignac",
-      "notes": "Lot ciblé : Planity peu utilisé (3 avis). Angle : ils paient Planity pour presque rien."
-    },
-    {
-      "name": "Le Salon Signature Hair",
-      "type": "Coiffure",
-      "address": "7, Rue Sainte-Anne, 34000 Montpellier",
-      "city": "Montpellier",
-      "phone": "09 62 40 47 68",
-      "planity": "Sur Planity mais seulement 5 avis — https://www.planity.com/salon-147-34000-montpellier",
-      "maps": "https://www.google.com/maps/search/?api=1&query=Le+Salon+Signature+Hair+7%2C+Rue+Sainte-Anne%2C+34000+Montpellier",
-      "notes": "Lot ciblé : Planity peu utilisé (5 avis). Angle : ils paient Planity pour presque rien."
-    },
-    {
-      "name": "Devis Cut",
-      "type": "Barbier",
-      "address": "8, Rue de la Méditerranée, 34000 Montpellier",
-      "city": "Montpellier",
-      "phone": "09 84 59 36 98",
-      "planity": "Sur Planity mais seulement 9 avis — https://www.planity.com/devis-cut-34000-montpellier",
-      "maps": "https://www.google.com/maps/search/?api=1&query=Devis+Cut+8%2C+Rue+de+la+M%C3%A9diterran%C3%A9e%2C+34000+Montpellier",
-      "notes": "Lot ciblé : Planity peu utilisé (9 avis). Angle : ils paient Planity pour presque rien."
-    },
-    {
-      "name": "Blōma Hair Studio",
-      "type": "Coiffure",
-      "address": "96, Esp. de l'Ortet, 34430 Saint-Jean-de-Védas",
-      "city": "Saint-Jean-de-Védas",
-      "phone": "06 29 15 42 59",
-      "planity": "Sur Planity mais seulement 9 avis — https://www.planity.com/bloma-hair-studio-34430-saint-jean-de-vedas",
-      "maps": "https://www.google.com/maps/search/?api=1&query=Bl%C5%8Dma+Hair+Studio+96%2C+Esp.+de+l%27Ortet%2C+34430+Saint-Jean-de-V%C3%A9das",
-      "notes": "Lot ciblé : Planity peu utilisé (9 avis). Angle : ils paient Planity pour presque rien."
-    },
-    {
-      "name": "AYB Barber",
-      "type": "Barbier",
-      "address": "723, Av. du Maréchal Leclerc, 34070 Montpellier",
-      "city": "Montpellier",
-      "phone": "06 10 58 66 72",
-      "planity": "Sur Planity mais seulement 10 avis — https://www.planity.com/ayb-barber-34070-montpellier",
-      "maps": "https://www.google.com/maps/search/?api=1&query=AYB+Barber+723%2C+Av.+du+Mar%C3%A9chal+Leclerc%2C+34070+Montpellier",
-      "notes": "Lot ciblé : Planity peu utilisé (10 avis). Angle : ils paient Planity pour presque rien."
-    },
-    {
       "name": "Grèze Coiffure",
       "type": "Coiffure",
       "address": "11 Rue de Maguelone, 34000 Montpellier",
@@ -1199,6 +1099,106 @@
       "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Kristeliz+30+Rue+de+l%27Universit%C3%A9%2C+34000+Montpellier",
       "notes": "Lot ciblé : pas de Planity. A un site perso (kristeliz.com) : demander comment ils prennent les RDV."
+    },
+    {
+      "name": "L'Atelier de Benjamin",
+      "type": "Coiffure",
+      "address": "3 Rue du Puits du Temple, 34000 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 60 64 31",
+      "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=L%27Atelier+de+Benjamin+3+Rue+du+Puits+du+Temple%2C+34000+Montpellier",
+      "notes": "Lot ciblé : sans réservation en ligne."
+    },
+    {
+      "name": "Saint-Germain Céline",
+      "type": "Coiffure",
+      "address": "18 Rue Saint-Firmin, 34000 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 66 07 14",
+      "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Saint-Germain+C%C3%A9line+18+Rue+Saint-Firmin%2C+34000+Montpellier",
+      "notes": "Lot ciblé : sans réservation en ligne."
+    },
+    {
+      "name": "Coiff'Styl Martine",
+      "type": "Coiffure",
+      "address": "3 Rue du Puits des Esquilles, 34000 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 66 11 10",
+      "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Coiff%27Styl+Martine+3+Rue+du+Puits+des+Esquilles%2C+34000+Montpellier",
+      "notes": "Lot ciblé : sans réservation en ligne."
+    },
+    {
+      "name": "Triaire Sébastien",
+      "type": "Coiffure",
+      "address": "11 Boulevard des Arceaux, 34000 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 92 12 00",
+      "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Triaire+S%C3%A9bastien+11+Boulevard+des+Arceaux%2C+34000+Montpellier",
+      "notes": "Lot ciblé : sans réservation en ligne. Coiffure homme et barbier, avec ou sans RDV."
+    },
+    {
+      "name": "Les Créateurs",
+      "type": "Coiffure",
+      "address": "22 Boulevard d'Orient, 34070 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 65 09 98",
+      "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Les+Cr%C3%A9ateurs+22+Boulevard+d%27Orient%2C+34070+Montpellier",
+      "notes": "Lot ciblé : sans réservation en ligne. Prend aussi sans RDV."
+    },
+    {
+      "name": "SB Salon",
+      "type": "Coiffure",
+      "address": "6 Rue du Petit Saint-Jean, 34000 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 60 47 39",
+      "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=SB+Salon+6+Rue+du+Petit+Saint-Jean%2C+34000+Montpellier",
+      "notes": "Lot ciblé : sans réservation en ligne."
+    },
+    {
+      "name": "Albrizio Pasquale",
+      "type": "Coiffure",
+      "address": "Résidence Europa, Rue Hippolyte Rech, 34090 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 41 98 12",
+      "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Albrizio+Pasquale+R%C3%A9sidence+Europa%2C+Rue+Hippolyte+Rech%2C+34090+Montpellier",
+      "notes": "Lot ciblé : sans réservation en ligne. RDV uniquement par téléphone (indiqué sur ses fiches). Salon L'Oréal Professionnel."
+    },
+    {
+      "name": "Club 7",
+      "type": "Coiffure",
+      "address": "448 Rue de la Roqueturière, Impasse Suzanne Lenglen, 34090 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 70 77 09",
+      "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Club+7+448+Rue+de+la+Roqueturi%C3%A8re%2C+Impasse+Suzanne+Lenglen%2C+34090+Montpellier",
+      "notes": "Lot ciblé : sans réservation en ligne."
+    },
+    {
+      "name": "Beauté Nature Coiffure",
+      "type": "Coiffure",
+      "address": "135 Rue de la Cavalade, 34000 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 73 13 57",
+      "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Beaut%C3%A9+Nature+Coiffure+135+Rue+de+la+Cavalade%2C+34000+Montpellier",
+      "notes": "Lot ciblé : sans réservation en ligne. Coloration végétale, 174 avis Google."
+    },
+    {
+      "name": "Atelier Coiffure Valérie Hebda",
+      "type": "Coiffure",
+      "address": "467 Rue de la Roqueturière, 34090 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 79 14 04",
+      "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Atelier+Coiffure+Val%C3%A9rie+Hebda+467+Rue+de+la+Roqueturi%C3%A8re%2C+34090+Montpellier",
+      "notes": "Lot ciblé : sans réservation en ligne. Site vitrine sans réservation en ligne."
     }
   ]
 }
