@@ -81,3 +81,23 @@ describe("API Conversions Meta", () => {
     expect(fetchImpl).not.toHaveBeenCalled();
   });
 });
+
+describe("rapport Telegram quotidien", () => {
+  it("résume le tunnel, les pubs et l'envoi à Meta", async () => {
+    vi.doMock("@/server/telegram", () => ({ escapeHtml: (v: string) => v.replace(/</g, "&lt;") }));
+    const { formatAcquisitionReport } = await import("@/server/acquisition/daily-report");
+    const row = { source: "meta", campaign: "t001", content: "site_pub01", visits: 40, signups: 3, onboarded: 2, published: 1, activated: 1, paid: 0 };
+    const report = {
+      rows: [row],
+      total: row,
+      meta: { pixel: true, capi: true, testMode: false, sent: 4, skipped: 1, errors: 0, lastError: null },
+      salonPayments: { count: 0, amountCents: 0, feeCents: 0 },
+      latest: [],
+    };
+    const text = formatAcquisitionReport(report, report);
+    expect(text).toContain("Inscriptions 3");
+    expect(text).toContain("Abonnés payants 0");
+    expect(text).toContain("meta · t001 · site_pub01 : 40 visites, 3 inscr.");
+    expect(text).toContain("4 envoyés · 1 sans accord cookies · 0 erreurs");
+  });
+});

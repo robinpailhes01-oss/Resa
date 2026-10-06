@@ -6,13 +6,14 @@ import { formatWeeklyReport } from "@/lib/weekly-report";
 import { ProspectionDisabledError, runProspection } from "@/server/prospection";
 import { notifyTelegram } from "@/server/telegram";
 import { releaseExpiredHolds } from "@/server/app/booking-payments";
+import { buildAcquisitionReport } from "@/server/acquisition/daily-report";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
 /**
  * Tâche quotidienne unique (cron Vercel, un seul créneau en offre Hobby) :
- * facturation, prospection, et le lundi le récap hebdomadaire Telegram.
+ * facturation, rapport d'acquisition Telegram, prospection, et le lundi le récap hebdomadaire.
  * Chaque étape est isolée : une erreur n'empêche pas les suivantes.
  */
 export async function GET(request: Request) {
@@ -33,6 +34,14 @@ export async function GET(request: Request) {
   } catch (error) {
     console.error("[daily] créneaux retenus", error instanceof Error ? error.message : error);
     out.releasedHolds = "erreur";
+  }
+
+  try {
+    const sent = await notifyTelegram(await buildAcquisitionReport(now));
+    out.acquisitionReport = sent ? "envoyé" : "non envoyé";
+  } catch (error) {
+    console.error("[daily] rapport acquisition", error instanceof Error ? error.message : error);
+    out.acquisitionReport = "erreur";
   }
 
   const parisWeekday = new Intl.DateTimeFormat("en-US", { weekday: "short", timeZone: "Europe/Paris" }).format(now);
