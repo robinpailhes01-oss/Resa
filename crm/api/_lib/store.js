@@ -33,6 +33,7 @@ export function cleanFields(input) {
   }
   if (input.status !== undefined && STATUSES.includes(input.status)) out.status = input.status;
   if (input.priority !== undefined) out.priority = input.priority === true;
+  if (input.noLink !== undefined) out.noLink = input.noLink === true;
   if (out.nextCall && !/^\d{4}-\d{2}-\d{2}$/.test(out.nextCall)) out.nextCall = "";
   return out;
 }
