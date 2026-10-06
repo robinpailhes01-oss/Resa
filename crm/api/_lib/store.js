@@ -1,8 +1,3 @@
-import { del, get, list, put } from "@vercel/blob";
-
-// Un fichier JSON privé par lead : leads/<id>.json (store Vercel Blob en accès privé).
-const PREFIX = "leads/";
-
 export const STATUSES = ["a_appeler", "sans_reponse", "a_rappeler", "interesse", "essai", "client", "refus"];
 const TEXT_FIELDS = ["name", "type", "phone", "address", "city", "planity", "maps", "notes", "contact", "nextCall"];
 
@@ -47,86 +42,41 @@ export function cleanCall(input) {
   };
 }
 
-// Chaque écriture crée une nouvelle version (leads/<id>/v-<horodatage>-<suffixe>.json) au lieu de réécrire
-// le même fichier : un blob privé réécrit puis relu sans cache répond 403, ce qui faisait disparaître le lead.
-// Les anciens fichiers leads/<id>.json restent lisibles et sont remplacés à la première modification.
-const isLegacy = (pathname) => !pathname.slice(PREFIX.length).includes("/");
-const idOf = (pathname) => pathname.slice(PREFIX.length).replace(/\/.*$/, "").replace(/\.json$/, "");
+// Stockage : table crm.leads de la base Supabase « harmonie-yacht », non exposée par l'API.
+// On n'y accède que par les fonctions public.crm_*, qui exigent le mot de passe d'équipe (CRM_PASSWORD) :
+// la clé publishable ci-dessous ne donne accès à rien d'autre.
+const SUPABASE_URL = "https://szdfpjyytwedhochvzfd.supabase.co";
+const SUPABASE_KEY = "sb_publishable_GKG0Qrs-e8OEHhJL94jFlw_K41YCX_F";
 
-async function readText(pathname, options) {
-  const result = await get(pathname, { access: "private", ...options });
-  if (!result || result.statusCode !== 200) return null;
-  return new Response(result.stream).text();
+async function rpc(fn, args) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
+    method: "POST",
+    headers: { apikey: SUPABASE_KEY, "Content-Type": "application/json" },
+    body: JSON.stringify({ p_secret: process.env.CRM_PASSWORD ?? "", ...args }),
+  });
+  const text = await res.text();
+  if (!res.ok) throw new Error(`Supabase ${fn} ${res.status} ${text.slice(0, 200)}`);
+  return text ? JSON.parse(text) : null;
 }
-
-async function readBlob(blob) {
-  let text = null;
-  if (isLegacy(blob.pathname)) {
-    text = await readText(blob.pathname, { useCache: false }).catch(() => null);
-    if (text === null) text = await readText(blob.pathname).catch(() => null);
-  } else {
-    text = await readText(blob.pathname).catch(() => null);
-  }
-  return text === null ? null : JSON.parse(text);
-}
-
-async function listBlobs(prefix) {
-  const blobs = [];
-  let cursor;
-  do {
-    const page = await list({ prefix, cursor, limit: 1000 });
-    blobs.push(...page.blobs);
-    cursor = page.hasMore ? page.cursor : undefined;
-  } while (cursor);
-  return blobs;
-}
-
-const newer = (a, b) => new Date(a.uploadedAt) - new Date(b.uploadedAt) || (isLegacy(b.pathname) ? 1 : -1);
-
-/** Dernière version de chaque lead, regroupée par identifiant. */
-function latestById(blobs) {
-  const latest = new Map();
-  for (const blob of blobs) {
-    const id = idOf(blob.pathname);
-    const current = latest.get(id);
-    if (!current || newer(blob, current) > 0) latest.set(id, blob);
-  }
-  return latest;
-}
-
-const blobsOf = async (id) => (await listBlobs(`${PREFIX}${id}`)).filter((b) => idOf(b.pathname) === id);
 
 export async function readLead(id) {
-  const latest = latestById(await blobsOf(id)).get(id);
-  return latest ? readBlob(latest) : null;
+  return rpc("crm_get", { p_id: id });
+}
+
+export async function writeLeads(leads) {
+  if (leads.length) await rpc("crm_put", { p_leads: leads });
+  return leads;
 }
 
 export async function writeLead(lead) {
-  const saved = await put(`${PREFIX}${lead.id}/v-${Date.now()}.json`, JSON.stringify(lead), {
-    access: "private",
-    contentType: "application/json",
-    addRandomSuffix: true,
-  });
-  // Les versions antérieures à celle-ci ne servent plus (une écriture concurrente plus récente est gardée).
-  const blobs = await blobsOf(lead.id);
-  const mine = blobs.find((b) => b.pathname === saved.pathname);
-  const old = mine ? blobs.filter((b) => b !== mine && newer(mine, b) > 0) : [];
-  if (old.length) await del(old.map((b) => b.url));
+  await writeLeads([lead]);
   return lead;
 }
 
 export async function deleteLead(id) {
-  const blobs = await blobsOf(id);
-  if (blobs.length) await del(blobs.map((b) => b.url));
+  await rpc("crm_remove", { p_id: id });
 }
 
 export async function listLeads() {
-  const latest = [...latestById(await listBlobs(PREFIX)).values()];
-  const leads = [];
-  // Lecture par lots pour ne pas ouvrir des centaines de requêtes à la fois.
-  for (let i = 0; i < latest.length; i += 25) {
-    const batch = await Promise.all(latest.slice(i, i + 25).map((b) => readBlob(b).catch(() => null)));
-    leads.push(...batch.filter(Boolean));
-  }
-  return leads;
+  return (await rpc("crm_list", {})) ?? [];
 }

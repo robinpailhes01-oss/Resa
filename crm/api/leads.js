@@ -1,5 +1,5 @@
 import { requireAuth } from "./_lib/auth.js";
-import { cleanCall, cleanFields, deleteLead, listLeads, newId, readLead, validId, writeLead } from "./_lib/store.js";
+import { cleanCall, cleanFields, deleteLead, listLeads, newId, readLead, validId, writeLead, writeLeads } from "./_lib/store.js";
 
 function createLead(input) {
   const now = new Date().toISOString();
@@ -29,11 +29,7 @@ export default async function handler(req, res) {
       const body = req.body ?? {};
       // Import groupé : { leads: [...] }
       const inputs = Array.isArray(body.leads) ? body.leads.slice(0, 200) : [body];
-      const created = [];
-      for (const input of inputs) {
-        const lead = createLead(input ?? {});
-        if (lead) created.push(await writeLead(lead));
-      }
+      const created = await writeLeads(inputs.map((input) => createLead(input ?? {})).filter(Boolean));
       if (!created.length) return res.status(400).json({ error: "Le nom de l’établissement est obligatoire." });
       return res.status(201).json(Array.isArray(body.leads) ? { leads: created } : { lead: created[0] });
     }
