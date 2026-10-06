@@ -221,16 +221,6 @@
       "notes": "Lot Hérault – Gard"
     },
     {
-      "name": "Abracadabra",
-      "type": "Coiffure mixte",
-      "address": "3 rue des Catalpas, 34070 Montpellier",
-      "city": "Montpellier",
-      "phone": "04 67 92 36 96",
-      "planity": "Absent de Planity, aucun outil de réservation trouvé",
-      "maps": "https://www.google.com/maps/search/?api=1&query=Abracadabra+3+rue+des+Catalpas%2C+34070+Montpellier",
-      "notes": "Lot Hérault – Gard"
-    },
-    {
       "name": "Mosson Coiffure",
       "type": "Coiffure",
       "address": "Centre commercial Paillade, 545 avenue de l'Europe, 34080 Montpellier",
@@ -961,16 +951,6 @@
       "notes": "Lot Métropole Montpellier"
     },
     {
-      "name": "A 7 Institut",
-      "type": "Onglerie",
-      "address": "Centre Commercial La Croisée, 1 Avenue de L'Europe, 34830 Clapiers",
-      "city": "Clapiers",
-      "phone": "04 99 67 72 23",
-      "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/a-7-institut-34830-clapiers",
-      "maps": "https://www.google.com/maps/search/?api=1&query=A+7+Institut+Centre+Commercial+La+Crois%C3%A9e%2C+1+Avenue+de+L%27Europe%2C+34830+Clapiers",
-      "notes": "Lot Métropole Montpellier"
-    },
-    {
       "name": "L’Institut",
       "type": "Onglerie",
       "address": "321 Grand-Rue, 34980 Saint-Gély-du-Fesc",
@@ -1008,7 +988,8 @@
       "phone": "04 67 58 45 04",
       "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Gr%C3%A8ze+Coiffure+11+Rue+de+Maguelone%2C+34000+Montpellier",
-      "notes": "Lot ciblé : pas de Planity."
+      "notes": "Lot ciblé : pas de Planity.",
+      "priority": true
     },
     {
       "name": "Color Loft",
@@ -1018,7 +999,8 @@
       "phone": "04 67 58 11 35",
       "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Color+Loft+6+Rue+de+Maguelone%2C+34000+Montpellier",
-      "notes": "Lot ciblé : pas de Planity."
+      "notes": "Lot ciblé : pas de Planity.",
+      "priority": true
     },
     {
       "name": "Patrick Roux Coiffure",
@@ -1028,7 +1010,8 @@
       "phone": "04 67 66 07 38",
       "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Patrick+Roux+Coiffure+13+Rue+de+la+Croix+d%27Or%2C+34000+Montpellier",
-      "notes": "Lot ciblé : pas de Planity."
+      "notes": "Lot ciblé : pas de Planity.",
+      "priority": true
     },
     {
       "name": "Josyvan Coiffures",
@@ -1038,7 +1021,8 @@
       "phone": "04 67 66 03 92",
       "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Josyvan+Coiffures+3+Rue+du+Bras+de+Fer%2C+34000+Montpellier",
-      "notes": "Lot ciblé : pas de Planity."
+      "notes": "Lot ciblé : pas de Planity.",
+      "priority": true
     },
     {
       "name": "Evelyne'B",
@@ -1048,7 +1032,8 @@
       "phone": "04 67 92 62 80",
       "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Evelyne%27B+17+Boulevard+des+Arceaux%2C+34000+Montpellier",
-      "notes": "Lot ciblé : pas de Planity. A un site perso (coiffeur-montpellier-evelyneb.fr) : demander comment ils prennent les RDV."
+      "notes": "Lot ciblé : pas de Planity. A un site perso (coiffeur-montpellier-evelyneb.fr) : demander comment ils prennent les RDV.",
+      "priority": true
     },
     {
       "name": "Claude Michel Coiffure",
@@ -1058,7 +1043,8 @@
       "phone": "04 67 58 78 08",
       "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Claude+Michel+Coiffure+1+Place+Rondelet%2C+34000+Montpellier",
-      "notes": "Lot ciblé : pas de Planity."
+      "notes": "Lot ciblé : pas de Planity.",
+      "priority": true
     },
     {
       "name": "Coiffure Tiff'Anita",
@@ -1068,7 +1054,8 @@
       "phone": "04 67 60 55 62",
       "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Coiffure+Tiff%27Anita+7+Rue+de+la+Friperie%2C+34000+Montpellier",
-      "notes": "Lot ciblé : pas de Planity."
+      "notes": "Lot ciblé : pas de Planity.",
+      "priority": true
     },
     {
       "name": "Artistik Coiffure",
@@ -1078,7 +1065,8 @@
       "phone": "04 67 99 93 74",
       "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Artistik+Coiffure+748+Rue+de+la+Vieille+Poste%2C+34000+Montpellier",
-      "notes": "Lot ciblé : pas de Planity."
+      "notes": "Lot ciblé : pas de Planity.",
+      "priority": true
     },
     {
       "name": "Romain Coiffure",
@@ -1088,7 +1076,8 @@
       "phone": "04 67 60 61 97",
       "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Romain+Coiffure+2+BIS+Rue+Four+des+Flammes%2C+34000+Montpellier",
-      "notes": "Lot ciblé : pas de Planity."
+      "notes": "Lot ciblé : pas de Planity.",
+      "priority": true
     },
     {
       "name": "Kristeliz",
@@ -1098,7 +1087,8 @@
       "phone": "04 67 60 88 27",
       "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Kristeliz+30+Rue+de+l%27Universit%C3%A9%2C+34000+Montpellier",
-      "notes": "Lot ciblé : pas de Planity. A un site perso (kristeliz.com) : demander comment ils prennent les RDV."
+      "notes": "Lot ciblé : pas de Planity. A un site perso (kristeliz.com) : demander comment ils prennent les RDV.",
+      "priority": true
     },
     {
       "name": "L'Atelier de Benjamin",
@@ -1108,7 +1098,8 @@
       "phone": "04 67 60 64 31",
       "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
       "maps": "https://www.google.com/maps/search/?api=1&query=L%27Atelier+de+Benjamin+3+Rue+du+Puits+du+Temple%2C+34000+Montpellier",
-      "notes": "Lot ciblé : sans réservation en ligne."
+      "notes": "Lot ciblé : sans réservation en ligne.",
+      "priority": true
     },
     {
       "name": "Saint-Germain Céline",
@@ -1118,7 +1109,8 @@
       "phone": "04 67 66 07 14",
       "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Saint-Germain+C%C3%A9line+18+Rue+Saint-Firmin%2C+34000+Montpellier",
-      "notes": "Lot ciblé : sans réservation en ligne."
+      "notes": "Lot ciblé : sans réservation en ligne.",
+      "priority": true
     },
     {
       "name": "Coiff'Styl Martine",
@@ -1128,7 +1120,8 @@
       "phone": "04 67 66 11 10",
       "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Coiff%27Styl+Martine+3+Rue+du+Puits+des+Esquilles%2C+34000+Montpellier",
-      "notes": "Lot ciblé : sans réservation en ligne."
+      "notes": "Lot ciblé : sans réservation en ligne.",
+      "priority": true
     },
     {
       "name": "Triaire Sébastien",
@@ -1138,7 +1131,8 @@
       "phone": "04 67 92 12 00",
       "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Triaire+S%C3%A9bastien+11+Boulevard+des+Arceaux%2C+34000+Montpellier",
-      "notes": "Lot ciblé : sans réservation en ligne. Coiffure homme et barbier, avec ou sans RDV."
+      "notes": "Lot ciblé : sans réservation en ligne. Coiffure homme et barbier, avec ou sans RDV.",
+      "priority": true
     },
     {
       "name": "Les Créateurs",
@@ -1148,7 +1142,8 @@
       "phone": "04 67 65 09 98",
       "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Les+Cr%C3%A9ateurs+22+Boulevard+d%27Orient%2C+34070+Montpellier",
-      "notes": "Lot ciblé : sans réservation en ligne. Prend aussi sans RDV."
+      "notes": "Lot ciblé : sans réservation en ligne. Prend aussi sans RDV.",
+      "priority": true
     },
     {
       "name": "SB Salon",
@@ -1158,7 +1153,8 @@
       "phone": "04 67 60 47 39",
       "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
       "maps": "https://www.google.com/maps/search/?api=1&query=SB+Salon+6+Rue+du+Petit+Saint-Jean%2C+34000+Montpellier",
-      "notes": "Lot ciblé : sans réservation en ligne."
+      "notes": "Lot ciblé : sans réservation en ligne.",
+      "priority": true
     },
     {
       "name": "Albrizio Pasquale",
@@ -1168,7 +1164,8 @@
       "phone": "04 67 41 98 12",
       "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Albrizio+Pasquale+R%C3%A9sidence+Europa%2C+Rue+Hippolyte+Rech%2C+34090+Montpellier",
-      "notes": "Lot ciblé : sans réservation en ligne. RDV uniquement par téléphone (indiqué sur ses fiches). Salon L'Oréal Professionnel."
+      "notes": "Lot ciblé : sans réservation en ligne. RDV uniquement par téléphone (indiqué sur ses fiches). Salon L'Oréal Professionnel.",
+      "priority": true
     },
     {
       "name": "Club 7",
@@ -1178,7 +1175,8 @@
       "phone": "04 67 70 77 09",
       "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Club+7+448+Rue+de+la+Roqueturi%C3%A8re%2C+Impasse+Suzanne+Lenglen%2C+34090+Montpellier",
-      "notes": "Lot ciblé : sans réservation en ligne."
+      "notes": "Lot ciblé : sans réservation en ligne.",
+      "priority": true
     },
     {
       "name": "Beauté Nature Coiffure",
@@ -1188,7 +1186,8 @@
       "phone": "04 67 73 13 57",
       "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Beaut%C3%A9+Nature+Coiffure+135+Rue+de+la+Cavalade%2C+34000+Montpellier",
-      "notes": "Lot ciblé : sans réservation en ligne. Coloration végétale, 174 avis Google."
+      "notes": "Lot ciblé : sans réservation en ligne. Coloration végétale, 174 avis Google.",
+      "priority": true
     },
     {
       "name": "Atelier Coiffure Valérie Hebda",
@@ -1198,7 +1197,96 @@
       "phone": "04 67 79 14 04",
       "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Atelier+Coiffure+Val%C3%A9rie+Hebda+467+Rue+de+la+Roqueturi%C3%A8re%2C+34090+Montpellier",
-      "notes": "Lot ciblé : sans réservation en ligne. Site vitrine sans réservation en ligne."
+      "notes": "Lot ciblé : sans réservation en ligne. Site vitrine sans réservation en ligne.",
+      "priority": true
+    },
+    {
+      "name": "De Mèche Avec Vous",
+      "type": "Coiffure",
+      "address": "453 Rue Léon Blum, 34000 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 68 57 22",
+      "priority": true,
+      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; Fresha : fiche non partenaire ; ni Treatwell, ni Booksy, ni Rdv360). Bouton Google non vérifié.",
+      "maps": "https://www.google.com/maps/search/?api=1&query=De+M%C3%A8che+Avec+Vous+453+Rue+L%C3%A9on+Blum%2C+34000+Montpellier",
+      "notes": "Lot ultra qualifié Montpellier. Note Google 5,0 (79 avis). RDV par téléphone uniquement. Gérante : Mélanie."
+    },
+    {
+      "name": "JG Coiffeur Créateur",
+      "type": "Coiffure",
+      "address": "8 Rue du Bras de Fer, 34000 Montpellier",
+      "city": "Montpellier",
+      "phone": "09 72 93 29 85",
+      "priority": true,
+      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; Fresha : fiche non partenaire ; ni Treatwell, ni Booksy, ni Rdv360). Bouton Google non vérifié.",
+      "maps": "https://www.google.com/maps/search/?api=1&query=JG+Coiffeur+Cr%C3%A9ateur+8+Rue+du+Bras+de+Fer%2C+34000+Montpellier",
+      "notes": "Lot ultra qualifié Montpellier. Écusson. Site vitrine (jg-coiffeurcreateur.fr) sans réservation en ligne."
+    },
+    {
+      "name": "Esprit Basora",
+      "type": "Coiffure",
+      "address": "10 Rue du Palais des Guilhem, 34000 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 60 25 40",
+      "priority": true,
+      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; Fresha : fiche non partenaire ; ni Treatwell, ni Booksy, ni Rdv360). Bouton Google non vérifié.",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Esprit+Basora+10+Rue+du+Palais+des+Guilhem%2C+34000+Montpellier",
+      "notes": "Lot ultra qualifié Montpellier. Coiffeur visagiste, 4,7 (50+ avis). Site espritbasora.com : aucun module de réservation trouvé. Autre numéro : 07 83 89 66 38."
+    },
+    {
+      "name": "YLB Prestige",
+      "type": "Coiffure",
+      "address": "1 Rue de la Draperie Rouge, 34000 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 66 00 35",
+      "priority": true,
+      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; Fresha : fiche non partenaire ; ni Treatwell, ni Booksy, ni Rdv360). Bouton Google non vérifié.",
+      "maps": "https://www.google.com/maps/search/?api=1&query=YLB+Prestige+1+Rue+de+la+Draperie+Rouge%2C+34000+Montpellier",
+      "notes": "Lot ultra qualifié Montpellier. 1er étage face à Uniqlo (Halles Castellane). Salon L'Oréal Professionnel. Site ylb-coiffure.com non vérifié (injoignable)."
+    },
+    {
+      "name": "Beauté Alma",
+      "type": "Coiffure",
+      "address": "4 Rue Durand, 34000 Montpellier",
+      "city": "Montpellier",
+      "phone": "07 80 81 17 27",
+      "priority": true,
+      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; Fresha : fiche non partenaire ; ni Treatwell, ni Booksy, ni Rdv360). Bouton Google non vérifié.",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Beaut%C3%A9+Alma+4+Rue+Durand%2C+34000+Montpellier",
+      "notes": "Lot ultra qualifié Montpellier. Coiffure afro, tresses, lissage. Coiffeuse : Nana."
+    },
+    {
+      "name": "Arrais Coiffure",
+      "type": "Coiffure mixte",
+      "address": "15 Rue de la Figairasse, 34070 Montpellier",
+      "city": "Montpellier",
+      "phone": "06 03 09 44 90",
+      "priority": true,
+      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; Fresha : fiche non partenaire ; ni Treatwell, ni Booksy, ni Rdv360). Bouton Google non vérifié.",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Arrais+Coiffure+15+Rue+de+la+Figairasse%2C+34070+Montpellier",
+      "notes": "Lot ultra qualifié Montpellier. Ouvert l'après-midi et le soir (15h-23h) : appeler après 15h. Coloration végétale, barbier."
+    },
+    {
+      "name": "Dali Barber",
+      "type": "Barbier",
+      "address": "673 Chemin de Moularès, 34070 Montpellier",
+      "city": "Montpellier",
+      "phone": "09 84 04 67 58",
+      "priority": true,
+      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; Fresha : fiche non partenaire ; ni Treatwell, ni Booksy, ni Rdv360). Bouton Google non vérifié.",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Dali+Barber+673+Chemin+de+Moular%C3%A8s%2C+34070+Montpellier",
+      "notes": "Lot ultra qualifié Montpellier. Ouvert 7j/7, 4,3 (130+ avis). Autre numéro : 04 67 50 37 67."
+    },
+    {
+      "name": "Old Barber",
+      "type": "Barbier",
+      "address": "77 Rue du Faubourg Figuerolles, 34070 Montpellier",
+      "city": "Montpellier",
+      "phone": "09 86 22 10 04",
+      "priority": true,
+      "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; Fresha : fiche non partenaire ; ni Treatwell, ni Booksy, ni Rdv360). Bouton Google non vérifié.",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Old+Barber+77+Rue+du+Faubourg+Figuerolles%2C+34070+Montpellier",
+      "notes": "Lot ultra qualifié Montpellier. Coiffeur et barbier depuis 2018, petits prix."
     }
   ]
 }
