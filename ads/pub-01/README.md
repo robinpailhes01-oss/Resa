@@ -1,8 +1,11 @@
 # Pub 01 : « Tes RDV par DM ? »
 
-Vidéo motion design 9:16 (1080×1920, 30 i/s, 27 s), réalisée avec les vrais écrans RESO (page de réservation et agenda de la démo).
+Vidéo motion design 9:16 (1080×1920, 30 i/s, 30 s), réalisée avec les vrais écrans RESO (page de réservation et agenda de la démo).
 
-- `reso-pub-01.mp4` : la vidéo finale
+- `reso-pub-01-voix.mp4` : version avec voix off (Higgsfield, voix « Céline »)
+- `reso-pub-01.mp4` : version sans voix
+- `vo/` : les 10 phrases de la voix off, nettoyées et calées (`T.vo` dans index.html)
+- `voix-comparaison.m4a` : le hook lu par 4 voix Higgsfield (Elodie, Céline, Inès, Nadine)
 - `index.html` : l'animation (timeline `T`, fonction `seek(t)`)
 - `sound.py` : la bande son, synthétisée (reprend la timeline `T`)
 - `render.mjs` : rendu image par image puis export MP4
@@ -14,7 +17,22 @@ Des pros de la beauté indépendants :
 - qui gèrent encore leurs rendez-vous par DM, SMS ou téléphone ;
 - ou qui paient un logiciel de réservation qu'ils trouvent trop cher.
 
-## Découpage
+## Voix off
+
+| Début | Texte |
+|---|---|
+| 0,15 s | Tu prends encore tes rendez-vous par DM ? |
+| 2,75 s | Ou alors, tu paies un logiciel bien trop cher. |
+| 6,6 s | Il y a plus simple. |
+| 8,65 s | Tu partages ton lien. |
+| 10,4 s | Ta cliente choisit son créneau… |
+| 12,6 s | et c'est réservé. Même à vingt-trois heures. |
+| 16,5 s | Ton agenda se remplit tout seul. Les rappels et les avis partent sans toi. |
+| 21,3 s | Tout ça pour vingt-neuf euros par mois. |
+| 24,95 s | Réso. Tes rendez-vous, sans décrocher. |
+| 27,4 s | Sept jours gratuits. |
+
+## Découpage (timings de la V1, décalés depuis pour suivre la voix)
 
 | Temps | Scène | Texte | Son |
 |---|---|---|---|
@@ -42,6 +60,6 @@ Des pros de la beauté indépendants :
 ```bash
 npm ci && RESO_LAUNCH_MODE=live npx next dev   # pour refaire les captures (http://localhost:3000/demo…)
 pip install numpy
-python3 ads/pub-01/sound.py /tmp/sound.wav
+python3 ads/pub-01/sound.py /tmp/sound.wav            # ajouter --sans-voix pour la version sans voix off
 cd ads/pub-01 && node render.mjs /tmp/sound.wav reso-pub-01.mp4
 ```

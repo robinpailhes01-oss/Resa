@@ -1,22 +1,23 @@
 """Bande son de la pub 01 (synthèse, aucun échantillon externe).
 
 Les instants reprennent la timeline de index.html (objet T).
-Usage : python3 sound.py out.wav
+Usage : python3 sound.py out.wav [--sans-voix]
 """
+import os
 import sys
 import wave
 
 import numpy as np
 
 SR = 48000
-DUR = 27.0
+DUR = 30.0
 rng = np.random.default_rng(3)
 
 T = dict(
     notifs=[0.0, 0.32, 0.62, 0.9, 1.16, 1.4, 1.62, 1.82],
-    impact1=2.45, s2=2.7, s3=5.55, s4=7.3, s5=14.1, s6=18.7, s7=22.6,
-    tapChoose=8.85, tapDay=9.95, tapSlot=10.45, tapGo=11.05, done=11.4,
-    apptDrop=14.9, pills=[15.7, 16.35, 17.0], priceSlam=19.75,
+    impact1=2.45, s2=2.7, s3=6.35, s4=8.4, s5=16.3, s6=21.1, s7=24.6,
+    tapChoose=10.3, tapDay=11.2, tapSlot=11.7, tapGo=12.25, done=12.6,
+    apptDrop=17.0, pills=[18.5, 18.95, 20.1], priceSlam=22.6,
 )
 
 N = int(SR * DUR)
@@ -252,16 +253,16 @@ add(whoosh(0.35, up=False, lo=200, hi=4000), T["impact1"] - 0.3, 0.6)
 
 # ---------- scène 2 ----------
 add(sine(41, 2.8) * env(2.8, 0.02, 2.0, 2) * 0.5, T["s2"], 0.8)
-for k, at in enumerate([T["s2"] + 0.3, T["s2"] + 0.42, T["s2"] + 0.7, T["s2"] + 0.82]):
+for k, at in enumerate([T["s2"] + 1.35, T["s2"] + 1.5, T["s2"] + 2.45, T["s2"] + 2.6]):
     add(lp_fast(noise(0.08), 1800) * env(0.08, 0.001, 0.03), at, 0.5)
 # compteur 49 → 99 : ticks qui accélèrent puis ralentissent
 vals = 50
 for k in range(vals):
     p = k / vals
-    tt = T["s2"] + 0.9 + 1.0 * (1 - (1 - p) ** (1 / 3))  # inverse de easeOutCubic
+    tt = T["s2"] + 1.4 + 1.2 * (1 - (1 - p) ** (1 / 3))  # inverse de easeOutCubic
     add(tick(), tt, 0.35)
-add(impact(0.8, 0.6), T["s2"] + 1.9, 0.5)
-add(scratch(), T["s2"] + 2.05, 0.7)
+add(impact(0.8, 0.6), T["s2"] + 2.6, 0.5)
+add(scratch(), T["s2"] + 3.05, 0.7)
 
 # ---------- scène 3 : révélation ----------
 add(whoosh(0.7, up=True), T["s3"] - 0.4, 0.8)
@@ -320,12 +321,33 @@ def lp_fast_stereo(x, c):
     return np.stack([lp_fast(x[0], c), lp_fast(x[1], c)])
 
 
-mix = reverb(sfx + mus)
-peak = np.max(np.abs(mix))
-mix = np.tanh(mix / peak * 1.4) / np.tanh(1.4) * 0.92
+bed = reverb(sfx + mus)
+bed = np.tanh(bed / np.max(np.abs(bed)) * 1.4) / np.tanh(1.4)
 
-pcm = (mix.T * 32767).astype(np.int16)
-with wave.open(sys.argv[1] if len(sys.argv) > 1 else "sound.wav", "wb") as w:
+# ---------- voix off (phrases générées avec Higgsfield, voix « Céline ») ----------
+VO_AT = [0.15, 2.75, 6.6, 8.65, 10.4, 12.6, 16.5, 21.3, 24.95, 27.4]
+voice = np.zeros(N)
+if "--sans-voix" not in sys.argv:
+    here = os.path.dirname(os.path.abspath(__file__))
+    for k, at in enumerate(VO_AT):
+        with wave.open(os.path.join(here, "vo", f"vo-{k}.wav")) as w:
+            assert w.getframerate() == SR and w.getnchannels() == 1
+            v = np.frombuffer(w.readframes(w.getnframes()), np.int16) / 32768
+        v = hp_fast(v, 110)
+        v = v + 0.35 * bp_fast(v, 2500, 7000)  # présence
+        v = v / (np.sqrt(np.mean(v**2)) + 1e-9) * 0.16  # niveau homogène entre les phrases
+        i = int(at * SR)
+        voice[i : i + len(v)] += v[: N - i]
+    # la musique et les effets s'effacent sous la voix
+    level = lp_fast(np.abs(voice), 6)
+    duck = 1 - 0.55 * np.clip(level / 0.05, 0, 1)
+    bed = bed * duck
+
+mix = bed * 0.8 + np.stack([voice, voice])
+mix = np.tanh(mix * 1.1) / np.tanh(1.1) * 0.92
+
+pcm = (np.clip(mix, -1, 1).T * 32767).astype(np.int16)
+with wave.open(next((a for a in sys.argv[1:] if not a.startswith("--")), "sound.wav"), "wb") as w:
     w.setnchannels(2)
     w.setsampwidth(2)
     w.setframerate(SR)
