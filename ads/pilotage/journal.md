@@ -30,6 +30,8 @@ Les agents relisent ce journal avant toute recommandation et le complètent apr�
 
 ## Décisions
 
+- **D-011** · 2026-10-06 · Agent `reso-comportement` et skill `reso-analyse-parcours` ajoutés à l'équipe ; plan de mesure (`plan-de-mesure.md`) proposé · validé par Robin (création). Micro-étapes et parcours individuels : en attente de validation.
+- **D-010** · 2026-10-06 · Rapport Telegram quotidien du tunnel codé (branche `ads`) · validé par Robin. Mise en ligne : fusion par Robin.
 - **D-009** · 2026-10-06 · Variante vidéo cellule B (carte de fin « Écris « PAGE » en message », voix off Higgsfield, 0,5 crédit) · validée par Robin.
 - **D-008** · 2026-10-06 · Tracking codé sur la branche `ads` (bandeau cookies, Pixel après accord, API Conversions, origine des inscriptions, page `/admin/acquisition`) · validé par Robin. Mise en production : à valider après configuration Meta et Vercel (voir `tracking.md`).
 - **D-007** · 2026-10-06 · Test T-001 et définitions du tunnel validés par Robin.
@@ -40,6 +42,10 @@ Les agents relisent ce journal avant toute recommandation et le complètent apr�
 - **D-002** · 2026-10-06 · Budget de départ : 50 € maximum, toute hausse sur accord après rapport · validé par Robin.
 - **D-001** · 2026-10-06 · Objectif : 15 clients payants en 30 jours, sans promesse de résultat ;
   la pub valide le message, l'action directe (DM, terrain, appels) porte le volume · cadré avec Robin.
+
+## Observations
+
+_Aucune pour l'instant : aucun inscrit réel._
 
 ## Enseignements
 
