@@ -213,7 +213,7 @@ details.pitch ol { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 6px;
     <div class="tabs" role="tablist" aria-label="Vue">
       <button role="tab" id="tab-today" aria-selected="true" type="button">À appeler aujourd’hui<span class="count" id="c-today"></span></button>
       <button role="tab" id="tab-all" aria-selected="false" type="button">Tous les leads<span class="count" id="c-all"></span></button>
-      <button role="tab" id="tab-nolink" aria-selected="false" type="button">Sans lien<span class="count" id="c-nolink"></span></button>
+      <button role="tab" id="tab-nolink" aria-selected="false" type="button">A<span class="count" id="c-nolink"></span></button>
       <button role="tab" id="tab-lulu" aria-selected="false" type="button">Lulu<span class="count" id="c-lulu"></span></button>
     </div>
     <input id="q" class="field search" type="search" placeholder="Rechercher un nom, une ville, un numéro…" aria-label="Rechercher">
@@ -343,7 +343,7 @@ function renderList() {
   if (!rows.length) {
     const msg = state.view === "today" ? "Rien à appeler pour aujourd’hui avec ces filtres."
       : state.view === "lulu" ? "Aucun lead dans « Lulu » avec ces filtres. Ouvrez une fiche et utilisez « Transférer dans Lulu »."
-      : state.view === "nolink" ? "Aucun lead « sans lien » avec ces filtres. Ouvrez une fiche et utilisez « Transférer dans Sans lien »."
+      : state.view === "nolink" ? "Aucun lead dans « A » avec ces filtres. Ouvrez une fiche et utilisez « Transférer dans A »."
       : "Aucun lead ne correspond à ces filtres.";
     list.innerHTML = `<div class="empty"><strong>${msg}</strong><span>Changez de vue ou effacez la recherche.</span></div>`;
     return;
@@ -381,7 +381,7 @@ function renderPanel(fresh) {
       <div style="min-width:0">
         <h2 id="p-title">${esc(l.name)}</h2>
         <div class="meta">${esc(l.type || "")}${l.address ? " · " + esc(l.address) : ""}</div>
-        <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center">${pill(l.status)}<button class="prio-toggle" type="button" data-act="prio" aria-pressed="${!!l.priority}" ${ro}>${l.priority ? "★ Prioritaire" : "☆ Marquer prioritaire"}</button><button class="prio-toggle" type="button" data-act="nolink" aria-pressed="${!!l.noLink}" ${ro}>${l.noLink ? "✓ Sans lien · retirer" : "→ Transférer dans Sans lien"}</button><button class="prio-toggle" type="button" data-act="lulu" aria-pressed="${!!l.lulu}" ${ro}>${l.lulu ? "✓ Lulu · retirer" : "→ Transférer dans Lulu"}</button></div>
+        <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center">${pill(l.status)}<button class="prio-toggle" type="button" data-act="prio" aria-pressed="${!!l.priority}" ${ro}>${l.priority ? "★ Prioritaire" : "☆ Marquer prioritaire"}</button><button class="prio-toggle" type="button" data-act="nolink" aria-pressed="${!!l.noLink}" ${ro}>${l.noLink ? "✓ A · retirer" : "→ Transférer dans A"}</button><button class="prio-toggle" type="button" data-act="lulu" aria-pressed="${!!l.lulu}" ${ro}>${l.lulu ? "✓ Lulu · retirer" : "→ Transférer dans Lulu"}</button></div>
       </div>
       <button class="x" type="button" data-act="close" aria-label="Fermer">×</button>
     </div>
@@ -603,7 +603,7 @@ $("#panel").addEventListener("click", e => {
     return;
   }
   const a = e.target.closest("[data-act]"); if (!a) return;
-  ({ close: closePanel, log: () => logCall(a), save: () => saveLead(a), copy: copyPhone, delete: () => deleteLead(a), prio: () => toggleFlag(a, "priority", "Marqué prioritaire", "Priorité retirée"), nolink: () => toggleFlag(a, "noLink", "Transféré dans « Sans lien »", "Retiré de « Sans lien »"), lulu: () => toggleFlag(a, "lulu", "Transféré dans « Lulu »", "Retiré de « Lulu »") })[a.dataset.act]?.();
+  ({ close: closePanel, log: () => logCall(a), save: () => saveLead(a), copy: copyPhone, delete: () => deleteLead(a), prio: () => toggleFlag(a, "priority", "Marqué prioritaire", "Priorité retirée"), nolink: () => toggleFlag(a, "noLink", "Transféré dans « A »", "Retiré de « A »"), lulu: () => toggleFlag(a, "lulu", "Transféré dans « Lulu »", "Retiré de « Lulu »") })[a.dataset.act]?.();
 });
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
