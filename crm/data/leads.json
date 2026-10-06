@@ -999,6 +999,206 @@
       "planity": "Fiche annuaire Planity seulement (pas de RDV) — https://www.planity.com/melya-garden-34170-castelnau-le-lez",
       "maps": "https://www.google.com/maps/search/?api=1&query=Melya+Garden+475%2C+Rte+de+N%C3%AEmes%2C+34170+Castelnau-le-Lez",
       "notes": "Lot Métropole Montpellier"
+    },
+    {
+      "name": "Zino & Kenzi",
+      "type": "Barbier",
+      "address": "17, Rue Aristide Ollivier, 34000 Montpellier",
+      "city": "Montpellier",
+      "phone": "07 62 13 05 30",
+      "planity": "Sur Planity mais seulement 0 avis — https://www.planity.com/zino-kenzi-34000-montpellier",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Zino+%26+Kenzi+17%2C+Rue+Aristide+Ollivier%2C+34000+Montpellier",
+      "notes": "Lot ciblé : Planity peu utilisé (0 avis). Angle : ils paient Planity pour presque rien."
+    },
+    {
+      "name": "L'instant pour soi",
+      "type": "Coiffure",
+      "address": "5, Rue de Substantion, 34000 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 72 67 64",
+      "planity": "Sur Planity mais seulement 1 avis — https://www.planity.com/linstant-pour-soi-34000-montpellier-59n",
+      "maps": "https://www.google.com/maps/search/?api=1&query=L%27instant+pour+soi+5%2C+Rue+de+Substantion%2C+34000+Montpellier",
+      "notes": "Lot ciblé : Planity peu utilisé (1 avis). Angle : ils paient Planity pour presque rien."
+    },
+    {
+      "name": "Hair Santa",
+      "type": "Coiffure",
+      "address": "48, Pl. du Millénaire, 34000 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 64 97 33",
+      "planity": "Sur Planity mais seulement 2 avis — https://www.planity.com/hair-santa-34000-montpellier",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Hair+Santa+48%2C+Pl.+du+Mill%C3%A9naire%2C+34000+Montpellier",
+      "notes": "Lot ciblé : Planity peu utilisé (2 avis). Angle : ils paient Planity pour presque rien."
+    },
+    {
+      "name": "Il Raffaele",
+      "type": "Barbier",
+      "address": "799, Rue Hélène Boucher, 34130 Mauguio",
+      "city": "Mauguio",
+      "phone": "06 51 94 87 01",
+      "planity": "Sur Planity mais seulement 2 avis — https://www.planity.com/il-raffaele-34130-mauguio",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Il+Raffaele+799%2C+Rue+H%C3%A9l%C3%A8ne+Boucher+%28+food+Bikes+and+cars+%29%2C+34130+Mauguio",
+      "notes": "Lot ciblé : Planity peu utilisé (2 avis). Angle : ils paient Planity pour presque rien."
+    },
+    {
+      "name": "Fris'Style Coiffure",
+      "type": "Coiffure",
+      "address": "23 Boulevard Pasteur - Arrêt Louis Blanc, 34000 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 02 11 00",
+      "planity": "Sur Planity mais seulement 3 avis — https://www.planity.com/frisstyle-coiffure-montpellier-tendance-nature-34000",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Fris%27Style+Coiffure+23+Boulevard+Pasteur+-+Arr%C3%AAt+Louis+Blanc%2C+34000+Montpellier",
+      "notes": "Lot ciblé : Planity peu utilisé (3 avis). Angle : ils paient Planity pour presque rien."
+    },
+    {
+      "name": "B Studio",
+      "type": "Coiffure",
+      "address": "69, Rue du Poumpidou, 34990 Juvignac",
+      "city": "Juvignac",
+      "phone": "07 86 12 73 55",
+      "planity": "Sur Planity mais seulement 3 avis — https://www.planity.com/b-studio-34990-juvignac",
+      "maps": "https://www.google.com/maps/search/?api=1&query=B+Studio+69%2C+Rue+du+Poumpidou%2C+34990+Juvignac",
+      "notes": "Lot ciblé : Planity peu utilisé (3 avis). Angle : ils paient Planity pour presque rien."
+    },
+    {
+      "name": "Le Salon Signature Hair",
+      "type": "Coiffure",
+      "address": "7, Rue Sainte-Anne, 34000 Montpellier",
+      "city": "Montpellier",
+      "phone": "09 62 40 47 68",
+      "planity": "Sur Planity mais seulement 5 avis — https://www.planity.com/salon-147-34000-montpellier",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Le+Salon+Signature+Hair+7%2C+Rue+Sainte-Anne%2C+34000+Montpellier",
+      "notes": "Lot ciblé : Planity peu utilisé (5 avis). Angle : ils paient Planity pour presque rien."
+    },
+    {
+      "name": "Devis Cut",
+      "type": "Barbier",
+      "address": "8, Rue de la Méditerranée, 34000 Montpellier",
+      "city": "Montpellier",
+      "phone": "09 84 59 36 98",
+      "planity": "Sur Planity mais seulement 9 avis — https://www.planity.com/devis-cut-34000-montpellier",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Devis+Cut+8%2C+Rue+de+la+M%C3%A9diterran%C3%A9e%2C+34000+Montpellier",
+      "notes": "Lot ciblé : Planity peu utilisé (9 avis). Angle : ils paient Planity pour presque rien."
+    },
+    {
+      "name": "Blōma Hair Studio",
+      "type": "Coiffure",
+      "address": "96, Esp. de l'Ortet, 34430 Saint-Jean-de-Védas",
+      "city": "Saint-Jean-de-Védas",
+      "phone": "06 29 15 42 59",
+      "planity": "Sur Planity mais seulement 9 avis — https://www.planity.com/bloma-hair-studio-34430-saint-jean-de-vedas",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Bl%C5%8Dma+Hair+Studio+96%2C+Esp.+de+l%27Ortet%2C+34430+Saint-Jean-de-V%C3%A9das",
+      "notes": "Lot ciblé : Planity peu utilisé (9 avis). Angle : ils paient Planity pour presque rien."
+    },
+    {
+      "name": "AYB Barber",
+      "type": "Barbier",
+      "address": "723, Av. du Maréchal Leclerc, 34070 Montpellier",
+      "city": "Montpellier",
+      "phone": "06 10 58 66 72",
+      "planity": "Sur Planity mais seulement 10 avis — https://www.planity.com/ayb-barber-34070-montpellier",
+      "maps": "https://www.google.com/maps/search/?api=1&query=AYB+Barber+723%2C+Av.+du+Mar%C3%A9chal+Leclerc%2C+34070+Montpellier",
+      "notes": "Lot ciblé : Planity peu utilisé (10 avis). Angle : ils paient Planity pour presque rien."
+    },
+    {
+      "name": "Grèze Coiffure",
+      "type": "Coiffure",
+      "address": "11 Rue de Maguelone, 34000 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 58 45 04",
+      "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Gr%C3%A8ze+Coiffure+11+Rue+de+Maguelone%2C+34000+Montpellier",
+      "notes": "Lot ciblé : pas de Planity."
+    },
+    {
+      "name": "Color Loft",
+      "type": "Coiffure",
+      "address": "6 Rue de Maguelone, 34000 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 58 11 35",
+      "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Color+Loft+6+Rue+de+Maguelone%2C+34000+Montpellier",
+      "notes": "Lot ciblé : pas de Planity."
+    },
+    {
+      "name": "Patrick Roux Coiffure",
+      "type": "Coiffure",
+      "address": "13 Rue de la Croix d'Or, 34000 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 66 07 38",
+      "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Patrick+Roux+Coiffure+13+Rue+de+la+Croix+d%27Or%2C+34000+Montpellier",
+      "notes": "Lot ciblé : pas de Planity."
+    },
+    {
+      "name": "Josyvan Coiffures",
+      "type": "Coiffure",
+      "address": "3 Rue du Bras de Fer, 34000 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 66 03 92",
+      "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Josyvan+Coiffures+3+Rue+du+Bras+de+Fer%2C+34000+Montpellier",
+      "notes": "Lot ciblé : pas de Planity."
+    },
+    {
+      "name": "Evelyne'B",
+      "type": "Coiffure",
+      "address": "17 Boulevard des Arceaux, 34000 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 92 62 80",
+      "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Evelyne%27B+17+Boulevard+des+Arceaux%2C+34000+Montpellier",
+      "notes": "Lot ciblé : pas de Planity. A un site perso (coiffeur-montpellier-evelyneb.fr) : demander comment ils prennent les RDV."
+    },
+    {
+      "name": "Claude Michel Coiffure",
+      "type": "Coiffure",
+      "address": "1 Place Rondelet, 34000 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 58 78 08",
+      "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Claude+Michel+Coiffure+1+Place+Rondelet%2C+34000+Montpellier",
+      "notes": "Lot ciblé : pas de Planity."
+    },
+    {
+      "name": "Coiffure Tiff'Anita",
+      "type": "Coiffure",
+      "address": "7 Rue de la Friperie, 34000 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 60 55 62",
+      "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Coiffure+Tiff%27Anita+7+Rue+de+la+Friperie%2C+34000+Montpellier",
+      "notes": "Lot ciblé : pas de Planity."
+    },
+    {
+      "name": "Artistik Coiffure",
+      "type": "Coiffure",
+      "address": "748 Rue de la Vieille Poste, 34000 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 99 93 74",
+      "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Artistik+Coiffure+748+Rue+de+la+Vieille+Poste%2C+34000+Montpellier",
+      "notes": "Lot ciblé : pas de Planity."
+    },
+    {
+      "name": "Romain Coiffure",
+      "type": "Coiffure",
+      "address": "2 BIS Rue Four des Flammes, 34000 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 60 61 97",
+      "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Romain+Coiffure+2+BIS+Rue+Four+des+Flammes%2C+34000+Montpellier",
+      "notes": "Lot ciblé : pas de Planity."
+    },
+    {
+      "name": "Kristeliz",
+      "type": "Coiffure",
+      "address": "30 Rue de l'Université, 34000 Montpellier",
+      "city": "Montpellier",
+      "phone": "04 67 60 88 27",
+      "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
+      "maps": "https://www.google.com/maps/search/?api=1&query=Kristeliz+30+Rue+de+l%27Universit%C3%A9%2C+34000+Montpellier",
+      "notes": "Lot ciblé : pas de Planity. A un site perso (kristeliz.com) : demander comment ils prennent les RDV."
     }
   ]
 }
