@@ -4,8 +4,8 @@
   "fps": 30,
   "face": {
     "src": "media/face.mp4",
-    "focusY": 30,
-    "bubbleCrop": 0.6,
+    "focusY": 36,
+    "bubbleCrop": 1.0,
     "splitFocusY": 32
   },
   "transcript": "transcript.json",
