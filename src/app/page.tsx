@@ -7,7 +7,6 @@ import { Hero } from "@/components/landing/Hero";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import { Pricing } from "@/components/landing/Pricing";
 import { ProductShowcase } from "@/components/landing/ProductShowcase";
-import { Testimonials } from "@/components/landing/Testimonials";
 import { TwoSides } from "@/components/landing/TwoSides";
 import { SetupCall } from "@/components/landing/SetupCall";
 import { RevealObserver } from "@/components/landing/Reveal";
@@ -53,7 +52,7 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         <HowItWorks />
         <SetupCall />
         <Pricing />
-        <Testimonials />
+        {/* Section « Avis » masquée pour le moment : réafficher <Testimonials /> (src/components/landing/Testimonials.tsx) et le lien « Avis » de la navigation. */}
         <Faq />
       </main>
       <Footer closing />
