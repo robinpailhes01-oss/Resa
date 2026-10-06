@@ -989,7 +989,8 @@
       "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Gr%C3%A8ze+Coiffure+11+Rue+de+Maguelone%2C+34000+Montpellier",
       "notes": "Lot ciblé : pas de Planity.",
-      "priority": true
+      "priority": true,
+      "noLink": true
     },
     {
       "name": "Color Loft",
@@ -1000,7 +1001,8 @@
       "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Color+Loft+6+Rue+de+Maguelone%2C+34000+Montpellier",
       "notes": "Lot ciblé : pas de Planity.",
-      "priority": true
+      "priority": true,
+      "noLink": true
     },
     {
       "name": "Patrick Roux Coiffure",
@@ -1011,7 +1013,8 @@
       "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Patrick+Roux+Coiffure+13+Rue+de+la+Croix+d%27Or%2C+34000+Montpellier",
       "notes": "Lot ciblé : pas de Planity.",
-      "priority": true
+      "priority": true,
+      "noLink": true
     },
     {
       "name": "Josyvan Coiffures",
@@ -1022,7 +1025,8 @@
       "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Josyvan+Coiffures+3+Rue+du+Bras+de+Fer%2C+34000+Montpellier",
       "notes": "Lot ciblé : pas de Planity.",
-      "priority": true
+      "priority": true,
+      "noLink": true
     },
     {
       "name": "Evelyne'B",
@@ -1033,7 +1037,8 @@
       "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Evelyne%27B+17+Boulevard+des+Arceaux%2C+34000+Montpellier",
       "notes": "Lot ciblé : pas de Planity. A un site perso (coiffeur-montpellier-evelyneb.fr) : demander comment ils prennent les RDV.",
-      "priority": true
+      "priority": true,
+      "noLink": true
     },
     {
       "name": "Claude Michel Coiffure",
@@ -1044,7 +1049,8 @@
       "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Claude+Michel+Coiffure+1+Place+Rondelet%2C+34000+Montpellier",
       "notes": "Lot ciblé : pas de Planity.",
-      "priority": true
+      "priority": true,
+      "noLink": true
     },
     {
       "name": "Coiffure Tiff'Anita",
@@ -1055,7 +1061,8 @@
       "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Coiffure+Tiff%27Anita+7+Rue+de+la+Friperie%2C+34000+Montpellier",
       "notes": "Lot ciblé : pas de Planity.",
-      "priority": true
+      "priority": true,
+      "noLink": true
     },
     {
       "name": "Artistik Coiffure",
@@ -1066,7 +1073,8 @@
       "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Artistik+Coiffure+748+Rue+de+la+Vieille+Poste%2C+34000+Montpellier",
       "notes": "Lot ciblé : pas de Planity.",
-      "priority": true
+      "priority": true,
+      "noLink": true
     },
     {
       "name": "Romain Coiffure",
@@ -1077,7 +1085,8 @@
       "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Romain+Coiffure+2+BIS+Rue+Four+des+Flammes%2C+34000+Montpellier",
       "notes": "Lot ciblé : pas de Planity.",
-      "priority": true
+      "priority": true,
+      "noLink": true
     },
     {
       "name": "Kristeliz",
@@ -1088,7 +1097,8 @@
       "planity": "Absent de Planity (fiche annuaire sans réservation, donc pas de lien Planity possible en bio)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Kristeliz+30+Rue+de+l%27Universit%C3%A9%2C+34000+Montpellier",
       "notes": "Lot ciblé : pas de Planity. A un site perso (kristeliz.com) : demander comment ils prennent les RDV.",
-      "priority": true
+      "priority": true,
+      "noLink": true
     },
     {
       "name": "L'Atelier de Benjamin",
@@ -1099,7 +1109,8 @@
       "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
       "maps": "https://www.google.com/maps/search/?api=1&query=L%27Atelier+de+Benjamin+3+Rue+du+Puits+du+Temple%2C+34000+Montpellier",
       "notes": "Lot ciblé : sans réservation en ligne.",
-      "priority": true
+      "priority": true,
+      "noLink": true
     },
     {
       "name": "Saint-Germain Céline",
@@ -1110,7 +1121,8 @@
       "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Saint-Germain+C%C3%A9line+18+Rue+Saint-Firmin%2C+34000+Montpellier",
       "notes": "Lot ciblé : sans réservation en ligne.",
-      "priority": true
+      "priority": true,
+      "noLink": true
     },
     {
       "name": "Coiff'Styl Martine",
@@ -1121,7 +1133,8 @@
       "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Coiff%27Styl+Martine+3+Rue+du+Puits+des+Esquilles%2C+34000+Montpellier",
       "notes": "Lot ciblé : sans réservation en ligne.",
-      "priority": true
+      "priority": true,
+      "noLink": true
     },
     {
       "name": "Triaire Sébastien",
@@ -1132,7 +1145,8 @@
       "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Triaire+S%C3%A9bastien+11+Boulevard+des+Arceaux%2C+34000+Montpellier",
       "notes": "Lot ciblé : sans réservation en ligne. Coiffure homme et barbier, avec ou sans RDV.",
-      "priority": true
+      "priority": true,
+      "noLink": true
     },
     {
       "name": "Les Créateurs",
@@ -1143,7 +1157,8 @@
       "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Les+Cr%C3%A9ateurs+22+Boulevard+d%27Orient%2C+34070+Montpellier",
       "notes": "Lot ciblé : sans réservation en ligne. Prend aussi sans RDV.",
-      "priority": true
+      "priority": true,
+      "noLink": true
     },
     {
       "name": "SB Salon",
@@ -1154,7 +1169,8 @@
       "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
       "maps": "https://www.google.com/maps/search/?api=1&query=SB+Salon+6+Rue+du+Petit+Saint-Jean%2C+34000+Montpellier",
       "notes": "Lot ciblé : sans réservation en ligne.",
-      "priority": true
+      "priority": true,
+      "noLink": true
     },
     {
       "name": "Albrizio Pasquale",
@@ -1165,7 +1181,8 @@
       "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Albrizio+Pasquale+R%C3%A9sidence+Europa%2C+Rue+Hippolyte+Rech%2C+34090+Montpellier",
       "notes": "Lot ciblé : sans réservation en ligne. RDV uniquement par téléphone (indiqué sur ses fiches). Salon L'Oréal Professionnel.",
-      "priority": true
+      "priority": true,
+      "noLink": true
     },
     {
       "name": "Club 7",
@@ -1176,7 +1193,8 @@
       "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Club+7+448+Rue+de+la+Roqueturi%C3%A8re%2C+Impasse+Suzanne+Lenglen%2C+34090+Montpellier",
       "notes": "Lot ciblé : sans réservation en ligne.",
-      "priority": true
+      "priority": true,
+      "noLink": true
     },
     {
       "name": "Beauté Nature Coiffure",
@@ -1187,7 +1205,8 @@
       "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Beaut%C3%A9+Nature+Coiffure+135+Rue+de+la+Cavalade%2C+34000+Montpellier",
       "notes": "Lot ciblé : sans réservation en ligne. Coloration végétale, 174 avis Google.",
-      "priority": true
+      "priority": true,
+      "noLink": true
     },
     {
       "name": "Atelier Coiffure Valérie Hebda",
@@ -1198,7 +1217,8 @@
       "planity": "Aucun lien de réservation (Planity : fiche annuaire seulement ; ni Fresha ni Treatwell)",
       "maps": "https://www.google.com/maps/search/?api=1&query=Atelier+Coiffure+Val%C3%A9rie+Hebda+467+Rue+de+la+Roqueturi%C3%A8re%2C+34090+Montpellier",
       "notes": "Lot ciblé : sans réservation en ligne. Site vitrine sans réservation en ligne.",
-      "priority": true
+      "priority": true,
+      "noLink": true
     },
     {
       "name": "De Mèche Avec Vous",
@@ -1209,7 +1229,8 @@
       "priority": true,
       "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; Fresha : fiche non partenaire ; ni Treatwell, ni Booksy, ni Rdv360). Bouton Google non vérifié.",
       "maps": "https://www.google.com/maps/search/?api=1&query=De+M%C3%A8che+Avec+Vous+453+Rue+L%C3%A9on+Blum%2C+34000+Montpellier",
-      "notes": "Lot ultra qualifié Montpellier. Note Google 5,0 (79 avis). RDV par téléphone uniquement. Gérante : Mélanie."
+      "notes": "Lot ultra qualifié Montpellier. Note Google 5,0 (79 avis). RDV par téléphone uniquement. Gérante : Mélanie.",
+      "noLink": true
     },
     {
       "name": "JG Coiffeur Créateur",
@@ -1220,7 +1241,8 @@
       "priority": true,
       "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; Fresha : fiche non partenaire ; ni Treatwell, ni Booksy, ni Rdv360). Bouton Google non vérifié.",
       "maps": "https://www.google.com/maps/search/?api=1&query=JG+Coiffeur+Cr%C3%A9ateur+8+Rue+du+Bras+de+Fer%2C+34000+Montpellier",
-      "notes": "Lot ultra qualifié Montpellier. Écusson. Site vitrine (jg-coiffeurcreateur.fr) sans réservation en ligne."
+      "notes": "Lot ultra qualifié Montpellier. Écusson. Site vitrine (jg-coiffeurcreateur.fr) sans réservation en ligne.",
+      "noLink": true
     },
     {
       "name": "Esprit Basora",
@@ -1231,7 +1253,8 @@
       "priority": true,
       "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; Fresha : fiche non partenaire ; ni Treatwell, ni Booksy, ni Rdv360). Bouton Google non vérifié.",
       "maps": "https://www.google.com/maps/search/?api=1&query=Esprit+Basora+10+Rue+du+Palais+des+Guilhem%2C+34000+Montpellier",
-      "notes": "Lot ultra qualifié Montpellier. Coiffeur visagiste, 4,7 (50+ avis). Site espritbasora.com : aucun module de réservation trouvé. Autre numéro : 07 83 89 66 38."
+      "notes": "Lot ultra qualifié Montpellier. Coiffeur visagiste, 4,7 (50+ avis). Site espritbasora.com : aucun module de réservation trouvé. Autre numéro : 07 83 89 66 38.",
+      "noLink": true
     },
     {
       "name": "YLB Prestige",
@@ -1242,7 +1265,8 @@
       "priority": true,
       "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; Fresha : fiche non partenaire ; ni Treatwell, ni Booksy, ni Rdv360). Bouton Google non vérifié.",
       "maps": "https://www.google.com/maps/search/?api=1&query=YLB+Prestige+1+Rue+de+la+Draperie+Rouge%2C+34000+Montpellier",
-      "notes": "Lot ultra qualifié Montpellier. 1er étage face à Uniqlo (Halles Castellane). Salon L'Oréal Professionnel. Site ylb-coiffure.com non vérifié (injoignable)."
+      "notes": "Lot ultra qualifié Montpellier. 1er étage face à Uniqlo (Halles Castellane). Salon L'Oréal Professionnel. Site ylb-coiffure.com non vérifié (injoignable).",
+      "noLink": true
     },
     {
       "name": "Beauté Alma",
@@ -1253,7 +1277,8 @@
       "priority": true,
       "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; Fresha : fiche non partenaire ; ni Treatwell, ni Booksy, ni Rdv360). Bouton Google non vérifié.",
       "maps": "https://www.google.com/maps/search/?api=1&query=Beaut%C3%A9+Alma+4+Rue+Durand%2C+34000+Montpellier",
-      "notes": "Lot ultra qualifié Montpellier. Coiffure afro, tresses, lissage. Coiffeuse : Nana."
+      "notes": "Lot ultra qualifié Montpellier. Coiffure afro, tresses, lissage. Coiffeuse : Nana.",
+      "noLink": true
     },
     {
       "name": "Arrais Coiffure",
@@ -1264,7 +1289,8 @@
       "priority": true,
       "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; Fresha : fiche non partenaire ; ni Treatwell, ni Booksy, ni Rdv360). Bouton Google non vérifié.",
       "maps": "https://www.google.com/maps/search/?api=1&query=Arrais+Coiffure+15+Rue+de+la+Figairasse%2C+34070+Montpellier",
-      "notes": "Lot ultra qualifié Montpellier. Ouvert l'après-midi et le soir (15h-23h) : appeler après 15h. Coloration végétale, barbier."
+      "notes": "Lot ultra qualifié Montpellier. Ouvert l'après-midi et le soir (15h-23h) : appeler après 15h. Coloration végétale, barbier.",
+      "noLink": true
     },
     {
       "name": "Dali Barber",
@@ -1275,7 +1301,8 @@
       "priority": true,
       "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; Fresha : fiche non partenaire ; ni Treatwell, ni Booksy, ni Rdv360). Bouton Google non vérifié.",
       "maps": "https://www.google.com/maps/search/?api=1&query=Dali+Barber+673+Chemin+de+Moular%C3%A8s%2C+34070+Montpellier",
-      "notes": "Lot ultra qualifié Montpellier. Ouvert 7j/7, 4,3 (130+ avis). Autre numéro : 04 67 50 37 67."
+      "notes": "Lot ultra qualifié Montpellier. Ouvert 7j/7, 4,3 (130+ avis). Autre numéro : 04 67 50 37 67.",
+      "noLink": true
     },
     {
       "name": "Old Barber",
@@ -1286,7 +1313,8 @@
       "priority": true,
       "planity": "Aucune réservation en ligne trouvée (Planity : fiche annuaire seulement ; Fresha : fiche non partenaire ; ni Treatwell, ni Booksy, ni Rdv360). Bouton Google non vérifié.",
       "maps": "https://www.google.com/maps/search/?api=1&query=Old+Barber+77+Rue+du+Faubourg+Figuerolles%2C+34070+Montpellier",
-      "notes": "Lot ultra qualifié Montpellier. Coiffeur et barbier depuis 2018, petits prix."
+      "notes": "Lot ultra qualifié Montpellier. Coiffeur et barbier depuis 2018, petits prix.",
+      "noLink": true
     }
   ]
 }
