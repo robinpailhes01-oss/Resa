@@ -32,6 +32,7 @@ export function cleanFields(input) {
     if (input[key] !== undefined) out[key] = String(input[key] ?? "").slice(0, key === "notes" ? 4000 : 600);
   }
   if (input.status !== undefined && STATUSES.includes(input.status)) out.status = input.status;
+  if (input.priority !== undefined) out.priority = input.priority === true;
   if (out.nextCall && !/^\d{4}-\d{2}-\d{2}$/.test(out.nextCall)) out.nextCall = "";
   return out;
 }

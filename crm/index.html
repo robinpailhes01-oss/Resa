@@ -94,6 +94,12 @@ a.btn { text-decoration: none; color: inherit; }
 .field { border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 8px 12px; min-width: 0; }
 .search { flex: 1 1 220px; }
 .spacer { flex: 1; }
+.prio-filter { font-weight: 600; color: var(--muted); }
+.prio-filter .count { font-variant-numeric: tabular-nums; margin-left: 6px; color: var(--accent); }
+.prio-filter[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--ink); box-shadow: 0 0 0 1px var(--accent) inset; }
+.star { color: var(--peach-ink); margin-right: 4px; }
+.prio-toggle { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 3px 10px; font-size: 12px; font-weight: 700; color: var(--muted); margin-left: 6px; }
+.prio-toggle[aria-pressed="true"] { background: var(--peach); color: var(--peach-ink); border-color: transparent; }
 
 /* Liste */
 .list { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; overflow: hidden; }
@@ -208,6 +214,7 @@ details.pitch ol { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 6px;
     </div>
     <input id="q" class="field search" type="search" placeholder="Rechercher un nom, une ville, un numéro…" aria-label="Rechercher">
     <select id="city" class="field" aria-label="Filtrer par ville"><option value="">Toutes les villes</option></select>
+    <button id="btn-prio" class="field prio-filter" type="button" aria-pressed="false">★ Prioritaires<span class="count" id="c-prio"></span></button>
   </div>
 
   <section class="list" id="list" aria-live="polite">
@@ -244,7 +251,7 @@ const OUTCOMES = [
 const O = Object.fromEntries(OUTCOMES.map(o => [o.key, o]));
 const TYPES = ["Coiffure", "Coiffure mixte", "Barbier", "Institut de beauté", "Esthétique", "Onglerie", "Autre"];
 
-const state = { leads: [], me: "", canWrite: true, view: "today", status: "", q: "", city: "", openId: null, outcome: null, adding: false };
+const state = { leads: [], me: "", canWrite: true, view: "today", status: "", q: "", city: "", prio: false, openId: null, outcome: null, adding: false };
 const $ = (s, r = document) => r.querySelector(s);
 const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
@@ -284,6 +291,7 @@ function filtered() {
     if (state.view === "today" && !isDue(l)) return false;
     if (state.status && l.status !== state.status) return false;
     if (state.city && l.city !== state.city) return false;
+    if (state.prio && !l.priority) return false;
     if (q) {
       const hay = [l.name, l.city, l.address, l.phone, l.contact, l.type, l.notes].join(" ").toLowerCase();
       const digits = q.replace(/\D/g, "");
@@ -291,7 +299,8 @@ function filtered() {
     }
     return true;
   });
-  const rank = l => (CLOSED.has(l.status) ? "9" : (l.nextCall || "0000"));
+  // Prioritaires ouverts en tête, puis par date du prochain appel.
+  const rank = l => (CLOSED.has(l.status) ? "29" : (l.priority ? "0" : "1") + (l.nextCall || "0000"));
   rows.sort((a, b) => rank(a).localeCompare(rank(b)) || String(a.name).localeCompare(String(b.name), "fr"));
   return rows;
 }
@@ -317,6 +326,7 @@ function renderList() {
   const list = $("#list");
   $("#c-today").textContent = state.leads.filter(isDue).length;
   $("#c-all").textContent = state.leads.length;
+  $("#c-prio").textContent = state.leads.filter(l => l.priority).length;
   if (!state.leads.length) {
     list.innerHTML = `<div class="empty"><strong>Aucun lead pour l’instant</strong><span>Ajoutez votre premier salon avec « + Ajouter un lead ». Chaque appel noté ici est visible par toute l’équipe.</span></div>`;
     return;
@@ -332,7 +342,7 @@ function renderList() {
       const c = lastCall(l);
       const lc = c ? `${esc(O[c.outcome]?.label ?? "Note")} · ${esc(fmtWhen(c.at))}${c.note ? " · " + esc(c.note) : ""}` : "Jamais appelé";
       return `<button class="row" type="button" data-id="${esc(l.id)}">
-        <span style="min-width:0"><div class="name">${esc(l.name)}</div><div class="sub">${esc(l.type || "")}${l.city ? " · " + esc(l.city) : ""}</div></span>
+        <span style="min-width:0"><div class="name">${l.priority ? `<span class="star" title="Prioritaire">★</span>` : ""}${esc(l.name)}</div><div class="sub">${esc(l.type || "")}${l.city ? " · " + esc(l.city) : ""}</div></span>
         <span>${pill(l.status)}</span>
         <span class="mono">${esc(l.phone || "—")}</span>
         <span>${whenCell(l)}</span>
@@ -360,7 +370,7 @@ function renderPanel(fresh) {
       <div style="min-width:0">
         <h2 id="p-title">${esc(l.name)}</h2>
         <div class="meta">${esc(l.type || "")}${l.address ? " · " + esc(l.address) : ""}</div>
-        <div style="margin-top:8px">${pill(l.status)}</div>
+        <div style="margin-top:8px">${pill(l.status)}<button class="prio-toggle" type="button" data-act="prio" aria-pressed="${!!l.priority}" ${ro}>${l.priority ? "★ Prioritaire" : "☆ Marquer prioritaire"}</button></div>
       </div>
       <button class="x" type="button" data-act="close" aria-label="Fermer">×</button>
     </div>
@@ -511,6 +521,15 @@ async function saveLead(btn) {
   } catch (e) { failed(e); btn.disabled = false; }
 }
 
+async function togglePriority(btn) {
+  const l = state.leads.find(x => x.id === state.openId); if (!l) return;
+  btn.disabled = true;
+  try {
+    const { lead } = await api("/api/leads?id=" + encodeURIComponent(l.id), { method: "PATCH", body: JSON.stringify({ patch: { priority: !l.priority } }) });
+    upsert(lead); toast(lead.priority ? "Marqué prioritaire" : "Priorité retirée"); render(); renderPanel(true);
+  } catch (e) { failed(e); btn.disabled = false; }
+}
+
 async function addLead(ev) {
   ev.preventDefault();
   const data = {
@@ -554,6 +573,7 @@ $("#tab-today").onclick = () => { setView("today"); renderList(); };
 $("#tab-all").onclick = () => { setView("all"); renderList(); };
 $("#q").addEventListener("input", e => { state.q = e.target.value; renderList(); });
 $("#city").addEventListener("change", e => { state.city = e.target.value; renderList(); });
+$("#btn-prio").onclick = e => { state.prio = !state.prio; e.currentTarget.setAttribute("aria-pressed", state.prio); renderList(); };
 $("#list").addEventListener("click", e => { const r = e.target.closest("button.row[data-id]"); if (r) openLead(r.dataset.id); });
 $("#btn-add").onclick = renderAddPanel;
 $("#scrim").onclick = closePanel;
@@ -570,7 +590,7 @@ $("#panel").addEventListener("click", e => {
     return;
   }
   const a = e.target.closest("[data-act]"); if (!a) return;
-  ({ close: closePanel, log: () => logCall(a), save: () => saveLead(a), copy: copyPhone, delete: () => deleteLead(a) })[a.dataset.act]?.();
+  ({ close: closePanel, log: () => logCall(a), save: () => saveLead(a), copy: copyPhone, delete: () => deleteLead(a), prio: () => togglePriority(a) })[a.dataset.act]?.();
 });
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
